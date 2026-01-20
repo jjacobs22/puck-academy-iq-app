@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey IQ Training - Module 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ice-blue: #E8F4F8;
+            --dark-blue: #0A1628;
+            --accent-red: #C8102E;
+            --ice-white: #FFFFFF;
+            --silver: #A8B2BE;
+            --success-green: #2D7A3E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            color: var(--ice-white);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            color: var(--ice-white);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--accent-red);
+        }
+
+        .subtitle {
+            color: var(--silver);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .module-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .module-description {
+            color: var(--silver);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--accent-red), #ff4d6a);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--silver);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-red);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .scenario-card.completed {
+            border-color: var(--success-green);
+        }
+
+        .scenario-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.1);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+
+        .scenario-card.completed .scenario-number {
+            color: rgba(45, 122, 62, 0.3);
+        }
+
+        .scenario-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: var(--ice-white);
+        }
+
+        .scenario-description {
+            color: var(--silver);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .scenario-status {
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .status-available {
+            background: rgba(200, 16, 46, 0.2);
+            color: var(--accent-red);
+        }
+
+        .status-complete {
+            background: rgba(45, 122, 62, 0.2);
+            color: var(--success-green);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-red);
+            color: var(--ice-white);
+        }
+
+        .btn-primary:hover {
+            background: #a50d26;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: rgba(200, 16, 46, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .module-footer {
+            text-align: center;
+        }
+
+        .checkmark {
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 2rem;
+            }
+            .module-title {
+                font-size: 1.5rem;
+            }
+            .scenarios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Puck <span>Academy</span></h1>
+            <p class="subtitle">Hockey IQ Training</p>
+        </header>
+
+        <div class="module-header">
+            <h2 class="module-title">Module 1: Defensive Zone Coverage</h2>
+            <p class="module-description">
+                Master the fundamentals of two-way center play in your defensive zone. 
+                Learn positioning, coverage responsibilities, and when to support vs. when to cover.
+            </p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p class="progress-text" id="progressText">0 of 5 scenarios completed</p>
+
+        <div class="scenarios-grid">
+            <div class="scenario-card" onclick="loadScenario(1)">
+                <span class="scenario-number">1</span>
+                <h3 class="scenario-title">High Slot Coverage</h3>
+                <p class="scenario-description">Learn your primary responsibility when opponents have the puck on the boards.</p>
+                <span class="scenario-status status-available">Start</span>
+            </div>
+
+            <div class="scenario-card" onclick="loadScenario(2)">
+                <span class="scenario-number">2</span>
+                <h3 class="scenario-title">Corner Battle Support</h3>
+                <p class="scenario-description">Understand when to help in corners vs. protecting the middle.</p>
+                <span class="scenario-status status-available">Start</span>
+            </div>
+
+            <div class="scenario-card" onclick="loadScenario(3)">
+                <span class="scenario-number">3</span>
+                <h3 class="scenario-title">Reading the Cycle</h3>
+                <p class="scenario-description">Anticipate passes and position yourself to intercept during opponent cycling.</p>
+                <span class="scenario-status status-available">Start</span>
+            </div>
+
+            <div class="scenario-card" onclick="loadScenario(4)">
+                <span class="scenario-number">4</span>
+                <h3 class="scenario-title">Breakout Timing</h3>
+                <p class="scenario-description">Know when to transition from defense to offense and support the breakout.</p>
+                <span class="scenario-status status-available">Start</span>
+            </div>
+
+            <div class="scenario-card" onclick="loadScenario(5)">
+                <span class="scenario-number">5</span>
+                <h3 class="scenario-title">Gap Control</h3>
+                <p class="scenario-description">Maintain proper distance from opponents while staying in defensive position.</p>
+                <span class="scenario-status status-available">Start</span>
+            </div>
+        </div>
+
+        <div class="module-footer">
+            <button class="btn btn-primary" id="assessmentBtn" disabled>Complete Module Assessment</button>
+        </div>
+    </div>
+
+    <script>
+        // Track completion (in real app, this would be saved to database)
+        let completedScenarios = JSON.parse(localStorage.getItem('completedScenarios') || '[]');
+
+        function updateProgress() {
+            const completed = completedScenarios.length;
+            const total = 5;
+            const percentage = (completed / total) * 100;
+
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${completed} of ${total} scenarios completed`;
+
+            // Update card status
+            const cards = document.querySelectorAll('.scenario-card');
+            cards.forEach((card, index) => {
+                const scenarioNum = index + 1;
+                const status = card.querySelector('.scenario-status');
+                
+                if (completedScenarios.includes(scenarioNum)) {
+                    card.classList.add('completed');
+                    status.className = 'scenario-status status-complete';
+                    status.innerHTML = '<span class="checkmark">✓</span> Complete';
+                }
+            });
+
+            // Enable assessment if all complete
+            if (completed === total) {
+                document.getElementById('assessmentBtn').disabled = false;
+            }
+        }
+
+        function loadScenario(num) {
+            const scenarios = {
+                1: 'hockey-iq-diagram.html',
+                2: 'scenario-2-corner-battle.html',
+                3: 'scenario-3-cycle.html',
+                4: 'scenario-4-breakout.html',
+                5: 'scenario-5-gap.html'
+            };
+            
+            window.location.href = scenarios[num];
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
