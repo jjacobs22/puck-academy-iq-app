@@ -323,11 +323,15 @@
         <div class="step" id="step3">
             <h2 class="step-title">📬</h2>
             <p class="step-description">We'll email you when new modules launch. No spam, promise.</p>
-            <div class="input-group">
-                <label>Email Address</label>
-                <input type="email" id="emailInput" placeholder="you@example.com">
-            </div>
-            <button class="btn btn-primary" onclick="nextStep()">Notify Me →</button>
+            <form name="email-signup" method="POST" data-netlify="true" onsubmit="handleEmailSubmit(event)">
+                <input type="hidden" name="form-name" value="email-signup">
+                <input type="hidden" name="position" id="hiddenPosition">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" id="emailInput" placeholder="you@example.com">
+                </div>
+                <button type="submit" class="btn btn-primary">Notify Me →</button>
+            </form>
             <span class="skip-link" onclick="nextStep()">Skip for now</span>
         </div>
 
@@ -435,7 +439,28 @@
             });
             element.classList.add('selected');
             userData.position = position;
+            document.getElementById('hiddenPosition').value = position;
             setTimeout(nextStep, 300);
+        }
+
+        function handleEmailSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(() => {
+                userData.email = document.getElementById('emailInput').value;
+                nextStep();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                nextStep(); // Continue anyway
+            });
         }
 
         function selectLevel(element, level) {
