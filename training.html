@@ -588,16 +588,14 @@
                 shareText = `I scored ${correctCount}/5 on Puck Academy's Hockey IQ training! Test your hockey brain:`;
             }
 
-            // Full text for clipboard fallback
+            // Combine text and URL for sharing (iOS ignores separate text when url is provided)
             const fullShareText = `${shareText}\n\n${shareUrl}`;
 
             // Try native share first (mobile)
-            // Using separate title, text, url params for better platform compatibility
+            // On iOS, we only use 'text' field with URL included - this ensures the message text appears
             if (navigator.share) {
                 navigator.share({
-                    title: shareTitle,
-                    text: shareText,
-                    url: shareUrl
+                    text: fullShareText
                 }).catch(() => {
                     // User cancelled or error, fall back to clipboard
                     copyToClipboard(fullShareText);
