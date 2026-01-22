@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 21, 2026  
+**Last Updated:** January 22, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -59,6 +59,7 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - Video-based scenario presentation with realistic rink diagrams
 - Multiple choice decision points ("What should you do here?")
 - Immediate feedback with explanation of correct/incorrect choices
+- **Dynamic feedback diagrams** showing correct positioning after answer (arrows, zones, ghost players)
 - Progress through linear modules (must complete to unlock next)
 - 5 interactive defensive zone scenarios (currently built)
 
@@ -134,6 +135,7 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
    - Read the question ("What should you do?")
    - Select from 4 answer options
    - Receive immediate feedback (correct/incorrect with explanation)
+   - **See diagram update with correct positioning** (arrows, coverage zones, ghost player)
    - Progress to next scenario
 5. **Completion:** Finish all 5 scenarios, see progress summary
 6. **Feedback:** Prompted to complete Google Form with beta feedback
@@ -145,11 +147,23 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 |--------|---------|--------------|
 | `onboarding.html` | Capture user info and personalize experience | Position picker, email input (optional), age/level selector, goal selection |
 | `index.html` | Module hub showing available training | Module cards with status (available/locked/coming soon), progress indicators |
-| `hockey-iq-diagram.html` | Scenario 1 - Defensive zone pressure read | SVG rink diagram, situation text, 4-option answer buttons, feedback display |
-| `scenario-2-corner-battle.html` | Scenario 2 - Corner battle support | Same structure as Scenario 1 with different content |
-| `scenario-3-cycle.html` | Scenario 3 - Cycle coverage | Same structure |
-| `scenario-4-breakout.html` | Scenario 4 - Breakout positioning | Same structure |
-| `scenario-5-gap.html` | Scenario 5 - Gap control decision | Same structure, includes "Give Feedback" CTA |
+| `hockey-iq-diagram.html` | Scenario 1 - Defensive zone pressure read | SVG rink diagram with feedback overlays, situation text, 4-option answer buttons, animated feedback display |
+| `scenario-2-corner-battle.html` | Scenario 2 - Corner battle support | Same structure with passing lane visualization |
+| `scenario-3-cycle.html` | Scenario 3 - Cycle coverage | Same structure with intercept zone and movement arrows |
+| `scenario-4-breakout.html` | Scenario 4 - Breakout positioning | Same structure with swing path animation |
+| `scenario-5-gap.html` | Scenario 5 - Gap control decision | Same structure with angled backcheck path, includes "Give Feedback" CTA |
+
+### Feedback Diagram System
+
+After the user answers each scenario, the rink diagram dynamically updates to show:
+- **Coverage zones:** Green dashed areas showing where the player should position
+- **Movement arrows:** Animated arrows showing correct skating path
+- **Ghost player:** Dashed circle showing correct final position
+- **Passing lanes:** Red highlighted lanes to protect or intercept
+- **Labels:** Text annotations explaining what to do ("COVER THIS ZONE", "SWING LOW", etc.)
+- **Updated legend:** Additional legend items appear for feedback elements
+
+This visual feedback reinforces the text explanation and helps players understand positioning concepts spatially.
 
 ### Design Principles
 
@@ -159,7 +173,8 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 4. **Feel like an insider advantage, not homework** — Positioned as "film room" training, not educational content
 5. **Clear decision points** — Scenarios pause at the moment of truth, not during action
 6. **Immediate feedback** — Know right/wrong instantly with explanation of *why*
-7. **Authentic hockey feel** — Dark ice blue theme, professional look that appeals to competitive players
+7. **Visual reinforcement** — Show correct positioning on diagram, not just tell
+8. **Authentic hockey feel** — Dark ice blue theme, professional look that appeals to competitive players
 
 ---
 
@@ -182,11 +197,13 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 puck-academy-iq-app/
 ├── index.html                    # Module hub / landing page
 ├── onboarding.html               # 5-step onboarding flow
-├── hockey-iq-diagram.html        # Scenario 1: D-zone pressure read
-├── scenario-2-corner-battle.html # Scenario 2: Corner battle
-├── scenario-3-cycle.html         # Scenario 3: Cycle coverage
-├── scenario-4-breakout.html      # Scenario 4: Breakout positioning
-├── scenario-5-gap.html           # Scenario 5: Gap control
+├── training.html                 # Training module overview
+├── hockey-iq-diagram.html        # Scenario 1: D-zone pressure read (with feedback diagram)
+├── scenario-2-corner-battle.html # Scenario 2: Corner battle (with feedback diagram)
+├── scenario-3-cycle.html         # Scenario 3: Cycle coverage (with feedback diagram)
+├── scenario-4-breakout.html      # Scenario 4: Breakout positioning (with feedback diagram)
+├── scenario-5-gap.html           # Scenario 5: Gap control (with feedback diagram)
+├── PROJECT_CONTEXT.md            # This file - project documentation
 └── assets/
     ├── css/
     │   └── styles.css            # Shared styles (optional - currently inline)
@@ -194,6 +211,29 @@ puck-academy-iq-app/
     │   └── training.js           # Scenario logic (optional - currently inline)
     └── images/
         └── rink-full.png         # Hockey rink diagram asset
+```
+
+### Feedback Diagram Implementation
+
+Each scenario includes SVG elements for feedback visualization:
+
+```html
+<!-- Hidden until answer is selected -->
+<ellipse id="coverageZone" class="feedback-element" ... />
+<line id="movementArrow" class="feedback-element movement-arrow" ... />
+<g id="ghostPlayer" class="ghost-player">...</g>
+```
+
+JavaScript functions control visibility:
+- `showFeedbackDiagram()` — Called after answer, animates elements in
+- `hideFeedbackDiagram()` — Called on reset, hides all feedback elements
+
+CSS handles animations:
+```css
+.feedback-element { opacity: 0; transition: opacity 0.6s ease; }
+.feedback-element.visible { opacity: 1; }
+.movement-arrow { stroke-dasharray: 100; stroke-dashoffset: 100; }
+.movement-arrow.animate { animation: drawArrow 0.8s ease forwards; }
 ```
 
 ### Data Model
@@ -223,7 +263,12 @@ puck-academy-iq-app/
     { text: "Hold the high slot", correct: true, feedback: "..." },
     // ...
   ],
-  rinkPosition: "defensive-zone-low"
+  rinkPosition: "defensive-zone-low",
+  feedbackDiagram: {
+    coverageZone: { cx: 180, cy: 175, rx: 35, ry: 30 },
+    arrow: { from: [200, 210], to: [185, 180] },
+    ghostPlayer: { x: 180, y: 172 }
+  }
 }
 ```
 
@@ -258,6 +303,7 @@ puck-academy-iq-app/
 - **Module hub:** Shows Module 1 with 5 scenario cards
 - **5 complete scenarios:** All playable with questions, answers, and feedback
 - **SVG rink diagrams:** Clean visual representation of defensive zone situations
+- **Feedback diagrams:** All 5 scenarios show animated correct positioning after answer
 - **Progress tracking:** localStorage saves completed scenarios
 - **Email capture:** Netlify Forms collecting onboarding emails
 - **Feedback form:** Google Forms linked for beta feedback
@@ -289,6 +335,7 @@ puck-academy-iq-app/
 - **Inline JavaScript:** Scenario logic duplicated; should extract to shared JS file
 - **No build process:** Manual file management; could benefit from simple bundler
 - **Hardcoded scenarios:** Scenario data embedded in HTML; should move to JSON for easier updates
+- **Feedback diagram data:** Currently hardcoded in SVG; could be data-driven for easier scenario creation
 
 ---
 
@@ -330,14 +377,21 @@ puck-academy-iq-app/
 - **Decision:** Defensive zone positioning for centers
 - **Rationale:** Biggest gap in existing training; most coaches struggle to teach this systematically; immediate differentiation from "skills training" apps; proves we can teach the hard stuff.
 
+### Decision 7: Dynamic Feedback Diagrams
+- **Context:** Original scenarios showed text feedback only after answering
+- **Options considered:** Text-only feedback, static "correct answer" image, dynamic SVG overlay
+- **Decision:** Dynamic SVG feedback diagrams with animations
+- **Rationale:** Visual learners (most athletes) need to *see* correct positioning, not just read about it. Animated arrows and zones reinforce the spatial concepts. Klipdraw-style visuals are familiar to hockey players from coach film sessions. Implementation in SVG keeps it lightweight and doesn't require external image assets.
+
 ---
 
 ## ROADMAP & PRIORITIES
 
 ### Current Sprint/Focus (January 2026)
-1. **Beta launch:** Send app to 10-15 beta testers via onboarding link
-2. **Feedback collection:** Monitor Netlify Forms and Google Forms responses
-3. **Quick iterations:** Fix any blocking bugs reported by testers
+1. ✅ **Beta launch:** Send app to 10-15 beta testers via onboarding link
+2. ✅ **Feedback diagrams:** Added visual feedback showing correct positioning
+3. **Feedback collection:** Monitor Netlify Forms and Google Forms responses
+4. **Quick iterations:** Fix any blocking bugs reported by testers
 
 ### Next Up (February 2026)
 - Analyze beta feedback and identify top 3 improvements
@@ -437,12 +491,15 @@ puck-academy-iq-app/
   - Dark Blue: `#0A1628`
   - Accent Red: `#C8102E`
   - Silver: `#A8B2BE`
+  - Success Green: `#2D7A3E`
+  - Error Red: `#B91C1C`
 
 **JavaScript:**
 - Vanilla JS (no frameworks for MVP)
 - localStorage for client-side state
 - Clear function names describing action
 - Comments for non-obvious logic
+- `showFeedbackDiagram()` / `hideFeedbackDiagram()` pattern for diagram state
 
 **Files:**
 - Lowercase with hyphens: `scenario-2-corner-battle.html`
@@ -455,6 +512,7 @@ puck-academy-iq-app/
 - Tailwind utility classes acceptable
 - Netlify for hosting
 - Keep files self-contained when possible
+- SVG-based feedback diagrams with CSS animations
 
 **Things to avoid:**
 - Don't add npm dependencies without asking
@@ -468,14 +526,24 @@ puck-academy-iq-app/
 - Avoid "homework" or "education" framing — this is "training"
 
 **Project-specific rules:**
-- All scenarios should follow same structure: situation → question → 4 options → feedback
-- Rink diagrams use consistent SVG format
+- All scenarios should follow same structure: situation → question → 4 options → feedback → diagram update
+- Rink diagrams use consistent SVG format with feedback overlay elements
+- Feedback diagrams include: coverage zones, movement arrows, ghost players, labels
 - Progress saves to localStorage under `puckAcademy_progress` key
 - Feedback always explains *why* — not just right/wrong
 
 ---
 
 ## CHANGELOG
+
+### January 22, 2026
+- **Added feedback diagrams to all 5 scenarios** — After answering, the rink diagram now shows:
+  - Green coverage zones indicating correct positioning
+  - Animated arrows showing movement paths
+  - Ghost player showing target position
+  - Passing lanes to protect (where applicable)
+  - Updated legend with feedback elements
+- Updated PROJECT_CONTEXT.md to document feedback diagram system
 
 ### January 21, 2026
 - Created PROJECT_CONTEXT.md to centralize all project knowledge
