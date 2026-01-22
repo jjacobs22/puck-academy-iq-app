@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630">
+    <title>OG Image Template - Screenshot at 1200x630</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            width: 1200px;
+            height: 630px;
+            overflow: hidden;
+        }
+        
+        .og-card {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #0A1628 0%, #1a2940 50%, #0A1628 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            position: relative;
+            font-family: 'Work Sans', sans-serif;
+        }
+        
+        /* Ice texture overlay */
+        .og-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(232, 244, 248, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(232, 244, 248, 0.03) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        
+        /* Red accent line */
+        .accent-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #C8102E 0%, #ff4d6a 50%, #C8102E 100%);
+        }
+        
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 80px;
+            letter-spacing: 6px;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        .logo span {
+            color: #C8102E;
+        }
+        
+        .tagline {
+            font-size: 32px;
+            color: #A8B2BE;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .challenge-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(200, 16, 46, 0.5);
+            border-radius: 20px;
+            padding: 40px 80px;
+            text-align: center;
+        }
+        
+        .challenge-text {
+            font-size: 42px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+        }
+        
+        .challenge-subtext {
+            font-size: 26px;
+            color: #A8B2BE;
+        }
+        
+        .emoji {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-text {
+            position: absolute;
+            bottom: 40px;
+            font-size: 22px;
+            color: #A8B2BE;
+            letter-spacing: 1px;
+        }
+        
+        /* Rink lines decoration */
+        .rink-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 3px solid rgba(200, 16, 46, 0.2);
+            border-radius: 50%;
+        }
+        
+        .rink-circle.left {
+            left: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .rink-circle.right {
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="og-card">
+        <div class="accent-line"></div>
+        <div class="rink-circle left"></div>
+        <div class="rink-circle right"></div>
+        
+        <h1 class="logo">Puck <span>Academy</span></h1>
+        <p class="tagline">Hockey IQ Training</p>
+        
+        <div class="challenge-box">
+            <div class="emoji">🏒</div>
+            <div class="challenge-text">Think You Can Beat My Score?</div>
+            <div class="challenge-subtext">Test your defensive zone hockey IQ</div>
+        </div>
+        
+        <p class="footer-text">hockeyiq.netlify.app</p>
+    </div>
+</body>
+</html>

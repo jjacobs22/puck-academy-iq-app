@@ -6,10 +6,19 @@
     <title>Hockey IQ Training - Module 1</title>
     
     <!-- Open Graph meta tags for rich link previews -->
-    <meta property="og:title" content="Puck Academy - Hockey IQ Training">
-    <meta property="og:description" content="I'm training my Hockey IQ with Puck Academy. Think you can beat my score?">
+    <meta property="og:title" content="🏒 Hockey IQ Challenge - Puck Academy">
+    <meta property="og:description" content="I'm training my Hockey IQ with Puck Academy. Think you can beat my score? Test your defensive zone reads.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hockeyiq.netlify.app/training.html">
+    <meta property="og:image" content="https://hockeyiq.netlify.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🏒 Hockey IQ Challenge - Puck Academy">
+    <meta name="twitter:description" content="I'm training my Hockey IQ with Puck Academy. Think you can beat my score?">
+    <meta name="twitter:image" content="https://hockeyiq.netlify.app/og-image.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -564,24 +573,31 @@
             
             let emoji = '🏒';
             let shareText = '';
+            let shareTitle = 'Puck Academy Hockey IQ Challenge';
             
             if (correctCount === 5) {
                 emoji = '🏆';
-                shareText = `I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! ${emoji} Think you can beat me?`;
+                shareTitle = '🏆 Perfect Score - Hockey IQ Challenge';
+                shareText = `I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! Think you can beat me?`;
             } else if (correctCount >= 4) {
                 emoji = '🔥';
-                shareText = `I scored ${correctCount}/5 on Puck Academy's Defensive Zone Hockey IQ training! ${emoji} Think you can do better?`;
+                shareTitle = `🔥 ${correctCount}/5 - Hockey IQ Challenge`;
+                shareText = `I scored ${correctCount}/5 on Puck Academy's Defensive Zone Hockey IQ training! Think you can do better?`;
             } else {
-                shareText = `I scored ${correctCount}/5 on Puck Academy's Hockey IQ training! 🏒 Test your hockey brain:`;
+                shareTitle = `🏒 ${correctCount}/5 - Hockey IQ Challenge`;
+                shareText = `I scored ${correctCount}/5 on Puck Academy's Hockey IQ training! Test your hockey brain:`;
             }
 
-            // Combine text and URL for all share methods
+            // Full text for clipboard fallback
             const fullShareText = `${shareText}\n\n${shareUrl}`;
 
             // Try native share first (mobile)
+            // Using separate title, text, url params for better platform compatibility
             if (navigator.share) {
                 navigator.share({
-                    text: fullShareText
+                    title: shareTitle,
+                    text: shareText,
+                    url: shareUrl
                 }).catch(() => {
                     // User cancelled or error, fall back to clipboard
                     copyToClipboard(fullShareText);

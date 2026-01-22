@@ -248,6 +248,8 @@ puck-academy-iq-app/
 ├── scenario-4-breakout.html      # Scenario 4: Breakout positioning
 ├── scenario-5-gap.html           # Scenario 5: Gap control
 ├── PROJECT_CONTEXT.md            # This file - project documentation
+├── og-image.html                 # Template for generating social share image (1200x630)
+├── og-image.png                  # Social share image (TODO: generate from template)
 └── assets/
     └── images/
         └── rink-full.png         # Hockey rink diagram asset
@@ -358,7 +360,7 @@ puck-academy-iq-app/
 - Payment/subscription system
 
 ### Known Bugs 🐛
-1. **Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message
+1. ~~**Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message~~ **FIXED** - Updated to use separate title/text/url params; iOS limitation means link preview may still be primary display
 2. **Status inconsistency:** Scenario cards occasionally show "Coming Soon" instead of "Start" after clearing cache
 3. **Progress reset:** If user clears browser data, all progress is lost
 4. **No error handling:** If scenario fails to load, no user-friendly message
@@ -368,7 +370,7 @@ puck-academy-iq-app/
 - **Inline JavaScript:** Scenario logic duplicated; should extract to shared JS file
 - **No build process:** Manual file management; could benefit from simple bundler
 - **Hardcoded scenarios:** Scenario data embedded in HTML; should move to JSON for easier updates
-- **No Open Graph tags:** Shared links don't show rich previews on social platforms
+- ~~**No Open Graph tags:** Shared links don't show rich previews on social platforms~~ **DONE** - Added OG + Twitter Card tags
 
 ---
 
@@ -435,9 +437,10 @@ puck-academy-iq-app/
 ### Current Sprint/Focus (January 2026)
 1. ✅ **Scoring system:** Track correct/incorrect, show results modal
 2. ✅ **Share functionality:** Share score via native share or clipboard
-3. 🔄 **Fix share bug:** Investigate why share text isn't appearing in Messages
+3. ✅ **Fix share bug:** Updated share params + added OG meta tags for rich previews
 4. **Beta launch:** Send app to 10-15 beta testers via onboarding link
 5. **Feedback collection:** Monitor Netlify Forms and Google Forms responses
+6. **TODO:** Generate og-image.png from og-image.html template and add to repo
 
 ### Next Up (February 2026)
 - Analyze beta feedback and identify top 3 improvements
@@ -579,7 +582,14 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
-### January 22, 2026
+### January 22, 2026 (Evening)
+- Fixed share bug: Updated `shareResults()` to use separate `title`, `text`, and `url` parameters for better platform compatibility
+- Added Open Graph meta tags (`og:image`, dimensions) to index.html and training.html for rich link previews
+- Added Twitter Card meta tags for better Twitter/X sharing
+- Created `og-image.html` template (1200x630) for generating the social share image
+- Note: iOS Messages may still only show link preview (platform limitation), but preview now looks compelling
+
+### January 22, 2026 (Earlier)
 - Added scoring system to track correct/incorrect answers per scenario
 - Added results modal showing score (X/5) with performance-based messaging
 - Added Share Score button with Web Share API (mobile) and clipboard fallback (desktop)
