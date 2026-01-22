@@ -47,7 +47,16 @@
         .rink-svg { width: 100%; height: auto; display: block; }
 
         .player-you { animation: pulse 2s infinite; }
+        .player-you.answered { animation: none; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        .feedback-element { opacity: 0; transition: opacity 0.6s ease; }
+        .feedback-element.visible { opacity: 1; }
+        @keyframes drawArrow { from { stroke-dashoffset: 150; } to { stroke-dashoffset: 0; } }
+        .movement-arrow { stroke-dasharray: 150; stroke-dashoffset: 150; }
+        .movement-arrow.animate { animation: drawArrow 1s ease forwards; }
+        .ghost-player { opacity: 0; transition: opacity 0.6s ease 0.3s; }
+        .ghost-player.visible { opacity: 1; }
 
         .legend { display: flex; justify-content: center; gap: 25px; margin-top: 15px; flex-wrap: wrap; }
         .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--dark-blue); }
@@ -56,6 +65,9 @@
         .legend-dot.team { background: #1E40AF; }
         .legend-dot.opponent { background: var(--accent-red); }
         .legend-dot.puck { background: #1a1a1a; }
+        .legend-dot.correct-zone { background: rgba(45, 122, 62, 0.4); border: 2px solid #2D7A3E; }
+        .legend-feedback { display: none; }
+        .legend-feedback.visible { display: flex; }
 
         .situation-box { background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px; margin-bottom: 25px; }
         .situation-label { color: var(--accent-red); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 8px; }
@@ -92,6 +104,8 @@
         .feedback.incorrect .feedback-title { color: var(--error-red); }
         .feedback-text { line-height: 1.7; color: var(--silver); }
         .feedback-text strong { color: var(--ice-white); }
+        .diagram-caption { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: 0.9rem; color: var(--silver); }
+        .diagram-caption strong { color: var(--success-green); }
 
         .btn-row { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
         .btn { padding: 14px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-size: 1rem; }
@@ -129,6 +143,36 @@
                 <circle cx="150" cy="240" r="40" fill="none" stroke="#C8102E" stroke-width="2"/>
                 <circle cx="150" cy="240" r="3" fill="#C8102E"/>
 
+                <!-- ====== FEEDBACK ELEMENTS ====== -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#2D7A3E"/>
+                    </marker>
+                    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#1E40AF"/>
+                    </marker>
+                </defs>
+                
+                <!-- Swing path - correct movement -->
+                <path id="swingPath" class="feedback-element movement-arrow" d="M 200 200 Q 130 220 100 190" fill="none" stroke="#2D7A3E" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <text id="swingLabel" class="feedback-element" x="140" y="235" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#2D7A3E">SWING LOW</text>
+                
+                <!-- Pass option arrow -->
+                <line id="passArrow" class="feedback-element" x1="70" y1="175" x2="95" y2="185" stroke="#1E40AF" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead-blue)"/>
+                <text id="passLabel" class="feedback-element" x="60" y="165" font-family="Work Sans, sans-serif" font-size="9" font-weight="600" fill="#1E40AF">SHORT PASS</text>
+
+                <!-- Coverage zone - support position -->
+                <ellipse id="coverageZone" class="feedback-element" cx="105" cy="190" rx="30" ry="25" fill="rgba(45, 122, 62, 0.25)" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="6,3"/>
+                <text id="zoneLabel" class="feedback-element" x="105" y="165" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#2D7A3E">SUPPORT HERE</text>
+
+                <!-- Ghost player showing correct position -->
+                <g id="ghostPlayer" class="ghost-player">
+                    <circle cx="105" cy="190" r="24" fill="rgba(255, 215, 0, 0.4)" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="4,2"/>
+                    <text x="105" y="196" text-anchor="middle" fill="#2D7A3E" font-weight="bold" font-size="12">23</text>
+                </g>
+
+                <!-- ====== PLAYERS ====== -->
+
                 <!-- D with puck behind net -->
                 <g class="player">
                     <circle cx="70" cy="175" r="22" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
@@ -164,14 +208,14 @@
                 </g>
                 
                 <!-- YOU - positioned in middle -->
-                <g class="player player-you">
+                <g id="playerYou" class="player player-you">
                     <circle cx="200" cy="200" r="24" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
                     <text x="200" y="206" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="12">23</text>
                 </g>
                 
-                <!-- Breakout arrow options -->
-                <path d="M 85 175 Q 150 150 250 175" fill="none" stroke="rgba(30,64,175,0.3)" stroke-width="2" stroke-dasharray="5,3"/>
-                <path d="M 85 175 L 200 200" fill="none" stroke="rgba(30,64,175,0.3)" stroke-width="2" stroke-dasharray="5,3"/>
+                <!-- Breakout arrow options (faded) -->
+                <path d="M 85 175 Q 150 150 250 175" fill="none" stroke="rgba(30,64,175,0.2)" stroke-width="2" stroke-dasharray="5,3"/>
+                <path d="M 85 175 L 200 200" fill="none" stroke="rgba(30,64,175,0.2)" stroke-width="2" stroke-dasharray="5,3"/>
             </svg>
 
             <div class="legend">
@@ -179,6 +223,7 @@
                 <div class="legend-item"><div class="legend-dot team"></div><span>Your Team</span></div>
                 <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent</span></div>
                 <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
+                <div class="legend-item legend-feedback" id="legendZone"><div class="legend-dot correct-zone"></div><span>Support Position</span></div>
             </div>
         </div>
 
@@ -215,6 +260,9 @@
         <div class="feedback" id="feedback">
             <h4 class="feedback-title" id="feedbackTitle"></h4>
             <p class="feedback-text" id="feedbackText"></p>
+            <p class="diagram-caption">
+                <strong>↑ See diagram above:</strong> The green curve shows your swing pattern through the middle. This gives your D a short, safe passing option and lets you absorb pressure before moving the puck up ice.
+            </p>
             <div class="btn-row">
                 <button class="btn btn-secondary" onclick="resetScenario()">Try Again</button>
                 <button class="btn btn-primary" onclick="window.location.href='scenario-5-gap.html'">Next Scenario →</button>
@@ -232,6 +280,33 @@
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');
         let answered = false;
+
+        function showFeedbackDiagram() {
+            document.getElementById('coverageZone').classList.add('visible');
+            document.getElementById('zoneLabel').classList.add('visible');
+            document.getElementById('passArrow').classList.add('visible');
+            document.getElementById('passLabel').classList.add('visible');
+            const swing = document.getElementById('swingPath');
+            swing.classList.add('visible');
+            setTimeout(() => swing.classList.add('animate'), 100);
+            document.getElementById('swingLabel').classList.add('visible');
+            document.getElementById('ghostPlayer').classList.add('visible');
+            document.getElementById('legendZone').classList.add('visible');
+            document.getElementById('playerYou').classList.add('answered');
+        }
+
+        function hideFeedbackDiagram() {
+            document.getElementById('coverageZone').classList.remove('visible');
+            document.getElementById('zoneLabel').classList.remove('visible');
+            document.getElementById('passArrow').classList.remove('visible');
+            document.getElementById('passLabel').classList.remove('visible');
+            const swing = document.getElementById('swingPath');
+            swing.classList.remove('visible', 'animate');
+            document.getElementById('swingLabel').classList.remove('visible');
+            document.getElementById('ghostPlayer').classList.remove('visible');
+            document.getElementById('legendZone').classList.remove('visible');
+            document.getElementById('playerYou').classList.remove('answered');
+        }
 
         function selectAnswer(element) {
             if (answered) return;
@@ -255,6 +330,8 @@
                 completedScenarios.push(4);
                 localStorage.setItem('completedScenarios', JSON.stringify(completedScenarios));
             }
+
+            showFeedbackDiagram();
 
             setTimeout(() => {
                 feedback.classList.add('active');
@@ -282,6 +359,7 @@
                 opt.onclick = function() { selectAnswer(this); };
             });
             feedback.classList.remove('active', 'correct', 'incorrect');
+            hideFeedbackDiagram();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>

@@ -47,7 +47,16 @@
         .rink-svg { width: 100%; height: auto; display: block; }
 
         .player-you { animation: pulse 2s infinite; }
+        .player-you.answered { animation: none; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        .feedback-element { opacity: 0; transition: opacity 0.6s ease; }
+        .feedback-element.visible { opacity: 1; }
+        @keyframes drawArrow { from { stroke-dashoffset: 150; } to { stroke-dashoffset: 0; } }
+        .movement-arrow { stroke-dasharray: 150; stroke-dashoffset: 150; }
+        .movement-arrow.animate { animation: drawArrow 1s ease forwards; }
+        .ghost-player { opacity: 0; transition: opacity 0.6s ease 0.3s; }
+        .ghost-player.visible { opacity: 1; }
 
         .legend { display: flex; justify-content: center; gap: 25px; margin-top: 15px; flex-wrap: wrap; }
         .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--dark-blue); }
@@ -56,6 +65,10 @@
         .legend-dot.team { background: #1E40AF; }
         .legend-dot.opponent { background: var(--accent-red); }
         .legend-dot.puck { background: #1a1a1a; }
+        .legend-dot.correct-zone { background: rgba(45, 122, 62, 0.4); border: 2px solid #2D7A3E; }
+        .legend-dot.danger-zone { background: rgba(200, 16, 46, 0.3); border: 2px solid #C8102E; }
+        .legend-feedback { display: none; }
+        .legend-feedback.visible { display: flex; }
 
         .situation-box { background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px; margin-bottom: 25px; }
         .situation-label { color: var(--accent-red); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 8px; }
@@ -92,6 +105,8 @@
         .feedback.incorrect .feedback-title { color: var(--error-red); }
         .feedback-text { line-height: 1.7; color: var(--silver); }
         .feedback-text strong { color: var(--ice-white); }
+        .diagram-caption { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: 0.9rem; color: var(--silver); }
+        .diagram-caption strong { color: var(--success-green); }
 
         .btn-row { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
         .btn { padding: 14px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-size: 1rem; }
@@ -130,6 +145,33 @@
                 <circle cx="250" cy="175" r="50" fill="none" stroke="#C8102E" stroke-width="2"/>
                 <circle cx="250" cy="175" r="3" fill="#C8102E"/>
 
+                <!-- ====== FEEDBACK ELEMENTS ====== -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#2D7A3E"/>
+                    </marker>
+                </defs>
+                
+                <!-- Middle lane to protect (danger zone) -->
+                <rect id="middleLane" class="feedback-element" x="160" y="80" width="80" height="180" fill="rgba(200, 16, 46, 0.15)" stroke="#C8102E" stroke-width="2" stroke-dasharray="8,4" rx="5"/>
+                <text id="laneLabel" class="feedback-element" x="200" y="100" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#C8102E">TAKE AWAY MIDDLE</text>
+                
+                <!-- Force wide zone -->
+                <path id="forceWide" class="feedback-element" d="M 320 120 Q 280 175 320 230" fill="none" stroke="#2D7A3E" stroke-width="3" stroke-dasharray="6,3"/>
+                <text id="wideLabel" class="feedback-element" x="340" y="175" font-family="Work Sans, sans-serif" font-size="9" font-weight="600" fill="#2D7A3E">FORCE WIDE</text>
+
+                <!-- Angled backcheck path -->
+                <path id="backcheckPath" class="feedback-element movement-arrow" d="M 280 130 Q 240 150 210 165" fill="none" stroke="#2D7A3E" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <text id="pathLabel" class="feedback-element" x="260" y="120" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#2D7A3E">ANGLE IN</text>
+
+                <!-- Ghost player showing correct position -->
+                <g id="ghostPlayer" class="ghost-player">
+                    <circle cx="220" cy="160" r="24" fill="rgba(255, 215, 0, 0.4)" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="4,2"/>
+                    <text x="220" y="166" text-anchor="middle" fill="#2D7A3E" font-weight="bold" font-size="12">23</text>
+                </g>
+
+                <!-- ====== PLAYERS ====== -->
+
                 <!-- Opponent with puck entering zone -->
                 <g class="player">
                     <circle cx="320" cy="175" r="22" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
@@ -157,7 +199,7 @@
                 </g>
                 
                 <!-- YOU backchecking -->
-                <g class="player player-you">
+                <g id="playerYou" class="player player-you">
                     <circle cx="280" cy="130" r="24" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
                     <text x="280" y="136" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="12">23</text>
                 </g>
@@ -168,6 +210,8 @@
                 <div class="legend-item"><div class="legend-dot team"></div><span>Your Team</span></div>
                 <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent</span></div>
                 <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
+                <div class="legend-item legend-feedback" id="legendZone"><div class="legend-dot correct-zone"></div><span>Your Angle</span></div>
+                <div class="legend-item legend-feedback" id="legendDanger"><div class="legend-dot danger-zone"></div><span>Protect Middle</span></div>
             </div>
         </div>
 
@@ -204,6 +248,9 @@
         <div class="feedback" id="feedback">
             <h4 class="feedback-title" id="feedbackTitle"></h4>
             <p class="feedback-text" id="feedbackText"></p>
+            <p class="diagram-caption">
+                <strong>↑ See diagram above:</strong> The green arrow shows your angled backcheck path. By taking away the middle (red zone), you force the puck carrier wide into a lower-percentage area while supporting your D.
+            </p>
             <div class="btn-row">
                 <button class="btn btn-secondary" onclick="resetScenario()">Try Again</button>
                 <button class="btn btn-primary" onclick="window.location.href='training.html'">Complete Module →</button>
@@ -223,6 +270,35 @@
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');
         let answered = false;
+
+        function showFeedbackDiagram() {
+            document.getElementById('middleLane').classList.add('visible');
+            document.getElementById('laneLabel').classList.add('visible');
+            document.getElementById('forceWide').classList.add('visible');
+            document.getElementById('wideLabel').classList.add('visible');
+            const path = document.getElementById('backcheckPath');
+            path.classList.add('visible');
+            setTimeout(() => path.classList.add('animate'), 100);
+            document.getElementById('pathLabel').classList.add('visible');
+            document.getElementById('ghostPlayer').classList.add('visible');
+            document.getElementById('legendZone').classList.add('visible');
+            document.getElementById('legendDanger').classList.add('visible');
+            document.getElementById('playerYou').classList.add('answered');
+        }
+
+        function hideFeedbackDiagram() {
+            document.getElementById('middleLane').classList.remove('visible');
+            document.getElementById('laneLabel').classList.remove('visible');
+            document.getElementById('forceWide').classList.remove('visible');
+            document.getElementById('wideLabel').classList.remove('visible');
+            const path = document.getElementById('backcheckPath');
+            path.classList.remove('visible', 'animate');
+            document.getElementById('pathLabel').classList.remove('visible');
+            document.getElementById('ghostPlayer').classList.remove('visible');
+            document.getElementById('legendZone').classList.remove('visible');
+            document.getElementById('legendDanger').classList.remove('visible');
+            document.getElementById('playerYou').classList.remove('answered');
+        }
 
         function selectAnswer(element) {
             if (answered) return;
@@ -246,6 +322,8 @@
                 completedScenarios.push(5);
                 localStorage.setItem('completedScenarios', JSON.stringify(completedScenarios));
             }
+
+            showFeedbackDiagram();
 
             setTimeout(() => {
                 feedback.classList.add('active');
@@ -273,6 +351,7 @@
                 opt.onclick = function() { selectAnswer(this); };
             });
             feedback.classList.remove('active', 'correct', 'incorrect');
+            hideFeedbackDiagram();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
