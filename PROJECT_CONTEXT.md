@@ -344,14 +344,13 @@ puck-academy-iq-app/
 - **Progress tracking:** localStorage saves completed scenarios
 - **Scoring system:** Tracks correct/incorrect per scenario, calculates score, saves best score
 - **Results modal:** Shows score with performance-based messaging after completing all scenarios
-- **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop)
+- **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop), includes context text + dynamic OG image preview
 - **Email capture:** Netlify Forms collecting onboarding emails
 - **Feedback form:** Google Forms linked from results modal
 - **Mobile responsive:** Works on phone/tablet
 - **GitHub → Netlify pipeline:** Auto-deploy on push
 
 ### What's Partially Working ⚠️
-- **Share functionality:** Share button works but text message only shows bare URL without the share message text (investigating fix)
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
 - **Progress persistence:** Works locally but no server-side backup
 - **Non-center users:** Onboarding captures their email with "notify me" but no content for them
@@ -367,7 +366,7 @@ puck-academy-iq-app/
 - Payment/subscription system
 
 ### Known Bugs 🐛
-1. ~~**Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message~~ **FIXED** - Updated to use separate title/text/url params; iOS limitation means link preview may still be primary display
+1. ~~**Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message~~ **FIXED** - Combined text+URL into single share parameter; iOS now shows context text with link preview
 2. **Status inconsistency:** Scenario cards occasionally show "Coming Soon" instead of "Start" after clearing cache
 3. **Progress reset:** If user clears browser data, all progress is lost
 4. **No error handling:** If scenario fails to load, no user-friendly message
@@ -590,12 +589,14 @@ puck-academy-iq-app/
 
 ### January 22, 2026 (Late Evening)
 - Implemented Netlify Edge Functions for dynamic OG image generation
-- Created `netlify/edge-functions/og-image.tsx` - generates PNG images with embedded score using Satori
+- Created `netlify/edge-functions/og-image.tsx` - generates PNG images with embedded score using `og_edge` library
 - Created `netlify/edge-functions/inject-og-tags.ts` - intercepts requests and injects dynamic OG meta tags based on `?score=` parameter
 - Created `netlify.toml` to configure edge function routing
 - Updated `index.html` OG image URLs to point to dynamic `/og-image` endpoint
 - Score-based image variations: 🏆 (5/5), 🔥 (4/5), 🏒 (2-3/5), 😬 (0-1/5)
 - Rich link previews now show personalized content when sharing scores
+- Fixed iMessage sharing: combined text+URL into single parameter so context text appears with link
+- Share now shows message like "I got a PERFECT SCORE on Puck Academy's..." above the link preview
 
 ### January 22, 2026 (Evening)
 - Fixed share bug: Updated `shareResults()` to use separate `title`, `text`, and `url` parameters for better platform compatibility
