@@ -291,6 +291,19 @@
         .dot.completed {
             background: var(--success-green);
         }
+
+        .profile-display {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--silver);
+        }
+
+        .profile-display strong {
+            color: var(--ice-white);
+        }
     </style>
 </head>
 <body>
@@ -299,6 +312,14 @@
             <h1 class="logo">Puck <span>Academy</span></h1>
             <p class="subtitle">Hockey IQ Training Platform</p>
         </header>
+
+        <!-- Hidden Netlify Form (for detection) -->
+        <form name="player-signup" netlify netlify-honeypot="bot-field" hidden>
+            <input type="text" name="position">
+            <input type="email" name="email">
+            <input type="text" name="age-level">
+            <input type="text" name="improvements">
+        </form>
 
         <!-- Step 1: Welcome -->
         <div class="step active" id="step1">
@@ -319,58 +340,42 @@
             </div>
         </div>
 
-        <!-- Step 3: Email -->
+        <!-- Step 3: Age & Level -->
         <div class="step" id="step3">
-            <h2 class="step-title">📬</h2>
-            <p class="step-description">We'll email you when new modules launch. No spam, promise.</p>
-            <form name="email-signup" method="POST" data-netlify="true" onsubmit="handleEmailSubmit(event)">
-                <input type="hidden" name="form-name" value="email-signup">
-                <input type="hidden" name="position" id="hiddenPosition">
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" name="email" id="emailInput" placeholder="you@example.com">
-                </div>
-                <button type="submit" class="btn btn-primary">Notify Me →</button>
-            </form>
-            <span class="skip-link" onclick="nextStep()">Skip for now</span>
-        </div>
-
-        <!-- Step 4: Age & Level -->
-        <div class="step" id="step4">
             <h2 class="step-title">What's Your Age & Level?</h2>
             <p class="step-description">This helps us match the right difficulty.</p>
             <div class="options-grid">
-                <div class="option-card" onclick="selectLevel(this, '12-13-aa')">12-13 years old • A/AA</div>
-                <div class="option-card" onclick="selectLevel(this, '12-13-aaa')">12-13 years old • AAA</div>
-                <div class="option-card" onclick="selectLevel(this, '14-15-aa')">14-15 years old • A/AA</div>
-                <div class="option-card" onclick="selectLevel(this, '14-15-aaa')">14-15 years old • AAA</div>
-                <div class="option-card" onclick="selectLevel(this, '16-hs')">16+ • High School</div>
-                <div class="option-card" onclick="selectLevel(this, 'other')">Other</div>
+                <div class="option-card" onclick="selectLevel(this, '12-13 A/AA')">12-13 years old • A/AA</div>
+                <div class="option-card" onclick="selectLevel(this, '12-13 AAA')">12-13 years old • AAA</div>
+                <div class="option-card" onclick="selectLevel(this, '14-15 A/AA')">14-15 years old • A/AA</div>
+                <div class="option-card" onclick="selectLevel(this, '14-15 AAA')">14-15 years old • AAA</div>
+                <div class="option-card" onclick="selectLevel(this, '16+ High School')">16+ • High School</div>
+                <div class="option-card" onclick="selectLevel(this, 'Other')">Other</div>
             </div>
         </div>
 
-        <!-- Step 5: Improvement Areas -->
-        <div class="step" id="step5">
+        <!-- Step 4: Improvement Areas -->
+        <div class="step" id="step4">
             <h2 class="step-title">What Do You Want to Improve?</h2>
             <p class="step-description">Select all that apply. We'll prioritize these areas.</p>
             <div class="checkbox-options">
-                <div class="checkbox-option" onclick="toggleImprovement(this, 'defensive')">
+                <div class="checkbox-option" onclick="toggleImprovement(this, 'Defensive Zone')">
                     <div class="checkbox"></div>
                     <span>Defensive Zone Play</span>
                 </div>
-                <div class="checkbox-option" onclick="toggleImprovement(this, 'faceoffs')">
+                <div class="checkbox-option" onclick="toggleImprovement(this, 'Faceoffs')">
                     <div class="checkbox"></div>
                     <span>Faceoffs</span>
                 </div>
-                <div class="checkbox-option" onclick="toggleImprovement(this, 'breakouts')">
+                <div class="checkbox-option" onclick="toggleImprovement(this, 'Breakouts')">
                     <div class="checkbox"></div>
                     <span>Breakouts & Transitions</span>
                 </div>
-                <div class="checkbox-option" onclick="toggleImprovement(this, 'offensive')">
+                <div class="checkbox-option" onclick="toggleImprovement(this, 'Offensive Zone')">
                     <div class="checkbox"></div>
                     <span>Offensive Zone Play</span>
                 </div>
-                <div class="checkbox-option" onclick="toggleImprovement(this, 'overall')">
+                <div class="checkbox-option" onclick="toggleImprovement(this, 'Overall Hockey IQ')">
                     <div class="checkbox"></div>
                     <span>Overall Hockey IQ</span>
                 </div>
@@ -378,23 +383,36 @@
             <button class="btn btn-primary" onclick="nextStep()">Continue</button>
         </div>
 
+        <!-- Step 5: Email -->
+        <div class="step" id="step5">
+            <h2 class="step-title">Stay in the Loop 📬</h2>
+            <p class="step-description">Get notified when new modules launch. No spam, promise.</p>
+            
+            <div class="profile-display" id="profilePreview">
+                <!-- Filled by JS -->
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="emailInput" placeholder="you@example.com">
+            </div>
+            <button class="btn btn-primary" onclick="submitAndContinue()">Notify Me →</button>
+            <span class="skip-link" onclick="skipEmail()">Skip for now</span>
+        </div>
+
         <!-- Step 6: Summary -->
         <div class="step" id="step6">
-            <h2 class="step-title">Here's What's Available Now</h2>
+            <h2 class="step-title">You're All Set!</h2>
             
             <div class="summary-section">
                 <div class="summary-title">✓ Available Now:</div>
-                <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone Play</strong> - 5 complete scenarios</div>
-                <div class="summary-item"><span class="check">✓</span> <strong>Overall Hockey IQ</strong> - Decision-making fundamentals</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone Play</strong> - 5 interactive scenarios</div>
             </div>
 
             <div class="summary-section">
                 <div class="summary-title">🚧 Coming Soon:</div>
                 <div class="summary-item coming-soon" id="comingSoonList">Based on your selections...</div>
             </div>
-
-            <p class="step-description">Want us to notify you when these launch?</p>
-            <p style="color: var(--silver); font-size: 0.85rem; text-align: center; margin-bottom: 20px;">We'll only email you when these specific modules launch.</p>
 
             <button class="btn btn-primary" onclick="window.location.href='training.html'">Start Training →</button>
         </div>
@@ -428,8 +446,15 @@
             document.getElementById(`step${currentStep}`).classList.add('active');
             document.getElementById(`dot${currentStep}`).classList.add('active');
 
+            // Update profile preview when reaching email step
+            if (currentStep === 5) {
+                updateProfilePreview();
+            }
+
+            // Update coming soon when reaching summary
             if (currentStep === 6) {
                 updateComingSoon();
+                saveToLocalStorage();
             }
         }
 
@@ -439,32 +464,11 @@
             });
             element.classList.add('selected');
             userData.position = position;
-            document.getElementById('hiddenPosition').value = position;
             setTimeout(nextStep, 300);
         }
 
-        function handleEmailSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            
-            fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(formData).toString()
-            })
-            .then(() => {
-                userData.email = document.getElementById('emailInput').value;
-                nextStep();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                nextStep(); // Continue anyway
-            });
-        }
-
         function selectLevel(element, level) {
-            document.querySelectorAll('#step4 .option-card').forEach(card => {
+            document.querySelectorAll('#step3 .option-card').forEach(card => {
                 card.classList.remove('selected');
             });
             element.classList.add('selected');
@@ -482,17 +486,66 @@
             }
         }
 
+        function updateProfilePreview() {
+            const preview = document.getElementById('profilePreview');
+            const positionDisplay = userData.position ? userData.position.charAt(0).toUpperCase() + userData.position.slice(1) : 'Not selected';
+            const levelDisplay = userData.level || 'Not selected';
+            const improvementsDisplay = userData.improvements.length > 0 ? userData.improvements.join(', ') : 'None selected';
+            
+            preview.innerHTML = `
+                <strong>Your Profile:</strong><br>
+                Position: ${positionDisplay}<br>
+                Level: ${levelDisplay}<br>
+                Focus: ${improvementsDisplay}
+            `;
+        }
+
+        function submitAndContinue() {
+            userData.email = document.getElementById('emailInput').value;
+            
+            if (userData.email) {
+                // Submit to Netlify
+                const formData = new FormData();
+                formData.append('form-name', 'player-signup');
+                formData.append('position', userData.position || '');
+                formData.append('email', userData.email);
+                formData.append('age-level', userData.level || '');
+                formData.append('improvements', userData.improvements.join(', ') || '');
+
+                fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                })
+                .then(() => {
+                    console.log('Form submitted successfully');
+                    nextStep();
+                })
+                .catch((error) => {
+                    console.error('Form error:', error);
+                    nextStep(); // Continue anyway
+                });
+            } else {
+                nextStep();
+            }
+        }
+
+        function skipEmail() {
+            userData.email = null;
+            nextStep();
+        }
+
         function updateComingSoon() {
             const comingSoon = document.getElementById('comingSoonList');
             const items = [];
             
-            if (userData.improvements.includes('faceoffs')) {
+            if (userData.improvements.includes('Faceoffs')) {
                 items.push('Faceoffs Module');
             }
-            if (userData.improvements.includes('breakouts')) {
+            if (userData.improvements.includes('Breakouts')) {
                 items.push('Breakouts & Transitions');
             }
-            if (userData.improvements.includes('offensive')) {
+            if (userData.improvements.includes('Offensive Zone')) {
                 items.push('Offensive Zone Play');
             }
             
@@ -501,6 +554,10 @@
             } else {
                 comingSoon.innerHTML = '• Faceoffs<br>• Breakouts & Transitions<br>• Offensive Zone Play';
             }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('puckAcademy_userData', JSON.stringify(userData));
         }
     </script>
 </body>
