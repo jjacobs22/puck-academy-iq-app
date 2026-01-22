@@ -628,18 +628,19 @@
 
         function shareResults() {
             const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
+            const shareUrl = `https://hockeyiq.netlify.app?score=${correctCount}`;
             
             let emoji = '🏒';
             let message = '';
             
             if (correctCount === 5) {
                 emoji = '🏆';
-                message = `I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! ${emoji}\n\nThink you can beat me? Try it: hockeyiq.netlify.app`;
+                message = `I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! ${emoji}\n\nThink you can beat me?`;
             } else if (correctCount >= 4) {
                 emoji = '🔥';
-                message = `I scored ${correctCount}/5 on Puck Academy's Defensive Zone Hockey IQ training! ${emoji}\n\nThink you can do better? Try it: hockeyiq.netlify.app`;
+                message = `I scored ${correctCount}/5 on Puck Academy's Defensive Zone Hockey IQ training! ${emoji}\n\nThink you can do better?`;
             } else {
-                message = `I scored ${correctCount}/5 on Puck Academy's Hockey IQ training! 🏒\n\nTest your hockey brain: hockeyiq.netlify.app`;
+                message = `I scored ${correctCount}/5 on Puck Academy's Hockey IQ training! 🏒\n\nTest your hockey brain:`;
             }
 
             // Try native share first (mobile), fall back to clipboard
@@ -647,13 +648,13 @@
                 navigator.share({
                     title: 'Puck Academy - Hockey IQ Score',
                     text: message,
-                    url: 'https://hockeyiq.netlify.app'
+                    url: shareUrl
                 }).catch(() => {
                     // User cancelled or error, fall back to clipboard
-                    copyToClipboard(message);
+                    copyToClipboard(message + '\n' + shareUrl);
                 });
             } else {
-                copyToClipboard(message);
+                copyToClipboard(message + '\n' + shareUrl);
             }
         }
 
