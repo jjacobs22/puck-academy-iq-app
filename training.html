@@ -477,11 +477,15 @@
                 Great work! You're building strong defensive instincts.
             </p>
             <div>
-                <button class="btn btn-primary" onclick="closeResults()">Review Scenarios</button>
+                <button class="btn btn-primary" onclick="shareResults()">📤 Share Score</button>
+                <button class="btn btn-secondary" onclick="closeResults()">Review Scenarios</button>
                 <button class="btn btn-secondary" onclick="retryModule()">Try Again</button>
             </div>
+            <div id="shareConfirmation" style="margin-top: 15px; display: none; color: var(--success-green); font-size: 0.9rem;">
+                ✓ Copied to clipboard!
+            </div>
             <div style="margin-top: 20px;">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform" target="_blank" style="color: var(--silver); font-size: 0.9rem;">Share your feedback →</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform" target="_blank" style="color: var(--silver); font-size: 0.9rem;">📝 Share your feedback →</a>
             </div>
         </div>
     </div>
@@ -620,6 +624,61 @@
             closeResults();
             updateDisplay();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function shareResults() {
+            const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
+            
+            let emoji = '🏒';
+            let message = '';
+            
+            if (correctCount === 5) {
+                emoji = '🏆';
+                message = `I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! ${emoji}\n\nThink you can beat me? Try it: hockeyiq.netlify.app`;
+            } else if (correctCount >= 4) {
+                emoji = '🔥';
+                message = `I scored ${correctCount}/5 on Puck Academy's Defensive Zone Hockey IQ training! ${emoji}\n\nThink you can do better? Try it: hockeyiq.netlify.app`;
+            } else {
+                message = `I scored ${correctCount}/5 on Puck Academy's Hockey IQ training! 🏒\n\nTest your hockey brain: hockeyiq.netlify.app`;
+            }
+
+            // Try native share first (mobile), fall back to clipboard
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Puck Academy - Hockey IQ Score',
+                    text: message,
+                    url: 'https://hockeyiq.netlify.app'
+                }).catch(() => {
+                    // User cancelled or error, fall back to clipboard
+                    copyToClipboard(message);
+                });
+            } else {
+                copyToClipboard(message);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const confirmation = document.getElementById('shareConfirmation');
+                confirmation.style.display = 'block';
+                setTimeout(() => {
+                    confirmation.style.display = 'none';
+                }, 3000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const confirmation = document.getElementById('shareConfirmation');
+                confirmation.style.display = 'block';
+                setTimeout(() => {
+                    confirmation.style.display = 'none';
+                }, 3000);
+            });
         }
 
         function resetProgress() {
