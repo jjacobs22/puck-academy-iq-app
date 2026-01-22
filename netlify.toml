@@ -1,0 +1,14 @@
+# Netlify configuration for edge functions
+
+[build]
+  publish = "."
+
+# Edge function for dynamic OG image generation
+[[edge_functions]]
+  path = "/og-image"
+  function = "og-image"
+
+# Edge function to inject dynamic OG tags into HTML
+[[edge_functions]]
+  path = "/"
+  function = "inject-og-tags"
