@@ -1,5 +1,3 @@
-hello world
-
 # PROJECT_CONTEXT.md
 
 **Last Updated:** January 22, 2026  
@@ -193,11 +191,13 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - 4/5: "I scored 4/5 on Puck Academy's Defensive Zone Hockey IQ training! 🔥 Think you can do better?"
 - 0-3/5: "I scored X/5 on Puck Academy's Hockey IQ training! 🏒 Test your hockey brain:"
 
-**Known Issue (January 22, 2026):**
-When sharing via Messages on mobile, only the bare URL is sent without the share text. The `text` parameter in `navigator.share()` is being ignored by some platforms. Need to investigate whether:
-1. The text parameter needs to be formatted differently
-2. Open Graph meta tags are needed for rich previews
-3. The share text should be concatenated with the URL
+**Dynamic OG Images (January 22, 2026):**
+When a shared link is fetched by social platforms, Netlify Edge Functions dynamically:
+1. Inject personalized OG meta tags based on the score parameter
+2. Generate a custom PNG image showing the user's score
+3. Display score-appropriate messaging (🏆 for 5/5, 🔥 for 4/5, etc.)
+
+This enables rich link previews on iMessage, Twitter, Facebook, etc. with the actual score embedded in the image.
 
 ### Key Screens/Pages
 
@@ -232,6 +232,7 @@ When sharing via Messages on mobile, only the bare URL is sent without the share
 |-------|------------|-------|
 | Frontend | HTML, CSS, JavaScript (vanilla) | No framework for simplicity |
 | Hosting | Netlify | Auto-deploy from GitHub, free tier sufficient |
+| Edge Functions | Netlify Edge Functions (Deno) | Dynamic OG image generation + meta tag injection |
 | Version Control | GitHub | Repository: `jjacobs22/puck-academy-iq-app` |
 | Form Handling | Netlify Forms | Captures onboarding emails (form name: `player-signup`) |
 | Feedback Collection | Google Forms | External form linked from app |
@@ -250,8 +251,12 @@ puck-academy-iq-app/
 ├── scenario-4-breakout.html      # Scenario 4: Breakout positioning
 ├── scenario-5-gap.html           # Scenario 5: Gap control
 ├── PROJECT_CONTEXT.md            # This file - project documentation
-├── og-image.html                 # Template for generating social share image (1200x630)
-├── og-image.png                  # Social share image (TODO: generate from template)
+├── og-image.html                 # Template reference for OG image design
+├── netlify.toml                  # Netlify configuration for edge functions
+├── netlify/
+│   └── edge-functions/
+│       ├── og-image.tsx          # Dynamic OG image generation (score-based)
+│       └── inject-og-tags.ts     # Injects dynamic OG meta tags into HTML
 └── assets/
     └── images/
         └── rink-full.png         # Hockey rink diagram asset
@@ -307,6 +312,7 @@ puck-academy-iq-app/
 | Service | Purpose | Integration Point |
 |---------|---------|-------------------|
 | Netlify Forms | Email capture | Hidden form field in onboarding.html, form name: `player-signup` |
+| Netlify Edge Functions | Dynamic OG images | `/og-image` endpoint generates score-based PNG images |
 | Google Forms | Beta feedback | External link from scenario completion and results modal |
 | Google Fonts | Typography | Bebas Neue (headers), Work Sans (body) |
 | Web Share API | Native sharing | Share button in results modal |
@@ -351,7 +357,6 @@ puck-academy-iq-app/
 - **Non-center users:** Onboarding captures their email with "notify me" but no content for them
 
 ### What's Not Started 🔲
-- Open Graph meta tags for rich link previews
 - Module 2: Faceoffs (planned)
 - Module 3: Breakouts (planned)
 - Module 4: Offensive Zone (planned)
@@ -372,7 +377,7 @@ puck-academy-iq-app/
 - **Inline JavaScript:** Scenario logic duplicated; should extract to shared JS file
 - **No build process:** Manual file management; could benefit from simple bundler
 - **Hardcoded scenarios:** Scenario data embedded in HTML; should move to JSON for easier updates
-- ~~**No Open Graph tags:** Shared links don't show rich previews on social platforms~~ **DONE** - Added OG + Twitter Card tags
+- ~~**No Open Graph tags:** Shared links don't show rich previews on social platforms~~ **DONE** - Dynamic OG images via Netlify Edge Functions
 
 ---
 
@@ -440,13 +445,12 @@ puck-academy-iq-app/
 1. ✅ **Scoring system:** Track correct/incorrect, show results modal
 2. ✅ **Share functionality:** Share score via native share or clipboard
 3. ✅ **Fix share bug:** Updated share params + added OG meta tags for rich previews
-4. **Beta launch:** Send app to 10-15 beta testers via onboarding link
-5. **Feedback collection:** Monitor Netlify Forms and Google Forms responses
-6. **TODO:** Generate og-image.png from og-image.html template and add to repo
+4. ✅ **Dynamic OG images:** Netlify Edge Functions generate score-based preview images
+5. **Beta launch:** Send app to 10-15 beta testers via onboarding link
+6. **Feedback collection:** Monitor Netlify Forms and Google Forms responses
 
 ### Next Up (February 2026)
 - Analyze beta feedback and identify top 3 improvements
-- Add Open Graph meta tags for rich link previews
 - Add 2-3 more defensive zone scenarios based on feedback
 - Build Module 2: Faceoffs (5 scenarios)
 - Implement basic streak tracking
@@ -583,6 +587,15 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 22, 2026 (Late Evening)
+- Implemented Netlify Edge Functions for dynamic OG image generation
+- Created `netlify/edge-functions/og-image.tsx` - generates PNG images with embedded score using Satori
+- Created `netlify/edge-functions/inject-og-tags.ts` - intercepts requests and injects dynamic OG meta tags based on `?score=` parameter
+- Created `netlify.toml` to configure edge function routing
+- Updated `index.html` OG image URLs to point to dynamic `/og-image` endpoint
+- Score-based image variations: 🏆 (5/5), 🔥 (4/5), 🏒 (2-3/5), 😬 (0-1/5)
+- Rich link previews now show personalized content when sharing scores
 
 ### January 22, 2026 (Evening)
 - Fixed share bug: Updated `shareResults()` to use separate `title`, `text`, and `url` parameters for better platform compatibility
