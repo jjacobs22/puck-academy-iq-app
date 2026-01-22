@@ -13,6 +13,7 @@
             --ice-white: #FFFFFF;
             --silver: #A8B2BE;
             --success-green: #2D7A3E;
+            --error-red: #B91C1C;
         }
 
         * {
@@ -80,11 +81,66 @@
             line-height: 1.6;
         }
 
+        /* Score Display */
+        .score-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .score-box {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px 30px;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .score-box.current {
+            border-color: var(--accent-red);
+        }
+
+        .score-box.best {
+            border-color: var(--success-green);
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .score-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+
+        .score-box.current .score-value {
+            color: var(--accent-red);
+        }
+
+        .score-box.best .score-value {
+            color: var(--success-green);
+        }
+
+        .score-subtitle {
+            font-size: 0.85rem;
+            color: var(--silver);
+            margin-top: 5px;
+        }
+
+        /* Progress Bar */
         .progress-container {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             height: 8px;
-            margin: 30px 0;
+            margin: 20px 0;
             overflow: hidden;
         }
 
@@ -103,6 +159,7 @@
             margin-bottom: 30px;
         }
 
+        /* Scenario Cards */
         .scenarios-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -126,8 +183,12 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        .scenario-card.completed {
+        .scenario-card.correct {
             border-color: var(--success-green);
+        }
+
+        .scenario-card.incorrect {
+            border-color: var(--error-red);
         }
 
         .scenario-number {
@@ -139,8 +200,12 @@
             right: 20px;
         }
 
-        .scenario-card.completed .scenario-number {
+        .scenario-card.correct .scenario-number {
             color: rgba(45, 122, 62, 0.3);
+        }
+
+        .scenario-card.incorrect .scenario-number {
+            color: rgba(185, 28, 28, 0.3);
         }
 
         .scenario-title {
@@ -170,14 +235,87 @@
             color: var(--accent-red);
         }
 
-        .status-complete {
+        .status-correct {
             background: rgba(45, 122, 62, 0.2);
             color: var(--success-green);
         }
 
+        .status-incorrect {
+            background: rgba(185, 28, 28, 0.2);
+            color: var(--error-red);
+        }
+
+        /* Results Modal */
+        .results-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 22, 40, 0.95);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .results-overlay.active {
+            display: flex;
+        }
+
+        .results-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .results-score {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--accent-red);
+            margin: 20px 0;
+        }
+
+        .results-score.perfect {
+            color: var(--success-green);
+        }
+
+        .results-message {
+            color: var(--silver);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .results-best {
+            background: rgba(45, 122, 62, 0.2);
+            border: 1px solid var(--success-green);
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
         .btn {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 14px 30px;
             border-radius: 8px;
             font-weight: 600;
             text-decoration: none;
@@ -186,6 +324,7 @@
             transition: all 0.3s ease;
             border: none;
             font-size: 1rem;
+            margin: 5px;
         }
 
         .btn-primary {
@@ -198,19 +337,32 @@
             transform: translateY(-2px);
         }
 
-        .btn-primary:disabled {
-            background: rgba(200, 16, 46, 0.5);
-            cursor: not-allowed;
-            transform: none;
+        .btn-secondary {
+            background: transparent;
+            color: var(--silver);
+            border: 1px solid var(--silver);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--ice-white);
+            color: var(--ice-white);
         }
 
         .module-footer {
             text-align: center;
         }
 
-        .checkmark {
-            color: var(--success-green);
-            font-weight: bold;
+        .reset-link {
+            color: var(--silver);
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .reset-link:hover {
+            color: var(--ice-white);
         }
 
         @media (max-width: 600px) {
@@ -222,6 +374,16 @@
             }
             .scenarios-grid {
                 grid-template-columns: 1fr;
+            }
+            .score-container {
+                gap: 15px;
+            }
+            .score-box {
+                padding: 15px 20px;
+                min-width: 130px;
+            }
+            .score-value {
+                font-size: 2rem;
             }
         }
     </style>
@@ -241,101 +403,250 @@
             </p>
         </div>
 
+        <!-- Score Display -->
+        <div class="score-container">
+            <div class="score-box current">
+                <div class="score-label">Current Run</div>
+                <div class="score-value" id="currentScore">0/5</div>
+                <div class="score-subtitle" id="currentStatus">Not started</div>
+            </div>
+            <div class="score-box best">
+                <div class="score-label">Personal Best</div>
+                <div class="score-value" id="bestScore">-/5</div>
+                <div class="score-subtitle" id="bestStatus">No attempts yet</div>
+            </div>
+        </div>
+
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
         <p class="progress-text" id="progressText">0 of 5 scenarios completed</p>
 
         <div class="scenarios-grid">
-            <div class="scenario-card" onclick="loadScenario(1)">
+            <div class="scenario-card" id="card1" onclick="loadScenario(1)">
                 <span class="scenario-number">1</span>
                 <h3 class="scenario-title">High Slot Coverage</h3>
                 <p class="scenario-description">Learn your primary responsibility when opponents have the puck on the boards.</p>
-                <span class="scenario-status status-available">Start</span>
+                <span class="scenario-status status-available" id="status1">Start</span>
             </div>
 
-            <div class="scenario-card" onclick="loadScenario(2)">
+            <div class="scenario-card" id="card2" onclick="loadScenario(2)">
                 <span class="scenario-number">2</span>
                 <h3 class="scenario-title">Corner Battle Support</h3>
                 <p class="scenario-description">Understand when to help in corners vs. protecting the middle.</p>
-                <span class="scenario-status status-available">Start</span>
+                <span class="scenario-status status-available" id="status2">Start</span>
             </div>
 
-            <div class="scenario-card" onclick="loadScenario(3)">
+            <div class="scenario-card" id="card3" onclick="loadScenario(3)">
                 <span class="scenario-number">3</span>
                 <h3 class="scenario-title">Reading the Cycle</h3>
                 <p class="scenario-description">Anticipate passes and position yourself to intercept during opponent cycling.</p>
-                <span class="scenario-status status-available">Start</span>
+                <span class="scenario-status status-available" id="status3">Start</span>
             </div>
 
-            <div class="scenario-card" onclick="loadScenario(4)">
+            <div class="scenario-card" id="card4" onclick="loadScenario(4)">
                 <span class="scenario-number">4</span>
                 <h3 class="scenario-title">Breakout Timing</h3>
                 <p class="scenario-description">Know when to transition from defense to offense and support the breakout.</p>
-                <span class="scenario-status status-available">Start</span>
+                <span class="scenario-status status-available" id="status4">Start</span>
             </div>
 
-            <div class="scenario-card" onclick="loadScenario(5)">
+            <div class="scenario-card" id="card5" onclick="loadScenario(5)">
                 <span class="scenario-number">5</span>
                 <h3 class="scenario-title">Gap Control</h3>
                 <p class="scenario-description">Maintain proper distance from opponents while staying in defensive position.</p>
-                <span class="scenario-status status-available">Start</span>
+                <span class="scenario-status status-available" id="status5">Start</span>
             </div>
         </div>
 
         <div class="module-footer">
-            <button class="btn btn-primary" id="assessmentBtn" disabled onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform', '_blank')">Complete Module Assessment</button>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform" target="_blank" class="btn btn-secondary">📝 Give Feedback</a>
+            <br>
+            <span class="reset-link" onclick="resetProgress()">Reset Progress & Try Again</span>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div class="results-overlay" id="resultsOverlay">
+        <div class="results-card">
+            <div class="results-icon" id="resultsIcon">🏒</div>
+            <h3 class="results-title" id="resultsTitle">Module Complete!</h3>
+            <div class="results-score" id="resultsScore">4/5</div>
+            <div class="results-best" id="newBestBadge" style="display: none;">🏆 New Personal Best!</div>
+            <p class="results-message" id="resultsMessage">
+                Great work! You're building strong defensive instincts.
+            </p>
+            <div>
+                <button class="btn btn-primary" onclick="closeResults()">Review Scenarios</button>
+                <button class="btn btn-secondary" onclick="retryModule()">Try Again</button>
+            </div>
             <div style="margin-top: 20px;">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform" target="_blank" style="color: var(--silver); text-decoration: none; font-size: 0.9rem;">📝 Give Feedback</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform" target="_blank" style="color: var(--silver); font-size: 0.9rem;">Share your feedback →</a>
             </div>
         </div>
     </div>
 
     <script>
-        // Track completion (in real app, this would be saved to database)
-        let completedScenarios = JSON.parse(localStorage.getItem('completedScenarios') || '[]');
+        // Scoring data structure
+        let scoreData = JSON.parse(localStorage.getItem('puckAcademy_scores') || JSON.stringify({
+            currentRun: {},  // { 1: true, 2: false, 3: true, ... }
+            bestScore: null,
+            totalAttempts: 0
+        }));
 
-        function updateProgress() {
-            const completed = completedScenarios.length;
-            const total = 5;
-            const percentage = (completed / total) * 100;
+        const scenarios = {
+            1: 'hockey-iq-diagram.html',
+            2: 'scenario-2-corner-battle.html',
+            3: 'scenario-3-cycle.html',
+            4: 'scenario-4-breakout.html',
+            5: 'scenario-5-gap.html'
+        };
 
+        function saveScores() {
+            localStorage.setItem('puckAcademy_scores', JSON.stringify(scoreData));
+        }
+
+        function updateDisplay() {
+            const completedCount = Object.keys(scoreData.currentRun).length;
+            const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
+            
+            // Update current score
+            document.getElementById('currentScore').textContent = `${correctCount}/5`;
+            if (completedCount === 0) {
+                document.getElementById('currentStatus').textContent = 'Not started';
+            } else if (completedCount < 5) {
+                document.getElementById('currentStatus').textContent = `${completedCount} of 5 done`;
+            } else {
+                document.getElementById('currentStatus').textContent = 'Complete!';
+            }
+
+            // Update best score
+            if (scoreData.bestScore !== null) {
+                document.getElementById('bestScore').textContent = `${scoreData.bestScore}/5`;
+                document.getElementById('bestStatus').textContent = `${scoreData.totalAttempts} attempt${scoreData.totalAttempts !== 1 ? 's' : ''}`;
+            }
+
+            // Update progress bar
+            const percentage = (completedCount / 5) * 100;
             document.getElementById('progressBar').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${completed} of ${total} scenarios completed`;
+            document.getElementById('progressText').textContent = `${completedCount} of 5 scenarios completed`;
 
-            // Update card status
-            const cards = document.querySelectorAll('.scenario-card');
-            cards.forEach((card, index) => {
-                const scenarioNum = index + 1;
-                const status = card.querySelector('.scenario-status');
+            // Update card statuses
+            for (let i = 1; i <= 5; i++) {
+                const card = document.getElementById(`card${i}`);
+                const status = document.getElementById(`status${i}`);
                 
-                if (completedScenarios.includes(scenarioNum)) {
-                    card.classList.add('completed');
-                    status.className = 'scenario-status status-complete';
-                    status.innerHTML = '<span class="checkmark">✓</span> Complete';
+                card.classList.remove('correct', 'incorrect');
+                
+                if (scoreData.currentRun[i] === true) {
+                    card.classList.add('correct');
+                    status.className = 'scenario-status status-correct';
+                    status.innerHTML = '✓ Correct';
+                } else if (scoreData.currentRun[i] === false) {
+                    card.classList.add('incorrect');
+                    status.className = 'scenario-status status-incorrect';
+                    status.innerHTML = '✗ Retry';
+                } else {
+                    status.className = 'scenario-status status-available';
+                    status.innerHTML = 'Start';
                 }
-            });
+            }
 
-            // Enable assessment if all complete
-            if (completed === total) {
-                document.getElementById('assessmentBtn').disabled = false;
+            // Check if module complete
+            if (completedCount === 5) {
+                showResults(correctCount);
+            }
+        }
+
+        function showResults(score) {
+            const overlay = document.getElementById('resultsOverlay');
+            const scoreEl = document.getElementById('resultsScore');
+            const iconEl = document.getElementById('resultsIcon');
+            const titleEl = document.getElementById('resultsTitle');
+            const messageEl = document.getElementById('resultsMessage');
+            const newBestEl = document.getElementById('newBestBadge');
+
+            scoreEl.textContent = `${score}/5`;
+            
+            // Check for new best
+            const isNewBest = scoreData.bestScore === null || score > scoreData.bestScore;
+            if (isNewBest) {
+                scoreData.bestScore = score;
+                scoreData.totalAttempts++;
+                saveScores();
+                newBestEl.style.display = 'block';
+                document.getElementById('bestScore').textContent = `${score}/5`;
+                document.getElementById('bestStatus').textContent = `${scoreData.totalAttempts} attempt${scoreData.totalAttempts !== 1 ? 's' : ''}`;
+            } else {
+                scoreData.totalAttempts++;
+                saveScores();
+                newBestEl.style.display = 'none';
+                document.getElementById('bestStatus').textContent = `${scoreData.totalAttempts} attempt${scoreData.totalAttempts !== 1 ? 's' : ''}`;
+            }
+
+            // Set message based on score
+            if (score === 5) {
+                iconEl.textContent = '🏆';
+                titleEl.textContent = 'Perfect Score!';
+                scoreEl.classList.add('perfect');
+                messageEl.textContent = "Incredible! You nailed every scenario. You're reading the game like a pro. Elite hockey IQ right there.";
+            } else if (score >= 4) {
+                iconEl.textContent = '🔥';
+                titleEl.textContent = 'Great Job!';
+                scoreEl.classList.remove('perfect');
+                messageEl.textContent = "Strong defensive instincts! Review the one you missed and try for a perfect score.";
+            } else if (score >= 3) {
+                iconEl.textContent = '💪';
+                titleEl.textContent = 'Solid Effort!';
+                scoreEl.classList.remove('perfect');
+                messageEl.textContent = "Good foundation. Review the scenarios you missed — understanding the 'why' will help on the ice.";
+            } else {
+                iconEl.textContent = '📚';
+                titleEl.textContent = 'Keep Learning!';
+                scoreEl.classList.remove('perfect');
+                messageEl.textContent = "Defensive positioning takes time to master. Review each scenario and focus on understanding why each answer is correct.";
+            }
+
+            overlay.classList.add('active');
+        }
+
+        function closeResults() {
+            document.getElementById('resultsOverlay').classList.remove('active');
+        }
+
+        function retryModule() {
+            scoreData.currentRun = {};
+            saveScores();
+            closeResults();
+            updateDisplay();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetProgress() {
+            if (confirm('This will reset your current progress. Your best score will be saved. Continue?')) {
+                scoreData.currentRun = {};
+                saveScores();
+                updateDisplay();
             }
         }
 
         function loadScenario(num) {
-            const scenarios = {
-                1: 'hockey-iq-diagram.html',
-                2: 'scenario-2-corner-battle.html',
-                3: 'scenario-3-cycle.html',
-                4: 'scenario-4-breakout.html',
-                5: 'scenario-5-gap.html'
-            };
-            
             window.location.href = scenarios[num];
         }
 
         // Initialize
-        updateProgress();
+        updateDisplay();
+
+        // Check if returning from a scenario (via URL param or localStorage flag)
+        const justCompleted = localStorage.getItem('puckAcademy_justCompleted');
+        if (justCompleted && Object.keys(scoreData.currentRun).length === 5) {
+            localStorage.removeItem('puckAcademy_justCompleted');
+            // Small delay to let page render, then show results
+            setTimeout(() => {
+                const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
+                showResults(correctCount);
+            }, 500);
+        }
     </script>
 </body>
 </html>

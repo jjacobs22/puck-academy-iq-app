@@ -325,10 +325,18 @@
 
             answered = true;
 
-            let completedScenarios = JSON.parse(localStorage.getItem('completedScenarios') || '[]');
-            if (!completedScenarios.includes(4)) {
-                completedScenarios.push(4);
-                localStorage.setItem('completedScenarios', JSON.stringify(completedScenarios));
+            // Save score to scoring system
+            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_scores') || JSON.stringify({
+                currentRun: {},
+                bestScore: null,
+                totalAttempts: 0
+            }));
+            scoreData.currentRun[4] = isCorrect;
+            localStorage.setItem('puckAcademy_scores', JSON.stringify(scoreData));
+            
+            // Set flag if this completes the module
+            if (Object.keys(scoreData.currentRun).length === 5) {
+                localStorage.setItem('puckAcademy_justCompleted', 'true');
             }
 
             showFeedbackDiagram();
