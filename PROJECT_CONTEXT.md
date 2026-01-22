@@ -57,27 +57,34 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 
 **Core Learning Experience:**
 - Video-based scenario presentation with realistic rink diagrams
-- Multiple choice decision points ("What should you do here?")
+- Multiple choice decision points ("What should you do?")
 - Immediate feedback with explanation of correct/incorrect choices
-- **Dynamic feedback diagrams** showing correct positioning after answer (arrows, zones, ghost players)
-- **Scoring system** tracking correct/incorrect answers with personal best
 - Progress through linear modules (must complete to unlock next)
 - 5 interactive defensive zone scenarios (currently built)
+- Scoring system tracking correct/incorrect answers per run
+- Results modal with score display and performance-based messaging
 
 **Onboarding Flow:**
 - Position selection (Center, Winger, Defense, Goalie)
+- Email capture (optional) for follow-up
 - Age/level selection (12-13 A/AA through 16+ High School)
 - Improvement area selection (Defensive Zone, Faceoffs, Breakouts, Offensive Zone, Overall Hockey IQ)
-- Email capture (optional) — all data sent to Netlify Forms together
 
 **User Progress:**
 - Progress tracking across scenarios
-- **Current run score** (e.g., "3/5 correct")
-- **Personal best tracking** with attempt counter
-- Completion indicators for each module (✓ correct, ✗ incorrect)
+- Completion indicators for each module
+- Score tracking (best score and current run)
+- Simple streak/achievement display (planned)
+
+**Sharing & Social:**
+- Share Score button on results modal
+- Native share (mobile) with Web Share API
+- Clipboard fallback (desktop)
+- Score included in share URL parameter
+- Challenge banner on landing page when accessed via shared link
 
 **Data Collection:**
-- Netlify Forms integration capturing full user profile (position, email, age/level, improvement areas)
+- Netlify Forms integration for email capture during onboarding
 - Google Forms integration for beta feedback collection
 
 ### Post-MVP Features (Nice to Have)
@@ -130,59 +137,78 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 ### Core User Flow
 
 1. **Discovery:** User finds app via Puck Academy podcast/newsletter or direct link
-2. **Onboarding:** Complete 5-step flow (position → age/level → goals → email → start)
-3. **Module Hub:** See Module 1 (Defensive Zone) with current score and personal best
+2. **Onboarding:** Complete 5-step flow (position → email → age/level → goals → start)
+3. **Module Hub:** See Module 1 (Defensive Zone) available with 5 scenarios
 4. **Scenario Experience:**
    - View rink diagram with situation description
    - Read the question ("What should you do?")
    - Select from 4 answer options
    - Receive immediate feedback (correct/incorrect with explanation)
-   - **See diagram update with correct positioning** (arrows, zones, ghost player)
-   - Progress to next scenario
-5. **Completion:** Finish all 5 scenarios, see results modal with score
-6. **Retry or Review:** Option to retry for better score or review missed scenarios
+   - Scenario marked complete, return to module hub
+5. **Module Completion:** Finish all 5 scenarios, see results modal with score
+6. **Share Score:** Option to share results via native share or clipboard
 7. **Feedback:** Prompted to complete Google Form with beta feedback
+8. **Return:** Come back to retry for better score or review scenarios
+
+### Scoring System
+
+**How It Works:**
+- Each scenario tracks correct (true) or incorrect (false) in `scoreData.currentRun`
+- Results modal shows X/5 score when all scenarios completed
+- Best score saved to localStorage for future reference
+- Performance-based messaging:
+  - 5/5: "PERFECT SCORE!" with trophy emoji 🏆
+  - 4/5: "GREAT JOB!" with fire emoji 🔥
+  - 3/5: "GOOD EFFORT!" with star emoji ⭐
+  - 0-2/5: "KEEP LEARNING!" with books emoji 📚
+
+**Data Structure:**
+```javascript
+// localStorage key: puckAcademy_scores
+{
+  currentRun: {
+    1: true,   // Scenario 1: correct
+    2: false,  // Scenario 2: incorrect
+    3: true,   // etc.
+    4: true,
+    5: false
+  },
+  bestScore: 4  // Best score achieved
+}
+```
+
+### Share Functionality
+
+**Current Implementation:**
+- Share Score button appears in results modal after completing module
+- Uses Web Share API on mobile (native share sheet)
+- Falls back to clipboard copy on desktop
+- Share message includes score and challenge text
+- URL includes score parameter: `hockeyiq.netlify.app?score=X`
+
+**Share Messages:**
+- 5/5: "I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! 🏆 Think you can beat me?"
+- 4/5: "I scored 4/5 on Puck Academy's Defensive Zone Hockey IQ training! 🔥 Think you can do better?"
+- 0-3/5: "I scored X/5 on Puck Academy's Hockey IQ training! 🏒 Test your hockey brain:"
+
+**Known Issue (January 22, 2026):**
+When sharing via Messages on mobile, only the bare URL is sent without the share text. The `text` parameter in `navigator.share()` is being ignored by some platforms. Need to investigate whether:
+1. The text parameter needs to be formatted differently
+2. Open Graph meta tags are needed for rich previews
+3. The share text should be concatenated with the URL
 
 ### Key Screens/Pages
 
 | Screen | Purpose | Key Elements |
 |--------|---------|--------------|
-| `onboarding.html` | Capture user info and personalize experience | Position picker, age/level selector, goal selection, email input (optional), profile preview |
-| `training.html` | Module hub with scoring dashboard | Current score, personal best, scenario cards with ✓/✗ status, results modal |
-| `hockey-iq-diagram.html` | Scenario 1 - High slot coverage | SVG rink diagram with feedback overlays, animated arrows, ghost player |
-| `scenario-2-corner-battle.html` | Scenario 2 - Corner battle support | Passing lane visualization, coverage zone |
-| `scenario-3-cycle.html` | Scenario 3 - Reading the cycle | Intercept zone, movement arrows |
-| `scenario-4-breakout.html` | Scenario 4 - Breakout timing | Swing path animation, support position |
-| `scenario-5-gap.html` | Scenario 5 - Gap control | Angled backcheck path, middle lane protection |
-
-### Feedback Diagram System
-
-After the user answers each scenario, the rink diagram dynamically updates to show:
-- **Coverage zones:** Green dashed ellipses showing where the player should position
-- **Movement arrows:** Animated arrows showing correct skating path (draw-in animation)
-- **Ghost player:** Dashed circle showing correct final position for #23
-- **Passing lanes:** Red highlighted lanes to protect or intercept
-- **Labels:** Text annotations explaining what to do ("COVER THIS ZONE", "SWING LOW", etc.)
-- **Updated legend:** Additional legend items appear for feedback elements
-
-This visual feedback reinforces the text explanation and helps players understand positioning concepts spatially.
-
-### Scoring System
-
-The module hub (`training.html`) displays:
-- **Current Run:** Shows correct answers this attempt (e.g., "3/5")
-- **Personal Best:** Tracks highest score across all attempts
-- **Attempt Counter:** Shows total number of module completions
-- **Card Status:** Green ✓ for correct, Red ✗ for incorrect (clickable to retry)
-
-**Results Modal** appears after completing all 5 scenarios:
-- Score display with contextual messaging
-- "🏆 New Personal Best!" badge when applicable
-- Messages based on score:
-  - 5/5: "Perfect Score! 🏆" — Elite hockey IQ
-  - 4/5: "Great Job! 🔥" — Strong defensive instincts
-  - 3/5: "Solid Effort! 💪" — Good foundation
-  - 0-2/5: "Keep Learning! 📚" — Review and retry
+| `index.html` | Landing page with challenge banner for shared links | Hero section, features, Start Training CTA, challenge message if `?score=X` parameter present |
+| `onboarding.html` | Capture user info and personalize experience | Position picker, email input (optional), age/level selector, goal selection |
+| `training.html` | Module hub showing scenarios and results | Scenario cards with status, progress bar, score display, results modal with share button |
+| `hockey-iq-diagram.html` | Scenario 1 - Defensive zone pressure read | SVG rink diagram, situation text, 4-option answer buttons, feedback display |
+| `scenario-2-corner-battle.html` | Scenario 2 - Corner battle support | Same structure as Scenario 1 with different content |
+| `scenario-3-cycle.html` | Scenario 3 - Cycle coverage | Same structure |
+| `scenario-4-breakout.html` | Scenario 4 - Breakout positioning | Same structure |
+| `scenario-5-gap.html` | Scenario 5 - Gap control decision | Same structure |
 
 ### Design Principles
 
@@ -192,9 +218,7 @@ The module hub (`training.html`) displays:
 4. **Feel like an insider advantage, not homework** — Positioned as "film room" training, not educational content
 5. **Clear decision points** — Scenarios pause at the moment of truth, not during action
 6. **Immediate feedback** — Know right/wrong instantly with explanation of *why*
-7. **Visual reinforcement** — Show correct positioning on diagram, not just tell
-8. **Competitive motivation** — Scoring and personal best appeal to competitive players
-9. **Authentic hockey feel** — Dark ice blue theme, professional look that appeals to competitive players
+7. **Authentic hockey feel** — Dark ice blue theme, professional look that appeals to competitive players
 
 ---
 
@@ -204,10 +228,10 @@ The module hub (`training.html`) displays:
 
 | Layer | Technology | Notes |
 |-------|------------|-------|
-| Frontend | HTML, CSS, JavaScript (vanilla) | No framework for simplicity; Tailwind for utility classes |
+| Frontend | HTML, CSS, JavaScript (vanilla) | No framework for simplicity |
 | Hosting | Netlify | Auto-deploy from GitHub, free tier sufficient |
 | Version Control | GitHub | Repository: `jjacobs22/puck-academy-iq-app` |
-| Form Handling | Netlify Forms | Captures full user profile from onboarding |
+| Form Handling | Netlify Forms | Captures onboarding emails (form name: `player-signup`) |
 | Feedback Collection | Google Forms | External form linked from app |
 | Editor | Cursor | Local development environment |
 
@@ -215,14 +239,14 @@ The module hub (`training.html`) displays:
 
 ```
 puck-academy-iq-app/
-├── index.html                    # Landing page (redirects to onboarding)
-├── onboarding.html               # 5-step onboarding flow with full data capture
-├── training.html                 # Module hub with scoring dashboard
-├── hockey-iq-diagram.html        # Scenario 1: High slot coverage (with feedback diagram)
-├── scenario-2-corner-battle.html # Scenario 2: Corner battle (with feedback diagram)
-├── scenario-3-cycle.html         # Scenario 3: Cycle coverage (with feedback diagram)
-├── scenario-4-breakout.html      # Scenario 4: Breakout positioning (with feedback diagram)
-├── scenario-5-gap.html           # Scenario 5: Gap control (with feedback diagram)
+├── index.html                    # Landing page with challenge banner
+├── onboarding.html               # 5-step onboarding flow
+├── training.html                 # Module hub with scenarios, scoring, results modal
+├── hockey-iq-diagram.html        # Scenario 1: D-zone pressure read
+├── scenario-2-corner-battle.html # Scenario 2: Corner battle
+├── scenario-3-cycle.html         # Scenario 3: Cycle coverage
+├── scenario-4-breakout.html      # Scenario 4: Breakout positioning
+├── scenario-5-gap.html           # Scenario 5: Gap control
 ├── PROJECT_CONTEXT.md            # This file - project documentation
 └── assets/
     └── images/
@@ -231,65 +255,57 @@ puck-academy-iq-app/
 
 ### Data Model
 
-**User Profile (localStorage + Netlify Forms):**
+**User Progress (localStorage key: `puckAcademy_progress`):**
 ```javascript
-// Stored in localStorage as puckAcademy_userData
 {
   position: "center",
   email: "player@email.com",  // optional
-  level: "14-15 AAA",
-  improvements: ["Defensive Zone", "Faceoffs", "Breakouts"]
+  ageLevel: "14-15 AAA",
+  goals: ["defensive-zone", "faceoffs"],
+  completedScenarios: [1, 2, 3, 4, 5],
+  currentModule: 1,
+  streak: 3
 }
 ```
 
-**Scoring Data (localStorage):**
+**Scoring Data (localStorage key: `puckAcademy_scores`):**
 ```javascript
-// Stored in localStorage as puckAcademy_scores
 {
-  currentRun: { 1: true, 2: false, 3: true, 4: true, 5: true },  // scenario: correct/incorrect
-  bestScore: 4,      // highest number correct
-  totalAttempts: 3   // times module completed
+  currentRun: {
+    1: true,   // correct
+    2: false,  // incorrect
+    3: true,
+    4: true,
+    5: false
+  },
+  bestScore: 4
 }
 ```
 
-**Netlify Form Submission (player-signup):**
-```
-position: center
-email: player@email.com
-age-level: 14-15 AAA
-improvements: Defensive Zone, Faceoffs, Breakouts
-```
-
-### Feedback Diagram Implementation
-
-Each scenario includes SVG elements for feedback visualization:
-
-```html
-<!-- Hidden until answer is selected -->
-<ellipse id="coverageZone" class="feedback-element" ... />
-<line id="movementArrow" class="feedback-element movement-arrow" ... />
-<g id="ghostPlayer" class="ghost-player">...</g>
-```
-
-JavaScript functions control visibility:
-- `showFeedbackDiagram()` — Called after answer, animates elements in
-- `hideFeedbackDiagram()` — Called on reset, hides all feedback elements
-
-CSS handles animations:
-```css
-.feedback-element { opacity: 0; transition: opacity 0.6s ease; }
-.feedback-element.visible { opacity: 1; }
-.movement-arrow { stroke-dasharray: 100; stroke-dashoffset: 100; }
-.movement-arrow.animate { animation: drawArrow 0.8s ease forwards; }
+**Scenario Data (inline in HTML, future: JSON):**
+```javascript
+{
+  id: "scenario-1",
+  title: "Reading Pressure on Your D-Man",
+  situation: "Your team is defending...",
+  question: "What should you do?",
+  answers: [
+    { text: "Chase the puck carrier", correct: false, feedback: "..." },
+    { text: "Hold the high slot", correct: true, feedback: "..." },
+    // ...
+  ],
+  rinkPosition: "defensive-zone-low"
+}
 ```
 
 ### Third-Party Integrations
 
 | Service | Purpose | Integration Point |
 |---------|---------|-------------------|
-| Netlify Forms | Full user profile capture | Form name: `player-signup` in onboarding.html |
-| Google Forms | Beta feedback | External link from scenario completion |
+| Netlify Forms | Email capture | Hidden form field in onboarding.html, form name: `player-signup` |
+| Google Forms | Beta feedback | External link from scenario completion and results modal |
 | Google Fonts | Typography | Bebas Neue (headers), Work Sans (body) |
+| Web Share API | Native sharing | Share button in results modal |
 
 ### Environment & Deployment
 
@@ -310,43 +326,49 @@ CSS handles animations:
 ## CURRENT STATE
 
 ### What's Working ✅
-- **Onboarding flow:** 5-step personalization capturing full profile to Netlify
-- **Module hub:** Shows Module 1 with scoring dashboard (current score, personal best)
+- **Landing page:** Shows challenge banner when accessed via shared link with `?score=X`
+- **Onboarding flow:** 5-step personalization working end-to-end
+- **Module hub (training.html):** Shows Module 1 with 5 scenario cards and progress tracking
 - **5 complete scenarios:** All playable with questions, answers, and feedback
 - **SVG rink diagrams:** Clean visual representation of defensive zone situations
-- **Feedback diagrams:** All 5 scenarios show animated correct positioning after answer
-- **Scoring system:** Tracks correct/incorrect, personal best, attempt count
-- **Results modal:** Shows score with contextual messaging after completing module
-- **Progress tracking:** localStorage saves scores and user data
-- **Email + profile capture:** Netlify Forms collecting position, age/level, goals, email
-- **Feedback form:** Google Forms linked for beta feedback
+- **Progress tracking:** localStorage saves completed scenarios
+- **Scoring system:** Tracks correct/incorrect per scenario, calculates score, saves best score
+- **Results modal:** Shows score with performance-based messaging after completing all scenarios
+- **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop)
+- **Email capture:** Netlify Forms collecting onboarding emails
+- **Feedback form:** Google Forms linked from results modal
 - **Mobile responsive:** Works on phone/tablet
 - **GitHub → Netlify pipeline:** Auto-deploy on push
 
 ### What's Partially Working ⚠️
+- **Share functionality:** Share button works but text message only shows bare URL without the share message text (investigating fix)
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
 - **Progress persistence:** Works locally but no server-side backup
 - **Non-center users:** Onboarding captures their email with "notify me" but no content for them
 
 ### What's Not Started 🔲
+- Open Graph meta tags for rich link previews
 - Module 2: Faceoffs (planned)
 - Module 3: Breakouts (planned)
 - Module 4: Offensive Zone (planned)
-- Streak/daily challenge features
+- Assessment/testing functionality
+- Streak/gamification features
 - Coach/parent dashboards
 - Position-specific content beyond centers
 - Payment/subscription system
 
 ### Known Bugs 🐛
-1. **Progress reset:** If user clears browser data, all progress is lost
-2. **No error handling:** If scenario fails to load, no user-friendly message
+1. **Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message
+2. **Status inconsistency:** Scenario cards occasionally show "Coming Soon" instead of "Start" after clearing cache
+3. **Progress reset:** If user clears browser data, all progress is lost
+4. **No error handling:** If scenario fails to load, no user-friendly message
 
 ### Technical Debt 📋
 - **Inline styles:** CSS is duplicated across HTML files; should extract to shared stylesheet
 - **Inline JavaScript:** Scenario logic duplicated; should extract to shared JS file
 - **No build process:** Manual file management; could benefit from simple bundler
 - **Hardcoded scenarios:** Scenario data embedded in HTML; should move to JSON for easier updates
-- **Feedback diagram data:** Currently hardcoded in SVG; could be data-driven for easier scenario creation
+- **No Open Graph tags:** Shared links don't show rich previews on social platforms
 
 ---
 
@@ -388,42 +410,41 @@ CSS handles animations:
 - **Decision:** Defensive zone positioning for centers
 - **Rationale:** Biggest gap in existing training; most coaches struggle to teach this systematically; immediate differentiation from "skills training" apps; proves we can teach the hard stuff.
 
-### Decision 7: Dynamic Feedback Diagrams
-- **Context:** Original scenarios showed text feedback only after answering
-- **Options considered:** Text-only feedback, static "correct answer" image, dynamic SVG overlay
-- **Decision:** Dynamic SVG feedback diagrams with animations
-- **Rationale:** Visual learners (most athletes) need to *see* correct positioning, not just read about it. Animated arrows and zones reinforce the spatial concepts. Klipdraw-style visuals are familiar to hockey players from coach film sessions. Implementation in SVG keeps it lightweight and doesn't require external image assets.
+### Decision 7: Scoring System Before More Content
+- **Context:** Debated whether to add more scenarios or gamification first
+- **Options considered:** Build Module 2, add scoring, add streaks
+- **Decision:** Add scoring system to existing Module 1
+- **Rationale:** Scoring adds replayability to existing content; creates reason to retry and improve; enables sharing scores (viral loop); validates engagement before building more content.
 
-### Decision 8: Scoring System Before More Content
-- **Context:** Debated whether to build more modules or add gamification first
-- **Options considered:** Build Module 2 (Faceoffs), add scoring/personal best, add streaks
-- **Decision:** Implement scoring system first
-- **Rationale:** For beta with 10-15 players, scoring provides: (1) data on which scenarios are hard, (2) motivation to retry and improve, (3) insight into whether players are learning. More content doesn't help if current format isn't working. Scoring takes less time than 15+ new scenarios.
-
-### Decision 9: Collect Full Profile Before Email
-- **Context:** Original flow asked for email at step 3, before age/level selection
+### Decision 8: Collect Full Profile Before Email
+- **Context:** Debated when to ask for email in onboarding flow
 - **Options considered:** Email first, email last, email optional throughout
-- **Decision:** Moved email to step 5 (after all other data collected)
-- **Rationale:** Ensures all profile data (position, age/level, improvement areas) gets submitted together to Netlify Forms. Provides context on who beta users are. Shows user their profile before asking for email, which increases trust.
+- **Decision:** Position → Age/Level → Goals → Email (optional) → Start
+- **Rationale:** Users more likely to provide email after investing time in profile; feels like natural continuation; captures more qualified leads.
+
+### Decision 9: Wait on Module 2 Until Beta Feedback
+- **Context:** After building scoring and share features, considered building more content
+- **Options considered:** Build Module 2 immediately, wait for feedback
+- **Decision:** Wait for beta feedback before building Module 2
+- **Rationale:** Need to validate current format works before investing in more content; beta testers will reveal if difficulty is right, what topics they want next, and if the format is engaging enough.
 
 ---
 
 ## ROADMAP & PRIORITIES
 
 ### Current Sprint/Focus (January 2026)
-1. ✅ **Beta launch:** Send app to 10-15 beta testers via onboarding link
-2. ✅ **Feedback diagrams:** Added visual feedback showing correct positioning
-3. ✅ **Scoring system:** Track correct/incorrect with personal best
-4. ✅ **Full profile capture:** Onboarding sends all data to Netlify Forms
+1. ✅ **Scoring system:** Track correct/incorrect, show results modal
+2. ✅ **Share functionality:** Share score via native share or clipboard
+3. 🔄 **Fix share bug:** Investigate why share text isn't appearing in Messages
+4. **Beta launch:** Send app to 10-15 beta testers via onboarding link
 5. **Feedback collection:** Monitor Netlify Forms and Google Forms responses
-6. **Quick iterations:** Fix any blocking bugs reported by testers
 
 ### Next Up (February 2026)
 - Analyze beta feedback and identify top 3 improvements
-- Review scoring data to identify which scenarios are too easy/hard
+- Add Open Graph meta tags for rich link previews
 - Add 2-3 more defensive zone scenarios based on feedback
 - Build Module 2: Faceoffs (5 scenarios)
-- Consider adding streak tracking if retention is an issue
+- Implement basic streak tracking
 
 ### Backlog (Q1-Q2 2026)
 - Module 3: Breakouts
@@ -517,16 +538,12 @@ CSS handles animations:
   - Dark Blue: `#0A1628`
   - Accent Red: `#C8102E`
   - Silver: `#A8B2BE`
-  - Success Green: `#2D7A3E`
-  - Error Red: `#B91C1C`
 
 **JavaScript:**
 - Vanilla JS (no frameworks for MVP)
 - localStorage for client-side state
 - Clear function names describing action
 - Comments for non-obvious logic
-- Scoring data stored under `puckAcademy_scores` key
-- User data stored under `puckAcademy_userData` key
 
 **Files:**
 - Lowercase with hyphens: `scenario-2-corner-battle.html`
@@ -539,7 +556,6 @@ CSS handles animations:
 - Tailwind utility classes acceptable
 - Netlify for hosting
 - Keep files self-contained when possible
-- SVG-based feedback diagrams with CSS animations
 
 **Things to avoid:**
 - Don't add npm dependencies without asking
@@ -553,10 +569,10 @@ CSS handles animations:
 - Avoid "homework" or "education" framing — this is "training"
 
 **Project-specific rules:**
-- All scenarios should follow same structure: situation → question → 4 options → feedback → diagram update
-- Rink diagrams use consistent SVG format with feedback overlay elements
-- Feedback diagrams include: coverage zones, movement arrows, ghost players, labels
-- Scoring saves to localStorage under `puckAcademy_scores` key
+- All scenarios should follow same structure: situation → question → 4 options → feedback
+- Rink diagrams use consistent SVG format
+- Progress saves to localStorage under `puckAcademy_progress` key
+- Scores save to localStorage under `puckAcademy_scores` key
 - Feedback always explains *why* — not just right/wrong
 
 ---
@@ -564,26 +580,14 @@ CSS handles animations:
 ## CHANGELOG
 
 ### January 22, 2026
-- **Added scoring system:**
-  - Current run score tracking (correct/incorrect per scenario)
-  - Personal best with attempt counter
-  - Results modal with contextual messages (Perfect Score 🏆, Great Job 🔥, etc.)
-  - "New Personal Best!" badge
-  - Retry functionality to improve score
-  - Card status shows ✓ correct or ✗ incorrect
-- **Added feedback diagrams to all 5 scenarios:**
-  - Green coverage zones indicating correct positioning
-  - Animated arrows showing movement paths
-  - Ghost player showing target position
-  - Passing lanes to protect (where applicable)
-  - Updated legend with feedback elements
-- **Improved onboarding flow:**
-  - Reordered steps: position → age/level → goals → email
-  - All profile data now sent together to Netlify Forms
-  - New form name: `player-signup` (was `email-signup`)
-  - Profile preview shown before email capture
-  - Full data captured: position, email, age-level, improvements
-- Updated PROJECT_CONTEXT.md with all changes
+- Added scoring system to track correct/incorrect answers per scenario
+- Added results modal showing score (X/5) with performance-based messaging
+- Added Share Score button with Web Share API (mobile) and clipboard fallback (desktop)
+- Added challenge banner to index.html that displays when accessed via shared link with `?score=X` parameter
+- Share URL now includes score parameter for personalized landing experience
+- Updated "Complete Module Assessment" button to open feedback form
+- Identified bug: share text not appearing in Messages (only bare URL shared)
+- Updated PROJECT_CONTEXT.md with all recent changes
 
 ### January 21, 2026
 - Created PROJECT_CONTEXT.md to centralize all project knowledge
