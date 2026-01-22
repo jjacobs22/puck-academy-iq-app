@@ -1,3 +1,5 @@
+hello
+
 # PROJECT_CONTEXT.md
 
 **Last Updated:** January 22, 2026  
