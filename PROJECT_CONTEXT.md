@@ -559,6 +559,12 @@ puck-academy-iq-app/
 
 ### AI Instructions (for Claude/Cursor)
 
+**IMPORTANT - After every code change:**
+- Always update PROJECT_CONTEXT.md changelog before pushing to GitHub
+- Include what was changed and why
+- Update any relevant sections (What's Working, Known Bugs, Technical Debt, etc.)
+- This ensures project knowledge stays current across sessions
+
 **Preferred approaches:**
 - HTML/CSS/vanilla JS for frontend (no React yet)
 - Tailwind utility classes acceptable
