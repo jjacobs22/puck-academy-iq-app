@@ -338,11 +338,11 @@
                 feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
 
                 if (isCorrect) {
-                    feedbackTitle.textContent = '✓ Correct!';
-                    feedbackText.innerHTML = '<strong>Excellent gap control!</strong> By angling your backcheck to take away the middle, you force the puck carrier wide - into a lower-percentage scoring area. You\'re also closing the gap gradually, which means you can react to whatever move he makes without overcommitting. <strong>This is textbook two-way center play:</strong> take away the dangerous middle ice while supporting your D.';
+                    feedbackTitle.textContent = '✓ That\'s it.';
+                    feedbackText.innerHTML = '<strong>Perfect angle.</strong> You took away the middle, forced him wide, and closed the gap without overcommitting. Now he\'s got a bad angle, your D has support, and you can still react to whatever move he makes. That\'s textbook backchecking. That\'s how two-way centers defend. — Coach';
                 } else {
-                    feedbackTitle.textContent = '✗ Not Quite';
-                    feedbackText.innerHTML = '<strong>Good hustle, but technique matters.</strong> Chasing directly or staying parallel doesn\'t take anything away from the attacker. <strong>Option B is correct:</strong> Angle your backcheck to take away the middle lane. This forces the puck carrier wide (lower-percentage area) while you close the gap at a controlled pace. Gap control isn\'t just about speed - it\'s about positioning and angles.';
+                    feedbackTitle.textContent = '✗ Not quite.';
+                    feedbackText.innerHTML = '<strong>Good effort getting back, but angles matter.</strong> Chasing straight at him or matching speed doesn\'t take anything away. Take an angle — cut off the middle, force him wide. That\'s low-percentage ice out there. You control where he can go, not the other way around. That\'s gap control. — Coach';
                 }
 
                 setTimeout(() => {

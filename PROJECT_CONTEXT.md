@@ -593,6 +593,81 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 23, 2026 - Added Coach Persona to Main App
+
+**Changes Made:**
+- Added "Coach" intro message on training.html module hub
+- Updated all results modal messages to sound like Coach talking (personalized, encouraging)
+- Updated feedback text in all 5 scenarios to conversational Coach-style
+- Coach avatar and styled intro box on training page
+
+**Coach Persona Voice:**
+- Direct, confident, supportive
+- Explains the "why" conversationally
+- Signs off with "— Coach"
+- Encourages without being patronizing
+- Uses hockey-authentic language
+
+**Testing Hypothesis:**
+Will beta testers respond to the Coach persona? Does it make the experience feel more engaging than a standard quiz?
+
+---
+
+### January 23, 2026 - Conversational "Coach" Experience Exploration
+
+**Vision Shift Explored:**
+Investigated pivoting from "quiz app" to "relationship-based AI hockey mentor" — inspired by Rayfit's conversational fitness coach approach.
+
+**The Big Idea:**
+Instead of Puck Academy being a training tool you open, complete scenarios, and close — it becomes a **persistent relationship** with an AI coach ("Coach") who:
+- Knows your context (position, level, goals, team situation, mental state)
+- Shows up at key moments (before games, after tough losses, during tryout season)
+- Handles the full spectrum: on-ice IQ, mental game, hockey life, goal setting
+- Feels like texting with a trusted mentor, not using an app
+
+**Key Insight:**
+The scenarios still matter, but they get woven INTO conversations rather than being the whole product. Coach asks "How'd the game go?" → you mention turnovers → Coach offers a relevant scenario → feedback feels like coaching, not right/wrong.
+
+**Prototype Built:**
+Created `coach-prototype.html` — a working chat-based interface that demonstrates:
+- Dark mode iMessage-style UI (mobile-first, 480px max width)
+- Coach persona with avatar, "online" status, typing indicators
+- Conversational onboarding (asks your name, how you're feeling)
+- Adaptive responses based on user input (confident vs frustrated)
+- Scenario card embedded inline in chat conversation
+- Quick reply buttons for common responses
+- Coach explains the *why* after answers in natural language
+
+**Prototype Flow:**
+1. Coach initiates with warm intro
+2. Gets player's name (personalization)
+3. Checks in on how they're feeling about their game
+4. Offers a D-zone read naturally in conversation
+5. Scenario appears as card within chat
+6. Player taps answer, it becomes a chat message
+7. Coach responds conversationally (not just "correct/incorrect")
+8. Allows follow-up questions
+9. Wraps up with relationship-building
+
+**Technical Notes:**
+- Single HTML file, vanilla JS, no dependencies
+- State machine drives conversation flow
+- Variable typing delays based on message length
+- Quick replies prevent auto-advance (bug fix applied)
+- Console logging added for debugging flow issues
+
+**Known Issue (WIP):**
+Scenario card not appearing after "Alright, check this out" message — debugging in progress. Check browser console for state flow.
+
+**Decision Pending:**
+Whether to pursue this direction vs. staying with current quiz-style MVP for beta validation. Recommendation: validate scenarios work first, then wrap relationship layer around them post-beta.
+
+**Files:**
+- Prototype: `coach-prototype.html`
+- Reference: Rayfit (rayfit.com) for conversational fitness coach inspiration
+
+---
+
 ### January 22, 2026 (Late Evening)
 - Implemented Netlify Edge Functions for dynamic OG image generation
 - Created `netlify/edge-functions/og-image.tsx` - generates PNG images with embedded score using `og_edge` library

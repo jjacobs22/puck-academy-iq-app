@@ -340,11 +340,11 @@
                 feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
 
                 if (isCorrect) {
-                    feedbackTitle.textContent = '✓ Correct!';
-                    feedbackText.innerHTML = '<strong>Excellent read!</strong> You anticipated the play correctly. When you see the puck carrier\'s head come up, they\'re looking to pass - most likely to the high slot or weak side. By sliding into that passing lane proactively, you give yourself a chance to intercept and start a quick transition. <strong>The best defensive centers don\'t just react - they anticipate.</strong> Reading the cycle like this is what separates good two-way players.';
+                    feedbackTitle.textContent = '✓ That\'s it.';
+                    feedbackText.innerHTML = '<strong>You read that before it happened.</strong> Head comes up? Pass is coming. You slid into that lane before he even made the decision. That\'s not reacting — that\'s anticipating. And when you pick that pass off, you\'re already facing up ice. That\'s how turnovers become scoring chances. Elite read. — Coach';
                 } else {
-                    feedbackTitle.textContent = '✗ Not Quite';
-                    feedbackText.innerHTML = '<strong>Good defensive instinct, but...</strong> being reactive puts you a step behind. When you see the puck carrier\'s head up during a cycle, they\'re telegraphing a pass. <strong>Option C is correct:</strong> Slide into the passing lane toward the high slot. This proactive positioning gives you a chance to intercept the puck and immediately start a breakout. Remember: anticipate, don\'t just react.';
+                    feedbackTitle.textContent = '✗ Not quite.';
+                    feedbackText.innerHTML = '<strong>You\'re thinking defense, which is good.</strong> But you\'re reacting instead of anticipating. When that head comes up during a cycle, the pass is coming — you can see it before it happens. Slide into the lane early, and now you\'ve got a chance to pick it off. Be proactive, not reactive. That\'s the difference. — Coach';
                 }
 
                 setTimeout(() => {

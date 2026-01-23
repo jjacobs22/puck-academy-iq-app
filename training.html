@@ -122,6 +122,41 @@
             line-height: 1.6;
         }
 
+        .coach-intro {
+            display: flex;
+            gap: 15px;
+            background: rgba(200, 16, 46, 0.1);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            align-items: flex-start;
+        }
+
+        .coach-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-red) 0%, #8B0000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .coach-message {
+            color: var(--ice-white);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .coach-message strong {
+            color: var(--accent-red);
+        }
+
         .progress-container {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
@@ -389,6 +424,14 @@
             </p>
         </div>
 
+        <!-- Coach Intro -->
+        <div class="coach-intro" id="coachIntro">
+            <div class="coach-avatar">C</div>
+            <div class="coach-message">
+                <strong>Coach here.</strong> These are real game situations — the kind that separate good centers from great ones. Take your time, think through each read, and I'll explain the <em>why</em> behind every answer. Let's get to work. 🏒
+            </div>
+        </div>
+
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
@@ -537,19 +580,19 @@
             if (correctCount === 5) {
                 icon.textContent = '🏆';
                 title.textContent = 'PERFECT SCORE!';
-                message.textContent = 'Outstanding! You\'ve mastered defensive zone coverage. You read the play like a pro and made all the right decisions.';
+                message.textContent = 'That\'s elite-level reading right there. You saw every play develop before it happened. This is exactly the kind of awareness that gets you noticed. Keep it up. — Coach';
             } else if (correctCount === 4) {
                 icon.textContent = '🔥';
                 title.textContent = 'GREAT JOB!';
-                message.textContent = 'Excellent work! You have a strong understanding of defensive positioning. Review the one you missed and try for a perfect score!';
+                message.textContent = 'You\'re seeing the ice well. One read got away from you, but that\'s how you learn. Review it, understand why, and you\'ll nail it next time. — Coach';
             } else if (correctCount === 3) {
                 icon.textContent = '⭐';
                 title.textContent = 'GOOD EFFORT!';
-                message.textContent = 'You\'re building solid hockey IQ. Review the scenarios you missed and focus on understanding the positioning principles.';
+                message.textContent = 'Solid foundation here. A few reads to tighten up, but that\'s exactly what this training is for. Go through the ones you missed — understanding the "why" is everything. — Coach';
             } else {
                 icon.textContent = '📚';
-                title.textContent = 'KEEP LEARNING!';
-                message.textContent = 'Defensive positioning takes time to master. Review each scenario and focus on understanding why each answer is correct.';
+                title.textContent = 'KEEP WORKING!';
+                message.textContent = 'Hey, this stuff isn\'t easy — that\'s why most players never learn it. But you\'re putting in the work. Go back through each scenario and really study the explanations. That\'s how you build hockey IQ. — Coach';
             }
 
             modal.classList.add('active');

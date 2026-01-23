@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Puck Academy - Coach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-chat: #111111;
+            --coach-bubble: #1a1a1a;
+            --user-bubble: #C8102E;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-muted: #555555;
+            --accent: #C8102E;
+            --accent-light: rgba(200, 16, 46, 0.15);
+            --success: #22c55e;
+            --success-light: rgba(34, 197, 94, 0.15);
+            --border: #222222;
+            --ice-blue: #E8F4F8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--bg-chat);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--bg-dark);
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+
+        .back-btn {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .coach-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #8B0000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+
+        .coach-info {
+            flex: 1;
+        }
+
+        .coach-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .coach-status {
+            font-size: 12px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .coach-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.coach {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .coach .message-avatar {
+            background: linear-gradient(135deg, var(--accent) 0%, #8B0000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            color: white;
+        }
+
+        .message-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .coach .message-bubble {
+            background: var(--coach-bubble);
+            border-bottom-left-radius: 4px;
+        }
+
+        .user .message-bubble {
+            background: var(--user-bubble);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 0 8px;
+        }
+
+        .coach .message-time {
+            text-align: left;
+        }
+
+        .user .message-time {
+            text-align: right;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 10px;
+            align-self: flex-start;
+            max-width: 85%;
+        }
+
+        .typing-indicator .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #8B0000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            color: white;
+        }
+
+        .typing-dots {
+            background: var(--coach-bubble);
+            padding: 16px 20px;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: 0s; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        /* Quick Replies */
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 0;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .quick-reply {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .quick-reply:hover {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .quick-reply:active {
+            transform: scale(0.98);
+        }
+
+        /* Scenario Card */
+        .scenario-card {
+            background: var(--coach-bubble);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 8px 0;
+            border: 1px solid var(--border);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .scenario-header {
+            background: rgba(200, 16, 46, 0.1);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .scenario-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .scenario-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .rink-container {
+            background: var(--ice-blue);
+            padding: 16px;
+            margin: 12px;
+            border-radius: 12px;
+        }
+
+        .rink-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .scenario-situation {
+            padding: 16px 16px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .scenario-question {
+            padding: 12px 16px 16px;
+            font-size: 15px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .scenario-options {
+            padding: 0 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .scenario-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 14px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: inherit;
+            display: flex;
+            gap: 10px;
+        }
+
+        .scenario-option:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .scenario-option.correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .scenario-option.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .scenario-option:disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .option-letter {
+            font-weight: 600;
+            color: var(--accent);
+            min-width: 20px;
+        }
+
+        .correct .option-letter {
+            color: var(--success);
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 16px 20px;
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            background: var(--coach-bubble);
+            border-radius: 24px;
+            padding: 4px;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .message-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 10px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            max-height: 120px;
+            line-height: 1.4;
+        }
+
+        .message-input:focus {
+            outline: none;
+        }
+
+        .message-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            background: #a50d26;
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            background: var(--text-muted);
+            cursor: default;
+            transform: none;
+        }
+
+        .send-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Date Divider */
+        .date-divider {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 10px 0;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .app-container {
+                max-width: 100%;
+            }
+        }
+
+        /* Emoji reactions */
+        .message-reactions {
+            display: flex;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .reaction {
+            background: var(--coach-bubble);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Progress indicator in scenario */
+        .scenario-progress {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .progress-dot.active {
+            background: var(--accent);
+        }
+
+        .progress-dot.complete {
+            background: var(--success);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <a href="#" class="back-btn">‹</a>
+            <div class="coach-avatar">C</div>
+            <div class="coach-info">
+                <div class="coach-name">Coach</div>
+                <div class="coach-status">Online</div>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area" id="chatArea">
+            <div class="date-divider">Today</div>
+            <!-- Messages will be inserted here -->
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-wrapper">
+                <textarea
+                    class="message-input"
+                    id="messageInput"
+                    placeholder="Message Coach..."
+                    rows="1"
+                ></textarea>
+            </div>
+            <button class="send-btn" id="sendBtn" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        let conversationState = 'intro';
+        let playerName = '';
+        let scenarioAnswered = false;
+
+        // Conversation flow
+        const flow = {
+            intro: {
+                messages: [
+                    "Hey! 👋",
+                    "I'm Coach — your hockey IQ training partner.",
+                    "Think of me as that assistant coach who actually breaks down the *why* behind every play. I'm here whenever you need me.",
+                    "What should I call you?"
+                ],
+                quickReplies: null,
+                waitForInput: true,
+                nextState: 'gotName'
+            },
+            gotName: {
+                messages: [], // Will be filled dynamically
+                quickReplies: null,
+                waitForInput: false,
+                nextState: 'askFeeling'
+            },
+            askFeeling: {
+                messages: [
+                    "So {name} — how are you feeling about your game right now?"
+                ],
+                quickReplies: [
+                    "Feeling confident 💪",
+                    "Could be sharper",
+                    "Frustrated honestly"
+                ],
+                waitForInput: false,
+                nextState: 'respondFeeling'
+            },
+            respondFeeling: {
+                messages: [], // Dynamic based on selection
+                quickReplies: null,
+                waitForInput: false,
+                nextState: 'offerScenario'
+            },
+            offerScenario: {
+                messages: [
+                    "I've got a D-zone read for you. Real game situation — the kind that separates good centers from great ones.",
+                    "Want to run through it?"
+                ],
+                quickReplies: [
+                    "Yeah, let's go",
+                    "What's the situation?"
+                ],
+                waitForInput: false,
+                nextState: 'showScenario'
+            },
+            showScenario: {
+                messages: [
+                    "Alright, check this out."
+                ],
+                quickReplies: null,
+                waitForInput: false,
+                nextState: 'scenario',
+                showScenario: true
+            },
+            correctAnswer: {
+                messages: [
+                    "That's it. 🎯",
+                    "You read that perfectly. Covering the high slot keeps you between the puck and the most dangerous scoring area. And you're already in position to transition when your D gets it back.",
+                    "That's the kind of read that coaches notice. The quiet stuff that wins games."
+                ],
+                quickReplies: [
+                    "Run another one",
+                    "Why not pressure the puck?",
+                    "That's enough for now"
+                ],
+                waitForInput: false,
+                nextState: 'postScenario'
+            },
+            incorrectAnswer: {
+                messages: [
+                    "Close, but not quite.",
+                    "I get the instinct — you want to help. But here's the thing: if you leave the opposing center open in the high slot, you're giving up the most dangerous pass on the ice.",
+                    "Your D has the puck carrier. Trust him. Your job is to take away the middle.",
+                    "Make sense?"
+                ],
+                quickReplies: [
+                    "Yeah, I see it now",
+                    "Show me again",
+                    "What if my D gets beat?"
+                ],
+                waitForInput: false,
+                nextState: 'postScenario'
+            },
+            postScenario: {
+                messages: [], // Dynamic
+                quickReplies: null,
+                waitForInput: false,
+                nextState: 'wrapUp'
+            },
+            wrapUp: {
+                messages: [
+                    "That's the mindset. One read at a time.",
+                    "I'm here whenever you want to work on something — before a game, after practice, whatever. Just hit me up.",
+                    "We'll make you the smartest player on the ice. 🏒"
+                ],
+                quickReplies: [
+                    "Thanks Coach",
+                    "Got a game tomorrow",
+                    "Tell me more about what you can help with"
+                ],
+                waitForInput: false,
+                nextState: 'end'
+            }
+        };
+
+        function scrollToBottom() {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'coach'}`;
+
+            messageDiv.innerHTML = `
+                ${!isUser ? '<div class="message-avatar">C</div>' : ''}
+                <div class="message-content">
+                    <div class="message-bubble">${text}</div>
+                </div>
+            `;
+
+            // Remove any existing quick replies before adding new message
+            const existingReplies = chatArea.querySelector('.quick-replies');
+            if (existingReplies) {
+                existingReplies.remove();
+            }
+
+            chatArea.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.id = 'typingIndicator';
+            typing.innerHTML = `
+                <div class="message-avatar">C</div>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            chatArea.appendChild(typing);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        function addQuickReplies(replies) {
+            const container = document.createElement('div');
+            container.className = 'quick-replies';
+
+            replies.forEach(reply => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-reply';
+                btn.textContent = reply;
+                btn.onclick = () => handleQuickReply(reply);
+                container.appendChild(btn);
+            });
+
+            chatArea.appendChild(container);
+            scrollToBottom();
+        }
+
+        function addScenarioCard() {
+            const card = document.createElement('div');
+            card.className = 'scenario-card';
+            card.innerHTML = `
+                <div class="scenario-header">
+                    <div class="scenario-label">D-Zone Read</div>
+                    <div class="scenario-title">Reading Pressure on Your D-Man</div>
+                </div>
+
+                <div class="rink-container">
+                    <svg class="rink-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Ice surface -->
+                        <rect x="0" y="0" width="400" height="280" fill="#E8F4F8" rx="8"/>
+
+                        <!-- Goal line -->
+                        <line x1="60" y1="40" x2="60" y2="240" stroke="#C8102E" stroke-width="2"/>
+
+                        <!-- Goal crease -->
+                        <path d="M 60 115 Q 30 140 60 165" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="2"/>
+
+                        <!-- Goal net -->
+                        <rect x="40" y="125" width="20" height="30" fill="none" stroke="#333" stroke-width="2"/>
+
+                        <!-- Blue line -->
+                        <line x1="280" y1="40" x2="280" y2="240" stroke="#1E40AF" stroke-width="3"/>
+
+                        <!-- Faceoff circles -->
+                        <circle cx="120" cy="90" r="32" fill="none" stroke="#C8102E" stroke-width="2"/>
+                        <circle cx="120" cy="190" r="32" fill="none" stroke="#C8102E" stroke-width="2"/>
+
+                        <!-- Opponent Winger with puck -->
+                        <g>
+                            <circle cx="80" cy="70" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                            <text x="80" y="75" text-anchor="middle" fill="white" font-weight="bold" font-size="12">W</text>
+                        </g>
+
+                        <!-- Puck -->
+                        <circle cx="68" cy="82" r="6" fill="#1a1a1a"/>
+
+                        <!-- Your D-man pressuring -->
+                        <g>
+                            <circle cx="105" cy="92" r="18" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                            <text x="105" y="97" text-anchor="middle" fill="white" font-weight="bold" font-size="12">D</text>
+                        </g>
+
+                        <!-- Opponent Center at high slot -->
+                        <g>
+                            <circle cx="145" cy="140" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                            <text x="145" y="145" text-anchor="middle" fill="white" font-weight="bold" font-size="12">C</text>
+                        </g>
+
+                        <!-- YOU (#23) -->
+                        <g>
+                            <circle cx="165" cy="170" r="20" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
+                            <text x="165" y="175" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="11">YOU</text>
+                        </g>
+
+                        <!-- Other D-man -->
+                        <g>
+                            <circle cx="95" cy="185" r="18" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                            <text x="95" y="190" text-anchor="middle" fill="white" font-weight="bold" font-size="12">D</text>
+                        </g>
+
+                        <!-- Legend -->
+                        <g transform="translate(290, 60)">
+                            <circle cx="10" cy="0" r="6" fill="#FFD700" stroke="#B8860B" stroke-width="1"/>
+                            <text x="22" y="4" font-size="10" fill="#333">You</text>
+
+                            <circle cx="10" cy="20" r="6" fill="#1E40AF"/>
+                            <text x="22" y="24" font-size="10" fill="#333">Team</text>
+
+                            <circle cx="10" cy="40" r="6" fill="#C8102E"/>
+                            <text x="22" y="44" font-size="10" fill="#333">Opponent</text>
+
+                            <circle cx="10" cy="60" r="6" fill="#1a1a1a"/>
+                            <text x="22" y="64" font-size="10" fill="#333">Puck</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="scenario-situation">
+                    Their winger has the puck on the boards. Your D is moving in to pressure. Their center is parked in the high slot — dangerous spot.
+                </div>
+                <div class="scenario-question">
+                    <strong>You're the center (#23). What's your play?</strong>
+                </div>
+
+                <div class="scenario-options" id="scenarioOptions">
+                    <button class="scenario-option" onclick="handleScenarioAnswer(this, false)">
+                        <span class="option-letter">A</span>
+                        <span>Go to the front of the net</span>
+                    </button>
+                    <button class="scenario-option" onclick="handleScenarioAnswer(this, true)">
+                        <span class="option-letter">B</span>
+                        <span>Cover the opposing center in the slot</span>
+                    </button>
+                    <button class="scenario-option" onclick="handleScenarioAnswer(this, false)">
+                        <span class="option-letter">C</span>
+                        <span>Help your D pressure the puck</span>
+                    </button>
+                    <button class="scenario-option" onclick="handleScenarioAnswer(this, false)">
+                        <span class="option-letter">D</span>
+                        <span>Stay low near the hashmarks</span>
+                    </button>
+                </div>
+            `;
+
+            chatArea.appendChild(card);
+            scrollToBottom();
+        }
+
+        function handleScenarioAnswer(element, isCorrect) {
+            if (scenarioAnswered) return;
+            scenarioAnswered = true;
+
+            const options = document.querySelectorAll('.scenario-option');
+            options.forEach(opt => {
+                opt.disabled = true;
+                if (opt.onclick.toString().includes('true')) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            if (!isCorrect) {
+                element.classList.add('incorrect');
+            }
+
+            // Add user's choice as a message
+            setTimeout(() => {
+                addMessage(element.querySelector('span:last-child').textContent, true);
+
+                // Show coach response
+                setTimeout(() => {
+                    processState(isCorrect ? 'correctAnswer' : 'incorrectAnswer');
+                }, 500);
+            }, 300);
+        }
+
+        async function processState(state) {
+            console.log('Processing state:', state);
+            const stateData = flow[state];
+            if (!stateData) {
+                console.log('No state data for:', state);
+                return;
+            }
+
+            conversationState = state;
+            console.log('Set conversationState to:', conversationState);
+
+            // Process messages with typing delays
+            for (let i = 0; i < stateData.messages.length; i++) {
+                let msg = stateData.messages[i].replace('{name}', playerName);
+
+                showTypingIndicator();
+                await delay(800 + msg.length * 15); // Variable delay based on message length
+                hideTypingIndicator();
+                addMessage(msg);
+
+                if (i < stateData.messages.length - 1) {
+                    await delay(300);
+                }
+            }
+
+            // Show scenario if needed - check this BEFORE quick replies
+            if (stateData.showScenario) {
+                console.log('Showing scenario card for state:', state);
+                await delay(500);
+                addScenarioCard();
+                console.log('Scenario card added, returning');
+                return; // Wait for scenario interaction
+            }
+
+            // Show quick replies or wait for input
+            if (stateData.quickReplies) {
+                await delay(400);
+                addQuickReplies(stateData.quickReplies);
+                // Don't auto-advance — wait for user to click a quick reply
+                return;
+            } else if (stateData.waitForInput) {
+                messageInput.focus();
+                return;
+            } else if (stateData.nextState && stateData.nextState !== 'scenario') {
+                // Auto-advance to next state after a pause
+                await delay(800);
+                processState(stateData.nextState);
+            }
+        }
+
+        function handleQuickReply(reply) {
+            console.log('handleQuickReply called with:', reply);
+            console.log('Current conversationState:', conversationState);
+            
+            addMessage(reply, true);
+
+            if (conversationState === 'askFeeling') {
+                // Set dynamic response based on feeling
+                if (reply.includes('confident')) {
+                    flow.respondFeeling.messages = [
+                        "Good. Let's keep that momentum going.",
+                        "Confidence is great — but the best players stay sharp even when they're rolling."
+                    ];
+                } else if (reply.includes('sharper')) {
+                    flow.respondFeeling.messages = [
+                        "That's actually the perfect mindset.",
+                        "The guys who think they can always get better? Those are the ones who actually do."
+                    ];
+                } else {
+                    flow.respondFeeling.messages = [
+                        "I hear you. Every player goes through that.",
+                        "The good news? Frustration usually means you care. Let's channel that into something productive."
+                    ];
+                }
+                setTimeout(() => processState('respondFeeling'), 500);
+            } else if (conversationState === 'offerScenario') {
+                console.log('Transitioning to showScenario...');
+                setTimeout(() => {
+                    console.log('Now calling processState(showScenario)');
+                    processState('showScenario');
+                }, 500);
+            } else if (conversationState === 'correctAnswer' || conversationState === 'incorrectAnswer') {
+                if (reply.includes('another') || reply.includes('again')) {
+                    flow.postScenario.messages = ["That's the attitude. Let's keep building."];
+                } else if (reply.includes('pressure') || reply.includes('D gets beat')) {
+                    flow.postScenario.messages = [
+                        "Great question. If your D gets beat, now you're the last line before the goalie.",
+                        "But if you've held your position, you can still take away the pass or force a bad angle shot. You stay in the play.",
+                        "If you chased? You're behind the play watching it happen."
+                    ];
+                } else {
+                    flow.postScenario.messages = ["Perfect. That's the kind of awareness that compounds over time."];
+                }
+                setTimeout(() => processState('postScenario'), 500);
+            } else if (conversationState === 'wrapUp') {
+                if (reply.includes('game tomorrow')) {
+                    addMessage("Nice. Want to run through a few pre-game reads? I can pull up scenarios based on whatever you're working on.", false);
+                } else {
+                    addMessage("You got it. I'm here when you need me. 🤜", false);
+                }
+            } else {
+                // Debug: catch any unhandled states
+                console.log('Unhandled state in handleQuickReply:', conversationState);
+            }
+        }
+
+        function handleUserInput() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, true);
+            messageInput.value = '';
+            sendBtn.disabled = true;
+
+            if (conversationState === 'intro') {
+                playerName = text.split(' ')[0]; // Get first name
+                flow.gotName.messages = [
+                    `${playerName}. Good name for a center. 😏`,
+                    "I'll remember that."
+                ];
+                setTimeout(() => processState('gotName'), 500);
+            }
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Event listeners
+        messageInput.addEventListener('input', () => {
+            sendBtn.disabled = !messageInput.value.trim();
+            messageInput.style.height = 'auto';
+            messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleUserInput();
+            }
+        });
+
+        sendBtn.addEventListener('click', handleUserInput);
+
+        // Start the conversation
+        setTimeout(() => processState('intro'), 800);
+    </script>
+</body>
+</html>
