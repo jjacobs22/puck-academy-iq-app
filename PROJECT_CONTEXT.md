@@ -604,6 +604,7 @@ puck-academy-iq-app/
 - Fixed iMessage sharing: combined text+URL into single parameter so context text appears with link
 - Share now shows message like "I got a PERFECT SCORE on Puck Academy's..." above the link preview
 - Randomized correct answer positions across scenarios (was all B, now B/D/C/A/C) to prevent pattern exploitation
+- Fixed default OG tags to show "Train Your Hockey IQ" instead of "Beat My Score" when sharing without a score
 
 ### January 22, 2026 (Evening)
 - Fixed share bug: Updated `shareResults()` to use separate `title`, `text`, and `url` parameters for better platform compatibility
