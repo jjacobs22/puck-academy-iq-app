@@ -321,17 +321,22 @@
             <input type="text" name="improvements">
         </form>
 
-        <!-- Step 1: Welcome -->
+        <!-- Step 1: Value Prop -->
         <div class="step active" id="step1">
-            <h2 class="step-title">Welcome to Your Hockey IQ Journey</h2>
-            <p class="step-description">Let's personalize your training path. This will take about 30 seconds.</p>
-            <button class="btn btn-primary" onclick="nextStep()">Get Started</button>
+            <h2 class="step-title">See the Ice Before Everyone Else</h2>
+            <p class="step-description">
+                Elite players don't just react — they read. This app trains the pattern recognition that separates good players from great ones.
+            </p>
+            <p class="step-description" style="margin-top: 15px; font-size: 0.9rem; color: var(--silver);">
+                5-10 minutes. No skates required. 🏒
+            </p>
+            <button class="btn btn-primary" onclick="nextStep()">Start Training →</button>
         </div>
 
         <!-- Step 2: Position -->
         <div class="step" id="step2">
-            <h2 class="step-title">What Position Do You Play?</h2>
-            <p class="step-description">We'll customize scenarios based on your position.</p>
+            <h2 class="step-title">What's Your Position?</h2>
+            <p class="step-description">We'll customize scenarios based on how you play.</p>
             <div class="options-grid">
                 <div class="option-card" onclick="selectPosition(this, 'center')">Center</div>
                 <div class="option-card" onclick="selectPosition(this, 'winger')">Winger</div>
@@ -342,13 +347,13 @@
 
         <!-- Step 3: Age & Level -->
         <div class="step" id="step3">
-            <h2 class="step-title">What's Your Age & Level?</h2>
+            <h2 class="step-title">Where Are You At?</h2>
             <p class="step-description">This helps us match the right difficulty.</p>
             <div class="options-grid">
-                <div class="option-card" onclick="selectLevel(this, '12-13 A/AA')">12-13 years old • A/AA</div>
-                <div class="option-card" onclick="selectLevel(this, '12-13 AAA')">12-13 years old • AAA</div>
-                <div class="option-card" onclick="selectLevel(this, '14-15 A/AA')">14-15 years old • A/AA</div>
-                <div class="option-card" onclick="selectLevel(this, '14-15 AAA')">14-15 years old • AAA</div>
+                <div class="option-card" onclick="selectLevel(this, '12-13 A/AA')">12-13 • A/AA</div>
+                <div class="option-card" onclick="selectLevel(this, '12-13 AAA')">12-13 • AAA</div>
+                <div class="option-card" onclick="selectLevel(this, '14-15 A/AA')">14-15 • A/AA</div>
+                <div class="option-card" onclick="selectLevel(this, '14-15 AAA')">14-15 • AAA</div>
                 <div class="option-card" onclick="selectLevel(this, '16+ High School')">16+ • High School</div>
                 <div class="option-card" onclick="selectLevel(this, 'Other')">Other</div>
             </div>
@@ -356,8 +361,8 @@
 
         <!-- Step 4: Improvement Areas -->
         <div class="step" id="step4">
-            <h2 class="step-title">What Do You Want to Improve?</h2>
-            <p class="step-description">Select all that apply. We'll prioritize these areas.</p>
+            <h2 class="step-title">What Do You Want to Work On?</h2>
+            <p class="step-description">Select all that apply.</p>
             <div class="checkbox-options">
                 <div class="checkbox-option" onclick="toggleImprovement(this, 'Defensive Zone')">
                     <div class="checkbox"></div>
@@ -385,12 +390,8 @@
 
         <!-- Step 5: Email -->
         <div class="step" id="step5">
-            <h2 class="step-title">Stay in the Loop 📬</h2>
-            <p class="step-description">Get notified when new modules launch. No spam, promise.</p>
-            
-            <div class="profile-display" id="profilePreview">
-                <!-- Filled by JS -->
-            </div>
+            <h2 class="step-title">Want Updates?</h2>
+            <p class="step-description">Get notified when new modules drop. No spam.</p>
 
             <div class="input-group">
                 <label>Email Address</label>
@@ -400,17 +401,16 @@
             <span class="skip-link" onclick="skipEmail()">Skip for now</span>
         </div>
 
-        <!-- Step 6: Summary -->
+        <!-- Step 6: Ready -->
         <div class="step" id="step6">
-            <h2 class="step-title">You're All Set!</h2>
+            <h2 class="step-title">Let's Go.</h2>
             
             <div class="summary-section">
-                <div class="summary-title">✓ Available Now:</div>
-                <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone Play</strong> - 5 interactive scenarios</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone Play</strong> — 5 scenarios ready</div>
             </div>
 
             <div class="summary-section">
-                <div class="summary-title">🚧 Coming Soon:</div>
+                <div class="summary-title">🚧 Coming soon:</div>
                 <div class="summary-item coming-soon" id="comingSoonList">Based on your selections...</div>
             </div>
 
@@ -446,11 +446,6 @@
             document.getElementById(`step${currentStep}`).classList.add('active');
             document.getElementById(`dot${currentStep}`).classList.add('active');
 
-            // Update profile preview when reaching email step
-            if (currentStep === 5) {
-                updateProfilePreview();
-            }
-
             // Update coming soon when reaching summary
             if (currentStep === 6) {
                 updateComingSoon();
@@ -484,20 +479,6 @@
             } else {
                 userData.improvements = userData.improvements.filter(i => i !== area);
             }
-        }
-
-        function updateProfilePreview() {
-            const preview = document.getElementById('profilePreview');
-            const positionDisplay = userData.position ? userData.position.charAt(0).toUpperCase() + userData.position.slice(1) : 'Not selected';
-            const levelDisplay = userData.level || 'Not selected';
-            const improvementsDisplay = userData.improvements.length > 0 ? userData.improvements.join(', ') : 'None selected';
-            
-            preview.innerHTML = `
-                <strong>Your Profile:</strong><br>
-                Position: ${positionDisplay}<br>
-                Level: ${levelDisplay}<br>
-                Focus: ${improvementsDisplay}
-            `;
         }
 
         function submitAndContinue() {

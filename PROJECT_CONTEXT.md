@@ -593,6 +593,24 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 23, 2026 - Updated Onboarding Flow
+
+**New Onboarding Structure:**
+1. Value Prop: "See the Ice Before Everyone Else" - emphasizes pattern recognition
+2. Position: "What's Your Position?" - cleaner copy
+3. Level: "Where Are You At?" - simplified labels (12-13 • A/AA format)
+4. Goals: "What Do You Want to Work On?" - select all that apply
+5. Email: "Want Updates?" - concise, no spam promise
+6. Ready: "Let's Go." - shows available + coming soon modules
+
+**Key Changes:**
+- Added compelling value prop as first step
+- "5-10 minutes. No skates required." tagline
+- Removed profile preview from email step (cleaner)
+- Tightened copy throughout
+
+---
+
 ### January 23, 2026 - Added Coach Persona to Main App
 
 **Changes Made:**
