@@ -6,17 +6,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hockey IQ Training - Screen vs. Deflection</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- Scenario-specific styles -->
     <style>
         :root { --ice-blue: #E8F4F8; --dark-blue: #0A1628; --accent-red: #C8102E; --ice-white: #FFFFFF; --silver: #A8B2BE; --success-green: #2D7A3E; --error-red: #B91C1C; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Work Sans', sans-serif; background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%); color: var(--ice-white); min-height: 100vh; padding: 20px; }
+        body { font-family: 'Work Sans', sans-serif; background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%); color: var(--ice-blue); min-height: 100vh; padding: 20px; }
         .container { max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); }
         .header { text-align: center; margin-bottom: 30px; }
-        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 3px; color: var(--ice-white); margin-bottom: 10px; }
+        .logo { font-family: var(--font-header); font-size: 2.5rem; letter-spacing: 3px; color: var(--ice-blue); margin-bottom: 10px; }
         .logo span { color: var(--accent-red); }
         .subtitle { color: var(--silver); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px; }
-        .scenario-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 20px; }
+        .scenario-title { font-family: var(--font-header); font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 20px; }
         .rink-container { background: var(--ice-blue); border-radius: 15px; padding: 25px; margin-bottom: 20px; }
         .rink-svg { width: 100%; height: auto; display: block; }
         .player-you { filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7)); }
@@ -33,7 +39,7 @@
         .legend-dot.puck { background: #1a1a1a; }
         .situation-box { background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px; margin-bottom: 25px; }
         .situation-label { color: var(--accent-red); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 8px; }
-        .situation-text { color: var(--ice-white); line-height: 1.6; }
+        .situation-text { color: var(--ice-blue); line-height: 1.6; }
         .situation-text .highlight { color: var(--accent-red); font-weight: 600; }
         .question { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
         .options { display: flex; flex-direction: column; gap: 12px; }
@@ -47,17 +53,17 @@
         .feedback.active { opacity: 1; transform: translateY(0); display: block; }
         .feedback.correct { background: rgba(45, 122, 62, 0.2); border: 1px solid var(--success-green); }
         .feedback.incorrect { background: rgba(185, 28, 28, 0.15); border: 1px solid var(--error-red); }
-        .feedback-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 15px; }
+        .feedback-title { font-family: var(--font-header); font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 15px; }
         .feedback.correct .feedback-title { color: var(--success-green); }
         .feedback.incorrect .feedback-title { color: var(--error-red); }
         .feedback-text { line-height: 1.7; color: var(--silver); }
-        .feedback-text strong { color: var(--ice-white); }
+        .feedback-text strong { color: var(--ice-blue); }
         .btn-row { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
         .btn { padding: 14px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-size: 1rem; }
-        .btn-primary { background: var(--accent-red); color: var(--ice-white); }
+        .btn-primary { background: var(--accent-red); color: var(--ice-blue); }
         .btn-primary:hover { background: #a50d26; transform: translateY(-2px); }
         .btn-secondary { background: transparent; color: var(--silver); border: 1px solid var(--silver); }
-        .btn-secondary:hover { border-color: var(--ice-white); color: var(--ice-white); }
+        .btn-secondary:hover { border-color: var(--ice-blue); color: var(--ice-blue); }
         .scenario-footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--silver); font-size: 0.9rem; }
         @media (max-width: 600px) { .container { padding: 20px; } .logo { font-size: 2rem; } .btn-row { flex-direction: column; } .btn { width: 100%; } }
     </style>

@@ -29,28 +29,17 @@
     <meta name="twitter:description" content="I'm training my Hockey IQ with Puck Academy. Think you can beat my score?">
     <meta name="twitter:image" content="https://hockeyiq.netlify.app/og-image.png">
     
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- Training page styles -->
     <style>
-        :root {
-            --ice-blue: #E8F4F8;
-            --dark-blue: #0A1628;
-            --accent-red: #C8102E;
-            --ice-white: #FFFFFF;
-            --silver: #A8B2BE;
-            --success-green: #2D7A3E;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Training page overrides */
         body {
-            font-family: 'Work Sans', sans-serif;
             background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
-            color: var(--ice-white);
-            min-height: 100vh;
             padding: 20px;
         }
 
@@ -70,7 +59,7 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2.5rem;
             letter-spacing: 3px;
-            color: var(--ice-white);
+            color: var(--ice-blue);
             margin-bottom: 10px;
             text-transform: uppercase;
         }
@@ -157,7 +146,7 @@
         }
 
         .coach-message {
-            color: var(--ice-white);
+            color: var(--ice-blue);
             line-height: 1.6;
             font-size: 0.95rem;
         }
@@ -242,7 +231,7 @@
             font-size: 1.3rem;
             letter-spacing: 1px;
             margin-bottom: 10px;
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .scenario-description {
@@ -289,7 +278,7 @@
 
         .btn-primary {
             background: var(--accent-red);
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .btn-primary:hover {
@@ -310,8 +299,8 @@
         }
 
         .btn-secondary:hover {
-            border-color: var(--ice-white);
-            color: var(--ice-white);
+            border-color: var(--ice-blue);
+            color: var(--ice-blue);
         }
 
         .module-footer {
@@ -400,7 +389,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.08);
-            color: var(--ice-white);
+            color: var(--ice-blue);
             font-family: 'Work Sans', sans-serif;
             font-size: 1rem;
             resize: vertical;
@@ -427,7 +416,7 @@
         }
 
         .feedback-detailed-link:hover {
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .feedback-success {
@@ -459,7 +448,7 @@
         }
 
         .modal-close:hover {
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .share-confirmation {
@@ -559,7 +548,7 @@
         }
 
         .review-intro-link:hover {
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .review-intro-link.visible {
