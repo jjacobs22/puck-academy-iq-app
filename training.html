@@ -1546,13 +1546,19 @@
             // Show dividers
             recommendedDivider.style.display = 'block';
             
+            // Get references to all modules BEFORE clearing (they're in the DOM)
+            const moduleElements = {};
+            allModules.forEach(moduleId => {
+                moduleElements[moduleId] = document.getElementById(moduleId);
+            });
+            
             // Clear containers
             container.innerHTML = '';
             otherContainer.innerHTML = '';
             
             // Move recommended modules to main container (in order)
             recommended.forEach(moduleId => {
-                const module = document.getElementById(moduleId);
+                const module = moduleElements[moduleId];
                 if (module) {
                     module.classList.add('recommended');
                     container.appendChild(module);
@@ -1563,7 +1569,7 @@
             if (other.length > 0) {
                 alsoAvailableDivider.style.display = 'block';
                 other.forEach(moduleId => {
-                    const module = document.getElementById(moduleId);
+                    const module = moduleElements[moduleId];
                     if (module) {
                         otherContainer.appendChild(module);
                     }
