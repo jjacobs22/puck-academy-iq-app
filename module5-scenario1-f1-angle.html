@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0N3XTSRTM2');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey IQ Training - F1 Angle of Approach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ice-blue: #E8F4F8;
+            --dark-blue: #0A1628;
+            --accent-red: #C8102E;
+            --ice-white: #FFFFFF;
+            --silver: #A8B2BE;
+            --success-green: #2D7A3E;
+            --error-red: #B91C1C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            color: var(--ice-white);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 3px; color: var(--ice-white); margin-bottom: 10px; }
+        .logo span { color: var(--accent-red); }
+        .subtitle { color: var(--silver); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px; }
+        .scenario-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 20px; }
+        .rink-container { background: var(--ice-blue); border-radius: 15px; padding: 25px; margin-bottom: 20px; }
+        .rink-svg { width: 100%; height: auto; display: block; }
+        .player-you { animation: pulse 2s infinite; }
+        .player-you.answered { animation: none; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .feedback-element { opacity: 0; transition: opacity 0.6s ease; }
+        .feedback-element.visible { opacity: 1; }
+        .legend { display: flex; justify-content: center; gap: 25px; margin-top: 15px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--dark-blue); }
+        .legend-dot { width: 16px; height: 16px; border-radius: 50%; }
+        .legend-dot.you { background: #FFD700; border: 2px solid #B8860B; }
+        .legend-dot.team { background: #1E40AF; }
+        .legend-dot.opponent { background: var(--accent-red); }
+        .legend-dot.puck { background: #1a1a1a; }
+        .situation-box { background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px; margin-bottom: 25px; }
+        .situation-label { color: var(--accent-red); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 8px; }
+        .situation-text { color: var(--ice-white); line-height: 1.6; }
+        .situation-text .highlight { color: var(--accent-red); font-weight: 600; }
+        .question { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option { background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 18px 20px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: flex-start; gap: 12px; }
+        .option:hover:not(.disabled) { border-color: var(--accent-red); background: rgba(255, 255, 255, 0.12); transform: translateX(5px); }
+        .option.correct { border-color: var(--success-green); background: rgba(45, 122, 62, 0.2); }
+        .option.incorrect { border-color: var(--error-red); background: rgba(185, 28, 28, 0.15); }
+        .option.disabled { cursor: default; opacity: 0.7; }
+        .option-letter { font-weight: 700; color: var(--accent-red); min-width: 25px; }
+        .feedback { margin-top: 25px; padding: 25px; border-radius: 12px; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; display: none; }
+        .feedback.active { opacity: 1; transform: translateY(0); display: block; }
+        .feedback.correct { background: rgba(45, 122, 62, 0.2); border: 1px solid var(--success-green); }
+        .feedback.incorrect { background: rgba(185, 28, 28, 0.15); border: 1px solid var(--error-red); }
+        .feedback-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 15px; }
+        .feedback.correct .feedback-title { color: var(--success-green); }
+        .feedback.incorrect .feedback-title { color: var(--error-red); }
+        .feedback-text { line-height: 1.7; color: var(--silver); }
+        .feedback-text strong { color: var(--ice-white); }
+        .btn-row { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .btn { padding: 14px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-size: 1rem; }
+        .btn-primary { background: var(--accent-red); color: var(--ice-white); }
+        .btn-primary:hover { background: #a50d26; transform: translateY(-2px); }
+        .btn-secondary { background: transparent; color: var(--silver); border: 1px solid var(--silver); }
+        .btn-secondary:hover { border-color: var(--ice-white); color: var(--ice-white); }
+        .scenario-footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--silver); font-size: 0.9rem; }
+        @media (max-width: 600px) { .container { padding: 20px; } .logo { font-size: 2rem; } .btn-row { flex-direction: column; } .btn { width: 100%; } }
+
+        /* ====== THEORY INTRO OVERLAY ====== */
+        .intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 22, 40, 0.95); backdrop-filter: blur(8px);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            padding: 20px; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .intro-overlay.active { opacity: 1; visibility: visible; }
+        .intro-card {
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px; max-width: 500px; width: 100%; padding: 30px;
+            position: relative; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .intro-skip { position: absolute; top: 15px; right: 20px; background: none; border: none; color: var(--silver); font-size: 0.85rem; cursor: pointer; padding: 5px 10px; transition: color 0.2s ease; }
+        .intro-skip:hover { color: var(--ice-white); }
+        .intro-coach { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .intro-coach-avatar { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent-red), #8B0000); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .intro-coach-name { font-weight: 600; color: var(--ice-white); }
+        .intro-coach-label { font-size: 0.8rem; color: var(--silver); }
+        .intro-slide { display: none; }
+        .intro-slide.active { display: block; }
+        .intro-headline { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 1px; color: var(--ice-white); margin-bottom: 15px; }
+        .intro-body { color: var(--silver); line-height: 1.7; font-size: 1rem; margin-bottom: 20px; }
+        .intro-diagram { background: var(--ice-blue); border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .intro-diagram svg { width: 100%; height: auto; display: block; }
+        .intro-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .intro-dots { display: flex; gap: 8px; }
+        .intro-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); transition: background 0.3s ease; }
+        .intro-dot.active { background: var(--accent-red); }
+        .intro-next-btn { background: var(--accent-red); color: var(--ice-white); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem; }
+        .intro-next-btn:hover { background: #a50d26; transform: translateY(-2px); }
+        @media (max-width: 600px) { .intro-card { padding: 25px 20px; } .intro-headline { font-size: 1.4rem; } .intro-body { font-size: 0.95rem; } }
+    </style>
+</head>
+<body>
+    <!-- Theory Intro Overlay -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-card">
+            <button class="intro-skip" onclick="skipIntro()">Skip →</button>
+            
+            <div class="intro-coach">
+                <div class="intro-coach-avatar">🏒</div>
+                <div>
+                    <div class="intro-coach-name">Coach</div>
+                    <div class="intro-coach-label">Module 5: Forechecking</div>
+                </div>
+            </div>
+
+            <!-- Slide 1 -->
+            <div class="intro-slide active" data-slide="1">
+                <h3 class="intro-headline">Forechecking Is About Layers</h3>
+                <p class="intro-body">A good forecheck isn't three guys chasing the puck. It's three layers of pressure — F1 dictates, F2 supports, F3 protects. Everyone has a job.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- End boards -->
+                        <path d="M 20 30 Q 10 90 20 150" stroke="#333" stroke-width="2" fill="none"/>
+                        <!-- F1 -->
+                        <circle cx="80" cy="90" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="80" y="94" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="9">F1</text>
+                        <!-- F2 -->
+                        <circle cx="140" cy="60" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="140" y="64" text-anchor="middle" fill="white" font-weight="bold" font-size="8">F2</text>
+                        <!-- F3 -->
+                        <circle cx="140" cy="120" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="140" y="124" text-anchor="middle" fill="white" font-weight="bold" font-size="8">F3</text>
+                        <!-- Labels -->
+                        <text x="80" y="120" text-anchor="middle" font-size="8" fill="#2D7A3E" font-weight="600">PRESSURE</text>
+                        <text x="140" y="145" text-anchor="middle" font-size="8" fill="#1E40AF" font-weight="600">SUPPORT</text>
+                        <text x="200" y="90" text-anchor="middle" font-size="8" fill="#666" font-weight="600">LAYERS</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="intro-slide" data-slide="2">
+                <h3 class="intro-headline">F1's Job: Dictate, Don't Chase</h3>
+                <p class="intro-body">F1 doesn't just charge at the puck. You take an angle that limits where the D can go — force them one way, take away their best option.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- End boards -->
+                        <path d="M 20 30 Q 10 90 20 150" stroke="#333" stroke-width="2" fill="none"/>
+                        <!-- Goal -->
+                        <rect x="25" y="78" width="15" height="24" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- D with puck -->
+                        <circle cx="60" cy="130" r="14" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                        <text x="60" y="134" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                        <circle cx="75" cy="125" r="4" fill="#1a1a1a"/>
+                        <!-- F1 angle -->
+                        <circle cx="120" cy="100" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="120" y="104" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="9">F1</text>
+                        <!-- Angle line -->
+                        <path d="M 110 105 L 70 125" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="4,2"/>
+                        <!-- X on passing lane -->
+                        <text x="100" y="60" fill="#C8102E" font-weight="bold" font-size="14">✗</text>
+                        <text x="140" y="55" font-size="7" fill="#C8102E">TAKEN AWAY</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="intro-slide" data-slide="3">
+                <h3 class="intro-headline">Read Before You Commit</h3>
+                <p class="intro-body">Don't just fly in. Read if you have support before you commit to pressure. If F2 isn't there, contain. If F2 is in position, attack.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- Two scenarios side by side -->
+                        <!-- Left: No support - contain -->
+                        <rect x="10" y="30" width="130" height="120" fill="rgba(185, 28, 28, 0.1)" stroke="#B91C1C" stroke-width="1" stroke-dasharray="3,2" rx="5"/>
+                        <text x="75" y="45" text-anchor="middle" font-size="8" fill="#B91C1C" font-weight="600">NO SUPPORT</text>
+                        <circle cx="50" cy="90" r="10" fill="#FFD700" stroke="#B8860B" stroke-width="1.5"/>
+                        <text x="50" y="93" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="7">F1</text>
+                        <text x="75" y="130" text-anchor="middle" font-size="9" fill="#B91C1C" font-weight="600">CONTAIN</text>
+                        
+                        <!-- Right: Support - attack -->
+                        <rect x="160" y="30" width="130" height="120" fill="rgba(45, 122, 62, 0.1)" stroke="#2D7A3E" stroke-width="1" stroke-dasharray="3,2" rx="5"/>
+                        <text x="225" y="45" text-anchor="middle" font-size="8" fill="#2D7A3E" font-weight="600">F2 IN POSITION</text>
+                        <circle cx="200" cy="90" r="10" fill="#FFD700" stroke="#B8860B" stroke-width="1.5"/>
+                        <text x="200" y="93" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="7">F1</text>
+                        <circle cx="240" cy="70" r="8" fill="#1E40AF"/>
+                        <text x="240" y="73" text-anchor="middle" fill="white" font-weight="bold" font-size="6">F2</text>
+                        <text x="225" y="130" text-anchor="middle" font-size="9" fill="#2D7A3E" font-weight="600">ATTACK</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="intro-nav">
+                <div class="intro-dots">
+                    <div class="intro-dot active" data-dot="1"></div>
+                    <div class="intro-dot" data-dot="2"></div>
+                    <div class="intro-dot" data-dot="3"></div>
+                </div>
+                <button class="intro-next-btn" id="introNextBtn" onclick="nextSlide()">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Puck <span>Academy</span></h1>
+            <p class="subtitle">Hockey IQ Training</p>
+        </header>
+
+        <h2 class="scenario-title">Scenario 1: F1 Angle of Approach</h2>
+
+        <div class="rink-container">
+            <svg class="rink-svg" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="500" height="350" fill="#E8F4F8" rx="10"/>
+                <text x="30" y="30" font-family="Bebas Neue, sans-serif" font-size="18" fill="#1E40AF" letter-spacing="2">OPPONENT'S ZONE - FORECHECK</text>
+                
+                <!-- End boards curve -->
+                <path d="M 80 50 Q 50 175 80 300" stroke="#333" stroke-width="3" fill="none"/>
+                
+                <!-- Goal line -->
+                <line x1="100" y1="50" x2="100" y2="300" stroke="#C8102E" stroke-width="2"/>
+                
+                <!-- Goal crease -->
+                <path d="M 100 145 Q 60 175 100 205" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="2"/>
+                <rect x="55" y="155" width="25" height="40" fill="none" stroke="#333" stroke-width="3"/>
+                
+                <!-- Blue line -->
+                <line x1="350" y1="50" x2="350" y2="300" stroke="#1E40AF" stroke-width="4"/>
+
+                <!-- Goalie -->
+                <rect x="80" y="165" width="8" height="20" fill="#C8102E" stroke="#8B0000" stroke-width="1"/>
+
+                <!-- Feedback: Correct angle -->
+                <g id="correctAngle" class="feedback-element">
+                    <path d="M 250 175 L 140 220" stroke="#2D7A3E" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#greenArr)"/>
+                    <defs><marker id="greenArr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2D7A3E"/></marker></defs>
+                    <text x="180" y="220" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#2D7A3E">TAKE AWAY</text>
+                    <text x="180" y="232" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#2D7A3E">FAR SIDE</text>
+                </g>
+
+                <!-- Opposing D with puck behind net -->
+                <g class="player">
+                    <circle cx="130" cy="240" r="22" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="130" y="246" text-anchor="middle" fill="white" font-weight="bold" font-size="14">D</text>
+                </g>
+                <circle cx="145" cy="230" r="6" fill="#1a1a1a" stroke="#333" stroke-width="1">
+                    <animate attributeName="opacity" values="1;0.7;1" dur="1.5s" repeatCount="indefinite"/>
+                </circle>
+                
+                <!-- Other D on far side -->
+                <g class="player">
+                    <circle cx="130" cy="110" r="20" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="130" y="116" text-anchor="middle" fill="white" font-weight="bold" font-size="12">D</text>
+                </g>
+                
+                <!-- F2 teammate -->
+                <g class="player">
+                    <circle cx="220" cy="120" r="20" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                    <text x="220" y="126" text-anchor="middle" fill="white" font-weight="bold" font-size="12">F2</text>
+                </g>
+
+                <!-- YOU as F1 entering zone -->
+                <g id="playerYou" class="player player-you">
+                    <circle cx="250" cy="175" r="26" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
+                    <text x="250" y="180" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="11">YOU</text>
+                </g>
+            </svg>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot you"></div><span>You (F1)</span></div>
+                <div class="legend-item"><div class="legend-dot team"></div><span>Your Team</span></div>
+                <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent</span></div>
+                <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
+            </div>
+        </div>
+
+        <div class="situation-box">
+            <p class="situation-label">Situation:</p>
+            <p class="situation-text">
+                You're F1 entering the zone on the forecheck. The D has the puck behind their net. 
+                Their other D is on the far side. F2 is trailing you on the weak side.
+                <span class="highlight">What angle do you take?</span>
+            </p>
+        </div>
+
+        <h3 class="question">How do you approach the puck carrier?</h3>
+
+        <div class="options">
+            <div class="option" onclick="selectAnswer(this)" data-correct="false">
+                <span class="option-letter">A)</span>
+                <span class="option-text">Skate straight at the D to pressure him immediately</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this)" data-correct="true">
+                <span class="option-letter">B)</span>
+                <span class="option-text">Arc toward his strong side to take away the D-to-D pass</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this)" data-correct="false">
+                <span class="option-letter">C)</span>
+                <span class="option-text">Go wide to the boards to cut off the rim</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this)" data-correct="false">
+                <span class="option-letter">D)</span>
+                <span class="option-text">Stay high and let him come to you</span>
+            </div>
+        </div>
+
+        <div class="feedback" id="feedback">
+            <h4 class="feedback-title" id="feedbackTitle"></h4>
+            <p class="feedback-text" id="feedbackText"></p>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="resetScenario()">Try Again</button>
+                <button class="btn btn-primary" onclick="window.location.href='module5-scenario2-f1-f2-read.html'">Next Scenario →</button>
+                <button class="btn btn-secondary" onclick="window.location.href='training.html'">Back to Module</button>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            Module 5: Forechecking • Scenario 1 of 7
+        </div>
+    </div>
+
+    <script>
+        // ====== THEORY INTRO MANAGEMENT ======
+        const INTRO_STORAGE_KEY = 'puckAcademy_introSeen';
+        let currentSlide = 1;
+        const totalSlides = 3;
+
+        function getIntroSeen() {
+            const stored = localStorage.getItem(INTRO_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        }
+
+        function setIntroSeen(moduleNum) {
+            const introSeen = getIntroSeen();
+            introSeen['module' + moduleNum] = true;
+            localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(introSeen));
+        }
+
+        function checkAndShowIntro() {
+            const introSeen = getIntroSeen();
+            const urlParams = new URLSearchParams(window.location.search);
+            const forceReview = urlParams.get('review') === 'intro';
+            
+            if (!introSeen.module5 || forceReview) {
+                showIntro();
+            }
+        }
+
+        function showIntro() {
+            document.getElementById('introOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideIntro() {
+            document.getElementById('introOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            setIntroSeen(5);
+            
+            const url = new URL(window.location);
+            url.searchParams.delete('review');
+            window.history.replaceState({}, '', url);
+        }
+
+        function skipIntro() { hideIntro(); }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                document.querySelector(`.intro-slide[data-slide="${currentSlide}"]`).classList.remove('active');
+                document.querySelector(`.intro-dot[data-dot="${currentSlide}"]`).classList.remove('active');
+                
+                currentSlide++;
+                document.querySelector(`.intro-slide[data-slide="${currentSlide}"]`).classList.add('active');
+                document.querySelector(`.intro-dot[data-dot="${currentSlide}"]`).classList.add('active');
+                
+                if (currentSlide === totalSlides) {
+                    document.getElementById('introNextBtn').textContent = "Got it, let's train →";
+                }
+            } else {
+                hideIntro();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('introOverlay').classList.contains('active')) {
+                skipIntro();
+            }
+            if (document.getElementById('introOverlay').classList.contains('active')) {
+                if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                    nextSlide();
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', checkAndShowIntro);
+
+        // ====== SCENARIO LOGIC ======
+        const feedback = document.getElementById('feedback');
+        const feedbackTitle = document.getElementById('feedbackTitle');
+        const feedbackText = document.getElementById('feedbackText');
+        let answered = false;
+
+        function showFeedbackDiagram() {
+            document.getElementById('correctAngle').classList.add('visible');
+            document.getElementById('playerYou').classList.add('answered');
+        }
+
+        function hideFeedbackDiagram() {
+            document.getElementById('correctAngle').classList.remove('visible');
+            document.getElementById('playerYou').classList.remove('answered');
+        }
+
+        function selectAnswer(element) {
+            if (answered) return;
+            const options = document.querySelectorAll('.option');
+            const isCorrect = element.getAttribute('data-correct') === 'true';
+            
+            gtag('event', 'scenario_answer', { module_number: 5, module_name: 'Forechecking', scenario_number: 1, correct: isCorrect });
+
+            options.forEach(opt => { opt.classList.add('disabled'); opt.onclick = null; if (opt.getAttribute('data-correct') === 'true') opt.classList.add('correct'); });
+            element.classList.add('selected');
+            if (!isCorrect) element.classList.add('incorrect');
+            answered = true;
+
+            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_module5_scores') || '{"currentRun": {}, "bestScore": 0}');
+            scoreData.currentRun[1] = isCorrect;
+            localStorage.setItem('puckAcademy_module5_scores', JSON.stringify(scoreData));
+
+            showFeedbackDiagram();
+
+            setTimeout(() => {
+                feedback.classList.add('active');
+                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) {
+                    feedbackTitle.textContent = '✓ Smart angle.';
+                    feedbackText.innerHTML = '<strong>Take away their best option — the D-to-D pass.</strong> By arcing toward his strong side, you force him to go the other way where F2 is waiting. That\'s how you dictate the play instead of just chasing. — Coach';
+                } else {
+                    feedbackTitle.textContent = '✗ Think about angles.';
+                    feedbackText.innerHTML = '<strong>Don\'t just skate at the puck — skate to take away options.</strong> If you arc toward his strong side, you take away the D-to-D pass and force him toward F2. Forechecking is about angles, not straight lines. — Coach';
+                }
+                setTimeout(() => { feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+            }, 500);
+        }
+
+        function resetScenario() {
+            answered = false;
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => { opt.classList.remove('disabled', 'selected', 'correct', 'incorrect'); opt.onclick = function() { selectAnswer(this); }; });
+            feedback.classList.remove('active', 'correct', 'incorrect');
+            hideFeedbackDiagram();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

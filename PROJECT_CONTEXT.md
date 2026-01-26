@@ -60,10 +60,13 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - Multiple choice decision points ("What should you do?")
 - Immediate feedback with explanation of correct/incorrect choices
 - Progress through linear modules (must complete to unlock next)
-- **19 interactive scenarios across 3 modules:**
-  - Module 1: Defensive Zone (5 scenarios)
-  - Module 2: Faceoffs (7 scenarios)
-  - Module 3: Breakouts (7 scenarios)
+- **40 interactive scenarios across 6 modules:**
+  - Module 1: Defensive Zone (5 scenarios) — Centers
+  - Module 2: Faceoffs (7 scenarios) — Centers
+  - Module 3: Breakouts (7 scenarios) — Centers
+  - Module 4: Offensive Zone (7 scenarios) — Centers
+  - Module 5: Forechecking (7 scenarios) — Centers
+  - Module 6: D-Zone (7 scenarios) — Defensemen
 - Scoring system tracking correct/incorrect answers per module
 - Results modal with score display and performance-based messaging
 
@@ -630,6 +633,30 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 26, 2026 - Major Content Expansion (Modules 4-6)
+
+**New Modules Added:**
+- **Module 4: Offensive Zone (7 scenarios)** — Net front presence, cycle support, finding soft ice, backdoor reads, screen vs. deflection, high slot threat, O-zone turnovers
+- **Module 5: Forechecking (7 scenarios)** — F1 angle of approach, F1 vs F2 reads, pressure vs contain, angling, reading breakouts, loose puck battles, turnover transitions
+- **Module 6: D-Zone for Defensemen (7 scenarios)** — Gap control, puck retrieval, D-to-D decisions, net front battles, when to pinch, first pass under pressure, zone coverage
+
+**Content Summary:**
+- Added 21 new interactive scenarios
+- Total content now: 40 scenarios across 6 modules
+- Centers curriculum complete (Modules 1-5, 33 scenarios)
+- Defensemen curriculum started (Module 6, 7 scenarios)
+
+**Onboarding Updated:**
+- Defense position now selectable (no longer "Coming Soon")
+- Updated position note to reflect available content
+
+**Technical:**
+- All new scenarios include Theory Intro overlays
+- GA4 event tracking built into all scenarios
+- LocalStorage progress tracking for new modules
+
+---
 
 ### January 26, 2026 - Theory Intro & Diagram Improvements
 

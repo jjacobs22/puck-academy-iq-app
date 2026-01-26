@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0N3XTSRTM2');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey IQ Training - Backdoor Read</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --ice-blue: #E8F4F8; --dark-blue: #0A1628; --accent-red: #C8102E; --ice-white: #FFFFFF; --silver: #A8B2BE; --success-green: #2D7A3E; --error-red: #B91C1C; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Work Sans', sans-serif; background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%); color: var(--ice-white); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 3px; color: var(--ice-white); margin-bottom: 10px; }
+        .logo span { color: var(--accent-red); }
+        .subtitle { color: var(--silver); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px; }
+        .scenario-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 20px; }
+        .rink-container { background: var(--ice-blue); border-radius: 15px; padding: 25px; margin-bottom: 20px; }
+        .rink-svg { width: 100%; height: auto; display: block; }
+        .player-you { animation: pulse 2s infinite; }
+        .player-you.answered { animation: none; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .feedback-element { opacity: 0; transition: opacity 0.6s ease; }
+        .feedback-element.visible { opacity: 1; }
+        .legend { display: flex; justify-content: center; gap: 25px; margin-top: 15px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--dark-blue); }
+        .legend-dot { width: 16px; height: 16px; border-radius: 50%; }
+        .legend-dot.you { background: #FFD700; border: 2px solid #B8860B; }
+        .legend-dot.team { background: #1E40AF; }
+        .legend-dot.opponent { background: var(--accent-red); }
+        .legend-dot.puck { background: #1a1a1a; }
+        .situation-box { background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px; margin-bottom: 25px; }
+        .situation-label { color: var(--accent-red); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 8px; }
+        .situation-text { color: var(--ice-white); line-height: 1.6; }
+        .situation-text .highlight { color: var(--accent-red); font-weight: 600; }
+        .question { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option { background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 18px 20px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: flex-start; gap: 12px; }
+        .option:hover:not(.disabled) { border-color: var(--accent-red); background: rgba(255, 255, 255, 0.12); transform: translateX(5px); }
+        .option.correct { border-color: var(--success-green); background: rgba(45, 122, 62, 0.2); }
+        .option.incorrect { border-color: var(--error-red); background: rgba(185, 28, 28, 0.15); }
+        .option.disabled { cursor: default; opacity: 0.7; }
+        .option-letter { font-weight: 700; color: var(--accent-red); min-width: 25px; }
+        .feedback { margin-top: 25px; padding: 25px; border-radius: 12px; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; display: none; }
+        .feedback.active { opacity: 1; transform: translateY(0); display: block; }
+        .feedback.correct { background: rgba(45, 122, 62, 0.2); border: 1px solid var(--success-green); }
+        .feedback.incorrect { background: rgba(185, 28, 28, 0.15); border: 1px solid var(--error-red); }
+        .feedback-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 15px; }
+        .feedback.correct .feedback-title { color: var(--success-green); }
+        .feedback.incorrect .feedback-title { color: var(--error-red); }
+        .feedback-text { line-height: 1.7; color: var(--silver); }
+        .feedback-text strong { color: var(--ice-white); }
+        .btn-row { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .btn { padding: 14px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-size: 1rem; }
+        .btn-primary { background: var(--accent-red); color: var(--ice-white); }
+        .btn-primary:hover { background: #a50d26; transform: translateY(-2px); }
+        .btn-secondary { background: transparent; color: var(--silver); border: 1px solid var(--silver); }
+        .btn-secondary:hover { border-color: var(--ice-white); color: var(--ice-white); }
+        .scenario-footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--silver); font-size: 0.9rem; }
+        @media (max-width: 600px) { .container { padding: 20px; } .logo { font-size: 2rem; } .btn-row { flex-direction: column; } .btn { width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Puck <span>Academy</span></h1>
+            <p class="subtitle">Hockey IQ Training</p>
+        </header>
+
+        <h2 class="scenario-title">Scenario 4: Backdoor Read</h2>
+
+        <div class="rink-container">
+            <svg class="rink-svg" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="500" height="350" fill="#E8F4F8" rx="10"/>
+                <text x="30" y="30" font-family="Bebas Neue, sans-serif" font-size="18" fill="#1E40AF" letter-spacing="2">BACKDOOR OPPORTUNITY</text>
+                
+                <line x1="420" y1="50" x2="420" y2="300" stroke="#C8102E" stroke-width="2"/>
+                <path d="M 420 145 Q 460 175 420 205" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="2"/>
+                <rect x="420" y="155" width="25" height="40" fill="none" stroke="#333" stroke-width="3"/>
+                <line x1="150" y1="50" x2="150" y2="300" stroke="#1E40AF" stroke-width="4"/>
+                <rect x="415" y="165" width="8" height="20" fill="#C8102E" stroke="#8B0000" stroke-width="1"/>
+
+                <!-- Feedback: Backdoor zone -->
+                <g id="backdoorZone" class="feedback-element">
+                    <ellipse cx="390" cy="230" rx="25" ry="30" fill="rgba(45, 122, 62, 0.3)" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="5,3"/>
+                    <text x="390" y="230" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="9" font-weight="600" fill="#2D7A3E">BACK</text>
+                    <text x="390" y="242" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="9" font-weight="600" fill="#2D7A3E">DOOR</text>
+                </g>
+
+                <!-- Winger with puck on strong side -->
+                <g class="player">
+                    <circle cx="300" cy="100" r="22" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                    <text x="300" y="106" text-anchor="middle" fill="white" font-weight="bold" font-size="14">W</text>
+                </g>
+                <circle cx="315" cy="90" r="6" fill="#1a1a1a" stroke="#333" stroke-width="1">
+                    <animate attributeName="opacity" values="1;0.7;1" dur="1.5s" repeatCount="indefinite"/>
+                </circle>
+                
+                <!-- Opposing D overcommitting to strong side -->
+                <g class="player">
+                    <circle cx="360" cy="130" r="20" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="360" y="136" text-anchor="middle" fill="white" font-weight="bold" font-size="12">D</text>
+                </g>
+                
+                <!-- Other D covering low -->
+                <g class="player">
+                    <circle cx="380" cy="180" r="20" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="380" y="186" text-anchor="middle" fill="white" font-weight="bold" font-size="12">D</text>
+                </g>
+                
+                <!-- D at point -->
+                <g class="player">
+                    <circle cx="200" cy="175" r="22" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                    <text x="200" y="181" text-anchor="middle" fill="white" font-weight="bold" font-size="14">D</text>
+                </g>
+
+                <!-- YOU - at high slot, backdoor is open -->
+                <g id="playerYou" class="player player-you">
+                    <circle cx="300" cy="200" r="26" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
+                    <text x="300" y="205" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="11">YOU</text>
+                </g>
+            </svg>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot you"></div><span>You</span></div>
+                <div class="legend-item"><div class="legend-dot team"></div><span>Your Team</span></div>
+                <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent</span></div>
+                <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
+            </div>
+        </div>
+
+        <div class="situation-box">
+            <p class="situation-label">Situation:</p>
+            <p class="situation-text">
+                Your winger has the puck on the strong side half wall. Both opposing D have cheated toward the puck.
+                The far post/backdoor is wide open. You're currently in the middle of the slot.
+                <span class="highlight">What's your move?</span>
+            </p>
+        </div>
+
+        <h3 class="question">How do you capitalize on the defensive overcommit?</h3>
+
+        <div class="options">
+            <div class="option" onclick="selectAnswer(this)" data-correct="true">
+                <span class="option-letter">A)</span>
+                <span class="option-text">Sneak to the far post for a backdoor tap-in</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this)" data-correct="false">
+                <span class="option-letter">B)</span>
+                <span class="option-text">Move to the near side for a quick pass and shot</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this)" data-correct="false">
+                <span class="option-letter">C)</span>
+                <span class="option-text">Stay in the slot and wait for a centering pass</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this)" data-correct="false">
+                <span class="option-letter">D)</span>
+                <span class="option-text">Go to the point to give your winger an outlet</span>
+            </div>
+        </div>
+
+        <div class="feedback" id="feedback">
+            <h4 class="feedback-title" id="feedbackTitle"></h4>
+            <p class="feedback-text" id="feedbackText"></p>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="resetScenario()">Try Again</button>
+                <button class="btn btn-primary" onclick="window.location.href='module4-scenario5-screen-tip.html'">Next Scenario →</button>
+                <button class="btn btn-secondary" onclick="window.location.href='training.html'">Back to Module</button>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            Module 4: Offensive Zone • Scenario 4 of 7
+        </div>
+    </div>
+
+    <script>
+        const feedback = document.getElementById('feedback');
+        const feedbackTitle = document.getElementById('feedbackTitle');
+        const feedbackText = document.getElementById('feedbackText');
+        let answered = false;
+
+        function showFeedbackDiagram() {
+            document.getElementById('backdoorZone').classList.add('visible');
+            document.getElementById('playerYou').classList.add('answered');
+        }
+
+        function hideFeedbackDiagram() {
+            document.getElementById('backdoorZone').classList.remove('visible');
+            document.getElementById('playerYou').classList.remove('answered');
+        }
+
+        function selectAnswer(element) {
+            if (answered) return;
+            const options = document.querySelectorAll('.option');
+            const isCorrect = element.getAttribute('data-correct') === 'true';
+            
+            gtag('event', 'scenario_answer', { module_number: 4, module_name: 'Offensive Zone', scenario_number: 4, correct: isCorrect });
+
+            options.forEach(opt => { opt.classList.add('disabled'); opt.onclick = null; if (opt.getAttribute('data-correct') === 'true') opt.classList.add('correct'); });
+            element.classList.add('selected');
+            if (!isCorrect) element.classList.add('incorrect');
+            answered = true;
+
+            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_module4_scores') || '{"currentRun": {}, "bestScore": 0}');
+            scoreData.currentRun[4] = isCorrect;
+            localStorage.setItem('puckAcademy_module4_scores', JSON.stringify(scoreData));
+
+            showFeedbackDiagram();
+
+            setTimeout(() => {
+                feedback.classList.add('active');
+                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) {
+                    feedbackTitle.textContent = '✓ Great anticipation.';
+                    feedbackText.innerHTML = '<strong>When the D overcommits to the puck side, the backdoor opens up.</strong> That\'s an easy goal if you time it right — sneak to the far post and you\'ll get a tap-in. This is about reading the defense, not just the puck. — Coach';
+                } else {
+                    feedbackTitle.textContent = '✗ Read the defense.';
+                    feedbackText.innerHTML = '<strong>Both D cheated to the strong side — the backdoor is wide open.</strong> Don\'t go where the defense already is. Sneak to the far post and your winger can slide it across for an easy finish. Read the overcommit. — Coach';
+                }
+                setTimeout(() => { feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+            }, 500);
+        }
+
+        function resetScenario() {
+            answered = false;
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => { opt.classList.remove('disabled', 'selected', 'correct', 'incorrect'); opt.onclick = function() { selectAnswer(this); }; });
+            feedback.classList.remove('active', 'correct', 'incorrect');
+            hideFeedbackDiagram();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
