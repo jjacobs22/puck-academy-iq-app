@@ -660,6 +660,21 @@
         </div>
     </div>
 
+    <!-- Feedback Prompt Modal -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal-content">
+            <div class="modal-icon">📝</div>
+            <h3 class="modal-title">NICE WORK!</h3>
+            <p class="modal-message" style="margin-bottom: 24px;">
+                You just crushed your first module! We're building this for players like you — got 30 seconds to tell us what you think?
+            </p>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="openFeedbackForm()">Sure, I'll help →</button>
+                <button class="btn btn-secondary" onclick="closeFeedbackModal()">Maybe later</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Module configurations
         const moduleConfigs = {
@@ -834,6 +849,34 @@
 
         function closeResults() {
             document.getElementById('resultsModal').classList.remove('active');
+            
+            // Check if we should show feedback prompt (only once, after first module completion)
+            if (!localStorage.getItem('puckAcademy_feedbackPrompted')) {
+                // Check if any module is fully completed
+                for (let moduleNum = 1; moduleNum <= 3; moduleNum++) {
+                    const config = moduleConfigs[moduleNum];
+                    const scoreData = getScoreData(moduleNum);
+                    const completed = Object.keys(scoreData.currentRun).length;
+                    
+                    if (completed === config.total) {
+                        // User has completed at least one module - show feedback prompt
+                        setTimeout(() => {
+                            document.getElementById('feedbackModal').classList.add('active');
+                        }, 300);
+                        localStorage.setItem('puckAcademy_feedbackPrompted', 'true');
+                        break;
+                    }
+                }
+            }
+        }
+
+        function openFeedbackForm() {
+            closeFeedbackModal();
+            window.open('https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform', '_blank');
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').classList.remove('active');
         }
 
         function retryModule() {
