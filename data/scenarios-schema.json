@@ -1,0 +1,253 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Puck Academy Scenarios",
+  "description": "Complete data structure for all hockey IQ training modules and scenarios",
+  "type": "object",
+  "properties": {
+    "modules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/module"
+      }
+    }
+  },
+  "required": ["modules"],
+  "definitions": {
+    "module": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^module[0-9]+$",
+          "description": "Unique module identifier (e.g., 'module1')"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Module number for display and ordering"
+        },
+        "title": {
+          "type": "string",
+          "description": "Module title (e.g., 'Defensive Zone')"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of what the module teaches"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["center", "winger", "defense", "goalie"]
+          },
+          "description": "Positions this module is designed for"
+        },
+        "scenarioCount": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total number of scenarios in this module"
+        },
+        "theoryIntro": {
+          "$ref": "#/definitions/theoryIntro"
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/scenario"
+          }
+        }
+      },
+      "required": ["id", "number", "title", "description", "position", "scenarioCount", "scenarios"]
+    },
+    "theoryIntro": {
+      "type": "object",
+      "properties": {
+        "slides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slide"
+          },
+          "minItems": 1,
+          "maxItems": 5
+        }
+      },
+      "required": ["slides"]
+    },
+    "slide": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Slide number in sequence"
+        },
+        "title": {
+          "type": "string",
+          "description": "Slide headline"
+        },
+        "content": {
+          "type": "string",
+          "description": "Main teaching point for this slide"
+        },
+        "diagram": {
+          "type": "object",
+          "description": "Optional SVG diagram data",
+          "properties": {
+            "elements": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/diagramElement"
+              }
+            }
+          }
+        }
+      },
+      "required": ["number", "title", "content"]
+    },
+    "scenario": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^module[0-9]+-scenario[0-9]+$",
+          "description": "Unique scenario identifier (e.g., 'module1-scenario1')"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Scenario number within the module"
+        },
+        "title": {
+          "type": "string",
+          "description": "Scenario title describing the decision point"
+        },
+        "situation": {
+          "type": "string",
+          "description": "Game context and setup for the scenario"
+        },
+        "question": {
+          "type": "string",
+          "description": "The decision question the player must answer"
+        },
+        "rinkPosition": {
+          "type": "string",
+          "enum": [
+            "defensive-zone-low",
+            "defensive-zone-high",
+            "defensive-zone-corner",
+            "neutral-zone",
+            "offensive-zone-low",
+            "offensive-zone-high",
+            "offensive-zone-corner",
+            "faceoff-circle",
+            "center-ice"
+          ],
+          "description": "Primary area of the rink where scenario takes place"
+        },
+        "diagram": {
+          "$ref": "#/definitions/diagram"
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/answer"
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Exactly 4 answer options"
+        }
+      },
+      "required": ["id", "number", "title", "situation", "question", "rinkPosition", "diagram", "answers"]
+    },
+    "diagram": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["svg", "image"],
+          "description": "Type of diagram representation"
+        },
+        "viewBox": {
+          "type": "string",
+          "default": "0 0 800 400",
+          "description": "SVG viewBox attribute"
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/diagramElement"
+          },
+          "description": "Visual elements to render on the rink"
+        }
+      },
+      "required": ["type", "elements"]
+    },
+    "diagramElement": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["player", "puck", "arrow", "line", "zone", "text", "faceoff-circle"],
+          "description": "Type of element to render"
+        },
+        "team": {
+          "type": "string",
+          "enum": ["you", "teammate", "opponent"],
+          "description": "Team affiliation (for players)"
+        },
+        "x": {
+          "type": "number",
+          "description": "X coordinate on SVG canvas"
+        },
+        "y": {
+          "type": "number",
+          "description": "Y coordinate on SVG canvas"
+        },
+        "x2": {
+          "type": "number",
+          "description": "End X coordinate (for lines/arrows)"
+        },
+        "y2": {
+          "type": "number",
+          "description": "End Y coordinate (for lines/arrows)"
+        },
+        "label": {
+          "type": "string",
+          "description": "Text label for the element"
+        },
+        "number": {
+          "type": "string",
+          "description": "Jersey number (for players)"
+        },
+        "radius": {
+          "type": "number",
+          "default": 26,
+          "description": "Circle radius for players (you: 26, others: 22)"
+        },
+        "color": {
+          "type": "string",
+          "description": "Override color for this element"
+        }
+      },
+      "required": ["type"]
+    },
+    "answer": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Answer option text shown to player"
+        },
+        "correct": {
+          "type": "boolean",
+          "description": "Whether this is the correct answer"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Coach's explanation of why this answer is right or wrong"
+        }
+      },
+      "required": ["text", "correct", "feedback"]
+    }
+  }
+}

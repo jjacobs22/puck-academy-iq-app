@@ -1,0 +1,280 @@
+{
+  "modules": [
+    {
+      "id": "module1",
+      "number": 1,
+      "title": "Defensive Zone",
+      "description": "Master your defensive responsibilities as a center",
+      "position": ["center"],
+      "scenarioCount": 5,
+      "theoryIntro": {
+        "slides": [
+          {
+            "number": 1,
+            "title": "Your Job in the D-Zone",
+            "content": "As a center, you're the defensive quarterback. You read the play before it develops, communicate coverage, and make sure everyone knows their assignment. Your job isn't just to work hard — it's to work smart and be in the right place at the right time."
+          },
+          {
+            "number": 2,
+            "title": "Trust the Structure",
+            "content": "Good defensive zone play is about discipline, not heroics. Stick to your coverage responsibilities, talk to your linemates, and trust that if everyone does their job, you'll win the battle. Don't abandon your position to chase the puck — that's how goals happen."
+          },
+          {
+            "number": 3,
+            "title": "Defense Creates Offense",
+            "content": "Every great rush starts with a smart defensive read. The faster you can recognize pressure, support your D, and make the right decision, the faster you can transition to offense. Master the D-zone and you'll dominate the game."
+          }
+        ]
+      },
+      "scenarios": [
+        {
+          "id": "module1-scenario1",
+          "number": 1,
+          "title": "Reading Pressure on Your D-Man",
+          "situation": "Your team is defending a 2-1 lead late in the third period. The opponent has the puck behind your net. Your defenseman (#4) is battling for the puck in the corner. The opposing forward is applying heavy pressure. Where should you position yourself?",
+          "question": "What should you do?",
+          "rinkPosition": "defensive-zone-low",
+          "diagram": {
+            "type": "svg",
+            "viewBox": "0 0 800 400",
+            "elements": [
+              {
+                "type": "player",
+                "team": "you",
+                "x": 400,
+                "y": 350,
+                "label": "YOU",
+                "radius": 26
+              },
+              {
+                "type": "player",
+                "team": "teammate",
+                "x": 200,
+                "y": 400,
+                "number": "4",
+                "radius": 22
+              },
+              {
+                "type": "player",
+                "team": "opponent",
+                "x": 250,
+                "y": 300,
+                "radius": 22
+              },
+              {
+                "type": "player",
+                "team": "opponent",
+                "x": 500,
+                "y": 250,
+                "radius": 22
+              },
+              {
+                "type": "puck",
+                "x": 180,
+                "y": 380
+              },
+              {
+                "type": "text",
+                "x": 400,
+                "y": 50,
+                "label": "DEFENSIVE ZONE"
+              }
+            ]
+          },
+          "answers": [
+            {
+              "text": "Chase the puck carrier into the corner",
+              "correct": false,
+              "feedback": "Not the best choice here. If you chase, you abandon the high slot — the most dangerous scoring area. Now their center has a free path to the net. Your job is to read the pressure and take away the middle, not to chase."
+            },
+            {
+              "text": "Hold the high slot and read the play",
+              "correct": true,
+              "feedback": "Perfect read! By holding the high slot, you're covering the most dangerous scoring area while staying in a position to support your D if the puck breaks free. You're taking away time and space from their forwards. This is smart, structured defense. — Coach"
+            },
+            {
+              "text": "Pinch down to double-team",
+              "correct": false,
+              "feedback": "Too aggressive in this situation. If you pinch and they escape the corner, you've left the slot wide open. Late in a one-goal game, you need to prioritize structure over forcing turnovers. Trust your D to win the battle."
+            },
+            {
+              "text": "Communicate and stay high",
+              "correct": false,
+              "feedback": "Close, but communication alone isn't enough. Staying high is good, but you need to be in the high slot specifically — not floating too wide. The key is positioning yourself where you can take away the most dangerous passing lane while being ready to support."
+            }
+          ]
+        },
+        {
+          "id": "module1-scenario2",
+          "number": 2,
+          "title": "Corner Battle Support",
+          "situation": "Your D-man is engaged in a corner battle along the boards. The puck is loose and could go either way. You're positioned at the hash marks. What's your priority?",
+          "question": "What should you do?",
+          "rinkPosition": "defensive-zone-corner",
+          "diagram": {
+            "type": "svg",
+            "viewBox": "0 0 800 400",
+            "elements": [
+              {
+                "type": "player",
+                "team": "teammate",
+                "x": 150,
+                "y": 350,
+                "number": "4",
+                "radius": 22
+              },
+              {
+                "type": "player",
+                "team": "opponent",
+                "x": 170,
+                "y": 330,
+                "radius": 22
+              },
+              {
+                "type": "player",
+                "team": "you",
+                "x": 300,
+                "y": 280,
+                "label": "YOU",
+                "radius": 26
+              },
+              {
+                "type": "player",
+                "team": "opponent",
+                "x": 450,
+                "y": 200,
+                "radius": 22
+              },
+              {
+                "type": "puck",
+                "x": 160,
+                "y": 340
+              }
+            ]
+          },
+          "answers": [
+            {
+              "text": "Jump into the corner to help win the battle",
+              "correct": false,
+              "feedback": "That's exactly what they want you to do. If you commit to the corner and they win the puck, you've created a 2-on-1 or worse in front of your net. Your job is to take away their next option, not to join the scrum."
+            },
+            {
+              "text": "Stay at the hash marks and prepare to take away the pass",
+              "correct": true,
+              "feedback": "Exactly right. Your positioning at the hash marks lets you support if your D wins it AND take away the opponent's best passing option if they win it. You're playing smart, structured hockey. This is how you protect the slot. — Coach"
+            },
+            {
+              "text": "Drift toward the net to help your goalie",
+              "correct": false,
+              "feedback": "Too passive. If you drift toward the net, you're giving them a free outlet pass to their forward in the high slot. Your goalie can see the corner — they need you to prevent the dangerous pass, not stand beside them."
+            },
+            {
+              "text": "Call for your winger to drop down and help",
+              "correct": false,
+              "feedback": "Not the right call here. If your winger drops, you've left their defenseman uncovered at the point. That's a recipe for a backdoor goal. Trust your D to battle — your job is positional support, not bringing more bodies to the corner."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "module2",
+      "number": 2,
+      "title": "Faceoffs",
+      "description": "Master the chess match at the dot",
+      "position": ["center"],
+      "scenarioCount": 7,
+      "theoryIntro": {
+        "slides": [
+          {
+            "number": 1,
+            "title": "Faceoffs Are Chess, Not Checkers",
+            "content": "Every faceoff is a battle of positioning, timing, and reading your opponent. It's not just about strength — it's about leverage, anticipation, and making the right decision before the puck drops. Win or lose the draw, your job is to put your team in a better position than theirs."
+          },
+          {
+            "number": 2,
+            "title": "Read Before You React",
+            "content": "The best faceoff players watch everything: the ref's hand, the opponent's feet, their stick angle, their body position. All of this tells you what's coming. Don't just react to the puck drop — anticipate it and be a step ahead."
+          },
+          {
+            "number": 3,
+            "title": "Win the Possession, Not Just the Draw",
+            "content": "Winning a faceoff cleanly is great, but if the puck ends up on their stick two seconds later, you've lost. Think beyond the dot. Where do you want the puck to go? Who's your support? What happens if you lose it? Plan two moves ahead."
+          }
+        ]
+      },
+      "scenarios": [
+        {
+          "id": "module2-scenario1",
+          "number": 1,
+          "title": "Reading the Ref Position",
+          "situation": "You're taking a defensive zone faceoff. You notice the ref is positioned slightly to your forehand side. Your opponent sets up with his stick on the ice early. What advantage does the ref's position give you?",
+          "question": "What's your read?",
+          "rinkPosition": "faceoff-circle",
+          "diagram": {
+            "type": "svg",
+            "viewBox": "0 0 800 400",
+            "elements": [
+              {
+                "type": "faceoff-circle",
+                "x": 400,
+                "y": 300
+              },
+              {
+                "type": "player",
+                "team": "you",
+                "x": 380,
+                "y": 300,
+                "label": "YOU",
+                "radius": 26
+              },
+              {
+                "type": "player",
+                "team": "opponent",
+                "x": 420,
+                "y": 300,
+                "radius": 22
+              },
+              {
+                "type": "text",
+                "x": 300,
+                "y": 280,
+                "label": "REF"
+              },
+              {
+                "type": "player",
+                "team": "teammate",
+                "x": 350,
+                "y": 350,
+                "number": "17",
+                "radius": 22
+              }
+            ]
+          },
+          "answers": [
+            {
+              "text": "I can cheat my feet earlier without getting caught",
+              "correct": true,
+              "feedback": "Exactly. When the ref is positioned to your forehand side, their sightline to your feet is partially blocked. You can adjust your stance a split second earlier without getting tossed. That extra moment of setup can make all the difference. Smart read. — Coach"
+            },
+            {
+              "text": "I should set up faster because the ref is ready",
+              "correct": false,
+              "feedback": "Not quite. The ref's position doesn't change the timing of the drop — it changes what they can see. This isn't about speed, it's about recognizing what you can get away with in your setup."
+            },
+            {
+              "text": "I need to protect my forehand side more",
+              "correct": false,
+              "feedback": "You're thinking about positioning, but not reading the situation correctly. The ref's position gives you an advantage in setup, not a defensive responsibility. Focus on what you can control before the puck drops."
+            },
+            {
+              "text": "It doesn't matter, I just focus on my opponent",
+              "correct": false,
+              "feedback": "Wrong mindset. Elite faceoff players use every detail to gain an edge. The ref's position matters — it tells you what they can and can't see. If you ignore it, you're giving up free information."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

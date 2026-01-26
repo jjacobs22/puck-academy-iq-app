@@ -29,6 +29,14 @@
     <meta name="twitter:description" content="Interactive scenarios to train your defensive zone positioning. Make smarter decisions on the ice.">
     <meta name="twitter:image" content="https://hockeyiq.netlify.app/og-image">
     
+    <!-- PWA Support -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0A1628">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Puck Academy">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     
@@ -325,6 +333,15 @@
 
             // Hide the regular start button since challenge banner has one
             document.getElementById('startBtn').textContent = 'Start Training →';
+        }
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
         }
     </script>
 </body>
