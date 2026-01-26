@@ -104,16 +104,11 @@
         }
 
         .player-you {
-            animation: pulse 2s infinite;
+            filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7));
         }
 
         .player-you.answered {
-            animation: none;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            filter: none;
         }
 
         /* Feedback diagram elements - hidden by default */

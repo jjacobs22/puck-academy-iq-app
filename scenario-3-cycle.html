@@ -55,9 +55,9 @@
         .rink-container { background: var(--ice-blue); border-radius: 15px; padding: 25px; margin-bottom: 20px; }
         .rink-svg { width: 100%; height: auto; display: block; }
 
-        .player-you { animation: pulse 2s infinite; }
-        .player-you.answered { animation: none; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .player-you { filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7)); }
+        .player-you.answered { filter: none; }
+        
 
         .feedback-element { opacity: 0; transition: opacity 0.6s ease; }
         .feedback-element.visible { opacity: 1; }
