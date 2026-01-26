@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 22, 2026  
+**Last Updated:** January 25, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -378,7 +378,9 @@ puck-academy-iq-app/
 - **Results modal:** Shows score with module-specific performance-based messaging
 - **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop), includes context text + dynamic OG image preview
 - **Email capture:** Netlify Forms collecting onboarding emails
-- **Feedback form:** Google Forms linked from results modal
+- **Feedback form:** Google Forms linked from results modal + prompt after first module completion
+- **Google Analytics 4:** Full tracking with custom events (scenario_answer, module_complete, share_score, feedback_form_open)
+- **Position clarity in onboarding:** Defense/Goalie show "Coming Soon", wingers get note about Faceoffs being center-specific
 - **Tyler's personalized training:** Standalone printable coaching notes based on game feedback
 - **Mobile responsive:** Works on phone/tablet
 - **GitHub → Netlify pipeline:** Auto-deploy on push
@@ -386,7 +388,7 @@ puck-academy-iq-app/
 ### What's Partially Working ⚠️
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
 - **Progress persistence:** Works locally but no server-side backup
-- **Non-center users:** Onboarding captures their email with "notify me" but no content for them
+- **Non-center users:** Defense/Goalie disabled with "Coming Soon"; Wingers can use forward content with note about Faceoffs module
 
 ### What's Not Started 🔲
 - ~~Module 2: Faceoffs~~ ✅ **DONE** (7 scenarios)
@@ -627,6 +629,34 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 25, 2026 - Analytics & Onboarding Improvements
+
+**Google Analytics 4 Integration:**
+- Added GA4 tracking (G-0N3XTSRTM2) to all 22 HTML pages
+- Custom events implemented:
+  - `scenario_answer`: tracks module, scenario, correct/incorrect
+  - `module_complete`: tracks module, score, percentage
+  - `share_score`: tracks when users share their results
+  - `feedback_form_open`: tracks feedback prompt engagement
+
+**Feedback Prompt:**
+- Added modal prompt after first module completion asking for feedback
+- Only shows once per user (tracked in localStorage)
+- Links to Google Form for beta feedback collection
+
+**Onboarding Position Clarity:**
+- Defense and Goalie options now grayed out with "Coming Soon" badge
+- Added note: "We're starting with forward-focused training. Defense & goalie modules are in development."
+- Wingers see a heads-up on final screen: "The Faceoffs module is center-specific. Feel free to skip it, or learn what your center is reading!"
+- Clicking disabled positions shows friendly alert explaining content is coming soon
+
+**Files Updated:**
+- All 22 HTML files: GA4 script added
+- `training.html`: Feedback prompt modal, custom event tracking
+- `onboarding.html`: Position selection improvements, winger-specific messaging
+
+---
 
 ### January 25, 2026 - Added Module 2 (Faceoffs) and Module 3 (Breakouts)
 
