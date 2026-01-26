@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0N3XTSRTM2');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hockey IQ Training - Module 1</title>
@@ -845,6 +854,15 @@
             }
 
             modal.classList.add('active');
+            
+            // Track module completion in GA4
+            gtag('event', 'module_complete', {
+                module_number: moduleNum,
+                module_name: moduleNames[moduleNum],
+                score: correctCount,
+                total: total,
+                percentage: Math.round((correctCount / total) * 100)
+            });
         }
 
         function closeResults() {
@@ -873,6 +891,9 @@
         function openFeedbackForm() {
             closeFeedbackModal();
             window.open('https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform', '_blank');
+            
+            // Track feedback form open in GA4
+            gtag('event', 'feedback_form_open');
         }
 
         function closeFeedbackModal() {
@@ -921,6 +942,14 @@
             }
 
             const fullShareText = `${shareText}\n\n${shareUrl}`;
+            
+            // Track share in GA4
+            gtag('event', 'share_score', {
+                module_number: moduleNum,
+                module_name: moduleNames[moduleNum],
+                score: correctCount,
+                total: total
+            });
 
             if (navigator.share) {
                 navigator.share({ text: fullShareText }).catch(() => copyToClipboard(fullShareText));

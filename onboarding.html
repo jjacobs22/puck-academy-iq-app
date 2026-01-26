@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0N3XTSRTM2');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Puck Academy</title>
@@ -109,6 +118,47 @@
 
         .option-card.full-width {
             grid-column: span 2;
+        }
+
+        .option-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .option-card.disabled:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            transform: none;
+        }
+
+        .coming-soon-badge {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--silver);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .position-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--silver);
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .winger-note {
+            background: rgba(200, 16, 46, 0.1);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         .checkbox-options {
@@ -340,9 +390,16 @@
             <div class="options-grid">
                 <div class="option-card" onclick="selectPosition(this, 'center')">Center</div>
                 <div class="option-card" onclick="selectPosition(this, 'winger')">Winger</div>
-                <div class="option-card" onclick="selectPosition(this, 'defense')">Defense</div>
-                <div class="option-card" onclick="selectPosition(this, 'goalie')">Goalie</div>
+                <div class="option-card disabled" onclick="showComingSoonMessage('defense')">
+                    Defense
+                    <span class="coming-soon-badge">Coming Soon</span>
+                </div>
+                <div class="option-card disabled" onclick="showComingSoonMessage('goalie')">
+                    Goalie
+                    <span class="coming-soon-badge">Coming Soon</span>
+                </div>
             </div>
+            <p class="position-note">We're starting with forward-focused training. Defense & goalie modules are in development.</p>
         </div>
 
         <!-- Step 3: Age & Level -->
@@ -405,9 +462,13 @@
         <div class="step" id="step6">
             <h2 class="step-title">Let's Go.</h2>
             
+            <div id="wingerNote" class="winger-note" style="display: none;">
+                💡 <strong>Heads up:</strong> The Faceoffs module is center-specific. Feel free to skip it, or learn what your center is reading!
+            </div>
+            
             <div class="summary-section">
                 <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone Play</strong> — 5 scenarios ready</div>
-                <div class="summary-item"><span class="check">✓</span> <strong>Faceoffs</strong> — 7 scenarios ready</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Faceoffs</strong> — 7 scenarios ready <span id="faceoffNote"></span></div>
                 <div class="summary-item"><span class="check">✓</span> <strong>Breakouts</strong> — 7 scenarios ready</div>
             </div>
 
@@ -456,12 +517,18 @@
         }
 
         function selectPosition(element, position) {
-            document.querySelectorAll('#step2 .option-card').forEach(card => {
+            document.querySelectorAll('#step2 .option-card:not(.disabled)').forEach(card => {
                 card.classList.remove('selected');
             });
             element.classList.add('selected');
             userData.position = position;
             setTimeout(nextStep, 300);
+        }
+
+        function showComingSoonMessage(position) {
+            // Brief visual feedback that this option isn't available yet
+            const positionName = position.charAt(0).toUpperCase() + position.slice(1);
+            alert(`${positionName}-specific training is coming soon! For now, you can try our forward-focused modules.`);
         }
 
         function selectLevel(element, level) {
@@ -520,6 +587,7 @@
 
         function updateComingSoon() {
             const comingSoon = document.getElementById('comingSoonList');
+            const wingerNote = document.getElementById('wingerNote');
             const items = [];
             
             // Faceoffs and Breakouts are now available - only Offensive Zone is coming soon
@@ -531,6 +599,11 @@
                 comingSoon.innerHTML = items.map(item => `• ${item}`).join('<br>');
             } else {
                 comingSoon.innerHTML = '• Offensive Zone Play';
+            }
+            
+            // Show winger-specific note about Faceoffs module
+            if (userData.position === 'winger' && wingerNote) {
+                wingerNote.style.display = 'block';
             }
         }
 
