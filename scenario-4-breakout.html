@@ -290,7 +290,12 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Import shared modules
+        import { Storage } from './js/storage.js';
+        import { Analytics } from './js/analytics.js';
+        
+        const MODULE_NUMBER = 1;
         const feedback = document.getElementById('feedback');
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');
@@ -330,12 +335,7 @@
             const isCorrect = element.getAttribute('data-correct') === 'true';
             
             // Track scenario answer in GA4
-            gtag('event', 'scenario_answer', {
-                module_number: 1,
-                module_name: 'Defensive Zone',
-                scenario_number: 4,
-                correct: isCorrect
-            });
+            Analytics.trackScenarioAnswer(MODULE_NUMBER, 4, isCorrect);
 
             options.forEach(opt => {
                 opt.classList.add('disabled');
@@ -349,17 +349,12 @@
             answered = true;
 
             // Save score to scoring system
-            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_scores') || JSON.stringify({
-                currentRun: {},
-                bestScore: null,
-                totalAttempts: 0
-            }));
-            scoreData.currentRun[4] = isCorrect;
-            localStorage.setItem('puckAcademy_scores', JSON.stringify(scoreData));
+            Storage.saveScenarioScore(MODULE_NUMBER, 4, isCorrect);
             
             // Set flag if this completes the module
-            if (Object.keys(scoreData.currentRun).length === 5) {
-                localStorage.setItem('puckAcademy_justCompleted', 'true');
+            const scores = Storage.getModuleScores(MODULE_NUMBER);
+            if (Object.keys(scores.currentRun).length === 5) {
+                Storage.set('puckAcademy_justCompleted', true);
             }
 
             showFeedbackDiagram();
@@ -393,6 +388,11 @@
             hideFeedbackDiagram();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        // Expose functions globally for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.resetScenario = resetScenario;
+        window.skipIntro = skipIntro;
+        window.nextSlide = nextSlide;
     </script>
 </body>
 </html>

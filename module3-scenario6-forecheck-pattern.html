@@ -380,7 +380,12 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Import shared modules
+        import { Storage } from './js/storage.js';
+        import { Analytics } from './js/analytics.js';
+        
+        const MODULE_NUMBER = 3;
         const feedback = document.getElementById('feedback');
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');
@@ -403,12 +408,7 @@
             const isCorrect = element.getAttribute('data-correct') === 'true';
             
             // Track scenario answer in GA4
-            gtag('event', 'scenario_answer', {
-                module_number: 3,
-                module_name: 'Breakouts',
-                scenario_number: 6,
-                correct: isCorrect
-            });
+            Analytics.trackScenarioAnswer(MODULE_NUMBER, 6, isCorrect);
 
             options.forEach(opt => {
                 opt.classList.add('disabled');
@@ -421,12 +421,7 @@
 
             answered = true;
 
-            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_module3_scores') || JSON.stringify({
-                currentRun: {},
-                bestScore: 0
-            }));
-            scoreData.currentRun[6] = isCorrect;
-            localStorage.setItem('puckAcademy_module3_scores', JSON.stringify(scoreData));
+            Storage.saveScenarioScore(MODULE_NUMBER, 6, isCorrect);
 
             showFeedbackDiagram();
 
@@ -459,6 +454,11 @@
             hideFeedbackDiagram();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        // Expose functions globally for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.resetScenario = resetScenario;
+        window.skipIntro = skipIntro;
+        window.nextSlide = nextSlide;
     </script>
 </body>
 </html>

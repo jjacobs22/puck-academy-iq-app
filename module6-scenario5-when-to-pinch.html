@@ -179,7 +179,12 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Import shared modules
+        import { Storage } from './js/storage.js';
+        import { Analytics } from './js/analytics.js';
+        
+        const MODULE_NUMBER = 6;
         const feedback = document.getElementById('feedback');
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');
@@ -200,7 +205,7 @@
             const options = document.querySelectorAll('.option');
             const isCorrect = element.getAttribute('data-correct') === 'true';
             
-            gtag('event', 'scenario_answer', { module_number: 6, module_name: 'D-Zone Defensemen', scenario_number: 5, correct: isCorrect });
+            Analytics.trackScenarioAnswer(MODULE_NUMBER, 5, isCorrect);
 
             options.forEach(opt => { opt.classList.add('disabled'); opt.onclick = null; if (opt.getAttribute('data-correct') === 'true') opt.classList.add('correct'); });
             element.classList.add('selected');
@@ -235,6 +240,11 @@
             hideFeedbackDiagram();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        // Expose functions globally for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.resetScenario = resetScenario;
+        window.skipIntro = skipIntro;
+        window.nextSlide = nextSlide;
     </script>
 </body>
 </html>

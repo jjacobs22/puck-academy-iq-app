@@ -599,21 +599,24 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Import shared modules
+        import { Storage } from './js/storage.js';
+        import { Analytics } from './js/analytics.js';
+
         // ====== THEORY INTRO MANAGEMENT ======
-        const INTRO_STORAGE_KEY = 'puckAcademy_introSeen';
+        const MODULE_NUMBER = 2;
         let currentSlide = 1;
         const totalSlides = 3;
 
         function getIntroSeen() {
-            const stored = localStorage.getItem(INTRO_STORAGE_KEY);
-            return stored ? JSON.parse(stored) : {};
+            return Storage.get('puckAcademy_introSeen') || {};
         }
 
         function setIntroSeen(moduleNum) {
             const introSeen = getIntroSeen();
             introSeen['module' + moduleNum] = true;
-            localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(introSeen));
+            Storage.set('puckAcademy_introSeen', introSeen);
         }
 
         function checkAndShowIntro() {
@@ -696,12 +699,7 @@
             const isCorrect = element.getAttribute('data-correct') === 'true';
             
             // Track scenario answer in GA4
-            gtag('event', 'scenario_answer', {
-                module_number: 2,
-                module_name: 'Faceoffs',
-                scenario_number: 1,
-                correct: isCorrect
-            });
+            Analytics.trackScenarioAnswer(MODULE_NUMBER, 1, isCorrect);
 
             options.forEach(opt => {
                 opt.classList.add('disabled');
@@ -715,12 +713,7 @@
             answered = true;
 
             // Save score to scoring system
-            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_module2_scores') || JSON.stringify({
-                currentRun: {},
-                bestScore: 0
-            }));
-            scoreData.currentRun[1] = isCorrect;
-            localStorage.setItem('puckAcademy_module2_scores', JSON.stringify(scoreData));
+            Storage.saveScenarioScore(MODULE_NUMBER, 1, isCorrect);
 
             showFeedbackDiagram();
 
@@ -753,6 +746,11 @@
             hideFeedbackDiagram();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        // Expose functions globally for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.resetScenario = resetScenario;
+        window.skipIntro = skipIntro;
+        window.nextSlide = nextSlide;
     </script>
 </body>
 </html>
