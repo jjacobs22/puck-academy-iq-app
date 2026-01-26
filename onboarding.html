@@ -13,24 +13,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Puck Academy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- Page-specific styles -->
     <style>
-        :root {
-            --ice-blue: #E8F4F8;
-            --dark-blue: #0A1628;
-            --accent-red: #C8102E;
-            --ice-white: #FFFFFF;
-            --silver: #A8B2BE;
-            --success-green: #2D7A3E;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        /* Onboarding page overrides */
         body {
-            font-family: 'Work Sans', sans-serif;
             background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
-            color: var(--ice-white);
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,10 +47,10 @@
         }
 
         .logo {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: var(--font-header);
             font-size: 2.5rem;
             letter-spacing: 3px;
-            color: var(--ice-white);
+            color: var(--ice-blue);
             margin-bottom: 10px;
         }
 
@@ -228,7 +221,7 @@
             border: 2px solid rgba(255, 255, 255, 0.15);
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.08);
-            color: var(--ice-white);
+            color: var(--ice-blue);
             font-size: 1rem;
             transition: all 0.3s ease;
         }
@@ -257,7 +250,7 @@
 
         .btn-primary {
             background: var(--accent-red);
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .btn-primary:hover {
@@ -273,7 +266,7 @@
 
         .btn-secondary:hover {
             border-color: var(--silver);
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .skip-link {
@@ -287,7 +280,7 @@
         }
 
         .skip-link:hover {
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
 
         .summary-section {
@@ -295,7 +288,7 @@
         }
 
         .summary-title {
-            color: var(--ice-white);
+            color: var(--ice-blue);
             font-weight: 600;
             margin-bottom: 10px;
         }
@@ -352,7 +345,7 @@
         }
 
         .profile-display strong {
-            color: var(--ice-white);
+            color: var(--ice-blue);
         }
     </style>
 </head>
