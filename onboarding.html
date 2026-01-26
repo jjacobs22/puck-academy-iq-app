@@ -407,11 +407,13 @@
             
             <div class="summary-section">
                 <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone Play</strong> — 5 scenarios ready</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Faceoffs</strong> — 7 scenarios ready</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Breakouts</strong> — 7 scenarios ready</div>
             </div>
 
             <div class="summary-section">
                 <div class="summary-title">🚧 Coming soon:</div>
-                <div class="summary-item coming-soon" id="comingSoonList">Based on your selections...</div>
+                <div class="summary-item coming-soon" id="comingSoonList">• Offensive Zone Play</div>
             </div>
 
             <button class="btn btn-primary" onclick="window.location.href='training.html'">Start Training →</button>
@@ -520,12 +522,7 @@
             const comingSoon = document.getElementById('comingSoonList');
             const items = [];
             
-            if (userData.improvements.includes('Faceoffs')) {
-                items.push('Faceoffs Module');
-            }
-            if (userData.improvements.includes('Breakouts')) {
-                items.push('Breakouts & Transitions');
-            }
+            // Faceoffs and Breakouts are now available - only Offensive Zone is coming soon
             if (userData.improvements.includes('Offensive Zone')) {
                 items.push('Offensive Zone Play');
             }
@@ -533,7 +530,7 @@
             if (items.length > 0) {
                 comingSoon.innerHTML = items.map(item => `• ${item}`).join('<br>');
             } else {
-                comingSoon.innerHTML = '• Faceoffs<br>• Breakouts & Transitions<br>• Offensive Zone Play';
+                comingSoon.innerHTML = '• Offensive Zone Play';
             }
         }
 
