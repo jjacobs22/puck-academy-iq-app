@@ -87,7 +87,7 @@
         .rink-container {
             background: var(--ice-blue);
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
         }
@@ -412,9 +412,323 @@
                 width: 100%;
             }
         }
+
+        /* ====== THEORY INTRO OVERLAY ====== */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .intro-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .intro-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .intro-skip {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--silver);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: color 0.2s ease;
+        }
+
+        .intro-skip:hover {
+            color: var(--ice-white);
+        }
+
+        .intro-coach {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .intro-coach-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-red), #8B0000);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .intro-coach-name {
+            font-weight: 600;
+            color: var(--ice-white);
+        }
+
+        .intro-coach-label {
+            font-size: 0.8rem;
+            color: var(--silver);
+        }
+
+        .intro-slide {
+            display: none;
+        }
+
+        .intro-slide.active {
+            display: block;
+        }
+
+        .intro-headline {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: var(--ice-white);
+            margin-bottom: 15px;
+        }
+
+        .intro-body {
+            color: var(--silver);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .intro-diagram {
+            background: var(--ice-blue);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .intro-diagram svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .intro-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .intro-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .intro-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .intro-dot.active {
+            background: var(--accent-red);
+        }
+
+        .intro-next-btn {
+            background: var(--accent-red);
+            color: var(--ice-white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .intro-next-btn:hover {
+            background: #a50d26;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .intro-card {
+                padding: 25px 20px;
+            }
+            .intro-headline {
+                font-size: 1.4rem;
+            }
+            .intro-body {
+                font-size: 0.95rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Theory Intro Overlay -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-card">
+            <button class="intro-skip" onclick="skipIntro()">Skip →</button>
+            
+            <div class="intro-coach">
+                <div class="intro-coach-avatar">🏒</div>
+                <div>
+                    <div class="intro-coach-name">Coach</div>
+                    <div class="intro-coach-label">Module 1: Defensive Zone</div>
+                </div>
+            </div>
+
+            <!-- Slide 1 -->
+            <div class="intro-slide active" data-slide="1">
+                <h3 class="intro-headline">Your Job in the D-Zone</h3>
+                <p class="intro-body">As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Ice surface -->
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- Goal line -->
+                        <line x1="50" y1="30" x2="50" y2="150" stroke="#C8102E" stroke-width="2"/>
+                        <!-- Goal crease -->
+                        <path d="M 50 70 Q 25 90 50 110" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="1.5"/>
+                        <!-- Goal net -->
+                        <rect x="30" y="78" width="20" height="24" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- Center's coverage zone (highlighted) -->
+                        <ellipse cx="140" cy="90" rx="50" ry="40" fill="rgba(255, 215, 0, 0.3)" stroke="#B8860B" stroke-width="2" stroke-dasharray="6,3"/>
+                        <text x="140" y="95" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#B8860B">YOUR ZONE</text>
+                        <!-- D-men zones on boards -->
+                        <ellipse cx="70" cy="50" rx="25" ry="20" fill="rgba(30, 64, 175, 0.2)" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,2"/>
+                        <ellipse cx="70" cy="130" rx="25" ry="20" fill="rgba(30, 64, 175, 0.2)" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,2"/>
+                        <!-- You (center) -->
+                        <circle cx="140" cy="90" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="140" y="94" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">YOU</text>
+                        <!-- D-men -->
+                        <circle cx="70" cy="50" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="70" y="54" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                        <circle cx="70" cy="130" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="70" y="134" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="intro-slide" data-slide="2">
+                <h3 class="intro-headline">Trust the Structure</h3>
+                <p class="intro-body">When your D pressures the puck, don't chase. Stay home, cover the dangerous player, and be ready to transition.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Ice surface -->
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- Goal line -->
+                        <line x1="50" y1="30" x2="50" y2="150" stroke="#C8102E" stroke-width="2"/>
+                        <!-- Goal crease -->
+                        <path d="M 50 70 Q 25 90 50 110" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="1.5"/>
+                        <!-- Goal net -->
+                        <rect x="30" y="78" width="20" height="24" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- D pressuring (with arrow showing pressure) -->
+                        <circle cx="85" cy="45" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="85" y="49" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                        <!-- Arrow showing D pressure -->
+                        <line x1="95" y1="40" x2="115" y2="35" stroke="#1E40AF" stroke-width="2" marker-end="url(#arrowBlue)"/>
+                        <defs>
+                            <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#1E40AF"/>
+                            </marker>
+                        </defs>
+                        <!-- Opponent with puck -->
+                        <circle cx="130" cy="30" r="12" fill="#C8102E" stroke="#8B0000" stroke-width="1.5"/>
+                        <text x="130" y="34" text-anchor="middle" fill="white" font-weight="bold" font-size="9">W</text>
+                        <circle cx="145" cy="35" r="5" fill="#1a1a1a"/>
+                        <!-- Opponent center (dangerous) -->
+                        <circle cx="150" cy="90" r="12" fill="#C8102E" stroke="#8B0000" stroke-width="1.5"/>
+                        <text x="150" y="94" text-anchor="middle" fill="white" font-weight="bold" font-size="9">C</text>
+                        <!-- You staying home -->
+                        <circle cx="130" cy="95" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="130" y="99" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">YOU</text>
+                        <!-- X showing "don't chase" -->
+                        <text x="110" y="55" font-family="Work Sans, sans-serif" font-size="14" font-weight="bold" fill="#B91C1C">✗</text>
+                        <text x="90" y="68" font-family="Work Sans, sans-serif" font-size="8" fill="#B91C1C">DON'T CHASE</text>
+                        <!-- Check mark showing "stay home" -->
+                        <text x="115" y="115" font-family="Work Sans, sans-serif" font-size="14" font-weight="bold" fill="#2D7A3E">✓</text>
+                        <text x="100" y="128" font-family="Work Sans, sans-serif" font-size="8" fill="#2D7A3E">STAY HOME</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="intro-slide" data-slide="3">
+                <h3 class="intro-headline">Defense Creates Offense</h3>
+                <p class="intro-body">Good positioning in the D-zone sets up the breakout. You're not just defending — you're the first step in the attack.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Ice surface -->
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- Goal line -->
+                        <line x1="50" y1="30" x2="50" y2="150" stroke="#C8102E" stroke-width="2"/>
+                        <!-- Blue line -->
+                        <line x1="220" y1="30" x2="220" y2="150" stroke="#1E40AF" stroke-width="3"/>
+                        <!-- Goal crease -->
+                        <path d="M 50 70 Q 25 90 50 110" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="1.5"/>
+                        <!-- Goal net -->
+                        <rect x="30" y="78" width="20" height="24" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- D gets puck back -->
+                        <circle cx="80" cy="130" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="80" y="134" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                        <circle cx="95" cy="130" r="5" fill="#1a1a1a"/>
+                        <!-- You in position, ready to break out -->
+                        <circle cx="140" cy="90" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="140" y="94" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">YOU</text>
+                        <!-- Breakout arrow -->
+                        <path d="M 155 85 Q 180 70 210 60" fill="none" stroke="#2D7A3E" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrowGreen)"/>
+                        <defs>
+                            <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                <polygon points="0 0, 8 3, 0 6" fill="#2D7A3E"/>
+                            </marker>
+                        </defs>
+                        <!-- Transition text -->
+                        <text x="185" y="55" font-family="Work Sans, sans-serif" font-size="9" font-weight="600" fill="#2D7A3E">BREAKOUT</text>
+                        <!-- Pass arrow from D to you -->
+                        <line x1="90" y1="120" x2="130" y2="100" stroke="#1E40AF" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowBlue2)"/>
+                        <defs>
+                            <marker id="arrowBlue2" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                                <polygon points="0 0, 6 2.5, 0 5" fill="#1E40AF"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="intro-nav">
+                <div class="intro-dots">
+                    <div class="intro-dot active" data-dot="1"></div>
+                    <div class="intro-dot" data-dot="2"></div>
+                    <div class="intro-dot" data-dot="3"></div>
+                </div>
+                <button class="intro-next-btn" id="introNextBtn" onclick="nextSlide()">Next →</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header class="header">
             <h1 class="logo">Puck <span>Academy</span></h1>
@@ -505,8 +819,8 @@
                 
                 <!-- Ghost player showing correct position -->
                 <g id="ghostPlayer" class="ghost-player">
-                    <circle cx="180" cy="172" r="24" fill="rgba(255, 215, 0, 0.4)" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="4,2"/>
-                    <text x="180" y="178" text-anchor="middle" fill="#2D7A3E" font-weight="bold" font-size="12">23</text>
+                    <circle cx="180" cy="172" r="26" fill="rgba(255, 215, 0, 0.4)" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="4,2"/>
+                    <text x="180" y="177" text-anchor="middle" fill="#2D7A3E" font-weight="bold" font-size="11">YOU</text>
                 </g>
 
                 <!-- ====== PLAYERS ====== -->
@@ -536,8 +850,8 @@
                 
                 <!-- YOU (#23) - the two-way center -->
                 <g id="playerYou" class="player player-you">
-                    <circle cx="200" cy="210" r="24" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
-                    <text x="200" y="216" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="12">23</text>
+                    <circle cx="200" cy="210" r="26" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
+                    <text x="200" y="215" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="11">YOU</text>
                 </g>
                 
                 <!-- Other D-man -->
@@ -550,7 +864,7 @@
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-dot you"></div>
-                    <span>You (#23)</span>
+                    <span>You</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-dot team"></div>
@@ -581,11 +895,11 @@
             <p class="situation-text">
                 Opposing winger (Red W) has the puck along the boards. Your defenseman (Blue D) is moving to pressure. 
                 The opposing center (Red C) is positioned at the high slot. 
-                <span class="highlight">What should YOU (#23) do?</span>
+                <span class="highlight">What should YOU do?</span>
             </p>
         </div>
 
-        <h3 class="question">As the center (#23), what is your best defensive play in this situation?</h3>
+        <h3 class="question">As the center, what is your best defensive play in this situation?</h3>
 
         <div class="options">
             <div class="option" onclick="selectAnswer(this)" data-correct="false">
@@ -625,6 +939,91 @@
     </div>
 
     <script>
+        // ====== THEORY INTRO MANAGEMENT ======
+        const INTRO_STORAGE_KEY = 'puckAcademy_introSeen';
+        let currentSlide = 1;
+        const totalSlides = 3;
+
+        function getIntroSeen() {
+            const stored = localStorage.getItem(INTRO_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        }
+
+        function setIntroSeen(moduleNum) {
+            const introSeen = getIntroSeen();
+            introSeen['module' + moduleNum] = true;
+            localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(introSeen));
+        }
+
+        function checkAndShowIntro() {
+            const introSeen = getIntroSeen();
+            // Check URL param for forced review
+            const urlParams = new URLSearchParams(window.location.search);
+            const forceReview = urlParams.get('review') === 'intro';
+            
+            if (!introSeen.module1 || forceReview) {
+                showIntro();
+            }
+        }
+
+        function showIntro() {
+            document.getElementById('introOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideIntro() {
+            document.getElementById('introOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            setIntroSeen(1); // Module 1
+            
+            // Remove review param from URL if present
+            const url = new URL(window.location);
+            url.searchParams.delete('review');
+            window.history.replaceState({}, '', url);
+        }
+
+        function skipIntro() {
+            hideIntro();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                // Hide current slide
+                document.querySelector(`.intro-slide[data-slide="${currentSlide}"]`).classList.remove('active');
+                document.querySelector(`.intro-dot[data-dot="${currentSlide}"]`).classList.remove('active');
+                
+                // Show next slide
+                currentSlide++;
+                document.querySelector(`.intro-slide[data-slide="${currentSlide}"]`).classList.add('active');
+                document.querySelector(`.intro-dot[data-dot="${currentSlide}"]`).classList.add('active');
+                
+                // Update button text on last slide
+                if (currentSlide === totalSlides) {
+                    document.getElementById('introNextBtn').textContent = "Got it, let's train →";
+                }
+            } else {
+                // Last slide - close intro
+                hideIntro();
+            }
+        }
+
+        // Handle escape key to skip
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('introOverlay').classList.contains('active')) {
+                skipIntro();
+            }
+            // Arrow keys for navigation
+            if (document.getElementById('introOverlay').classList.contains('active')) {
+                if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                    nextSlide();
+                }
+            }
+        });
+
+        // Check intro on page load
+        document.addEventListener('DOMContentLoaded', checkAndShowIntro);
+
+        // ====== SCENARIO LOGIC ======
         const feedback = document.getElementById('feedback');
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');

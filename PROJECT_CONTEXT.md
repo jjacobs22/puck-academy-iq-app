@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 25, 2026  
+**Last Updated:** January 26, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -368,11 +368,12 @@ puck-academy-iq-app/
 - **Landing page:** Shows challenge banner when accessed via shared link with `?score=X`
 - **Onboarding flow:** 5-step personalization working end-to-end
 - **Module hub (training.html):** Shows all 3 modules with independent progress tracking
+- **Theory Intro overlays:** 3-slide Coach intro appears first time entering each module, with "Review intro" links
 - **19 complete scenarios across 3 modules:** All playable with questions, answers, and Coach feedback
   - Module 1: Defensive Zone (5 scenarios)
   - Module 2: Faceoffs (7 scenarios)
   - Module 3: Breakouts (7 scenarios)
-- **SVG rink diagrams:** Clean visual representation of various game situations
+- **SVG rink diagrams:** Clean visual representation with improved padding and consistent styling
 - **Progress tracking:** localStorage saves completed scenarios per module
 - **Scoring system:** Tracks correct/incorrect per scenario per module, calculates score, saves best score
 - **Results modal:** Shows score with module-specific performance-based messaging
@@ -629,6 +630,48 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 26, 2026 - Theory Intro & Diagram Improvements
+
+**Theory Intro Overlays:**
+Based on beta feedback that users felt "thrown in without foundation", added a 3-slide Theory Intro overlay that appears when users first enter each module:
+
+- **Module 1 (Defensive Zone):** "Your Job in the D-Zone", "Trust the Structure", "Defense Creates Offense"
+- **Module 2 (Faceoffs):** "Faceoffs Are Chess, Not Checkers", "Read Before You React", "Win the Possession, Not Just the Draw"
+- **Module 3 (Breakouts):** "Speed Kills — But Patience Scores", "Routes Have Names for a Reason", "Support Your D"
+
+Features:
+- Full-screen modal overlay with progress dots (● ○ ○)
+- Coach persona introduces key concepts before scenarios
+- Skip button always visible
+- Keyboard navigation (Enter/Arrow Right to advance, Escape to skip)
+- localStorage tracks which intros user has seen (`puckAcademy_introSeen`)
+- "Review intro" links added to training.html module cards (visible after first completion)
+- URL parameter `?review=intro` forces intro to show for returning users
+
+**Diagram Improvements:**
+- Standardized rink container padding from 20px to 25px across all 19 scenarios
+- Simplified legend text from "You (#23)" to "You" for clarity
+- Template established for player sizing: You = 26px radius, teammates/opponents = 22px
+- Player label changed from "23" to "YOU" in template scenarios for better visual identification
+
+**Files Modified:**
+- `hockey-iq-diagram.html`: Full intro overlay + diagram cleanup (template)
+- `module2-scenario1-ref-position.html`: Full intro overlay + diagram cleanup
+- `module3-scenario1-high-low-route.html`: Full intro overlay + diagram cleanup
+- `training.html`: Added "Review intro" links for each module
+- All 19 scenario files: Rink container padding and legend text updates
+
+**Technical Details:**
+- Intro seen status stored in `puckAcademy_introSeen` localStorage key
+- Intro CSS and JS self-contained in each first-scenario file
+- Diagrams in intro slides are simplified SVGs showing key concepts
+
+**Remaining Work:**
+- Player circle size updates (r=24 → r=26) partially applied; template established for consistency
+- Full diagram style guide to be documented for future scenarios
+
+---
 
 ### January 25, 2026 - Analytics & Onboarding Improvements
 

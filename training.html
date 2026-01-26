@@ -414,6 +414,23 @@
             font-size: 0.9rem;
         }
 
+        .review-intro-link {
+            display: none;
+            color: var(--silver);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: color 0.2s ease;
+        }
+
+        .review-intro-link:hover {
+            color: var(--ice-white);
+        }
+
+        .review-intro-link.visible {
+            display: inline-block;
+        }
+
         @media (max-width: 600px) {
             .logo {
                 font-size: 2rem;
@@ -463,6 +480,7 @@
                 <p class="module-description">
                     Master the fundamentals of two-way center play in your defensive zone.
                 </p>
+                <a href="hockey-iq-diagram.html?review=intro" class="review-intro-link" id="reviewIntro1">📖 Review intro</a>
             </div>
             
             <div class="progress-container">
@@ -515,6 +533,7 @@
                 <p class="module-description">
                     Faceoffs aren't just about winning the draw — they're about reading the situation and setting up the next play.
                 </p>
+                <a href="module2-scenario1-ref-position.html?review=intro" class="review-intro-link" id="reviewIntro2">📖 Review intro</a>
             </div>
             
             <div class="progress-container">
@@ -581,6 +600,7 @@
                 <p class="module-description">
                     Breakout success is about route selection and timing — being in the right place with time and space.
                 </p>
+                <a href="module3-scenario1-high-low-route.html?review=intro" class="review-intro-link" id="reviewIntro3">📖 Review intro</a>
             </div>
             
             <div class="progress-container">
@@ -990,8 +1010,24 @@
             }
         }
 
+        // Show/hide review intro links based on whether user has seen the intro
+        function updateReviewIntroLinks() {
+            const introSeen = JSON.parse(localStorage.getItem('puckAcademy_introSeen') || '{}');
+            
+            if (introSeen.module1) {
+                document.getElementById('reviewIntro1').classList.add('visible');
+            }
+            if (introSeen.module2) {
+                document.getElementById('reviewIntro2').classList.add('visible');
+            }
+            if (introSeen.module3) {
+                document.getElementById('reviewIntro3').classList.add('visible');
+            }
+        }
+
         // Initialize
         updateDisplay();
+        updateReviewIntroLinks();
     </script>
 </body>
 </html>

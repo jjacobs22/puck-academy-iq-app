@@ -75,7 +75,7 @@
         .rink-container {
             background: var(--ice-blue);
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
         }
 
@@ -217,9 +217,267 @@
             .btn-row { flex-direction: column; }
             .btn { width: 100%; }
         }
+
+        /* ====== THEORY INTRO OVERLAY ====== */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .intro-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .intro-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .intro-skip {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--silver);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: color 0.2s ease;
+        }
+
+        .intro-skip:hover { color: var(--ice-white); }
+
+        .intro-coach {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .intro-coach-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-red), #8B0000);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .intro-coach-name { font-weight: 600; color: var(--ice-white); }
+        .intro-coach-label { font-size: 0.8rem; color: var(--silver); }
+
+        .intro-slide { display: none; }
+        .intro-slide.active { display: block; }
+
+        .intro-headline {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: var(--ice-white);
+            margin-bottom: 15px;
+        }
+
+        .intro-body {
+            color: var(--silver);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .intro-diagram {
+            background: var(--ice-blue);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .intro-diagram svg { width: 100%; height: auto; display: block; }
+
+        .intro-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .intro-dots { display: flex; gap: 8px; }
+
+        .intro-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .intro-dot.active { background: var(--accent-red); }
+
+        .intro-next-btn {
+            background: var(--accent-red);
+            color: var(--ice-white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .intro-next-btn:hover { background: #a50d26; transform: translateY(-2px); }
+
+        @media (max-width: 600px) {
+            .intro-card { padding: 25px 20px; }
+            .intro-headline { font-size: 1.4rem; }
+            .intro-body { font-size: 0.95rem; }
+        }
     </style>
 </head>
 <body>
+    <!-- Theory Intro Overlay -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-card">
+            <button class="intro-skip" onclick="skipIntro()">Skip →</button>
+            
+            <div class="intro-coach">
+                <div class="intro-coach-avatar">🏒</div>
+                <div>
+                    <div class="intro-coach-name">Coach</div>
+                    <div class="intro-coach-label">Module 3: Breakouts</div>
+                </div>
+            </div>
+
+            <!-- Slide 1 -->
+            <div class="intro-slide active" data-slide="1">
+                <h3 class="intro-headline">Speed Kills — But Patience Scores</h3>
+                <p class="intro-body">A breakout isn't a race. It's about finding the right route and reading the pressure.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- Goal line -->
+                        <line x1="50" y1="30" x2="50" y2="150" stroke="#C8102E" stroke-width="2"/>
+                        <!-- Goal -->
+                        <rect x="30" y="78" width="20" height="24" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- Blue line -->
+                        <line x1="220" y1="30" x2="220" y2="150" stroke="#1E40AF" stroke-width="3"/>
+                        <!-- D with puck -->
+                        <circle cx="70" cy="90" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="70" y="94" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                        <circle cx="85" cy="90" r="5" fill="#1a1a1a"/>
+                        <!-- You taking time -->
+                        <circle cx="140" cy="100" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="140" y="104" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">YOU</text>
+                        <!-- Clock icon showing patience -->
+                        <text x="155" y="85" font-family="Work Sans, sans-serif" font-size="16">⏱️</text>
+                        <text x="155" y="125" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#2D7A3E">PATIENCE</text>
+                        <!-- X on rushing -->
+                        <path d="M 140 100 L 200 60" stroke="#B91C1C" stroke-width="1.5" stroke-dasharray="4,2"/>
+                        <text x="185" y="55" font-family="Work Sans, sans-serif" font-size="12" fill="#B91C1C">✗</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="intro-slide" data-slide="2">
+                <h3 class="intro-headline">Routes Have Names for a Reason</h3>
+                <p class="intro-body">High, low, wheel, reverse — know your options so you can make the right call under pressure.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- Goal line -->
+                        <line x1="50" y1="30" x2="50" y2="150" stroke="#C8102E" stroke-width="2"/>
+                        <!-- Goal -->
+                        <rect x="30" y="78" width="20" height="24" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- D with puck -->
+                        <circle cx="70" cy="90" r="12" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1.5"/>
+                        <text x="70" y="94" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                        <!-- Route options with labels -->
+                        <!-- High route -->
+                        <path d="M 85 85 Q 130 50 180 45" fill="none" stroke="#1E40AF" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="170" y="40" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#1E40AF">HIGH</text>
+                        <!-- Low route -->
+                        <path d="M 85 95 Q 110 130 160 140" fill="none" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="155" y="155" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#2D7A3E">LOW</text>
+                        <!-- Wheel -->
+                        <path d="M 70 100 Q 50 130 70 150 Q 100 160 130 140" fill="none" stroke="#FF6B00" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="75" y="165" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#FF6B00">WHEEL</text>
+                        <!-- Reverse -->
+                        <path d="M 75 85 Q 60 70 75 55 Q 90 45 110 55" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="100" y="50" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#8B5CF6">REVERSE</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="intro-slide" data-slide="3">
+                <h3 class="intro-headline">Support Your D</h3>
+                <p class="intro-body">Give your defenseman options. If you're not open, you're not helping.</p>
+                <div class="intro-diagram">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
+                        <!-- Goal line -->
+                        <line x1="50" y1="30" x2="50" y2="150" stroke="#C8102E" stroke-width="2"/>
+                        <!-- Goal -->
+                        <rect x="30" y="78" width="20" height="24" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- D with puck (stressed) -->
+                        <circle cx="80" cy="90" r="14" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                        <text x="80" y="94" text-anchor="middle" fill="white" font-weight="bold" font-size="9">D</text>
+                        <circle cx="95" cy="90" r="5" fill="#1a1a1a"/>
+                        <!-- Forechecker pressure -->
+                        <circle cx="120" cy="80" r="12" fill="#C8102E" stroke="#8B0000" stroke-width="1.5"/>
+                        <text x="120" y="84" text-anchor="middle" fill="white" font-weight="bold" font-size="9">F</text>
+                        <!-- You in good support position -->
+                        <circle cx="150" cy="130" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="150" y="134" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">YOU</text>
+                        <!-- Support zone highlight -->
+                        <ellipse cx="150" cy="130" rx="30" ry="22" fill="rgba(45, 122, 62, 0.2)" stroke="#2D7A3E" stroke-width="1.5" stroke-dasharray="4,2"/>
+                        <!-- Passing lane -->
+                        <line x1="95" y1="95" x2="140" y2="125" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="6,3"/>
+                        <!-- Text -->
+                        <text x="180" y="125" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#2D7A3E">OPEN</text>
+                        <text x="180" y="136" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#2D7A3E">OPTION</text>
+                        <!-- Checkmark -->
+                        <text x="165" y="150" font-family="Work Sans, sans-serif" font-size="14" font-weight="bold" fill="#2D7A3E">✓</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="intro-nav">
+                <div class="intro-dots">
+                    <div class="intro-dot active" data-dot="1"></div>
+                    <div class="intro-dot" data-dot="2"></div>
+                    <div class="intro-dot" data-dot="3"></div>
+                </div>
+                <button class="intro-next-btn" id="introNextBtn" onclick="nextSlide()">Next →</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header class="header">
             <h1 class="logo">Puck <span>Academy</span></h1>
@@ -284,16 +542,16 @@
                 <path d="M 140 160 L 115 175" stroke="#C8102E" stroke-width="2" stroke-dasharray="4,2"/>
                 <text x="145" y="145" font-family="Work Sans, sans-serif" font-size="9" fill="#C8102E">Pressure</text>
                 
-                <!-- YOU (#23) - swinging back from far side -->
+                <!-- YOU - swinging back from far side -->
                 <g id="playerYou" class="player player-you">
-                    <circle cx="300" cy="100" r="24" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
-                    <text x="300" y="106" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="12">23</text>
+                    <circle cx="300" cy="100" r="26" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
+                    <text x="300" y="105" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="11">YOU</text>
                 </g>
-                <text x="300" y="130" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="9" fill="#666">Swinging back to support</text>
+                <text x="300" y="132" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="9" fill="#666">Swinging back to support</text>
             </svg>
 
             <div class="legend">
-                <div class="legend-item"><div class="legend-dot you"></div><span>You (#23)</span></div>
+                <div class="legend-item"><div class="legend-dot you"></div><span>You</span></div>
                 <div class="legend-item"><div class="legend-dot team"></div><span>Your Team</span></div>
                 <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent</span></div>
                 <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
@@ -346,6 +604,80 @@
     </div>
 
     <script>
+        // ====== THEORY INTRO MANAGEMENT ======
+        const INTRO_STORAGE_KEY = 'puckAcademy_introSeen';
+        let currentSlide = 1;
+        const totalSlides = 3;
+
+        function getIntroSeen() {
+            const stored = localStorage.getItem(INTRO_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        }
+
+        function setIntroSeen(moduleNum) {
+            const introSeen = getIntroSeen();
+            introSeen['module' + moduleNum] = true;
+            localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(introSeen));
+        }
+
+        function checkAndShowIntro() {
+            const introSeen = getIntroSeen();
+            const urlParams = new URLSearchParams(window.location.search);
+            const forceReview = urlParams.get('review') === 'intro';
+            
+            if (!introSeen.module3 || forceReview) {
+                showIntro();
+            }
+        }
+
+        function showIntro() {
+            document.getElementById('introOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideIntro() {
+            document.getElementById('introOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            setIntroSeen(3); // Module 3
+            
+            const url = new URL(window.location);
+            url.searchParams.delete('review');
+            window.history.replaceState({}, '', url);
+        }
+
+        function skipIntro() { hideIntro(); }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                document.querySelector(`.intro-slide[data-slide="${currentSlide}"]`).classList.remove('active');
+                document.querySelector(`.intro-dot[data-dot="${currentSlide}"]`).classList.remove('active');
+                
+                currentSlide++;
+                document.querySelector(`.intro-slide[data-slide="${currentSlide}"]`).classList.add('active');
+                document.querySelector(`.intro-dot[data-dot="${currentSlide}"]`).classList.add('active');
+                
+                if (currentSlide === totalSlides) {
+                    document.getElementById('introNextBtn').textContent = "Got it, let's train →";
+                }
+            } else {
+                hideIntro();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('introOverlay').classList.contains('active')) {
+                skipIntro();
+            }
+            if (document.getElementById('introOverlay').classList.contains('active')) {
+                if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                    nextSlide();
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', checkAndShowIntro);
+
+        // ====== SCENARIO LOGIC ======
         const feedback = document.getElementById('feedback');
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');
