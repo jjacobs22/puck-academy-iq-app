@@ -250,7 +250,17 @@ This enables rich link previews on iMessage, Twitter, Facebook, etc. with the ac
 puck-academy-iq-app/
 ├── index.html                    # Landing page with challenge banner
 ├── onboarding.html               # 5-step onboarding flow
-├── training.html                 # Module hub with all 3 modules, scoring, results modal
+├── training.html                 # Module hub with all 6 modules, scoring, results modal
+│
+├── # Shared Assets (Refactored Jan 26, 2026)
+├── styles/
+│   └── main.css                  # Shared CSS (variables, reset, buttons, modals, etc.)
+├── js/
+│   ├── storage.js                # LocalStorage utilities
+│   ├── analytics.js              # GA4 event tracking
+│   ├── scenario.js               # Scenario class (for future use)
+│   ├── data-loader.js            # JSON data loading (for future use)
+│   └── scenario-renderer.js      # Dynamic scenario rendering (for future use)
 │
 ├── # Module 1: Defensive Zone (5 scenarios)
 ├── hockey-iq-diagram.html        # Scenario 1-1: D-zone pressure read
@@ -277,11 +287,40 @@ puck-academy-iq-app/
 ├── module3-scenario6-forecheck-pattern.html
 ├── module3-scenario7-broken-play.html
 │
+├── # Module 4: Offensive Zone (7 scenarios)
+├── module4-scenario1-net-front.html
+├── module4-scenario2-cycle-support.html
+├── module4-scenario3-soft-ice.html
+├── module4-scenario4-backdoor.html
+├── module4-scenario5-screen-tip.html
+├── module4-scenario6-high-slot.html
+├── module4-scenario7-ozone-turnover.html
+│
+├── # Module 5: Forechecking (7 scenarios)
+├── module5-scenario1-f1-angle.html
+├── module5-scenario2-f1-f2-read.html
+├── module5-scenario3-pressure-contain.html
+├── module5-scenario4-angling.html
+├── module5-scenario5-read-breakout.html
+├── module5-scenario6-loose-puck.html
+├── module5-scenario7-turnover-transition.html
+│
+├── # Module 6: D-Zone for Defensemen (7 scenarios)
+├── module6-scenario1-gap-control.html
+├── module6-scenario2-puck-retrieval.html
+├── module6-scenario3-d-to-d.html
+├── module6-scenario4-net-front-battle.html
+├── module6-scenario5-when-to-pinch.html
+├── module6-scenario6-first-pass.html
+├── module6-scenario7-zone-coverage.html
+│
 ├── # Personalized Training
 ├── tylers-coaching-notes.html    # Tyler's personalized training doc (printable)
 │
 ├── # Documentation & Config
 ├── PROJECT_CONTEXT.md            # This file - project documentation
+├── REFACTOR_PLAN.md              # Technical debt cleanup plan
+├── QUICK_START_GUIDE.md          # Step-by-step refactoring guide
 ├── og-image.html                 # Template reference for OG image design
 ├── coach-prototype.html          # Conversational coach prototype (experimental)
 ├── netlify.toml                  # Netlify configuration for edge functions
@@ -370,12 +409,16 @@ puck-academy-iq-app/
 ### What's Working ✅
 - **Landing page:** Shows challenge banner when accessed via shared link with `?score=X`
 - **Onboarding flow:** 5-step personalization working end-to-end
-- **Module hub (training.html):** Shows all 3 modules with independent progress tracking
+- **Module hub (training.html):** Shows all 6 modules with independent progress tracking, position-based ordering
 - **Theory Intro overlays:** 3-slide Coach intro appears first time entering each module, with "Review intro" links
-- **19 complete scenarios across 3 modules:** All playable with questions, answers, and Coach feedback
-  - Module 1: Defensive Zone (5 scenarios)
-  - Module 2: Faceoffs (7 scenarios)
-  - Module 3: Breakouts (7 scenarios)
+- **40 complete scenarios across 6 modules:** All playable with questions, answers, and Coach feedback
+  - Module 1: Defensive Zone (5 scenarios) — Centers
+  - Module 2: Faceoffs (7 scenarios) — Centers
+  - Module 3: Breakouts (7 scenarios) — Centers
+  - Module 4: Offensive Zone (7 scenarios) — Centers
+  - Module 5: Forechecking (7 scenarios) — Centers
+  - Module 6: D-Zone (7 scenarios) — Defensemen
+- **Refactored codebase:** Shared CSS (`styles/main.css`) and JS modules (`js/storage.js`, `js/analytics.js`)
 - **SVG rink diagrams:** Clean visual representation with improved padding and consistent styling
 - **Progress tracking:** localStorage saves completed scenarios per module
 - **Scoring system:** Tracks correct/incorrect per scenario per module, calculates score, saves best score
@@ -411,8 +454,8 @@ puck-academy-iq-app/
 4. **No error handling:** If scenario fails to load, no user-friendly message
 
 ### Technical Debt 📋
-- **Inline styles:** CSS is duplicated across HTML files; should extract to shared stylesheet
-- **Inline JavaScript:** Scenario logic duplicated; should extract to shared JS file
+- ~~**Inline styles:** CSS is duplicated across HTML files; should extract to shared stylesheet~~ **DONE** - Extracted to `styles/main.css`
+- ~~**Inline JavaScript:** Scenario logic duplicated; should extract to shared JS file~~ **DONE** - Extracted to `js/storage.js` and `js/analytics.js`
 - **No build process:** Manual file management; could benefit from simple bundler
 - **Hardcoded scenarios:** Scenario data embedded in HTML; should move to JSON for easier updates
 - ~~**No Open Graph tags:** Shared links don't show rich previews on social platforms~~ **DONE** - Dynamic OG images via Netlify Edge Functions
@@ -633,6 +676,36 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 26, 2026 - Codebase Refactoring (Phases 1 & 2)
+
+**Phase 1: CSS Extraction**
+- Created `styles/main.css` with shared styles (CSS variables, reset, typography, buttons, modals, forms, etc.)
+- Updated all 40+ HTML files to link to shared stylesheet
+- Page-specific styles kept inline only when truly unique
+- Benefit: Update colors, fonts, spacing in one place
+
+**Phase 2: JavaScript Extraction**
+- Created `js/storage.js` — centralized LocalStorage utilities
+- Created `js/analytics.js` — centralized GA4 event tracking
+- Created `js/scenario.js` — Scenario class for future use
+- All 40 scenario files now use ES modules (`type="module"`)
+- Replaced direct `localStorage` calls with `Storage` module methods
+- Replaced direct `gtag()` calls with `Analytics` module methods
+- Benefit: Fix bugs in one place, consistent tracking across all scenarios
+
+**UX Improvement:**
+- Replaced jarring pulsing animation on "YOU" player with subtle golden glow (`drop-shadow`)
+
+**Files Created:**
+- `styles/main.css`
+- `js/storage.js`
+- `js/analytics.js`
+- `js/scenario.js`
+- `js/data-loader.js` (for future JSON-based scenarios)
+- `js/scenario-renderer.js` (for future dynamic rendering)
+
+---
 
 ### January 26, 2026 - Major Content Expansion (Modules 4-6)
 
