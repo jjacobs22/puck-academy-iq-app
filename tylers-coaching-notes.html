@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tyler's Coaching Notes - Puck Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ice-blue: #E8F4F8;
+            --dark-blue: #0A1628;
+            --accent-red: #C8102E;
+            --ice-white: #FFFFFF;
+            --silver: #A8B2BE;
+            --success-green: #2D7A3E;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            color: var(--ice-white);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            color: var(--ice-white);
+            margin-bottom: 10px;
+        }
+
+        .logo span { color: var(--accent-red); }
+
+        .subtitle {
+            color: var(--accent-red);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .player-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            color: var(--ice-white);
+        }
+
+        .date {
+            color: var(--silver);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .intro {
+            background: rgba(200, 16, 46, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 20px 25px;
+            margin-bottom: 40px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .intro p {
+            color: var(--silver);
+            font-size: 1rem;
+        }
+
+        .intro strong {
+            color: var(--ice-white);
+        }
+
+        .coach-sig {
+            color: var(--accent-red);
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .focus-area {
+            margin-bottom: 50px;
+        }
+
+        .focus-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .focus-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: rgba(200, 16, 46, 0.3);
+            line-height: 1;
+        }
+
+        .focus-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: var(--ice-white);
+        }
+
+        .focus-tag {
+            font-size: 0.8rem;
+            color: var(--accent-red);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .scenario-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-label {
+            color: var(--accent-red);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .scenario-text {
+            color: var(--silver);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .question {
+            color: var(--ice-white);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            margin-bottom: 20px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .option.correct {
+            background: rgba(45, 122, 62, 0.2);
+            border-color: var(--success-green);
+        }
+
+        .option-letter {
+            font-weight: 700;
+            color: var(--accent-red);
+            min-width: 25px;
+        }
+
+        .option.correct .option-letter {
+            color: var(--success-green);
+        }
+
+        .option-text {
+            color: var(--silver);
+            font-size: 0.9rem;
+        }
+
+        .option.correct .option-text {
+            color: var(--ice-white);
+        }
+
+        .correct-indicator {
+            color: var(--success-green);
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .feedback-box {
+            background: rgba(45, 122, 62, 0.15);
+            border: 1px solid rgba(45, 122, 62, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .feedback-title {
+            color: var(--success-green);
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .feedback-text {
+            color: var(--silver);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .feedback-text strong {
+            color: var(--ice-white);
+        }
+
+        .coach-note {
+            background: rgba(200, 16, 46, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .coach-note-label {
+            color: var(--accent-red);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .coach-note-text {
+            color: var(--ice-white);
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+
+        .summary {
+            background: rgba(30, 64, 175, 0.2);
+            border: 1px solid rgba(30, 64, 175, 0.4);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .summary-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--ice-white);
+            margin-bottom: 20px;
+        }
+
+        .key-points {
+            text-align: left;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .key-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .key-point-icon {
+            color: var(--success-green);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .key-point-text {
+            color: var(--silver);
+            font-size: 0.95rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--silver);
+            font-size: 0.85rem;
+        }
+
+        .print-btn {
+            display: inline-block;
+            background: var(--accent-red);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            background: #a50d26;
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .container {
+                background: white;
+                border: none;
+                box-shadow: none;
+            }
+            .print-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 20px;
+            }
+            .player-name {
+                font-size: 2.2rem;
+            }
+            .focus-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Puck <span>Academy</span></h1>
+            <p class="subtitle">Personal Coaching Notes</p>
+            <h2 class="player-name">Tyler's Training Focus</h2>
+            <p class="date">Based on Recent Game Feedback • January 2026</p>
+        </header>
+
+        <div class="intro">
+            <p><strong>Tyler,</strong> these three scenarios are based on the specific areas we talked about after your recent games. This isn't general training — it's targeted work on the reads that will make the biggest difference for you right now. Go through each one, really think about the "why," and let's build these habits into your game.</p>
+            <p class="coach-sig">— Coach</p>
+        </div>
+
+        <!-- Focus Area 1: High Route Problem -->
+        <div class="focus-area">
+            <div class="focus-header">
+                <span class="focus-number">1</span>
+                <div>
+                    <span class="focus-tag">Breakout Routes</span>
+                    <h3 class="focus-title">The High Route Problem</h3>
+                </div>
+            </div>
+
+            <div class="scenario-box">
+                <p class="scenario-label">The Situation:</p>
+                <p class="scenario-text">
+                    End of the first period, your team is defending. D-man gets the puck behind the net. You swing back to support but take a high route near the top of the circles.
+                </p>
+                
+                <p class="question">Your D-man hits you with a pass, but it comes to your backhand. What went wrong?</p>
+
+                <div class="options">
+                    <div class="option">
+                        <span class="option-letter">A)</span>
+                        <span class="option-text">The D-man made a bad pass</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">B)</span>
+                        <span class="option-text">You should have stopped and called for it</span>
+                    </div>
+                    <div class="option correct">
+                        <span class="option-letter">C)</span>
+                        <span class="option-text">Your route was too high — coming underneath would've put the puck on your forehand</span>
+                        <span class="correct-indicator">✓ CORRECT</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">D)</span>
+                        <span class="option-text">Nothing — backhand passes are just part of hockey</span>
+                    </div>
+                </div>
+
+                <div class="feedback-box">
+                    <p class="feedback-title">Why This Matters:</p>
+                    <p class="feedback-text">
+                        <strong>This isn't about the pass. It's about your route.</strong> A deeper, lower route puts you in a position to receive the puck with vision and control. When you're high, you're often catching it on your backhand with pressure already coming. The bobble and the 2-on-0 against? That started with route selection.
+                    </p>
+                    <div class="coach-note">
+                        <p class="coach-note-label">Tyler-Specific Note:</p>
+                        <p class="coach-note-text">"This is one small adjustment that changes everything. Get lower, come underneath, and you'll have time to see the whole ice."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Focus Area 2: Faceoff Leverage -->
+        <div class="focus-area">
+            <div class="focus-header">
+                <span class="focus-number">2</span>
+                <div>
+                    <span class="focus-tag">Faceoff Mechanics</span>
+                    <h3 class="focus-title">Faceoff Leverage</h3>
+                </div>
+            </div>
+
+            <div class="scenario-box">
+                <p class="scenario-label">The Situation:</p>
+                <p class="scenario-text">
+                    Defensive zone draw. You set up in your usual stance — low on the stick, but legs fairly straight. The opposing center is coiled and ready.
+                </p>
+                
+                <p class="question">What adjustment gives you a better chance?</p>
+
+                <div class="options">
+                    <div class="option">
+                        <span class="option-letter">A)</span>
+                        <span class="option-text">Grip lower on the stick for more control</span>
+                    </div>
+                    <div class="option correct">
+                        <span class="option-letter">B)</span>
+                        <span class="option-text">Get lower through the hips and knees — load your legs</span>
+                        <span class="correct-indicator">✓ CORRECT</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">C)</span>
+                        <span class="option-text">Watch the opposing center's eyes for a tell</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">D)</span>
+                        <span class="option-text">Lean in more with your upper body</span>
+                    </div>
+                </div>
+
+                <div class="feedback-box">
+                    <p class="feedback-title">Why This Matters:</p>
+                    <p class="feedback-text">
+                        <strong>Leverage comes from the ground up.</strong> Straight legs mean you're pushing with your arms, not your whole body. Getting lower through hips and knees lets you explode into the draw. It's not about being stronger than the other guy — it's about being in a position to use the strength you have.
+                    </p>
+                    <div class="coach-note">
+                        <p class="coach-note-label">Tyler-Specific Note:</p>
+                        <p class="coach-note-text">"I've seen you go low on the stick, which is good. Now match that with your legs. Get loaded. You'll feel the difference immediately."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Focus Area 3: Backcheck Awareness -->
+        <div class="focus-area">
+            <div class="focus-header">
+                <span class="focus-number">3</span>
+                <div>
+                    <span class="focus-tag">Defensive Awareness</span>
+                    <h3 class="focus-title">Backcheck Awareness</h3>
+                </div>
+            </div>
+
+            <div class="scenario-box">
+                <p class="scenario-label">The Situation:</p>
+                <p class="scenario-text">
+                    The other team breaks out quickly. You're backchecking hard but you've got your head down, focused on getting back. A forward sneaks in behind you as the late trailer.
+                </p>
+                
+                <p class="question">What habit would have prevented this?</p>
+
+                <div class="options">
+                    <div class="option">
+                        <span class="option-letter">A)</span>
+                        <span class="option-text">Skating harder — speed is the issue</span>
+                    </div>
+                    <div class="option correct">
+                        <span class="option-letter">B)</span>
+                        <span class="option-text">Shoulder-checking constantly while backchecking</span>
+                        <span class="correct-indicator">✓ CORRECT</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">C)</span>
+                        <span class="option-text">Yelling at your D-man to pick him up</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">D)</span>
+                        <span class="option-text">Staying higher in the zone to prevent the breakout</span>
+                    </div>
+                </div>
+
+                <div class="feedback-box">
+                    <p class="feedback-title">Why This Matters:</p>
+                    <p class="feedback-text">
+                        <strong>Backchecking isn't just skating hard. It's scanning.</strong> Shoulder-check every few strides. Know where the late man is. Your job is to identify the threat and take it away — not just get back to the zone. The late trailer beats you when you don't know he's there.
+                    </p>
+                    <div class="coach-note">
+                        <p class="coach-note-label">Tyler-Specific Note:</p>
+                        <p class="coach-note-text">"You're doing the work to get back. Now add the awareness. Head on a swivel. Find the dangerous guy before he finds the puck."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary">
+            <h3 class="summary-title">Your Three Focus Points</h3>
+            <div class="key-points">
+                <div class="key-point">
+                    <span class="key-point-icon">→</span>
+                    <span class="key-point-text"><strong>Breakout routes:</strong> Come low and underneath to receive on your forehand with vision</span>
+                </div>
+                <div class="key-point">
+                    <span class="key-point-icon">→</span>
+                    <span class="key-point-text"><strong>Faceoff stance:</strong> Load your legs through hips and knees — that's where your power comes from</span>
+                </div>
+                <div class="key-point">
+                    <span class="key-point-icon">→</span>
+                    <span class="key-point-text"><strong>Backcheck awareness:</strong> Shoulder-check constantly to find the late man before he beats you</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Puck Academy • Personal Training Notes for Tyler</p>
+            <p>Generated January 25, 2026</p>
+            <button class="print-btn" onclick="window.print()">Print or Save as PDF</button>
+        </div>
+    </div>
+</body>
+</html>

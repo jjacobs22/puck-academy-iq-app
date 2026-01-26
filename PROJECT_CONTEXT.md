@@ -60,8 +60,11 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - Multiple choice decision points ("What should you do?")
 - Immediate feedback with explanation of correct/incorrect choices
 - Progress through linear modules (must complete to unlock next)
-- 5 interactive defensive zone scenarios (currently built)
-- Scoring system tracking correct/incorrect answers per run
+- **19 interactive scenarios across 3 modules:**
+  - Module 1: Defensive Zone (5 scenarios)
+  - Module 2: Faceoffs (7 scenarios)
+  - Module 3: Breakouts (7 scenarios)
+- Scoring system tracking correct/incorrect answers per module
 - Results modal with score display and performance-based messaging
 
 **Onboarding Flow:**
@@ -244,14 +247,40 @@ This enables rich link previews on iMessage, Twitter, Facebook, etc. with the ac
 puck-academy-iq-app/
 ├── index.html                    # Landing page with challenge banner
 ├── onboarding.html               # 5-step onboarding flow
-├── training.html                 # Module hub with scenarios, scoring, results modal
-├── hockey-iq-diagram.html        # Scenario 1: D-zone pressure read
-├── scenario-2-corner-battle.html # Scenario 2: Corner battle
-├── scenario-3-cycle.html         # Scenario 3: Cycle coverage
-├── scenario-4-breakout.html      # Scenario 4: Breakout positioning
-├── scenario-5-gap.html           # Scenario 5: Gap control
+├── training.html                 # Module hub with all 3 modules, scoring, results modal
+│
+├── # Module 1: Defensive Zone (5 scenarios)
+├── hockey-iq-diagram.html        # Scenario 1-1: D-zone pressure read
+├── scenario-2-corner-battle.html # Scenario 1-2: Corner battle
+├── scenario-3-cycle.html         # Scenario 1-3: Cycle coverage
+├── scenario-4-breakout.html      # Scenario 1-4: Breakout positioning
+├── scenario-5-gap.html           # Scenario 1-5: Gap control
+│
+├── # Module 2: Faceoffs (7 scenarios)
+├── module2-scenario1-ref-position.html
+├── module2-scenario2-advantage.html
+├── module2-scenario3-cheat-feet.html
+├── module2-scenario4-tieup.html
+├── module2-scenario5-leverage.html
+├── module2-scenario6-forehand-backhand.html
+├── module2-scenario7-post-draw.html
+│
+├── # Module 3: Breakouts (7 scenarios)
+├── module3-scenario1-high-low-route.html
+├── module3-scenario2-reading-pressure.html
+├── module3-scenario3-forehand-receive.html
+├── module3-scenario4-cut-laterally.html
+├── module3-scenario5-support-stretch.html
+├── module3-scenario6-forecheck-pattern.html
+├── module3-scenario7-broken-play.html
+│
+├── # Personalized Training
+├── tylers-coaching-notes.html    # Tyler's personalized training doc (printable)
+│
+├── # Documentation & Config
 ├── PROJECT_CONTEXT.md            # This file - project documentation
 ├── og-image.html                 # Template reference for OG image design
+├── coach-prototype.html          # Conversational coach prototype (experimental)
 ├── netlify.toml                  # Netlify configuration for edge functions
 ├── netlify/
 │   └── edge-functions/
@@ -338,15 +367,19 @@ puck-academy-iq-app/
 ### What's Working ✅
 - **Landing page:** Shows challenge banner when accessed via shared link with `?score=X`
 - **Onboarding flow:** 5-step personalization working end-to-end
-- **Module hub (training.html):** Shows Module 1 with 5 scenario cards and progress tracking
-- **5 complete scenarios:** All playable with questions, answers, and feedback
-- **SVG rink diagrams:** Clean visual representation of defensive zone situations
-- **Progress tracking:** localStorage saves completed scenarios
-- **Scoring system:** Tracks correct/incorrect per scenario, calculates score, saves best score
-- **Results modal:** Shows score with performance-based messaging after completing all scenarios
+- **Module hub (training.html):** Shows all 3 modules with independent progress tracking
+- **19 complete scenarios across 3 modules:** All playable with questions, answers, and Coach feedback
+  - Module 1: Defensive Zone (5 scenarios)
+  - Module 2: Faceoffs (7 scenarios)
+  - Module 3: Breakouts (7 scenarios)
+- **SVG rink diagrams:** Clean visual representation of various game situations
+- **Progress tracking:** localStorage saves completed scenarios per module
+- **Scoring system:** Tracks correct/incorrect per scenario per module, calculates score, saves best score
+- **Results modal:** Shows score with module-specific performance-based messaging
 - **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop), includes context text + dynamic OG image preview
 - **Email capture:** Netlify Forms collecting onboarding emails
 - **Feedback form:** Google Forms linked from results modal
+- **Tyler's personalized training:** Standalone printable coaching notes based on game feedback
 - **Mobile responsive:** Works on phone/tablet
 - **GitHub → Netlify pipeline:** Auto-deploy on push
 
@@ -356,8 +389,8 @@ puck-academy-iq-app/
 - **Non-center users:** Onboarding captures their email with "notify me" but no content for them
 
 ### What's Not Started 🔲
-- Module 2: Faceoffs (planned)
-- Module 3: Breakouts (planned)
+- ~~Module 2: Faceoffs~~ ✅ **DONE** (7 scenarios)
+- ~~Module 3: Breakouts~~ ✅ **DONE** (7 scenarios)
 - Module 4: Offensive Zone (planned)
 - Assessment/testing functionality
 - Streak/gamification features
@@ -450,8 +483,10 @@ puck-academy-iq-app/
 
 ### Next Up (February 2026)
 - Analyze beta feedback and identify top 3 improvements
-- Add 2-3 more defensive zone scenarios based on feedback
-- Build Module 2: Faceoffs (5 scenarios)
+- Add additional scenarios based on feedback
+- ~~Build Module 2: Faceoffs~~ ✅ **DONE**
+- ~~Build Module 3: Breakouts~~ ✅ **DONE**
+- Build Module 4: Offensive Zone
 - Implement basic streak tracking
 
 ### Backlog (Q1-Q2 2026)
@@ -592,6 +627,55 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 25, 2026 - Added Module 2 (Faceoffs) and Module 3 (Breakouts)
+
+**New Content Added:**
+- **Module 2: Faceoffs** — 7 complete scenarios covering faceoff strategy for centers:
+  1. Reading the Ref Position
+  2. Recognizing Who Has the Advantage
+  3. When to Cheat Your Feet
+  4. The Tie-Up Decision
+  5. Leverage and Body Position
+  6. Forehand vs. Backhand Read
+  7. Post-Draw Responsibility
+
+- **Module 3: Breakouts** — 7 complete scenarios covering breakout routes and reads:
+  1. High Route vs. Low Route
+  2. Reading Pressure — When to Go Quick
+  3. Receiving on Forehand vs. Backhand
+  4. When to Cut Laterally
+  5. Support vs. Stretch
+  6. Recognizing the Forecheck Pattern
+  7. Broken Play Recovery
+
+**New Files Created:**
+- Module 2: `module2-scenario1-ref-position.html` through `module2-scenario7-post-draw.html`
+- Module 3: `module3-scenario1-high-low-route.html` through `module3-scenario7-broken-play.html`
+- Tyler's Coaching Notes: `tylers-coaching-notes.html` — personalized training doc based on game feedback
+
+**Updated Files:**
+- `training.html` — Now displays all three modules with independent progress tracking and scoring
+  - Each module has its own localStorage key for scores
+  - Results modal adapts to show module-specific messaging
+  - Share functionality includes module name
+
+**Technical Notes:**
+- Module 2 scores stored in `puckAcademy_module2_scores`
+- Module 3 scores stored in `puckAcademy_module3_scores`
+- Correct answer positions randomized across scenarios (not all B)
+- All scenarios use Coach persona voice for feedback
+- SVG diagrams created for each scenario type (faceoff circles, breakout views, etc.)
+
+**Tyler's Personalized Training:**
+Created standalone HTML page (`tylers-coaching-notes.html`) with 3 personalized scenarios based on game feedback:
+1. The High Route Problem (breakout routes)
+2. Faceoff Leverage (stance mechanics)
+3. Backcheck Awareness (defensive scanning)
+
+This page is printable/saveable as PDF for offline reference.
+
+---
 
 ### January 23, 2026 - Updated Onboarding Flow
 

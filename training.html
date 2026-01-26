@@ -385,6 +385,26 @@
             display: none;
         }
 
+        .module-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .module-section .module-header {
+            margin-bottom: 20px;
+        }
+
+        .module-section .module-title {
+            font-size: 1.6rem;
+        }
+
+        .module-section .module-description {
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 600px) {
             .logo {
                 font-size: 2rem;
@@ -401,6 +421,9 @@
             .modal-score {
                 font-size: 3rem;
             }
+            .module-section {
+                padding: 20px 15px;
+            }
         }
     </style>
 </head>
@@ -416,14 +439,6 @@
             <div class="score-value" id="bestScoreValue">0/5</div>
         </div>
 
-        <div class="module-header">
-            <h2 class="module-title">Module 1: Defensive Zone Coverage</h2>
-            <p class="module-description">
-                Master the fundamentals of two-way center play in your defensive zone. 
-                Learn positioning, coverage responsibilities, and when to support vs. when to cover.
-            </p>
-        </div>
-
         <!-- Coach Intro -->
         <div class="coach-intro" id="coachIntro">
             <div class="coach-avatar">C</div>
@@ -432,45 +447,187 @@
             </div>
         </div>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+        <!-- MODULE 1: Defensive Zone -->
+        <div class="module-section" id="module1">
+            <div class="module-header">
+                <h2 class="module-title">Module 1: Defensive Zone Coverage</h2>
+                <p class="module-description">
+                    Master the fundamentals of two-way center play in your defensive zone.
+                </p>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar1"></div>
+            </div>
+            <p class="progress-text" id="progressText1">0 of 5 scenarios completed</p>
+
+            <div class="scenarios-grid">
+                <div class="scenario-card" onclick="loadScenario(1, 1)">
+                    <span class="scenario-number">1</span>
+                    <h3 class="scenario-title">High Slot Coverage</h3>
+                    <p class="scenario-description">Learn your primary responsibility when opponents have the puck on the boards.</p>
+                    <span class="scenario-status status-available" id="status-1-1">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(1, 2)">
+                    <span class="scenario-number">2</span>
+                    <h3 class="scenario-title">Corner Battle Support</h3>
+                    <p class="scenario-description">Understand when to help in corners vs. protecting the middle.</p>
+                    <span class="scenario-status status-available" id="status-1-2">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(1, 3)">
+                    <span class="scenario-number">3</span>
+                    <h3 class="scenario-title">Reading the Cycle</h3>
+                    <p class="scenario-description">Anticipate passes and position yourself to intercept during opponent cycling.</p>
+                    <span class="scenario-status status-available" id="status-1-3">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(1, 4)">
+                    <span class="scenario-number">4</span>
+                    <h3 class="scenario-title">Breakout Timing</h3>
+                    <p class="scenario-description">Know when to transition from defense to offense and support the breakout.</p>
+                    <span class="scenario-status status-available" id="status-1-4">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(1, 5)">
+                    <span class="scenario-number">5</span>
+                    <h3 class="scenario-title">Gap Control</h3>
+                    <p class="scenario-description">Maintain proper distance from opponents while staying in defensive position.</p>
+                    <span class="scenario-status status-available" id="status-1-5">Start</span>
+                </div>
+            </div>
         </div>
-        <p class="progress-text" id="progressText">0 of 5 scenarios completed</p>
 
-        <div class="scenarios-grid">
-            <div class="scenario-card" onclick="loadScenario(1)">
-                <span class="scenario-number">1</span>
-                <h3 class="scenario-title">High Slot Coverage</h3>
-                <p class="scenario-description">Learn your primary responsibility when opponents have the puck on the boards.</p>
-                <span class="scenario-status status-available" id="status-1">Start</span>
+        <!-- MODULE 2: Faceoffs -->
+        <div class="module-section" id="module2">
+            <div class="module-header">
+                <h2 class="module-title">Module 2: Faceoffs</h2>
+                <p class="module-description">
+                    Faceoffs aren't just about winning the draw — they're about reading the situation and setting up the next play.
+                </p>
             </div>
-
-            <div class="scenario-card" onclick="loadScenario(2)">
-                <span class="scenario-number">2</span>
-                <h3 class="scenario-title">Corner Battle Support</h3>
-                <p class="scenario-description">Understand when to help in corners vs. protecting the middle.</p>
-                <span class="scenario-status status-available" id="status-2">Start</span>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar2"></div>
             </div>
+            <p class="progress-text" id="progressText2">0 of 7 scenarios completed</p>
 
-            <div class="scenario-card" onclick="loadScenario(3)">
-                <span class="scenario-number">3</span>
-                <h3 class="scenario-title">Reading the Cycle</h3>
-                <p class="scenario-description">Anticipate passes and position yourself to intercept during opponent cycling.</p>
-                <span class="scenario-status status-available" id="status-3">Start</span>
+            <div class="scenarios-grid">
+                <div class="scenario-card" onclick="loadScenario(2, 1)">
+                    <span class="scenario-number">1</span>
+                    <h3 class="scenario-title">Reading the Ref Position</h3>
+                    <p class="scenario-description">Learn how ref positioning affects your faceoff approach.</p>
+                    <span class="scenario-status status-available" id="status-2-1">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(2, 2)">
+                    <span class="scenario-number">2</span>
+                    <h3 class="scenario-title">Who Has the Advantage?</h3>
+                    <p class="scenario-description">Recognize when you have the edge vs. when you're fighting uphill.</p>
+                    <span class="scenario-status status-available" id="status-2-2">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(2, 3)">
+                    <span class="scenario-number">3</span>
+                    <h3 class="scenario-title">When to Cheat Your Feet</h3>
+                    <p class="scenario-description">Know when to push the limits in high-leverage situations.</p>
+                    <span class="scenario-status status-available" id="status-2-3">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(2, 4)">
+                    <span class="scenario-number">4</span>
+                    <h3 class="scenario-title">The Tie-Up Decision</h3>
+                    <p class="scenario-description">Learn when to tie up instead of trying to win clean.</p>
+                    <span class="scenario-status status-available" id="status-2-4">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(2, 5)">
+                    <span class="scenario-number">5</span>
+                    <h3 class="scenario-title">Leverage and Body Position</h3>
+                    <p class="scenario-description">Master the stance that generates power from the ground up.</p>
+                    <span class="scenario-status status-available" id="status-2-5">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(2, 6)">
+                    <span class="scenario-number">6</span>
+                    <h3 class="scenario-title">Forehand vs. Backhand Read</h3>
+                    <p class="scenario-description">Adapt your approach when one move isn't working.</p>
+                    <span class="scenario-status status-available" id="status-2-6">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(2, 7)">
+                    <span class="scenario-number">7</span>
+                    <h3 class="scenario-title">Post-Draw Responsibility</h3>
+                    <p class="scenario-description">What to do immediately after losing a draw.</p>
+                    <span class="scenario-status status-available" id="status-2-7">Start</span>
+                </div>
             </div>
+        </div>
 
-            <div class="scenario-card" onclick="loadScenario(4)">
-                <span class="scenario-number">4</span>
-                <h3 class="scenario-title">Breakout Timing</h3>
-                <p class="scenario-description">Know when to transition from defense to offense and support the breakout.</p>
-                <span class="scenario-status status-available" id="status-4">Start</span>
+        <!-- MODULE 3: Breakouts -->
+        <div class="module-section" id="module3">
+            <div class="module-header">
+                <h2 class="module-title">Module 3: Breakouts</h2>
+                <p class="module-description">
+                    Breakout success is about route selection and timing — being in the right place with time and space.
+                </p>
             </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar3"></div>
+            </div>
+            <p class="progress-text" id="progressText3">0 of 7 scenarios completed</p>
 
-            <div class="scenario-card" onclick="loadScenario(5)">
-                <span class="scenario-number">5</span>
-                <h3 class="scenario-title">Gap Control</h3>
-                <p class="scenario-description">Maintain proper distance from opponents while staying in defensive position.</p>
-                <span class="scenario-status status-available" id="status-5">Start</span>
+            <div class="scenarios-grid">
+                <div class="scenario-card" onclick="loadScenario(3, 1)">
+                    <span class="scenario-number">1</span>
+                    <h3 class="scenario-title">High Route vs. Low Route</h3>
+                    <p class="scenario-description">Learn why coming underneath the puck changes everything.</p>
+                    <span class="scenario-status status-available" id="status-3-1">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(3, 2)">
+                    <span class="scenario-number">2</span>
+                    <h3 class="scenario-title">Reading Pressure</h3>
+                    <p class="scenario-description">Know when to flash weak side for a quick outlet.</p>
+                    <span class="scenario-status status-available" id="status-3-2">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(3, 3)">
+                    <span class="scenario-number">3</span>
+                    <h3 class="scenario-title">Forehand vs. Backhand Receive</h3>
+                    <p class="scenario-description">Small route adjustments that create big advantages.</p>
+                    <span class="scenario-status status-available" id="status-3-3">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(3, 4)">
+                    <span class="scenario-number">4</span>
+                    <h3 class="scenario-title">When to Cut Laterally</h3>
+                    <p class="scenario-description">Use soft ice to buy time and create options.</p>
+                    <span class="scenario-status status-available" id="status-3-4">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(3, 5)">
+                    <span class="scenario-number">5</span>
+                    <h3 class="scenario-title">Support vs. Stretch</h3>
+                    <p class="scenario-description">Know when to stay close vs. when to push up ice.</p>
+                    <span class="scenario-status status-available" id="status-3-5">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(3, 6)">
+                    <span class="scenario-number">6</span>
+                    <h3 class="scenario-title">Reading the Forecheck Pattern</h3>
+                    <p class="scenario-description">Beat the 1-2-2 by recognizing what they give up.</p>
+                    <span class="scenario-status status-available" id="status-3-6">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(3, 7)">
+                    <span class="scenario-number">7</span>
+                    <h3 class="scenario-title">Broken Play Recovery</h3>
+                    <p class="scenario-description">Transition to defense when the breakout fails.</p>
+                    <span class="scenario-status status-available" id="status-3-7">Start</span>
+                </div>
             </div>
         </div>
 
@@ -504,69 +661,141 @@
     </div>
 
     <script>
-        // Score tracking
-        let scoreData = JSON.parse(localStorage.getItem('puckAcademy_scores') || '{"currentRun": {}, "bestScore": 0}');
-        let completedScenarios = JSON.parse(localStorage.getItem('completedScenarios') || '[]');
+        // Module configurations
+        const moduleConfigs = {
+            1: { 
+                total: 5, 
+                storageKey: 'puckAcademy_scores',
+                scenarios: {
+                    1: 'hockey-iq-diagram.html',
+                    2: 'scenario-2-corner-battle.html',
+                    3: 'scenario-3-cycle.html',
+                    4: 'scenario-4-breakout.html',
+                    5: 'scenario-5-gap.html'
+                }
+            },
+            2: { 
+                total: 7, 
+                storageKey: 'puckAcademy_module2_scores',
+                scenarios: {
+                    1: 'module2-scenario1-ref-position.html',
+                    2: 'module2-scenario2-advantage.html',
+                    3: 'module2-scenario3-cheat-feet.html',
+                    4: 'module2-scenario4-tieup.html',
+                    5: 'module2-scenario5-leverage.html',
+                    6: 'module2-scenario6-forehand-backhand.html',
+                    7: 'module2-scenario7-post-draw.html'
+                }
+            },
+            3: { 
+                total: 7, 
+                storageKey: 'puckAcademy_module3_scores',
+                scenarios: {
+                    1: 'module3-scenario1-high-low-route.html',
+                    2: 'module3-scenario2-reading-pressure.html',
+                    3: 'module3-scenario3-forehand-receive.html',
+                    4: 'module3-scenario4-cut-laterally.html',
+                    5: 'module3-scenario5-support-stretch.html',
+                    6: 'module3-scenario6-forecheck-pattern.html',
+                    7: 'module3-scenario7-broken-play.html'
+                }
+            }
+        };
 
-        function saveScores() {
-            localStorage.setItem('puckAcademy_scores', JSON.stringify(scoreData));
+        // Get score data for a module
+        function getScoreData(moduleNum) {
+            const config = moduleConfigs[moduleNum];
+            return JSON.parse(localStorage.getItem(config.storageKey) || '{"currentRun": {}, "bestScore": 0}');
+        }
+
+        // Save score data for a module
+        function saveScoreData(moduleNum, data) {
+            const config = moduleConfigs[moduleNum];
+            localStorage.setItem(config.storageKey, JSON.stringify(data));
+        }
+
+        function updateModuleDisplay(moduleNum) {
+            const config = moduleConfigs[moduleNum];
+            const scoreData = getScoreData(moduleNum);
+            const completed = Object.keys(scoreData.currentRun).length;
+            const total = config.total;
+            const percentage = (completed / total) * 100;
+
+            const progressBar = document.getElementById(`progressBar${moduleNum}`);
+            const progressText = document.getElementById(`progressText${moduleNum}`);
+            
+            if (progressBar) progressBar.style.width = percentage + '%';
+            if (progressText) progressText.textContent = `${completed} of ${total} scenarios completed`;
+
+            // Update card statuses for this module
+            for (let i = 1; i <= total; i++) {
+                const status = document.getElementById(`status-${moduleNum}-${i}`);
+                const card = status ? status.closest('.scenario-card') : null;
+                
+                if (status && card) {
+                    if (scoreData.currentRun[i] !== undefined) {
+                        card.classList.add('completed');
+                        if (scoreData.currentRun[i] === true) {
+                            card.classList.add('correct');
+                            card.classList.remove('incorrect');
+                            status.className = 'scenario-status status-complete';
+                            status.innerHTML = '<span class="checkmark">✓</span> Correct';
+                        } else {
+                            card.classList.add('incorrect');
+                            card.classList.remove('correct');
+                            status.className = 'scenario-status status-incorrect';
+                            status.innerHTML = '✗ Incorrect';
+                        }
+                    } else {
+                        card.classList.remove('completed', 'correct', 'incorrect');
+                        status.className = 'scenario-status status-available';
+                        status.textContent = 'Start';
+                    }
+                }
+            }
+
+            // Check if module complete and show results
+            if (completed === total) {
+                const justCompleted = localStorage.getItem(`puckAcademy_module${moduleNum}_justCompleted`);
+                if (justCompleted === 'true' || (moduleNum === 1 && localStorage.getItem('puckAcademy_justCompleted') === 'true')) {
+                    showResults(moduleNum);
+                    localStorage.removeItem(`puckAcademy_module${moduleNum}_justCompleted`);
+                    localStorage.removeItem('puckAcademy_justCompleted');
+                }
+            }
         }
 
         function updateDisplay() {
-            const completed = Object.keys(scoreData.currentRun).length;
-            const total = 5;
-            const percentage = (completed / total) * 100;
+            // Update all modules
+            updateModuleDisplay(1);
+            updateModuleDisplay(2);
+            updateModuleDisplay(3);
 
-            document.getElementById('progressBar').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${completed} of ${total} scenarios completed`;
-
-            // Show best score if exists
-            if (scoreData.bestScore > 0) {
+            // Update overall best score display
+            const module1Data = getScoreData(1);
+            if (module1Data.bestScore > 0) {
                 document.getElementById('scoreDisplay').classList.add('visible');
-                document.getElementById('bestScoreValue').textContent = `${scoreData.bestScore}/5`;
-            }
-
-            // Update card statuses
-            const cards = document.querySelectorAll('.scenario-card');
-            cards.forEach((card, index) => {
-                const scenarioNum = index + 1;
-                const status = document.getElementById(`status-${scenarioNum}`);
-                
-                if (scoreData.currentRun[scenarioNum] !== undefined) {
-                    card.classList.add('completed');
-                    if (scoreData.currentRun[scenarioNum] === true) {
-                        card.classList.add('correct');
-                        card.classList.remove('incorrect');
-                        status.className = 'scenario-status status-complete';
-                        status.innerHTML = '<span class="checkmark">✓</span> Correct';
-                    } else {
-                        card.classList.add('incorrect');
-                        card.classList.remove('correct');
-                        status.className = 'scenario-status status-incorrect';
-                        status.innerHTML = '✗ Incorrect';
-                    }
-                } else {
-                    card.classList.remove('completed', 'correct', 'incorrect');
-                    status.className = 'scenario-status status-available';
-                    status.textContent = 'Start';
-                }
-            });
-
-            // Check if all scenarios complete
-            if (completed === total) {
-                document.getElementById('assessmentBtn').disabled = false;
-                showResults();
+                document.getElementById('bestScoreValue').textContent = `${module1Data.bestScore}/5`;
             }
         }
 
-        function showResults() {
+        function showResults(moduleNum = 1) {
+            const config = moduleConfigs[moduleNum];
+            const scoreData = getScoreData(moduleNum);
             const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
+            const total = config.total;
             
             // Update best score
             if (correctCount > scoreData.bestScore) {
                 scoreData.bestScore = correctCount;
-                saveScores();
+                saveScoreData(moduleNum, scoreData);
             }
+
+            const moduleNames = {
+                1: 'Defensive Zone',
+                2: 'Faceoffs',
+                3: 'Breakouts'
+            };
 
             // Set modal content based on score
             const modal = document.getElementById('resultsModal');
@@ -575,24 +804,29 @@
             const score = document.getElementById('modalScore');
             const message = document.getElementById('modalMessage');
 
-            score.textContent = `${correctCount}/5`;
+            score.textContent = `${correctCount}/${total}`;
+            modal.dataset.module = moduleNum;
 
-            if (correctCount === 5) {
+            const perfectScore = correctCount === total;
+            const greatScore = correctCount >= total - 1;
+            const goodScore = correctCount >= total * 0.6;
+
+            if (perfectScore) {
                 icon.textContent = '🏆';
                 title.textContent = 'PERFECT SCORE!';
-                message.textContent = 'That\'s elite-level reading right there. You saw every play develop before it happened. This is exactly the kind of awareness that gets you noticed. Keep it up. — Coach';
-            } else if (correctCount === 4) {
+                message.textContent = `That's elite-level reading on ${moduleNames[moduleNum]}. You saw every play develop before it happened. This is exactly the kind of awareness that gets you noticed. Keep it up. — Coach`;
+            } else if (greatScore) {
                 icon.textContent = '🔥';
                 title.textContent = 'GREAT JOB!';
-                message.textContent = 'You\'re seeing the ice well. One read got away from you, but that\'s how you learn. Review it, understand why, and you\'ll nail it next time. — Coach';
-            } else if (correctCount === 3) {
+                message.textContent = `You're seeing the ice well on ${moduleNames[moduleNum]}. A read or two got away from you, but that's how you learn. Review and you'll nail it next time. — Coach`;
+            } else if (goodScore) {
                 icon.textContent = '⭐';
                 title.textContent = 'GOOD EFFORT!';
-                message.textContent = 'Solid foundation here. A few reads to tighten up, but that\'s exactly what this training is for. Go through the ones you missed — understanding the "why" is everything. — Coach';
+                message.textContent = `Solid foundation on ${moduleNames[moduleNum]}. A few reads to tighten up, but that's exactly what this training is for. Go through the ones you missed. — Coach`;
             } else {
                 icon.textContent = '📚';
                 title.textContent = 'KEEP WORKING!';
-                message.textContent = 'Hey, this stuff isn\'t easy — that\'s why most players never learn it. But you\'re putting in the work. Go back through each scenario and really study the explanations. That\'s how you build hockey IQ. — Coach';
+                message.textContent = `Hey, ${moduleNames[moduleNum]} isn't easy — that's why most players never learn it. But you're putting in the work. Study the explanations. That's how you build hockey IQ. — Coach`;
             }
 
             modal.classList.add('active');
@@ -603,46 +837,50 @@
         }
 
         function retryModule() {
+            const modal = document.getElementById('resultsModal');
+            const moduleNum = parseInt(modal.dataset.module) || 1;
+            const scoreData = getScoreData(moduleNum);
             scoreData.currentRun = {};
-            saveScores();
+            saveScoreData(moduleNum, scoreData);
             closeResults();
             updateDisplay();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Scroll to the module
+            const moduleSection = document.getElementById(`module${moduleNum}`);
+            if (moduleSection) {
+                moduleSection.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         function shareResults() {
+            const modal = document.getElementById('resultsModal');
+            const moduleNum = parseInt(modal.dataset.module) || 1;
+            const config = moduleConfigs[moduleNum];
+            const scoreData = getScoreData(moduleNum);
             const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
+            const total = config.total;
+            
+            const moduleNames = {
+                1: 'Defensive Zone',
+                2: 'Faceoffs',
+                3: 'Breakouts'
+            };
+            
             const shareUrl = `https://hockeyiq.netlify.app?score=${correctCount}`;
-            
-            let emoji = '🏒';
             let shareText = '';
-            let shareTitle = 'Puck Academy Hockey IQ Challenge';
             
-            if (correctCount === 5) {
-                emoji = '🏆';
-                shareTitle = '🏆 Perfect Score - Hockey IQ Challenge';
-                shareText = `I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! Think you can beat me?`;
-            } else if (correctCount >= 4) {
-                emoji = '🔥';
-                shareTitle = `🔥 ${correctCount}/5 - Hockey IQ Challenge`;
-                shareText = `I scored ${correctCount}/5 on Puck Academy's Defensive Zone Hockey IQ training! Think you can do better?`;
+            if (correctCount === total) {
+                shareText = `I got a PERFECT SCORE on Puck Academy's ${moduleNames[moduleNum]} Hockey IQ training! 🏆 Think you can beat me?`;
+            } else if (correctCount >= total - 1) {
+                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🔥 Think you can do better?`;
             } else {
-                shareTitle = `🏒 ${correctCount}/5 - Hockey IQ Challenge`;
-                shareText = `I scored ${correctCount}/5 on Puck Academy's Hockey IQ training! Test your hockey brain:`;
+                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🏒 Test your hockey brain:`;
             }
 
-            // Combine text and URL for sharing (iOS ignores separate text when url is provided)
             const fullShareText = `${shareText}\n\n${shareUrl}`;
 
-            // Try native share first (mobile)
-            // On iOS, we only use 'text' field with URL included - this ensures the message text appears
             if (navigator.share) {
-                navigator.share({
-                    text: fullShareText
-                }).catch(() => {
-                    // User cancelled or error, fall back to clipboard
-                    copyToClipboard(fullShareText);
-                });
+                navigator.share({ text: fullShareText }).catch(() => copyToClipboard(fullShareText));
             } else {
                 copyToClipboard(fullShareText);
             }
@@ -652,7 +890,6 @@
             navigator.clipboard.writeText(text).then(() => {
                 showShareConfirmation();
             }).catch(() => {
-                // Fallback for older browsers
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
                 textArea.style.position = 'fixed';
@@ -673,16 +910,12 @@
             }, 3000);
         }
 
-        function loadScenario(num) {
-            const scenarios = {
-                1: 'hockey-iq-diagram.html',
-                2: 'scenario-2-corner-battle.html',
-                3: 'scenario-3-cycle.html',
-                4: 'scenario-4-breakout.html',
-                5: 'scenario-5-gap.html'
-            };
-            
-            window.location.href = scenarios[num];
+        function loadScenario(moduleNum, scenarioNum) {
+            const config = moduleConfigs[moduleNum];
+            const url = config.scenarios[scenarioNum];
+            if (url) {
+                window.location.href = url;
+            }
         }
 
         // Initialize
