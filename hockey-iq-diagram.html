@@ -921,21 +921,24 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        // Import shared modules
+        import { Storage } from './js/storage.js';
+        import { Analytics } from './js/analytics.js';
+
         // ====== THEORY INTRO MANAGEMENT ======
-        const INTRO_STORAGE_KEY = 'puckAcademy_introSeen';
+        const MODULE_NUMBER = 1;
         let currentSlide = 1;
         const totalSlides = 3;
 
         function getIntroSeen() {
-            const stored = localStorage.getItem(INTRO_STORAGE_KEY);
-            return stored ? JSON.parse(stored) : {};
+            return Storage.get('puckAcademy_introSeen') || {};
         }
 
         function setIntroSeen(moduleNum) {
             const introSeen = getIntroSeen();
             introSeen['module' + moduleNum] = true;
-            localStorage.setItem(INTRO_STORAGE_KEY, JSON.stringify(introSeen));
+            Storage.set('puckAcademy_introSeen', introSeen);
         }
 
         function checkAndShowIntro() {
@@ -1055,13 +1058,8 @@
             const options = document.querySelectorAll('.option');
             const isCorrect = element.getAttribute('data-correct') === 'true';
             
-            // Track scenario answer in GA4
-            gtag('event', 'scenario_answer', {
-                module_number: 1,
-                module_name: 'Defensive Zone',
-                scenario_number: 1,
-                correct: isCorrect
-            });
+            // Track scenario answer in GA4 (using module)
+            Analytics.trackScenarioAnswer(MODULE_NUMBER, 1, isCorrect);
 
             // Disable all options
             options.forEach(opt => {
@@ -1080,18 +1078,13 @@
 
             answered = true;
 
-            // Save score to scoring system
-            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_scores') || JSON.stringify({
-                currentRun: {},
-                bestScore: null,
-                totalAttempts: 0
-            }));
-            scoreData.currentRun[1] = isCorrect;
-            localStorage.setItem('puckAcademy_scores', JSON.stringify(scoreData));
+            // Save score using Storage module
+            Storage.saveScenarioScore(MODULE_NUMBER, 1, isCorrect);
             
             // Set flag if this completes the module
-            if (Object.keys(scoreData.currentRun).length === 5) {
-                localStorage.setItem('puckAcademy_justCompleted', 'true');
+            const scores = Storage.getModuleScores(MODULE_NUMBER);
+            if (Object.keys(scores.currentRun).length === 5) {
+                Storage.set('puckAcademy_justCompleted', true);
             }
 
             // Show feedback diagram on the rink
@@ -1134,6 +1127,12 @@
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // Expose functions globally for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.resetScenario = resetScenario;
+        window.skipIntro = skipIntro;
+        window.nextSlide = nextSlide;
     </script>
 </body>
 </html>
