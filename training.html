@@ -1240,7 +1240,7 @@
             // Check if we should show feedback prompt (only once, after first module completion)
             if (!localStorage.getItem('puckAcademy_feedbackPrompted')) {
                 // Check if any module is fully completed
-                for (let moduleNum = 1; moduleNum <= 3; moduleNum++) {
+                for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
                     const config = moduleConfigs[moduleNum];
                     const scoreData = getScoreData(moduleNum);
                     const completed = Object.keys(scoreData.currentRun).length;
