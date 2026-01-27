@@ -431,10 +431,10 @@ puck-academy-iq-app/
 - **Tyler's personalized training:** Standalone printable coaching notes based on game feedback
 - **Mobile responsive:** Works on phone/tablet
 - **GitHub → Netlify pipeline:** Auto-deploy on push
+- **User accounts (Stage 1):** Supabase auth with magic link email, progress syncs to server
 
 ### What's Partially Working ⚠️
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
-- **Progress persistence:** Works locally but no server-side backup
 - **Non-center users:** Defense/Goalie disabled with "Coming Soon"; Wingers can use forward content with note about Faceoffs module
 
 ### What's Not Started 🔲
@@ -444,10 +444,11 @@ puck-academy-iq-app/
 - ~~Module 5: Forechecking~~ ✅ **DONE** (7 scenarios)
 - ~~Module 6: D-Zone (Defensemen)~~ ✅ **DONE** (7 scenarios)
 - Goalie-specific modules
+- Google OAuth for sign-in (magic link works, Google requires setup)
 - Assessment/testing functionality
 - Streak/gamification features
 - Coach/parent dashboards
-- Payment/subscription system (spec complete, implementation pending)
+- Payment/subscription system (spec complete, Stage 2 pending)
 
 ### Known Bugs 🐛
 1. ~~**Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message~~ **FIXED** - Combined text+URL into single share parameter; iOS now shows context text with link preview

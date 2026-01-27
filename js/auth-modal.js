@@ -55,6 +55,8 @@ export function showAuthModal(options = {}) {
                     </button>
                 </form>
 
+                <!-- Google OAuth - TODO: Enable when configured in Supabase -->
+                <!-- 
                 <div class="auth-divider">
                     <span>or</span>
                 </div>
@@ -68,6 +70,7 @@ export function showAuthModal(options = {}) {
                     </svg>
                     Continue with Google
                 </button>
+                -->
 
                 <p class="auth-footer">
                     ${isSignup 
@@ -89,7 +92,7 @@ export function showAuthModal(options = {}) {
     const closeBtn = modal.querySelector('.auth-modal-close');
     const overlay = modal.querySelector('.auth-modal-overlay');
     const form = modal.querySelector('#magic-link-form');
-    const googleBtn = modal.querySelector('#google-signin');
+    const googleBtn = modal.querySelector('#google-signin'); // Currently disabled
     const switchLink = modal.querySelector('#switch-to-signin, #switch-to-signup');
 
     closeBtn.addEventListener('click', () => modal.remove());
