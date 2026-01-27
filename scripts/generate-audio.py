@@ -53,6 +53,20 @@ SCENARIOS = {
         "correct": "Exactly. You take away the passing lane and let your D play the man. Two on one the puck carrier. That's team defense.",
         "incorrect": "You overcommitted. Let the D handle the carrier. Your job is to take away options. Don't bunch up with your D."
     },
+    "m1-s6": {
+        "name": "scenario-6-winger-caught",
+        "setup": "Your team just turned it over at the offensive blue line. The opponent's D moved it up quick. Your left winger got caught deep — it's a 3-on-2 against your team. You're the center tracking back.",
+        "prompt": "Your winger is caught up ice. What's your priority?",
+        "correct": "That's discipline. On a 3-on-2, the slot is the danger zone. Your two D-men can handle the wide players. Your job is to eliminate the middle option. Trust your structure, even short a man.",
+        "incorrect": "You left the middle open. On an odd-man rush, the slot is the most dangerous area. Stay central and take away the pass to the middle. Your D can handle the wide lanes."
+    },
+    "m1-s7": {
+        "name": "scenario-7-d-partner-bites",
+        "setup": "Puck is cycling low in your zone. Your D partner got sucked behind the net chasing the carrier. Now the puck goes to the point. You're the center and you're the only one in position to react.",
+        "prompt": "Your D is stuck behind the net. The puck just went to the point. What do you do?",
+        "correct": "Smart read. By sitting in the high slot, you take away the most dangerous pass — point to slot. Let the shot come from outside. Your D partner will recover.",
+        "incorrect": "You left the high slot exposed. That's where the point man wants to pass. Stay high, stay central, and take away the middle. Trust your D partner to get back into the play."
+    },
     
     # Module 2: Faceoffs
     "m2-s1": {
@@ -256,6 +270,13 @@ SCENARIOS = {
         "prompt": "You got the puck. Now what?",
         "correct": "Quick transition. You turned defense into offense in a hurry. That's capitalizing on the forecheck.",
         "incorrect": "You were slow to switch gears. When the forecheck works, attack immediately."
+    },
+    "m5-s8": {
+        "name": "module5-scenario8-f2-gassed",
+        "setup": "Your team just dumped the puck in. You're F1 on the forecheck. You glance back — your F2 is gassed, coasting way behind. Their D has the puck behind the net.",
+        "prompt": "Your F2 is gassed and late. How do you approach this forecheck?",
+        "correct": "Smart pressure. Take a good angle, eliminate one option, and funnel the puck somewhere predictable. You're not trying to win it — you're slowing them down until help arrives.",
+        "incorrect": "You gambled without support. If they make one good pass, you're out of the play and F2 can't bail you out. Angle and contain when you're short support."
     },
     
     # Module 6: D-Zone for Defensemen

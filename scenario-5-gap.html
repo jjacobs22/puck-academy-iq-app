@@ -268,7 +268,8 @@
             </p>
             <div class="btn-row">
                 <button class="btn btn-secondary" onclick="resetScenario()">Try Again</button>
-                <button class="btn btn-primary" onclick="window.location.href='training.html'">Complete Module →</button>
+                <button class="btn btn-primary" onclick="window.location.href='scenario-6-winger-caught.html'">Next Scenario →</button>
+                <button class="btn btn-secondary" onclick="window.location.href='training.html'">Back to Module</button>
             </div>
             <div style="margin-top: 15px; text-align: center;">
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform" target="_blank" style="color: var(--silver); text-decoration: none; font-size: 0.9rem;">📝 Give Feedback - Help us improve!</a>
@@ -276,7 +277,7 @@
         </div>
 
         <div class="scenario-footer">
-            Module 1: Defensive Zone Positioning • Scenario 5 of 5
+            Module 1: Defensive Zone Coverage • Scenario 5 of 7
         </div>
     </div>
 
@@ -379,7 +380,7 @@
             
             // Set flag if this completes the module
             const scores = Storage.getModuleScores(MODULE_NUMBER);
-            if (Object.keys(scores.currentRun).length === 5) {
+            if (Object.keys(scores.currentRun).length === 7) {
                 Storage.set('puckAcademy_justCompleted', true);
             }
 

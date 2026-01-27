@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 26, 2026  
+**Last Updated:** January 27, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -60,12 +60,12 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - Multiple choice decision points ("What should you do?")
 - Immediate feedback with explanation of correct/incorrect choices
 - Progress through linear modules (must complete to unlock next)
-- **40 interactive scenarios across 6 modules:**
-  - Module 1: Defensive Zone (5 scenarios) — Centers
+- **43 interactive scenarios across 6 modules:**
+  - Module 1: Defensive Zone (7 scenarios) — Centers
   - Module 2: Faceoffs (7 scenarios) — Centers
   - Module 3: Breakouts (7 scenarios) — Centers
   - Module 4: Offensive Zone (7 scenarios) — Centers
-  - Module 5: Forechecking (7 scenarios) — Centers
+  - Module 5: Forechecking (8 scenarios) — Centers
   - Module 6: D-Zone (7 scenarios) — Defensemen
 - Scoring system tracking correct/incorrect answers per module
 - Results modal with score display and performance-based messaging
@@ -261,12 +261,14 @@ puck-academy-iq-app/
 │   ├── data-loader.js            # JSON data loading (for future use)
 │   └── scenario-renderer.js      # Dynamic scenario rendering (for future use)
 │
-├── # Module 1: Defensive Zone (5 scenarios)
+├── # Module 1: Defensive Zone (7 scenarios)
 ├── hockey-iq-diagram.html        # Scenario 1-1: D-zone pressure read
 ├── scenario-2-corner-battle.html # Scenario 1-2: Corner battle
 ├── scenario-3-cycle.html         # Scenario 1-3: Cycle coverage
 ├── scenario-4-breakout.html      # Scenario 1-4: Breakout positioning
 ├── scenario-5-gap.html           # Scenario 1-5: Gap control
+├── scenario-6-winger-caught.html # Scenario 1-6: Winger caught up ice (3-on-2)
+├── scenario-7-d-partner-bites.html # Scenario 1-7: D partner out of position
 │
 ├── # Module 2: Faceoffs (7 scenarios)
 ├── module2-scenario1-ref-position.html
@@ -295,7 +297,7 @@ puck-academy-iq-app/
 ├── module4-scenario6-high-slot.html
 ├── module4-scenario7-ozone-turnover.html
 │
-├── # Module 5: Forechecking (7 scenarios)
+├── # Module 5: Forechecking (8 scenarios)
 ├── module5-scenario1-f1-angle.html
 ├── module5-scenario2-f1-f2-read.html
 ├── module5-scenario3-pressure-contain.html
@@ -303,6 +305,7 @@ puck-academy-iq-app/
 ├── module5-scenario5-read-breakout.html
 ├── module5-scenario6-loose-puck.html
 ├── module5-scenario7-turnover-transition.html
+├── module5-scenario8-f2-gassed.html  # F2 is gassed, solo forecheck
 │
 ├── # Module 6: D-Zone for Defensemen (7 scenarios)
 ├── module6-scenario1-gap-control.html
@@ -410,12 +413,12 @@ puck-academy-iq-app/
 - **Onboarding flow:** 5-step personalization working end-to-end
 - **Module hub (training.html):** Shows all 6 modules with independent progress tracking, position-based ordering
 - **Theory Intro overlays:** 3-slide Coach intro appears first time entering each module, with "Review intro" links
-- **40 complete scenarios across 6 modules:** All playable with questions, answers, and Coach feedback
-  - Module 1: Defensive Zone (5 scenarios) — Centers
+- **43 complete scenarios across 6 modules:** All playable with questions, answers, and Coach feedback
+  - Module 1: Defensive Zone (7 scenarios) — Centers
   - Module 2: Faceoffs (7 scenarios) — Centers
   - Module 3: Breakouts (7 scenarios) — Centers
   - Module 4: Offensive Zone (7 scenarios) — Centers
-  - Module 5: Forechecking (7 scenarios) — Centers
+  - Module 5: Forechecking (8 scenarios) — Centers
   - Module 6: D-Zone (7 scenarios) — Defensemen
 - **Refactored codebase:** Shared CSS (`styles/main.css`) and JS modules (`js/storage.js`, `js/analytics.js`)
 - **SVG rink diagrams:** Clean visual representation with improved padding and consistent styling
@@ -679,6 +682,41 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 27, 2026 - New "Broken Structure" Scenarios
+
+**Added 3 new scenarios based on Reddit feedback about covering for teammates:**
+
+Based on beer league feedback about positioning when teammates are out of position or gassed.
+
+**Module 1 (Defensive Zone) - 2 new scenarios:**
+- **Scenario 1-6: Winger Caught Up Ice** (`scenario-6-winger-caught.html`)
+  - Situation: 3-on-2 rush against, your winger is behind the play
+  - Correct: Stay central, take away middle passing lane
+  - Teaches: Slot protection on odd-man rushes
+
+- **Scenario 1-7: D Partner Bites on the Cycle** (`scenario-7-d-partner-bites.html`)
+  - Situation: D partner stuck behind net, puck goes to point
+  - Correct: Drop into high slot to take away point-to-slot pass
+  - Teaches: Covering for out-of-position teammates
+
+**Module 5 (Forechecking) - 1 new scenario:**
+- **Scenario 5-8: F2 is Gassed** (`module5-scenario8-f2-gassed.html`)
+  - Situation: F2 is tired and late, you're F1 alone on forecheck
+  - Correct: Angle and contain, force predictable play
+  - Teaches: Solo forecheck patience when lacking support
+
+**Technical Updates:**
+- Updated `training.html` with new scenario cards and module configs
+- Module 1 now has 7 scenarios (was 5)
+- Module 5 now has 8 scenarios (was 7)
+- Updated `scenario-5-gap.html` to link to scenario 6
+- Updated `module5-scenario7-turnover-transition.html` to link to scenario 8
+- Added narration text to `scripts/generate-audio.py`
+- Generated 12 new audio files (4 per scenario) using ElevenLabs Josh voice
+- Total scenarios: 43 (was 40)
+
+---
 
 ### January 26, 2026 - Static Share Pages (Edge Function Removal)
 

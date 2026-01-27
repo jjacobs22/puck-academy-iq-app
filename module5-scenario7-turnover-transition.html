@@ -174,13 +174,13 @@
             <p class="feedback-text" id="feedbackText"></p>
             <div class="btn-row">
                 <button class="btn btn-secondary" onclick="resetScenario()">Try Again</button>
-                <button class="btn btn-primary" onclick="window.location.href='training.html'">Complete Module →</button>
+                <button class="btn btn-primary" onclick="window.location.href='module5-scenario8-f2-gassed.html'">Next Scenario →</button>
                 <button class="btn btn-secondary" onclick="window.location.href='training.html'">Back to Module</button>
             </div>
         </div>
 
         <div class="scenario-footer">
-            Module 5: Forechecking • Scenario 7 of 7
+            Module 5: Forechecking • Scenario 7 of 8
         </div>
     </div>
 
@@ -256,7 +256,7 @@
             localStorage.setItem('puckAcademy_module5_scores', JSON.stringify(scoreData));
             
             // Mark module as complete
-            if (Object.keys(scoreData.currentRun).length === 7) {
+            if (Object.keys(scoreData.currentRun).length === 8) {
                 localStorage.setItem('puckAcademy_module5_justCompleted', 'true');
             }
 

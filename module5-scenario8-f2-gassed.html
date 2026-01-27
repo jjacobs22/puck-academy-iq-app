@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0N3XTSRTM2');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey IQ Training - F2 is Gassed</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- Scenario-specific styles -->
+    <style>
+        :root { --ice-blue: #E8F4F8; --dark-blue: #0A1628; --accent-red: #C8102E; --ice-white: #FFFFFF; --silver: #A8B2BE; --success-green: #2D7A3E; --error-red: #B91C1C; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Work Sans', sans-serif; background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%); color: var(--ice-blue); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo { font-family: var(--font-header); font-size: 2.5rem; letter-spacing: 3px; color: var(--ice-blue); margin-bottom: 10px; }
+        .logo span { color: var(--accent-red); }
+        .subtitle { color: var(--silver); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px; }
+        .scenario-title { font-family: var(--font-header); font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 20px; }
+        .rink-container { background: var(--ice-blue); border-radius: 15px; padding: 25px; margin-bottom: 20px; }
+        .rink-svg { width: 100%; height: auto; display: block; }
+        .player-you { filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7)); }
+        .player-you.answered { filter: none; }
+        
+        .feedback-element { opacity: 0; transition: opacity 0.6s ease; }
+        .feedback-element.visible { opacity: 1; }
+        .legend { display: flex; justify-content: center; gap: 25px; margin-top: 15px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--dark-blue); }
+        .legend-dot { width: 16px; height: 16px; border-radius: 50%; }
+        .legend-dot.you { background: #FFD700; border: 2px solid #B8860B; }
+        .legend-dot.team { background: #1E40AF; }
+        .legend-dot.opponent { background: var(--accent-red); }
+        .legend-dot.puck { background: #1a1a1a; }
+        .legend-dot.gassed { background: #1E40AF; opacity: 0.4; border: 2px dashed #1E3A8A; }
+        .situation-box { background: rgba(0, 0, 0, 0.6); border-radius: 10px; padding: 20px; margin-bottom: 25px; }
+        .situation-label { color: var(--accent-red); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 8px; }
+        .situation-text { color: var(--ice-blue); line-height: 1.6; }
+        .situation-text .highlight { color: var(--accent-red); font-weight: 600; }
+        .question { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option { background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 18px 20px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: flex-start; gap: 12px; }
+        .option:hover:not(.disabled) { border-color: var(--accent-red); background: rgba(255, 255, 255, 0.12); transform: translateX(5px); }
+        .option.correct { border-color: var(--success-green); background: rgba(45, 122, 62, 0.2); }
+        .option.incorrect { border-color: var(--error-red); background: rgba(185, 28, 28, 0.15); }
+        .option.disabled { cursor: default; opacity: 0.7; }
+        .option-letter { font-weight: 700; color: var(--accent-red); min-width: 25px; }
+        .feedback { margin-top: 25px; padding: 25px; border-radius: 12px; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; display: none; }
+        .feedback.active { opacity: 1; transform: translateY(0); display: block; }
+        .feedback.correct { background: rgba(45, 122, 62, 0.2); border: 1px solid var(--success-green); }
+        .feedback.incorrect { background: rgba(185, 28, 28, 0.15); border: 1px solid var(--error-red); }
+        .feedback-title { font-family: var(--font-header); font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 15px; }
+        .feedback.correct .feedback-title { color: var(--success-green); }
+        .feedback.incorrect .feedback-title { color: var(--error-red); }
+        .feedback-text { line-height: 1.7; color: var(--silver); }
+        .feedback-text strong { color: var(--ice-blue); }
+        .btn-row { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .btn { padding: 14px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-size: 1rem; }
+        .btn-primary { background: var(--accent-red); color: var(--ice-blue); }
+        .btn-primary:hover { background: #a50d26; transform: translateY(-2px); }
+        .btn-secondary { background: transparent; color: var(--silver); border: 1px solid var(--silver); }
+        .btn-secondary:hover { border-color: var(--ice-blue); color: var(--ice-blue); }
+        .scenario-footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--silver); font-size: 0.9rem; }
+        @media (max-width: 600px) { .container { padding: 20px; } .logo { font-size: 2rem; } .btn-row { flex-direction: column; } .btn { width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">Puck <span>Academy</span></h1>
+            <p class="subtitle">Hockey IQ Training</p>
+        </header>
+
+        <h2 class="scenario-title">Scenario 8: F2 is Gassed</h2>
+
+        <div class="rink-container">
+            <svg class="rink-svg" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="500" height="350" fill="#E8F4F8" rx="10"/>
+                <text x="30" y="30" font-family="Bebas Neue, sans-serif" font-size="18" fill="#1E40AF" letter-spacing="2">FORECHECK - F2 LATE</text>
+                
+                <!-- Rink markings - their end -->
+                <path d="M 420 50 Q 450 175 420 300" stroke="#333" stroke-width="3" fill="none"/>
+                <line x1="400" y1="50" x2="400" y2="300" stroke="#C8102E" stroke-width="2"/>
+                <path d="M 400 145 Q 440 175 400 205" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="2"/>
+                <rect x="420" y="155" width="25" height="40" fill="none" stroke="#333" stroke-width="3"/>
+                <line x1="150" y1="50" x2="150" y2="300" stroke="#1E40AF" stroke-width="4"/>
+                <rect x="412" y="165" width="8" height="20" fill="#C8102E" stroke="#8B0000" stroke-width="1"/>
+
+                <!-- Feedback: Angling approach -->
+                <g id="angleApproach" class="feedback-element">
+                    <defs>
+                        <marker id="greenArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#2D7A3E"/>
+                        </marker>
+                    </defs>
+                    <path d="M 280 175 Q 320 200 360 220" stroke="#2D7A3E" stroke-width="3" fill="none" marker-end="url(#greenArrow)" stroke-dasharray="8,4"/>
+                    <text x="320" y="170" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#2D7A3E">ANGLE & CONTAIN</text>
+                </g>
+
+                <!-- Feedback: Option you're taking away -->
+                <g id="optionCut" class="feedback-element">
+                    <line x1="360" y1="230" x2="340" y2="120" stroke="rgba(200,16,46,0.4)" stroke-width="6" stroke-linecap="round"/>
+                    <text x="380" y="160" font-family="Work Sans, sans-serif" font-size="9" font-weight="600" fill="#C8102E">CUT OFF</text>
+                </g>
+
+                <!-- Opponent D behind net with puck -->
+                <g class="player">
+                    <circle cx="360" cy="230" r="22" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="360" y="236" text-anchor="middle" fill="white" font-weight="bold" font-size="12">D</text>
+                </g>
+                <circle cx="375" cy="240" r="6" fill="#1a1a1a" stroke="#333" stroke-width="1">
+                    <animate attributeName="opacity" values="1;0.7;1" dur="1.5s" repeatCount="indefinite"/>
+                </circle>
+                
+                <!-- Second opponent D -->
+                <g class="player">
+                    <circle cx="340" cy="120" r="20" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="340" y="126" text-anchor="middle" fill="white" font-weight="bold" font-size="12">D</text>
+                </g>
+                
+                <!-- Opponent forwards starting to get open -->
+                <g class="player">
+                    <circle cx="280" cy="100" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="280" y="106" text-anchor="middle" fill="white" font-weight="bold" font-size="11">W</text>
+                </g>
+                
+                <g class="player">
+                    <circle cx="280" cy="250" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="280" y="256" text-anchor="middle" fill="white" font-weight="bold" font-size="11">W</text>
+                </g>
+                
+                <!-- F2 - gassed, way behind the play -->
+                <g class="player" style="opacity: 0.4;">
+                    <circle cx="180" cy="175" r="18" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2" stroke-dasharray="4,2"/>
+                    <text x="180" y="181" text-anchor="middle" fill="white" font-weight="bold" font-size="11">F2</text>
+                </g>
+                <text x="180" y="203" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="9" fill="#8B0000" font-weight="600">GASSED!</text>
+                
+                <!-- F3 high in zone -->
+                <g class="player">
+                    <circle cx="240" cy="175" r="18" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                    <text x="240" y="181" text-anchor="middle" fill="white" font-weight="bold" font-size="11">F3</text>
+                </g>
+
+                <!-- YOU (F1) approaching on forecheck -->
+                <g id="playerYou" class="player player-you">
+                    <circle cx="280" cy="175" r="24" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
+                    <text x="280" y="180" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="10">YOU</text>
+                    <text x="280" y="191" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">(F1)</text>
+                </g>
+            </svg>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot you"></div><span>You (F1)</span></div>
+                <div class="legend-item"><div class="legend-dot team"></div><span>Your Team</span></div>
+                <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent</span></div>
+                <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
+                <div class="legend-item"><div class="legend-dot gassed"></div><span>F2 (Gassed)</span></div>
+            </div>
+        </div>
+
+        <div class="situation-box">
+            <p class="situation-label">Situation:</p>
+            <p class="situation-text">
+                Your team just dumped the puck in and you're the first forward (F1) arriving on the forecheck. 
+                You glance back and see your F2 is clearly gassed — they're coasting and way behind the play. 
+                Your F3 is covering high. Their D has the puck behind the net and is looking to make a play.
+                <span class="highlight">Your F2 is gassed and late. How do you approach this forecheck?</span>
+            </p>
+        </div>
+
+        <h3 class="question">F2 is late. How do you forecheck?</h3>
+
+        <div class="options">
+            <div class="option" onclick="selectAnswer(this, 'A')" data-correct="false" data-answer="A">
+                <span class="option-letter">A)</span>
+                <span class="option-text">Full send — pressure hard and try to force a turnover before they realize you're alone</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this, 'B')" data-correct="true" data-answer="B">
+                <span class="option-letter">B)</span>
+                <span class="option-text">Angle and contain — take away one option and force a predictable play</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this, 'C')" data-correct="false" data-answer="C">
+                <span class="option-letter">C)</span>
+                <span class="option-text">Peel off and wait for F2 to catch up before engaging</span>
+            </div>
+            <div class="option" onclick="selectAnswer(this, 'D')" data-correct="false" data-answer="D">
+                <span class="option-letter">D)</span>
+                <span class="option-text">Cheat toward the D-to-D pass to try for an interception</span>
+            </div>
+        </div>
+
+        <div class="feedback" id="feedback">
+            <h4 class="feedback-title" id="feedbackTitle"></h4>
+            <p class="feedback-text" id="feedbackText"></p>
+            <div class="btn-row">
+                <button class="btn btn-secondary" onclick="resetScenario()">Try Again</button>
+                <button class="btn btn-primary" onclick="window.location.href='training.html'">Complete Module →</button>
+                <button class="btn btn-secondary" onclick="window.location.href='training.html'">Back to Module</button>
+            </div>
+        </div>
+
+        <div class="scenario-footer">
+            Module 5: Forechecking • Scenario 8 of 8
+        </div>
+    </div>
+
+    <script type="module">
+        // Import shared modules
+        import { Storage } from './js/storage.js';
+        import { Analytics } from './js/analytics.js';
+        
+        // ====== ELEVENLABS VOICE AUDIO ======
+        let voiceEnabled = true;
+        let currentAudio = null;
+        const AUDIO_PATH = '/audio/module5-scenario8-f2-gassed/';
+        
+        const audioFiles = {
+            setup: new Audio(AUDIO_PATH + 'setup.mp3'),
+            prompt: new Audio(AUDIO_PATH + 'prompt.mp3'),
+            correct: new Audio(AUDIO_PATH + 'correct.mp3'),
+            incorrect: new Audio(AUDIO_PATH + 'incorrect.mp3')
+        };
+        
+        function playAudio(type) {
+            if (!voiceEnabled) return;
+            stopAudio();
+            currentAudio = audioFiles[type];
+            if (currentAudio) {
+                currentAudio.currentTime = 0;
+                currentAudio.play().catch(e => console.log('Audio play failed:', e));
+            }
+        }
+        
+        function stopAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+        }
+        
+        // Auto-play setup narration when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => playAudio('setup'), 500);
+        });
+
+        
+        const MODULE_NUMBER = 5;
+        const SCENARIO_NUMBER = 8;
+        const feedback = document.getElementById('feedback');
+        const feedbackTitle = document.getElementById('feedbackTitle');
+        const feedbackText = document.getElementById('feedbackText');
+        let answered = false;
+
+        const feedbackMessages = {
+            A: {
+                title: "✗ You're gambling.",
+                text: "<strong>I love the compete, but you're gambling.</strong> If you go all-in and the D makes one good pass, you're completely out of the play and your tired F2 can't bail you out. You've just turned a manageable situation into a 2-on-1 the other way. Controlled pressure is the play here. — Coach"
+            },
+            B: {
+                title: "✓ Smart pressure.",
+                text: "<strong>This is the smart play when you're short support.</strong> Take a good angle, eliminate the strong-side option, and funnel the puck somewhere predictable. You're not trying to win the puck — you're trying to slow them down until F2 recovers or F3 can help. Make them earn their breakout instead of giving them a free odd-man rush. — Coach"
+            },
+            C: {
+                title: "✗ Don't give them time.",
+                text: "<strong>I get the logic, but if you give their D free time and space, they'll pick you apart.</strong> A good breakout pass while you're waiting turns into an easy zone exit. You still need to apply pressure — just smart pressure. Angle and contain. Make them work for it while buying time for your support to arrive. — Coach"
+            },
+            D: {
+                title: "✗ High risk, low reward.",
+                text: "<strong>High risk, low reward right now.</strong> If you guess wrong, you're completely out of position and their D has all the time in the world. Interceptions are great when you have support to cover if you miss. Right now, you don't. Play the percentages — angle, contain, and wait for help. — Coach"
+            }
+        };
+
+        function showFeedbackDiagram() {
+            document.getElementById('angleApproach').classList.add('visible');
+            document.getElementById('optionCut').classList.add('visible');
+            document.getElementById('playerYou').classList.add('answered');
+        }
+
+        function hideFeedbackDiagram() {
+            document.getElementById('angleApproach').classList.remove('visible');
+            document.getElementById('optionCut').classList.remove('visible');
+            document.getElementById('playerYou').classList.remove('answered');
+        }
+
+        function selectAnswer(element, answer) {
+            if (answered) return;
+            const options = document.querySelectorAll('.option');
+            const isCorrect = element.getAttribute('data-correct') === 'true';
+            
+            Analytics.trackScenarioAnswer(MODULE_NUMBER, SCENARIO_NUMBER, isCorrect);
+
+            options.forEach(opt => { 
+                opt.classList.add('disabled'); 
+                opt.onclick = null; 
+                if (opt.getAttribute('data-correct') === 'true') opt.classList.add('correct'); 
+            });
+            element.classList.add('selected');
+            if (!isCorrect) element.classList.add('incorrect');
+            answered = true;
+
+            // Save score
+            let scoreData = JSON.parse(localStorage.getItem('puckAcademy_module5_scores') || '{"currentRun": {}, "bestScore": 0}');
+            scoreData.currentRun[8] = isCorrect;
+            localStorage.setItem('puckAcademy_module5_scores', JSON.stringify(scoreData));
+            
+            // Check if module complete
+            if (Object.keys(scoreData.currentRun).length === 8) {
+                localStorage.setItem('puckAcademy_module5_justCompleted', 'true');
+            }
+
+            showFeedbackDiagram();
+
+            setTimeout(() => {
+                feedback.classList.add('active');
+                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+                
+                const msg = feedbackMessages[answer];
+                feedbackTitle.textContent = msg.title;
+                feedbackText.innerHTML = msg.text;
+                
+                playAudio(isCorrect ? 'correct' : 'incorrect');
+                
+                setTimeout(() => { feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+            }, 500);
+        }
+
+        function resetScenario() {
+            answered = false;
+            const options = document.querySelectorAll('.option');
+            options.forEach((opt, i) => { 
+                opt.classList.remove('disabled', 'selected', 'correct', 'incorrect'); 
+                const answers = ['A', 'B', 'C', 'D'];
+                opt.onclick = function() { selectAnswer(this, answers[i]); }; 
+            });
+            feedback.classList.remove('active', 'correct', 'incorrect');
+            hideFeedbackDiagram();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Expose functions globally for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.resetScenario = resetScenario;
+    </script>
+
+    <!-- Voice Toggle Button -->
+    <button id="voiceToggleBtn" onclick="toggleVoice()" style="position: fixed; bottom: 20px; right: 20px; background: #0A1628; color: #E8F4F8; border: 2px solid #E8F4F8; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; z-index: 1000;">🔊 Voice</button>
+    
+    <script>
+        let voiceEnabled = true;
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            const btn = document.getElementById('voiceToggleBtn');
+            btn.textContent = voiceEnabled ? '🔊 Voice' : '🔇 Voice';
+        }
+    </script>
+</body>
+</html>

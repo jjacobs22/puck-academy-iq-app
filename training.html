@@ -779,7 +779,7 @@
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar1"></div>
             </div>
-            <p class="progress-text" id="progressText1">0 of 5 scenarios completed</p>
+            <p class="progress-text" id="progressText1">0 of 7 scenarios completed</p>
 
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(1, 1)">
@@ -815,6 +815,20 @@
                     <h3 class="scenario-title">Gap Control</h3>
                     <p class="scenario-description">Maintain proper distance from opponents while staying in defensive position.</p>
                     <span class="scenario-status status-available" id="status-1-5">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(1, 6)">
+                    <span class="scenario-number">6</span>
+                    <h3 class="scenario-title">Winger Caught Up Ice</h3>
+                    <p class="scenario-description">Cover for your teammate on a 3-on-2 rush against.</p>
+                    <span class="scenario-status status-available" id="status-1-6">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(1, 7)">
+                    <span class="scenario-number">7</span>
+                    <h3 class="scenario-title">D Partner Bites</h3>
+                    <p class="scenario-description">React when your D partner gets sucked out of position on the cycle.</p>
+                    <span class="scenario-status status-available" id="status-1-7">Start</span>
                 </div>
             </div>
         </div>
@@ -1033,7 +1047,7 @@
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar5"></div>
             </div>
-            <p class="progress-text" id="progressText5">0 of 7 scenarios completed</p>
+            <p class="progress-text" id="progressText5">0 of 8 scenarios completed</p>
 
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(5, 1)">
@@ -1083,6 +1097,13 @@
                     <h3 class="scenario-title">Turnover Transition</h3>
                     <p class="scenario-description">Attack the chaos when the forecheck wins it.</p>
                     <span class="scenario-status status-available" id="status-5-7">Start</span>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario(5, 8)">
+                    <span class="scenario-number">8</span>
+                    <h3 class="scenario-title">F2 is Gassed</h3>
+                    <p class="scenario-description">Adjust your forecheck when your support is tired and late.</p>
+                    <span class="scenario-status status-available" id="status-5-8">Start</span>
                 </div>
             </div>
         </div>
@@ -1237,14 +1258,16 @@
         // Module configurations
         const moduleConfigs = {
             1: { 
-                total: 5, 
+                total: 7, 
                 storageKey: 'puckAcademy_scores',
                 scenarios: {
                     1: 'hockey-iq-diagram.html',
                     2: 'scenario-2-corner-battle.html',
                     3: 'scenario-3-cycle.html',
                     4: 'scenario-4-breakout.html',
-                    5: 'scenario-5-gap.html'
+                    5: 'scenario-5-gap.html',
+                    6: 'scenario-6-winger-caught.html',
+                    7: 'scenario-7-d-partner-bites.html'
                 }
             },
             2: { 
@@ -1287,7 +1310,7 @@
                 }
             },
             5: { 
-                total: 7, 
+                total: 8, 
                 storageKey: 'puckAcademy_module5_scores',
                 scenarios: {
                     1: 'module5-scenario1-f1-angle.html',
@@ -1296,7 +1319,8 @@
                     4: 'module5-scenario4-angling.html',
                     5: 'module5-scenario5-read-breakout.html',
                     6: 'module5-scenario6-loose-puck.html',
-                    7: 'module5-scenario7-turnover-transition.html'
+                    7: 'module5-scenario7-turnover-transition.html',
+                    8: 'module5-scenario8-f2-gassed.html'
                 }
             },
             6: { 
