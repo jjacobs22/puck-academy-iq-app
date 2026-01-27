@@ -683,6 +683,26 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 27, 2026 - Fixed Voice Audio Bug
+
+**Fixed JavaScript scoping issue that prevented voice narration from working:**
+
+The problem: `voiceEnabled`, `playAudio()`, and `stopAudio()` were defined inside ES6 module scope (`<script type="module">`), but `toggleVoice()` was in a separate regular `<script>` block. ES6 modules have isolated scope, so the toggle button couldn't access the audio functions.
+
+The fix:
+- Moved `toggleVoice()` inside the module block
+- Exposed via `window.toggleVoice = toggleVoice`
+- Removed the orphaned separate script block
+
+**Files updated:** 38 scenario HTML files across all modules.
+
+Voice now properly:
+- Auto-plays setup narration on page load (500ms delay)
+- Plays correct/incorrect feedback after answering
+- Toggles on/off with the Voice button
+
+---
+
 ### January 27, 2026 - Updated Player Level Options
 
 **Restructured onboarding level selection to cover full player spectrum:**
