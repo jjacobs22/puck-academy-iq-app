@@ -440,12 +440,14 @@ puck-academy-iq-app/
 ### What's Not Started 🔲
 - ~~Module 2: Faceoffs~~ ✅ **DONE** (7 scenarios)
 - ~~Module 3: Breakouts~~ ✅ **DONE** (7 scenarios)
-- Module 4: Offensive Zone (planned)
+- ~~Module 4: Offensive Zone~~ ✅ **DONE** (7 scenarios)
+- ~~Module 5: Forechecking~~ ✅ **DONE** (7 scenarios)
+- ~~Module 6: D-Zone (Defensemen)~~ ✅ **DONE** (7 scenarios)
+- Goalie-specific modules
 - Assessment/testing functionality
 - Streak/gamification features
 - Coach/parent dashboards
-- Position-specific content beyond centers
-- Payment/subscription system
+- Payment/subscription system (spec complete, implementation pending)
 
 ### Known Bugs 🐛
 1. ~~**Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message~~ **FIXED** - Combined text+URL into single share parameter; iOS now shows context text with link preview

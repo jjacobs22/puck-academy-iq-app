@@ -464,16 +464,28 @@
             <div id="wingerNote" class="winger-note" style="display: none;">
                 💡 <strong>Heads up:</strong> The Faceoffs module is center-specific. Feel free to skip it, or learn what your center is reading!
             </div>
+
+            <div id="defenseNote" class="winger-note" style="display: none;">
+                💡 <strong>For you:</strong> Start with the D-Zone module — it's built specifically for defensemen.
+            </div>
             
-            <div class="summary-section">
-                <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone Play</strong> — 5 scenarios ready</div>
-                <div class="summary-item"><span class="check">✓</span> <strong>Faceoffs</strong> — 7 scenarios ready <span id="faceoffNote"></span></div>
-                <div class="summary-item"><span class="check">✓</span> <strong>Breakouts</strong> — 7 scenarios ready</div>
+            <div class="summary-section" id="forwardModules">
+                <div class="summary-title" style="color: var(--ice-white); font-weight: 600; margin-bottom: 8px;">Forward Modules:</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Defensive Zone</strong> — 5 scenarios</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Faceoffs</strong> — 7 scenarios</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Breakouts</strong> — 7 scenarios</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Offensive Zone</strong> — 7 scenarios</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>Forechecking</strong> — 7 scenarios</div>
+            </div>
+
+            <div class="summary-section" id="defenseModules">
+                <div class="summary-title" style="color: var(--ice-white); font-weight: 600; margin-bottom: 8px;">Defense Module:</div>
+                <div class="summary-item"><span class="check">✓</span> <strong>D-Zone Play</strong> — 7 scenarios</div>
             </div>
 
             <div class="summary-section">
                 <div class="summary-title">🚧 Coming soon:</div>
-                <div class="summary-item coming-soon" id="comingSoonList">• Offensive Zone Play</div>
+                <div class="summary-item coming-soon">• Goalie Training</div>
             </div>
 
             <button class="btn btn-primary" onclick="window.location.href='training.html'">Start Training →</button>
@@ -585,24 +597,16 @@
         }
 
         function updateComingSoon() {
-            const comingSoon = document.getElementById('comingSoonList');
             const wingerNote = document.getElementById('wingerNote');
-            const items = [];
+            const defenseNote = document.getElementById('defenseNote');
             
-            // Faceoffs and Breakouts are now available - only Offensive Zone is coming soon
-            if (userData.improvements.includes('Offensive Zone')) {
-                items.push('Offensive Zone Play');
-            }
-            
-            if (items.length > 0) {
-                comingSoon.innerHTML = items.map(item => `• ${item}`).join('<br>');
-            } else {
-                comingSoon.innerHTML = '• Offensive Zone Play';
-            }
-            
-            // Show winger-specific note about Faceoffs module
+            // Show position-specific notes
             if (userData.position === 'winger' && wingerNote) {
                 wingerNote.style.display = 'block';
+            }
+            
+            if (userData.position === 'defense' && defenseNote) {
+                defenseNote.style.display = 'block';
             }
         }
 
