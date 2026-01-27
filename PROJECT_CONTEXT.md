@@ -683,6 +683,25 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 27, 2026 - Updated Player Level Options
+
+**Restructured onboarding level selection to cover full player spectrum:**
+
+Old options (youth-focused):
+- 12-13 • A/AA, 12-13 • AAA, 14-15 • A/AA, 14-15 • AAA, 16+ • High School, Other
+
+New options (all players):
+- **Youth • A/AA** — Recreational/competitive youth
+- **Youth • AAA** — Elite youth
+- **High School / Prep** — Varsity, prep school
+- **Juniors / College** — USHL, NAHL, NCAA, ACHA
+- **Pro / Semi-Pro** — ECHL, AHL, NHL, overseas
+- **Adult Rec** — Beer league, adult recreational
+
+Also updated scenario counts in onboarding summary (Module 1: 7, Module 5: 8).
+
+---
+
 ### January 27, 2026 - New "Broken Structure" Scenarios
 
 **Added 3 new scenarios based on Reddit feedback about covering for teammates:**
