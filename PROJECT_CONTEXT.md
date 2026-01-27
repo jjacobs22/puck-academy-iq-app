@@ -445,6 +445,7 @@ puck-academy-iq-app/
 - ~~Module 6: D-Zone (Defensemen)~~ ✅ **DONE** (7 scenarios)
 - Goalie-specific modules
 - Google OAuth for sign-in (magic link works, Google requires setup)
+- Branded auth emails (custom SMTP + email templates in Supabase)
 - Assessment/testing functionality
 - Streak/gamification features
 - Coach/parent dashboards
