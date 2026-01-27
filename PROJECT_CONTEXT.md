@@ -677,6 +677,19 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 26, 2026 - Diagram Bug Fix
+
+**Fixed puck/player positions in 3 scenarios:**
+Text described the puck as "behind the net" but diagrams showed it in front of the net.
+
+- **module3-scenario1-high-low-route.html**: Moved D-man and puck from x=100/115 to x=50/35 (behind net)
+- **module3-scenario2-reading-pressure.html**: Moved D-man and puck from x=100/115 to x=50/35 (behind net)
+- **module4-scenario2-cycle-support.html**: Moved winger and puck from x=400/385 to x=460/475 (behind O-zone net)
+
+Also adjusted forechecker pressure arrow in module3-scenario1 to point toward new D position.
+
+---
+
 ### January 26, 2026 - Codebase Refactoring (Phases 1 & 2)
 
 **Phase 1: CSS Extraction**
