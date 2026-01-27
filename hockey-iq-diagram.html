@@ -1008,27 +1008,34 @@
         let animationPlayed = false;
         let answered = false;
 
-        // ====== VOICE ======
+        // ====== VOICE (ElevenLabs Audio) ======
         let voiceEnabled = true;
-        const synth = window.speechSynthesis;
+        let currentAudio = null;
+        const AUDIO_PATH = '/audio/hockey-iq-diagram/';
         
-        function speak(text) {
-            if (!voiceEnabled || !synth) return;
-            synth.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 1.0;
-            utterance.pitch = 0.85;
-            const voices = synth.getVoices();
-            const preferredVoice = voices.find(v => 
-                v.name.includes('Samantha') || v.name.includes('Daniel') || v.lang.startsWith('en')
-            );
-            if (preferredVoice) utterance.voice = preferredVoice;
-            synth.speak(utterance);
+        // Pre-load audio files
+        const audioFiles = {
+            setup: new Audio(AUDIO_PATH + 'setup.mp3'),
+            prompt: new Audio(AUDIO_PATH + 'prompt.mp3'),
+            correct: new Audio(AUDIO_PATH + 'correct.mp3'),
+            incorrect: new Audio(AUDIO_PATH + 'incorrect.mp3')
+        };
+        
+        function playAudio(type) {
+            if (!voiceEnabled) return;
+            stopAudio();
+            currentAudio = audioFiles[type];
+            if (currentAudio) {
+                currentAudio.currentTime = 0;
+                currentAudio.play().catch(e => console.log('Audio play failed:', e));
+            }
         }
-
-        if (synth) {
-            synth.getVoices();
-            speechSynthesis.onvoiceschanged = () => synth.getVoices();
+        
+        function stopAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
         }
 
         window.toggleVoice = function() {
@@ -1036,7 +1043,7 @@
             const btn = document.getElementById('voiceToggleBtn');
             btn.textContent = voiceEnabled ? '🔊 Voice' : '🔇 Voice';
             btn.classList.toggle('active', voiceEnabled);
-            if (!voiceEnabled && synth) synth.cancel();
+            if (!voiceEnabled) stopAudio();
         };
 
         // ====== MOVEMENT ======
@@ -1097,26 +1104,25 @@
             btn.classList.add('active');
             btn.disabled = true;
 
+            // Play setup audio (covers the whole situation narration)
+            playAudio('setup');
+            
             status.textContent = "⏵ Winger receives the puck on the boards...";
-            speak("Winger receives the puck on the boards.");
             movePuck(95, 95, 1000);
 
             setTimeout(() => {
                 status.textContent = "⏵ Your D-man moves to pressure...";
-                speak("Your D-man moves to pressure.");
                 showTrail('trailDman');
                 movePlayer('yourDman', 110, 100, 1200);
             }, 1800);
 
             setTimeout(() => {
                 status.textContent = "⏵ Opponent center slides into the HIGH SLOT...";
-                speak("Watch the opponent center sliding into the high slot.");
                 movePlayer('opponentCenter', 160, 170, 1200);
             }, 3800);
 
             setTimeout(() => {
                 status.textContent = "⚠️ The SLOT is DANGEROUS — what do YOU do?";
-                speak("The slot is dangerous. What do you do?");
                 document.getElementById('dangerZone').classList.add('visible');
             }, 5800);
 
@@ -1124,7 +1130,7 @@
                 animationPlayed = true;
                 btn.textContent = "✓ Setup Complete";
                 status.textContent = "👆 NOW CHOOSE YOUR PLAY";
-                speak("Make your decision.");
+                playAudio('prompt');
             }, 7200);
         };
 
@@ -1134,56 +1140,53 @@
             const rinkContainer = document.querySelector('.rink-container');
 
             if (answerIndex === 1) {
+                // Play correct audio (covers full narration)
+                playAudio('correct');
+                
                 status.textContent = "⏵ You move to COVER THE CENTER...";
-                speak("Good. You move to cover the center.");
                 document.getElementById('dangerZone').classList.remove('visible');
                 showTrail('trailYouCorrect');
                 movePlayer('playerYou', 170, 175, 1200);
                 setTimeout(() => document.getElementById('coverageZone').classList.add('visible'), 800);
                 setTimeout(() => {
                     status.textContent = "🛡️ PASS TO THE SLOT IS DENIED!";
-                    speak("Pass to the slot is denied!");
                     document.getElementById('outcomeLabel').style.opacity = 1;
                 }, 1800);
                 setTimeout(() => {
                     status.textContent = "⏵ Your D wins the puck back...";
-                    speak("Your D wins the puck back.");
                     movePuck(115, 105, 800);
                 }, 3500);
                 setTimeout(() => {
                     status.textContent = "⏵ You're already in position for the BREAKOUT!";
-                    speak("And you're already in position for the breakout.");
                     movePlayer('playerYou', 240, 150, 1000);
                 }, 5000);
                 setTimeout(() => {
                     status.textContent = "✅ PERFECT READ — that's two-way hockey.";
-                    speak("Perfect read. That's two-way hockey.");
                 }, 6500);
             } else {
+                // Play incorrect audio (covers full narration)
+                playAudio('incorrect');
+                
                 const wrongMoves = {
-                    0: { pos: [95, 175], text: "You drop to the net front...", voice: "You drop to the net front." },
-                    2: { pos: [130, 120], text: "You chase toward the boards...", voice: "You chase toward the boards." },
-                    3: { pos: [180, 255], text: "You stay low near the hashmarks...", voice: "You stay low near the hashmarks." }
+                    0: { pos: [95, 175], text: "You drop to the net front..." },
+                    2: { pos: [130, 120], text: "You chase toward the boards..." },
+                    3: { pos: [180, 255], text: "You stay low near the hashmarks..." }
                 };
                 const move = wrongMoves[answerIndex];
                 status.textContent = "⏵ " + move.text;
-                speak(move.voice);
                 movePlayer('playerYou', move.pos[0], move.pos[1], 1000);
 
                 setTimeout(() => {
                     status.textContent = "⚠️ The CENTER is WIDE OPEN in the slot!";
-                    speak("But look. The center is wide open in the slot!");
                     document.getElementById('passLine').classList.add('animate');
                 }, 1800);
                 setTimeout(() => {
                     movePuck(160, 170, 600);
                     status.textContent = "⏵ Pass goes RIGHT to the slot...";
-                    speak("Pass goes right to the slot.");
                 }, 3200);
                 setTimeout(() => {
                     movePuck(70, 175, 400);
                     status.textContent = "🚨 GOAL AGAINST!";
-                    speak("Goal against. That's what happens when you leave the middle.");
                     document.getElementById('outcomeLabelBad').style.opacity = 1;
                     document.getElementById('goalCrease').classList.add('goal-scored');
                     rinkContainer.classList.add('rink-shake');
@@ -1196,7 +1199,7 @@
         window.resetAnimation = function() {
             animationPlayed = false;
             answered = false;
-            if (synth) synth.cancel();
+            stopAudio();
 
             const status = document.getElementById('animStatus');
             const btn = document.getElementById('playSetupBtn');
