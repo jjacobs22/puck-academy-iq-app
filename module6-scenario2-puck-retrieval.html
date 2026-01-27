@@ -192,6 +192,40 @@
         // Import shared modules
         import { Storage } from './js/storage.js';
         import { Analytics } from './js/analytics.js';
+        // ====== ELEVENLABS VOICE AUDIO ======
+        let voiceEnabled = true;
+        let currentAudio = null;
+        const AUDIO_PATH = '/audio/module6-scenario2-puck-retrieval/';
+        
+        const audioFiles = {
+            setup: new Audio(AUDIO_PATH + 'setup.mp3'),
+            prompt: new Audio(AUDIO_PATH + 'prompt.mp3'),
+            correct: new Audio(AUDIO_PATH + 'correct.mp3'),
+            incorrect: new Audio(AUDIO_PATH + 'incorrect.mp3')
+        };
+        
+        function playAudio(type) {
+            if (!voiceEnabled) return;
+            stopAudio();
+            currentAudio = audioFiles[type];
+            if (currentAudio) {
+                currentAudio.currentTime = 0;
+                currentAudio.play().catch(e => console.log('Audio play failed:', e));
+            }
+        }
+        
+        function stopAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+        }
+        
+        // Auto-play setup narration when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => playAudio('setup'), 500);
+        });
+
         
         const MODULE_NUMBER = 6;
         const feedback = document.getElementById('feedback');
@@ -231,9 +265,11 @@
                 feedback.classList.add('active');
                 feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
+                    playAudio('correct');
                     feedbackTitle.textContent = '✓ Quick first play.';
                     feedbackText.innerHTML = '<strong>Shoulder check, then quick up the wall.</strong> Your winger is the outlet — use him. Don\'t give the forechecker time to pin you. Check your shoulder so you know what\'s coming, then get it up quick and clean. — Coach';
                 } else {
+                    playAudio('incorrect');
                     feedbackTitle.textContent = '✗ Use your outlet.';
                     feedbackText.innerHTML = '<strong>With pressure on your back, you need to get it out fast.</strong> Your winger is open on the wall. Shoulder check so you know what\'s there, then quick up to him. Going behind the net or rimming it just buys them time to set up their forecheck. — Coach';
                 }
@@ -254,6 +290,18 @@
         window.resetScenario = resetScenario;
         window.skipIntro = skipIntro;
         window.nextSlide = nextSlide;
+    </script>
+
+    <!-- Voice Toggle Button -->
+    <button id="voiceToggleBtn" onclick="toggleVoice()" style="position: fixed; bottom: 20px; right: 20px; background: #0A1628; color: #E8F4F8; border: 2px solid #E8F4F8; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; z-index: 1000;">🔊 Voice</button>
+    
+    <script>
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            const btn = document.getElementById('voiceToggleBtn');
+            btn.textContent = voiceEnabled ? '🔊 Voice' : '🔇 Voice';
+            if (!voiceEnabled && typeof stopAudio === 'function') stopAudio();
+        }
     </script>
 </body>
 </html>

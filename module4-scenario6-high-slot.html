@@ -179,6 +179,40 @@
         // Import shared modules
         import { Storage } from './js/storage.js';
         import { Analytics } from './js/analytics.js';
+        // ====== ELEVENLABS VOICE AUDIO ======
+        let voiceEnabled = true;
+        let currentAudio = null;
+        const AUDIO_PATH = '/audio/module4-scenario6-high-slot/';
+        
+        const audioFiles = {
+            setup: new Audio(AUDIO_PATH + 'setup.mp3'),
+            prompt: new Audio(AUDIO_PATH + 'prompt.mp3'),
+            correct: new Audio(AUDIO_PATH + 'correct.mp3'),
+            incorrect: new Audio(AUDIO_PATH + 'incorrect.mp3')
+        };
+        
+        function playAudio(type) {
+            if (!voiceEnabled) return;
+            stopAudio();
+            currentAudio = audioFiles[type];
+            if (currentAudio) {
+                currentAudio.currentTime = 0;
+                currentAudio.play().catch(e => console.log('Audio play failed:', e));
+            }
+        }
+        
+        function stopAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+        }
+        
+        // Auto-play setup narration when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => playAudio('setup'), 500);
+        });
+
         
         const MODULE_NUMBER = 4;
         const feedback = document.getElementById('feedback');
@@ -218,9 +252,11 @@
                 feedback.classList.add('active');
                 feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
                 if (isCorrect) {
+                    playAudio('correct');
                     feedbackTitle.textContent = '✓ Shooters shoot.';
                     feedbackText.innerHTML = '<strong>When you have time in the slot, the answer is almost always shoot.</strong> High slot shots with traffic in front are how you score. The defense collapsed low — they gave you that lane. Don\'t give it back by over-passing. — Coach';
                 } else {
+                    playAudio('incorrect');
                     feedbackTitle.textContent = '✗ Take the shot.';
                     feedbackText.innerHTML = '<strong>You\'ve got time and a lane in the high slot — that\'s a prime scoring area.</strong> Over-passing from here is a common mistake. The defense gave you space. Use it. Put it on net. Good things happen from slot shots. — Coach';
                 }
@@ -241,6 +277,18 @@
         window.resetScenario = resetScenario;
         window.skipIntro = skipIntro;
         window.nextSlide = nextSlide;
+    </script>
+
+    <!-- Voice Toggle Button -->
+    <button id="voiceToggleBtn" onclick="toggleVoice()" style="position: fixed; bottom: 20px; right: 20px; background: #0A1628; color: #E8F4F8; border: 2px solid #E8F4F8; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; z-index: 1000;">🔊 Voice</button>
+    
+    <script>
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            const btn = document.getElementById('voiceToggleBtn');
+            btn.textContent = voiceEnabled ? '🔊 Voice' : '🔇 Voice';
+            if (!voiceEnabled && typeof stopAudio === 'function') stopAudio();
+        }
     </script>
 </body>
 </html>
