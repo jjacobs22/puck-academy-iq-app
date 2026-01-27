@@ -1,14 +1,8 @@
-# Netlify configuration for edge functions
+# Netlify configuration
 
 [build]
   publish = "."
 
-# Edge function for dynamic OG image generation
-[[edge_functions]]
-  path = "/og-image"
-  function = "og-image"
-
-# Edge function to inject dynamic OG tags into HTML
-[[edge_functions]]
-  path = "/"
-  function = "inject-og-tags"
+# Edge functions disabled - using static share pages instead
+# This saves significant edge function credits
+# See /share/*.html for static OG tag pages

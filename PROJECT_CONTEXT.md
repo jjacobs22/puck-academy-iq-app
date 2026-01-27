@@ -197,13 +197,13 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - 4/5: "I scored 4/5 on Puck Academy's Defensive Zone Hockey IQ training! 🔥 Think you can do better?"
 - 0-3/5: "I scored X/5 on Puck Academy's Hockey IQ training! 🏒 Test your hockey brain:"
 
-**Dynamic OG Images (January 22, 2026):**
-When a shared link is fetched by social platforms, Netlify Edge Functions dynamically:
-1. Inject personalized OG meta tags based on the score parameter
-2. Generate a custom PNG image showing the user's score
-3. Display score-appropriate messaging (🏆 for 5/5, 🔥 for 4/5, etc.)
+**Static Share Pages (January 26, 2026):**
+Share links now point to static HTML pages (`/share/0.html` through `/share/7.html`) with pre-baked OG meta tags:
+- Each page has personalized title/description for the score (🏆 for perfect, 🔥 for great, etc.)
+- Pages instantly redirect to `/?score=X` so challenge banner still displays
+- This replaced Netlify Edge Functions, eliminating edge function credit costs entirely
 
-This enables rich link previews on iMessage, Twitter, Facebook, etc. with the actual score embedded in the image.
+Social platforms (iMessage, Twitter, Facebook) fetch OG tags from the static pages before the redirect happens.
 
 ### Key Screens/Pages
 
@@ -238,7 +238,6 @@ This enables rich link previews on iMessage, Twitter, Facebook, etc. with the ac
 |-------|------------|-------|
 | Frontend | HTML, CSS, JavaScript (vanilla) | No framework for simplicity |
 | Hosting | Netlify | Auto-deploy from GitHub, free tier sufficient |
-| Edge Functions | Netlify Edge Functions (Deno) | Dynamic OG image generation + meta tag injection |
 | Version Control | GitHub | Repository: `jjacobs22/puck-academy-iq-app` |
 | Form Handling | Netlify Forms | Captures onboarding emails (form name: `player-signup`) |
 | Feedback Collection | Google Forms | External form linked from app |
@@ -317,17 +316,17 @@ puck-academy-iq-app/
 ├── # Personalized Training
 ├── tylers-coaching-notes.html    # Tyler's personalized training doc (printable)
 │
+├── # Static Share Pages (for social previews)
+├── share/
+│   ├── 0.html through 7.html     # Pre-baked OG tags, redirect to /?score=X
+│
 ├── # Documentation & Config
 ├── PROJECT_CONTEXT.md            # This file - project documentation
 ├── REFACTOR_PLAN.md              # Technical debt cleanup plan
 ├── QUICK_START_GUIDE.md          # Step-by-step refactoring guide
 ├── og-image.html                 # Template reference for OG image design
 ├── coach-prototype.html          # Conversational coach prototype (experimental)
-├── netlify.toml                  # Netlify configuration for edge functions
-├── netlify/
-│   └── edge-functions/
-│       ├── og-image.tsx          # Dynamic OG image generation (score-based)
-│       └── inject-og-tags.ts     # Injects dynamic OG meta tags into HTML
+├── netlify.toml                  # Netlify configuration (edge functions removed)
 └── assets/
     └── images/
         └── rink-full.png         # Hockey rink diagram asset
@@ -383,7 +382,7 @@ puck-academy-iq-app/
 | Service | Purpose | Integration Point |
 |---------|---------|-------------------|
 | Netlify Forms | Email capture | Hidden form field in onboarding.html, form name: `player-signup` |
-| Netlify Edge Functions | Dynamic OG images | `/og-image` endpoint generates score-based PNG images |
+| Static Share Pages | Social OG previews | `/share/*.html` pages with pre-baked OG meta tags |
 | Google Forms | Beta feedback | External link from scenario completion and results modal |
 | Google Fonts | Typography | Bebas Neue (headers), Work Sans (body) |
 | Web Share API | Native sharing | Share button in results modal |
@@ -423,7 +422,7 @@ puck-academy-iq-app/
 - **Progress tracking:** localStorage saves completed scenarios per module
 - **Scoring system:** Tracks correct/incorrect per scenario per module, calculates score, saves best score
 - **Results modal:** Shows score with module-specific performance-based messaging
-- **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop), includes context text + dynamic OG image preview
+- **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop), uses static share pages for OG previews
 - **Email capture:** Netlify Forms collecting onboarding emails
 - **Feedback form:** Google Forms linked from results modal + prompt after first module completion
 - **Google Analytics 4:** Full tracking with custom events (scenario_answer, module_complete, share_score, feedback_form_open)
@@ -462,7 +461,7 @@ puck-academy-iq-app/
 - ~~**Inline JavaScript:** Scenario logic duplicated; should extract to shared JS file~~ **DONE** - Extracted to `js/storage.js` and `js/analytics.js`
 - **No build process:** Manual file management; could benefit from simple bundler
 - **Hardcoded scenarios:** Scenario data embedded in HTML; should move to JSON for easier updates
-- ~~**No Open Graph tags:** Shared links don't show rich previews on social platforms~~ **DONE** - Dynamic OG images via Netlify Edge Functions
+- ~~**No Open Graph tags:** Shared links don't show rich previews on social platforms~~ **DONE** - Static share pages with pre-baked OG tags
 
 ---
 
@@ -680,6 +679,25 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 26, 2026 - Static Share Pages (Edge Function Removal)
+
+**Problem:** Netlify Edge Functions were consuming credits on every homepage visit, even when no score parameter was present. This was costing ~1000 edge function invocations per 1000 visitors.
+
+**Solution:** Replaced edge functions with static share pages.
+
+**Changes Made:**
+- Created `/share/` directory with static HTML pages for scores 0-7
+- Each page has pre-baked OG meta tags with personalized titles/descriptions
+- Pages redirect instantly to `/?score=X` so challenge banner still displays
+- Updated `training.html` share URL from `?score=X` to `/share/X`
+- Removed `netlify/edge-functions/inject-og-tags.ts`
+- Removed `netlify/edge-functions/og-image.ts`
+- Updated `netlify.toml` to remove edge function configurations
+
+**Result:** Edge function costs reduced to zero. Social preview functionality preserved.
+
+---
 
 ### January 26, 2026 - ElevenLabs Voice Narration
 
