@@ -584,6 +584,104 @@
             }
         }
 
+        /* Sticky Module Navigation */
+        .module-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            margin: -20px -20px 20px -20px;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .module-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .module-nav-inner {
+            display: flex;
+            gap: 10px;
+            min-width: max-content;
+            justify-content: center;
+        }
+
+        .module-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            color: var(--silver);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .module-nav-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--accent-red);
+            color: var(--ice-blue);
+        }
+
+        .module-nav-item.active {
+            background: rgba(200, 16, 46, 0.2);
+            border-color: var(--accent-red);
+            color: var(--ice-blue);
+        }
+
+        .module-nav-item.completed {
+            border-color: var(--success-green);
+        }
+
+        .module-nav-item.completed .nav-status {
+            background: var(--success-green);
+        }
+
+        .module-nav-icon {
+            font-size: 1rem;
+        }
+
+        .nav-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: background 0.3s ease;
+        }
+
+        .nav-status.partial {
+            background: var(--accent-red);
+        }
+
+        .nav-status.complete {
+            background: var(--success-green);
+        }
+
+        @media (max-width: 600px) {
+            .module-nav {
+                margin: -20px -20px 15px -20px;
+                padding: 10px 15px;
+            }
+
+            .module-nav-inner {
+                justify-content: flex-start;
+            }
+
+            .module-nav-item {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
         /* Account Banner Styles */
         .account-banner {
             background: linear-gradient(135deg, rgba(200, 16, 46, 0.15), rgba(200, 16, 46, 0.05));
@@ -723,6 +821,42 @@
 </head>
 <body>
     <div class="container">
+        <!-- Sticky Module Navigation -->
+        <nav class="module-nav" id="moduleNav">
+            <div class="module-nav-inner">
+                <a href="#module1" class="module-nav-item" data-module="1">
+                    <span class="module-nav-icon">🛡️</span>
+                    <span>M1: D-Zone</span>
+                    <span class="nav-status" id="navStatus1"></span>
+                </a>
+                <a href="#module2" class="module-nav-item" data-module="2">
+                    <span class="module-nav-icon">⚔️</span>
+                    <span>M2: Faceoffs</span>
+                    <span class="nav-status" id="navStatus2"></span>
+                </a>
+                <a href="#module3" class="module-nav-item" data-module="3">
+                    <span class="module-nav-icon">🚀</span>
+                    <span>M3: Breakouts</span>
+                    <span class="nav-status" id="navStatus3"></span>
+                </a>
+                <a href="#module4" class="module-nav-item" data-module="4">
+                    <span class="module-nav-icon">🎯</span>
+                    <span>M4: Offense</span>
+                    <span class="nav-status" id="navStatus4"></span>
+                </a>
+                <a href="#module5" class="module-nav-item" data-module="5">
+                    <span class="module-nav-icon">🔥</span>
+                    <span>M5: Forecheck</span>
+                    <span class="nav-status" id="navStatus5"></span>
+                </a>
+                <a href="#module6" class="module-nav-item" data-module="6">
+                    <span class="module-nav-icon">🏒</span>
+                    <span>M6: D-Men</span>
+                    <span class="nav-status" id="navStatus6"></span>
+                </a>
+            </div>
+        </nav>
+
         <header class="header">
             <h1 class="logo">Puck <span>Academy</span></h1>
             <p class="subtitle">Hockey IQ Training</p>
@@ -1410,6 +1544,11 @@
             updateModuleDisplay(5);
             updateModuleDisplay(6);
 
+            // Update nav status indicators
+            if (typeof updateNavStatus === 'function') {
+                updateNavStatus();
+            }
+
             // Update overall best score display
             const module1Data = getScoreData(1);
             if (module1Data.bestScore > 0) {
@@ -1758,10 +1897,72 @@
             }
         }
 
+        // Update nav status indicators
+        function updateNavStatus() {
+            for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
+                const config = moduleConfigs[moduleNum];
+                const scoreData = getScoreData(moduleNum);
+                const completed = Object.keys(scoreData.currentRun).length;
+                const total = config.total;
+
+                const navStatus = document.getElementById(`navStatus${moduleNum}`);
+                const navItem = document.querySelector(`.module-nav-item[data-module="${moduleNum}"]`);
+
+                if (navStatus && navItem) {
+                    navStatus.classList.remove('partial', 'complete');
+                    navItem.classList.remove('completed');
+
+                    if (completed === total) {
+                        navStatus.classList.add('complete');
+                        navItem.classList.add('completed');
+                    } else if (completed > 0) {
+                        navStatus.classList.add('partial');
+                    }
+                }
+            }
+        }
+
+        // Smooth scroll for nav items
+        document.querySelectorAll('.module-nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const moduleId = this.getAttribute('href').substring(1);
+                const moduleElement = document.getElementById(moduleId);
+                if (moduleElement) {
+                    const navHeight = document.getElementById('moduleNav').offsetHeight;
+                    const elementPosition = moduleElement.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({
+                        top: elementPosition - navHeight - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Highlight active nav item on scroll
+        function updateActiveNavItem() {
+            const navHeight = document.getElementById('moduleNav').offsetHeight;
+            const scrollPos = window.scrollY + navHeight + 100;
+
+            for (let i = 6; i >= 1; i--) {
+                const module = document.getElementById(`module${i}`);
+                if (module && module.offsetTop <= scrollPos) {
+                    document.querySelectorAll('.module-nav-item').forEach(item => item.classList.remove('active'));
+                    const activeItem = document.querySelector(`.module-nav-item[data-module="${i}"]`);
+                    if (activeItem) activeItem.classList.add('active');
+                    break;
+                }
+            }
+        }
+
+        window.addEventListener('scroll', updateActiveNavItem);
+
         // Initialize
         organizeModulesByPosition();
         updateDisplay();
+        updateNavStatus();
         updateReviewIntroLinks();
+        updateActiveNavItem();
 
         // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {

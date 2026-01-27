@@ -100,6 +100,12 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - Video breakdown tools (pause, draw on screen, slow-mo)
 - Expert commentary from elite coaches
 - Branching scenarios where decisions play out on video
+- **Video-based scenarios** (beta feedback Jan 2026):
+  - 5-10 second clips of pros/college players in real game situations
+  - "Based on this clip, what should player X do?" format
+  - Clip plays, pauses at decision point, user selects answer
+  - Helmet cam POV for immersive first-person experience
+  - Requires: video sourcing/licensing, hosting considerations
 
 **Engagement & Gamification:**
 - Daily challenges and streak tracking
@@ -682,6 +688,51 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 27, 2026 - Added Sticky Module Navigation
+
+**Added sticky navigation bar to training.html for quick module access:**
+
+Based on beta feedback requesting a "table of contents" to avoid scrolling through all modules.
+
+Features:
+- Horizontal scrollable nav bar that sticks to top when scrolling
+- Module pills with emoji icons: 🛡️ D-Zone, ⚔️ Faceoffs, 🚀 Breakouts, 🎯 Offense, 🔥 Forecheck, 🏒 D-Men
+- Status indicator dots on each pill:
+  - Gray = not started
+  - Red = in progress (some scenarios completed)
+  - Green = module complete
+- Active module highlighted as you scroll
+- Smooth scroll to module on click
+- Mobile-responsive (horizontal scroll on small screens)
+
+**Technical:**
+- Pure CSS sticky positioning
+- JavaScript scroll observer for active state
+- `updateNavStatus()` called on progress changes
+
+---
+
+### January 27, 2026 - Fixed Theory Intro Skip/Next Bug
+
+**Fixed JavaScript scoping issue that prevented Theory Intro overlay buttons from working:**
+
+The problem: `skipIntro()` and `nextSlide()` were defined inside ES6 module scope (`<script type="module">`), but the `onclick` handlers in the HTML (`onclick="skipIntro()"`, `onclick="nextSlide()"`) were trying to call them from the global scope. Clicking "Skip" or "Next" on the intro overlay did nothing.
+
+The fix:
+- Added `window.skipIntro = skipIntro;` and `window.nextSlide = nextSlide;` to expose functions globally
+- Same pattern as the voice toggle fix
+
+**Files updated:** 5 first-scenario files (one per module):
+- `module2-scenario1-ref-position.html`
+- `module3-scenario1-high-low-route.html`
+- `module4-scenario1-net-front.html`
+- `module5-scenario1-f1-angle.html`
+- `module6-scenario1-gap-control.html`
+
+Note: `hockey-iq-diagram.html` (Module 1) already had this fix via a different pattern.
+
+---
 
 ### January 27, 2026 - Fixed Voice Audio Bug
 
