@@ -1457,6 +1457,11 @@
                 total: total,
                 percentage: Math.round((correctCount / total) * 100)
             });
+
+            // Sync progress to server if user is logged in
+            if (typeof window.syncProgressToServer === 'function') {
+                window.syncProgressToServer();
+            }
         }
 
         function closeResults() {
@@ -1816,6 +1821,9 @@
 
         // Initialize auth UI
         updateAuthUI();
+
+        // Expose sync function globally so showResults can call it
+        window.syncProgressToServer = syncProgressToServer;
     </script>
 </body>
 </html>
