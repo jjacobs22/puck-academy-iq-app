@@ -583,6 +583,142 @@
                 padding: 20px 15px;
             }
         }
+
+        /* Account Banner Styles */
+        .account-banner {
+            background: linear-gradient(135deg, rgba(200, 16, 46, 0.15), rgba(200, 16, 46, 0.05));
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .account-banner.hidden {
+            display: none;
+        }
+
+        .account-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .account-banner-icon {
+            font-size: 1.5rem;
+        }
+
+        .account-banner-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .account-banner-text strong {
+            color: var(--ice-white);
+            font-size: 0.95rem;
+        }
+
+        .account-banner-text span {
+            color: var(--silver);
+            font-size: 0.85rem;
+        }
+
+        .account-banner-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .account-banner-btn:hover {
+            background: #a50d26;
+            transform: translateY(-1px);
+        }
+
+        .account-banner-close {
+            background: none;
+            border: none;
+            color: var(--silver);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .account-banner-close:hover {
+            opacity: 1;
+        }
+
+        /* User Status (logged in) */
+        .user-status {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 8px 0;
+        }
+
+        .user-email {
+            color: var(--silver);
+            font-size: 0.85rem;
+        }
+
+        .sign-out-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--silver);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sign-out-btn:hover {
+            border-color: var(--silver);
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .account-banner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .account-banner-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .account-banner-btn {
+                width: 100%;
+            }
+
+            .account-banner-close {
+                position: absolute;
+                top: 8px;
+                right: 12px;
+            }
+
+            .account-banner {
+                position: relative;
+            }
+        }
     </style>
 </head>
 <body>
@@ -591,6 +727,25 @@
             <h1 class="logo">Puck <span>Academy</span></h1>
             <p class="subtitle">Hockey IQ Training</p>
         </header>
+
+        <!-- Account Banner -->
+        <div class="account-banner" id="accountBanner">
+            <div class="account-banner-content">
+                <span class="account-banner-icon">💾</span>
+                <div class="account-banner-text">
+                    <strong>Save your progress</strong>
+                    <span>Create a free account to sync across devices</span>
+                </div>
+                <button class="account-banner-btn" id="createAccountBtn">Create Account</button>
+            </div>
+            <button class="account-banner-close" id="closeBannerBtn" aria-label="Close">×</button>
+        </div>
+
+        <!-- User Status (shown when logged in) -->
+        <div class="user-status" id="userStatus" style="display: none;">
+            <span class="user-email" id="userEmail"></span>
+            <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+        </div>
 
         <div class="score-display" id="scoreDisplay">
             <span class="score-label">Best Score</span>
@@ -1585,6 +1740,82 @@
                 .then(reg => console.log('SW registered'))
                 .catch(err => console.log('SW registration failed:', err));
         }
+    </script>
+
+    <!-- Auth Module -->
+    <script type="module">
+        import { getUser, signOut, syncProgressToServer, loadProgressFromServer, onAuthStateChange } from './js/supabase.js';
+        import { showAuthModal } from './js/auth-modal.js';
+
+        const accountBanner = document.getElementById('accountBanner');
+        const userStatus = document.getElementById('userStatus');
+        const userEmail = document.getElementById('userEmail');
+        const createAccountBtn = document.getElementById('createAccountBtn');
+        const closeBannerBtn = document.getElementById('closeBannerBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+
+        // Check if banner was dismissed
+        const bannerDismissed = localStorage.getItem('puckAcademy_bannerDismissed');
+
+        async function updateAuthUI() {
+            const user = await getUser();
+
+            if (user) {
+                // User is logged in
+                accountBanner.classList.add('hidden');
+                userStatus.style.display = 'flex';
+                userEmail.textContent = user.email;
+            } else {
+                // User is not logged in
+                userStatus.style.display = 'none';
+                if (!bannerDismissed) {
+                    accountBanner.classList.remove('hidden');
+                } else {
+                    accountBanner.classList.add('hidden');
+                }
+            }
+        }
+
+        // Event listeners
+        createAccountBtn?.addEventListener('click', () => {
+            showAuthModal({ mode: 'signup' });
+        });
+
+        closeBannerBtn?.addEventListener('click', () => {
+            accountBanner.classList.add('hidden');
+            localStorage.setItem('puckAcademy_bannerDismissed', 'true');
+        });
+
+        signOutBtn?.addEventListener('click', async () => {
+            await signOut();
+            window.location.reload();
+        });
+
+        // Listen for auth state changes
+        onAuthStateChange(async (event, session) => {
+            if (event === 'SIGNED_IN') {
+                await loadProgressFromServer();
+                await syncProgressToServer();
+                updateAuthUI();
+                // Refresh the display to show synced progress
+                if (typeof updateDisplay === 'function') {
+                    updateDisplay();
+                }
+            } else if (event === 'SIGNED_OUT') {
+                updateAuthUI();
+            }
+        });
+
+        // Check for welcome parameter (just signed in)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('welcome') === 'true') {
+            // Clean up URL
+            window.history.replaceState({}, '', window.location.pathname);
+            // Could show a welcome toast here
+        }
+
+        // Initialize auth UI
+        updateAuthUI();
     </script>
 </body>
 </html>
