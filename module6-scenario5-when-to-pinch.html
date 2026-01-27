@@ -276,23 +276,20 @@
             hideFeedbackDiagram();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        // Expose functions globally for onclick handlers
-        window.selectAnswer = selectAnswer;
-        window.resetScenario = resetScenario;
-        window.skipIntro = skipIntro;
-        window.nextSlide = nextSlide;
-    </script>
-
-    <!-- Voice Toggle Button -->
-    <button id="voiceToggleBtn" onclick="toggleVoice()" style="position: fixed; bottom: 20px; right: 20px; background: #0A1628; color: #E8F4F8; border: 2px solid #E8F4F8; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; z-index: 1000;">🔊 Voice</button>
-    
-    <script>
         function toggleVoice() {
             voiceEnabled = !voiceEnabled;
             const btn = document.getElementById('voiceToggleBtn');
             btn.textContent = voiceEnabled ? '🔊 Voice' : '🔇 Voice';
-            if (!voiceEnabled && typeof stopAudio === 'function') stopAudio();
+            if (!voiceEnabled) stopAudio();
         }
+
+        // Expose functions globally for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.resetScenario = resetScenario;
+        window.toggleVoice = toggleVoice;
     </script>
+
+    <!-- Voice Toggle Button -->
+    <button id="voiceToggleBtn" onclick="toggleVoice()" style="position: fixed; bottom: 20px; right: 20px; background: #0A1628; color: #E8F4F8; border: 2px solid #E8F4F8; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; z-index: 1000;">🔊 Voice</button>
 </body>
 </html>
