@@ -677,6 +677,36 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 26, 2026 - ElevenLabs Voice Narration
+
+**Added professional voice narration to all 40 scenarios:**
+- Generated 160 MP3 audio files using ElevenLabs API
+- Voice: Josh (male, authoritative coach tone)
+- 4 audio clips per scenario: setup, prompt, correct, incorrect
+
+**Audio Implementation:**
+- Setup narration auto-plays when scenario loads
+- Correct/incorrect feedback audio plays on answer
+- Voice toggle button (🔊/🔇) in bottom-right corner
+- Audio files stored in `/audio/{scenario-name}/` directories
+
+**Files Added:**
+- `scripts/generate-audio.py` — ElevenLabs audio generation script
+- `scripts/add-audio-to-scenarios.py` — Batch file updater
+- `scripts/add-audio-feedback.py` — Audio feedback calls
+- `/audio/` — 160 MP3 files (13 MB total)
+
+**Scenario 1 (hockey-iq-diagram.html):**
+- Full animation + audio integration
+- Players and puck animate during narration
+- Uses Audio API instead of browser TTS
+
+**Scenarios 2-40:**
+- Voice narration added (no animations yet)
+- Audio plays over static diagrams
+
+---
+
 ### January 26, 2026 - Diagram Bug Fix
 
 **Fixed puck/player positions in 3 scenarios:**
