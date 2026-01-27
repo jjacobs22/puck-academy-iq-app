@@ -73,7 +73,7 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 **Onboarding Flow:**
 - Position selection (Center, Winger, Defense, Goalie)
 - Email capture (optional) for follow-up
-- Age/level selection (12-13 A/AA through 16+ High School)
+- Level selection (Youth A/AA, Youth AAA, High School/Prep, Juniors/College, Pro/Semi-Pro, Adult Rec)
 - Improvement area selection (Defensive Zone, Faceoffs, Breakouts, Offensive Zone, Overall Hockey IQ)
 
 **User Progress:**
@@ -143,8 +143,8 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 ### Core User Flow
 
 1. **Discovery:** User finds app via Puck Academy podcast/newsletter or direct link
-2. **Onboarding:** Complete 5-step flow (position → email → age/level → goals → start)
-3. **Module Hub:** See Module 1 (Defensive Zone) available with 5 scenarios
+2. **Onboarding:** Complete 5-step flow (position → level → goals → email → start)
+3. **Module Hub:** See all 6 modules available with 43 total scenarios
 4. **Scenario Experience:**
    - View rink diagram with situation description
    - Read the question ("What should you do?")
@@ -210,7 +210,7 @@ Social platforms (iMessage, Twitter, Facebook) fetch OG tags from the static pag
 | Screen | Purpose | Key Elements |
 |--------|---------|--------------|
 | `index.html` | Landing page with challenge banner for shared links | Hero section, features, Start Training CTA, challenge message if `?score=X` parameter present |
-| `onboarding.html` | Capture user info and personalize experience | Position picker, email input (optional), age/level selector, goal selection |
+| `onboarding.html` | Capture user info and personalize experience | Position picker, level selector (Youth to Pro to Adult Rec), email input (optional), goal selection |
 | `training.html` | Module hub showing scenarios and results | Scenario cards with status, progress bar, score display, results modal with share button |
 | `hockey-iq-diagram.html` | Scenario 1 - Defensive zone pressure read | SVG rink diagram, situation text, 4-option answer buttons, feedback display |
 | `scenario-2-corner-battle.html` | Scenario 2 - Corner battle support | Same structure as Scenario 1 with different content |
@@ -342,7 +342,7 @@ puck-academy-iq-app/
 {
   position: "center",
   email: "player@email.com",  // optional
-  ageLevel: "14-15 AAA",
+  level: "Youth AAA",  // or "Juniors/College", "Adult Rec", etc.
   goals: ["defensive-zone", "faceoffs"],
   completedScenarios: [1, 2, 3, 4, 5],
   currentModule: 1,
@@ -515,7 +515,7 @@ puck-academy-iq-app/
 ### Decision 8: Collect Full Profile Before Email
 - **Context:** Debated when to ask for email in onboarding flow
 - **Options considered:** Email first, email last, email optional throughout
-- **Decision:** Position → Age/Level → Goals → Email (optional) → Start
+- **Decision:** Position → Level → Goals → Email (optional) → Start
 - **Rationale:** Users more likely to provide email after investing time in profile; feels like natural continuation; captures more qualified leads.
 
 ### Decision 9: Wait on Module 2 Until Beta Feedback
@@ -977,7 +977,7 @@ This page is printable/saveable as PDF for offline reference.
 **New Onboarding Structure:**
 1. Value Prop: "See the Ice Before Everyone Else" - emphasizes pattern recognition
 2. Position: "What's Your Position?" - cleaner copy
-3. Level: "Where Are You At?" - simplified labels (12-13 • A/AA format)
+3. Level: "Where Are You At?" - covers full spectrum (Youth to Pro to Adult Rec)
 4. Goals: "What Do You Want to Work On?" - select all that apply
 5. Email: "Want Updates?" - concise, no spam promise
 6. Ready: "Let's Go." - shows available + coming soon modules
