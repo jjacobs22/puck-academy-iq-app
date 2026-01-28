@@ -47,3 +47,26 @@ Ideas to revisit later.
 - Clear signal that delivery model is the bottleneck, not content
 
 ---
+
+## Audio Narration for Intro Slides
+
+**Date parked:** Jan 28, 2026
+
+**The idea:** Add voice narration to the 3-slide theory intros that appear when users first enter each module. Would require ~15 new audio files (3 slides × 5 modules with intros).
+
+**Why it might be better:**
+- More consistent experience (scenarios have audio, intros don't)
+- Sets the "coached" tone from the very start
+- Helps users who prefer listening over reading
+
+**Why it's parked:**
+- Intros are one-time experiences (low ROI on audio investment)
+- Users often want to skip ahead to actual training
+- The real coaching value is in scenario explanations, not conceptual setup
+- No user feedback indicating intros are confusing without audio
+
+**To revisit when:**
+- Users report not understanding module concepts before starting
+- Overall polish becomes a priority after core content is solid
+
+---
