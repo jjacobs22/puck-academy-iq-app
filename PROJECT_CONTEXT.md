@@ -693,6 +693,21 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 28, 2026 - Fixed Faceoff Intro Diagram (Missing Ref)
+
+**Added referee to Module 2 faceoff intro slide:**
+
+The first intro slide in Module 2 (Faceoffs) showed "GRIP?", "STANCE?", "REF?" as things to watch for, but the ref wasn't actually visible in the diagram.
+
+**Fix:**
+- Added orange REF circle to the first intro slide diagram
+- Made "REF?" label orange with arrow (➜) pointing to the ref position
+- Repositioned elements for better visual clarity
+
+**File updated:** `module2-scenario1-ref-position.html`
+
+---
+
 ### January 28, 2026 - Streamlined Onboarding & Prominent Account Registration
 
 **Removed redundant email capture from onboarding:**
