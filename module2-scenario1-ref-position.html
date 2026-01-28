@@ -386,22 +386,22 @@
                     <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
                         <!-- Faceoff circle -->
-                        <circle cx="150" cy="100" r="50" fill="none" stroke="#C8102E" stroke-width="2"/>
-                        <circle cx="150" cy="100" r="4" fill="#C8102E"/>
-                        <!-- Ref positioned on YOUR side (forehand advantage) -->
-                        <circle cx="100" cy="55" r="14" fill="#FF6B00" stroke="#CC5500" stroke-width="1.5"/>
-                        <text x="100" y="59" text-anchor="middle" fill="white" font-weight="bold" font-size="9">REF</text>
-                        <!-- Chess pieces metaphor - centers positioned -->
-                        <circle cx="130" cy="100" r="16" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
-                        <text x="130" y="105" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="9">YOU</text>
-                        <circle cx="170" cy="100" r="14" fill="#C8102E" stroke="#8B0000" stroke-width="1.5"/>
-                        <text x="170" y="104" text-anchor="middle" fill="white" font-weight="bold" font-size="10">C</text>
-                        <!-- Puck -->
-                        <circle cx="150" cy="100" r="5" fill="#1a1a1a"/>
+                        <circle cx="150" cy="110" r="50" fill="none" stroke="#C8102E" stroke-width="2"/>
+                        <circle cx="150" cy="110" r="4" fill="#C8102E"/>
+                        <!-- Linesman between centers, above the dot -->
+                        <circle cx="150" cy="60" r="14" fill="#FF6B00" stroke="#CC5500" stroke-width="1.5"/>
+                        <text x="150" y="64" text-anchor="middle" fill="white" font-weight="bold" font-size="8">REF</text>
+                        <!-- Centers positioned -->
+                        <circle cx="125" cy="110" r="16" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="125" y="115" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="9">YOU</text>
+                        <circle cx="175" cy="110" r="14" fill="#C8102E" stroke="#8B0000" stroke-width="1.5"/>
+                        <text x="175" y="114" text-anchor="middle" fill="white" font-weight="bold" font-size="10">C</text>
+                        <!-- Puck at dot -->
+                        <circle cx="150" cy="110" r="5" fill="#1a1a1a"/>
                         <!-- Thought bubbles showing reads -->
-                        <text x="200" y="55" font-family="Work Sans, sans-serif" font-size="9" fill="#1E40AF" font-weight="600">GRIP?</text>
-                        <text x="200" y="70" font-family="Work Sans, sans-serif" font-size="9" fill="#1E40AF" font-weight="600">STANCE?</text>
-                        <text x="200" y="85" font-family="Work Sans, sans-serif" font-size="9" fill="#FF6B00" font-weight="600">← REF?</text>
+                        <text x="220" y="70" font-family="Work Sans, sans-serif" font-size="9" fill="#1E40AF" font-weight="600">GRIP?</text>
+                        <text x="220" y="85" font-family="Work Sans, sans-serif" font-size="9" fill="#1E40AF" font-weight="600">STANCE?</text>
+                        <text x="220" y="100" font-family="Work Sans, sans-serif" font-size="9" fill="#FF6B00" font-weight="600">REF LEAN?</text>
                     </svg>
                 </div>
             </div>
@@ -409,32 +409,31 @@
             <!-- Slide 2 -->
             <div class="intro-slide" data-slide="2">
                 <h3 class="intro-headline">Read Before You React</h3>
-                <p class="intro-body">Watch the ref's grip, the opponent's stance, and your wingers' positioning. The draw starts before the puck drops.</p>
+                <p class="intro-body">Watch the linesman's grip, body lean, and your opponent's stance. The draw starts before the puck drops.</p>
                 <div class="intro-diagram">
                     <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="8"/>
                         <!-- Faceoff circle -->
-                        <circle cx="150" cy="100" r="45" fill="none" stroke="#C8102E" stroke-width="2"/>
-                        <!-- Ref with position indicator -->
-                        <circle cx="190" cy="60" r="14" fill="#FF6B00" stroke="#CC5500" stroke-width="1.5"/>
-                        <text x="190" y="64" text-anchor="middle" fill="white" font-weight="bold" font-size="9">REF</text>
-                        <!-- Arrow pointing to ref -->
-                        <line x1="165" y1="75" x2="180" y2="65" stroke="#2D7A3E" stroke-width="2" marker-end="url(#arrowG)"/>
-                        <defs><marker id="arrowG" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#2D7A3E"/></marker></defs>
-                        <text x="140" y="72" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#2D7A3E">WATCH</text>
+                        <circle cx="150" cy="110" r="45" fill="none" stroke="#C8102E" stroke-width="2"/>
+                        <!-- Linesman between centers -->
+                        <circle cx="150" cy="60" r="14" fill="#FF6B00" stroke="#CC5500" stroke-width="1.5"/>
+                        <text x="150" y="64" text-anchor="middle" fill="white" font-weight="bold" font-size="8">REF</text>
+                        <!-- Arrow showing ref lean toward your side -->
+                        <line x1="145" y1="70" x2="130" y2="85" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="4,2"/>
+                        <text x="105" y="80" font-family="Work Sans, sans-serif" font-size="8" font-weight="600" fill="#2D7A3E">LEAN</text>
                         <!-- You -->
-                        <circle cx="130" cy="100" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
-                        <text x="130" y="104" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">YOU</text>
+                        <circle cx="125" cy="110" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                        <text x="125" y="114" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="8">YOU</text>
                         <!-- Opponent with stance indicator -->
-                        <circle cx="170" cy="100" r="12" fill="#C8102E" stroke="#8B0000" stroke-width="1.5"/>
-                        <text x="170" y="104" text-anchor="middle" fill="white" font-weight="bold" font-size="9">C</text>
+                        <circle cx="175" cy="110" r="12" fill="#C8102E" stroke="#8B0000" stroke-width="1.5"/>
+                        <text x="175" y="114" text-anchor="middle" fill="white" font-weight="bold" font-size="9">C</text>
                         <!-- Puck -->
-                        <circle cx="150" cy="100" r="4" fill="#1a1a1a"/>
+                        <circle cx="150" cy="110" r="4" fill="#1a1a1a"/>
                         <!-- Winger positions -->
-                        <circle cx="100" cy="70" r="10" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1"/>
-                        <text x="100" y="73" text-anchor="middle" fill="white" font-weight="bold" font-size="8">W</text>
-                        <circle cx="100" cy="130" r="10" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1"/>
-                        <text x="100" y="133" text-anchor="middle" fill="white" font-weight="bold" font-size="8">W</text>
+                        <circle cx="90" cy="80" r="10" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1"/>
+                        <text x="90" y="83" text-anchor="middle" fill="white" font-weight="bold" font-size="8">W</text>
+                        <circle cx="90" cy="140" r="10" fill="#1E40AF" stroke="#1E3A8A" stroke-width="1"/>
+                        <text x="90" y="143" text-anchor="middle" fill="white" font-weight="bold" font-size="8">W</text>
                     </svg>
                 </div>
             </div>
@@ -515,11 +514,14 @@
                     <text x="225" y="125" font-family="Work Sans, sans-serif" font-size="10" font-weight="600" fill="#2D7A3E">FOREHAND</text>
                 </g>
 
-                <!-- Ref - positioned on your forehand side -->
+                <!-- Ref - positioned between centers, body angled toward your forehand -->
                 <g class="player">
-                    <circle cx="220" cy="80" r="18" fill="#FF6B00" stroke="#CC5500" stroke-width="2"/>
-                    <text x="220" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="12">REF</text>
+                    <circle cx="180" cy="75" r="18" fill="#FF6B00" stroke="#CC5500" stroke-width="2"/>
+                    <text x="180" y="80" text-anchor="middle" fill="white" font-weight="bold" font-size="12">REF</text>
                 </g>
+                <!-- Arrow showing ref's body angle/lean -->
+                <line x1="170" y1="85" x2="155" y2="100" stroke="#FF6B00" stroke-width="2" stroke-dasharray="4,2"/>
+                <text x="135" y="95" font-family="Work Sans, sans-serif" font-size="8" fill="#FF6B00">lean</text>
                 
                 <!-- YOU - center taking faceoff (left-handed) -->
                 <g id="playerYou" class="player player-you">
@@ -563,7 +565,7 @@
             <p class="situation-label">Situation:</p>
             <p class="situation-text">
                 Defensive zone faceoff to the goalie's left. You're a <strong>left-handed</strong> shot. 
-                The ref is positioned on your forehand side (your left). 
+                The linesman is leaning slightly toward your forehand side — giving you a cleaner line to the puck.
                 The opposing center is a righty, set up low with a strong backhand grip.
                 <span class="highlight">What's your best approach on this draw?</span>
             </p>
