@@ -184,6 +184,122 @@
             color: var(--accent-red);
         }
 
+        /* Overall Progress Card */
+        .overall-progress {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .overall-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .overall-progress-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: var(--ice-blue);
+        }
+
+        .overall-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .overall-stat {
+            text-align: center;
+            padding: 15px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .overall-stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-red);
+        }
+
+        .overall-stat-label {
+            font-size: 0.75rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .module-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .module-mini-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border-left: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .module-mini-card.complete {
+            border-left-color: var(--success-green);
+        }
+
+        .module-mini-card.in-progress {
+            border-left-color: var(--accent-red);
+        }
+
+        .module-mini-icon {
+            font-size: 1.2rem;
+        }
+
+        .module-mini-info {
+            flex: 1;
+        }
+
+        .module-mini-name {
+            font-size: 0.8rem;
+            color: var(--ice-blue);
+            font-weight: 500;
+        }
+
+        .module-mini-score {
+            font-size: 0.75rem;
+            color: var(--silver);
+        }
+
+        .module-mini-score.perfect {
+            color: var(--success-green);
+        }
+
+        @media (max-width: 600px) {
+            .overall-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .overall-stat {
+                padding: 12px 5px;
+            }
+            .overall-stat-value {
+                font-size: 1.5rem;
+            }
+            .overall-stat-label {
+                font-size: 0.65rem;
+            }
+            .module-breakdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         .progress-container {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
@@ -938,6 +1054,30 @@
             </div>
         </div>
 
+        <!-- Overall Progress Card -->
+        <div class="overall-progress" id="overallProgress">
+            <div class="overall-progress-header">
+                <h3 class="overall-progress-title">Your Progress</h3>
+            </div>
+            <div class="overall-stats">
+                <div class="overall-stat">
+                    <div class="overall-stat-value" id="modulesCompleted">0/6</div>
+                    <div class="overall-stat-label">Modules</div>
+                </div>
+                <div class="overall-stat">
+                    <div class="overall-stat-value" id="scenariosCompleted">0/43</div>
+                    <div class="overall-stat-label">Scenarios</div>
+                </div>
+                <div class="overall-stat">
+                    <div class="overall-stat-value" id="overallAccuracy">--%</div>
+                    <div class="overall-stat-label">Accuracy</div>
+                </div>
+            </div>
+            <div class="module-breakdown" id="moduleBreakdown">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
         <!-- Section Dividers (inserted dynamically) -->
         <div class="section-divider recommended" id="recommendedDivider" style="display: none;">
             <span>Recommended for You</span>
@@ -1586,6 +1726,87 @@
             }
         }
 
+        function updateOverallProgress() {
+            const moduleNames = {
+                1: 'D-Zone',
+                2: 'Faceoffs',
+                3: 'Breakouts',
+                4: 'Offense',
+                5: 'Forecheck',
+                6: 'D-Men'
+            };
+            const moduleIcons = {
+                1: '🛡️',
+                2: '⚔️',
+                3: '🚀',
+                4: '🎯',
+                5: '🔥',
+                6: '🏒'
+            };
+
+            let totalScenarios = 0;
+            let completedScenarios = 0;
+            let totalCorrect = 0;
+            let modulesComplete = 0;
+            const breakdownHtml = [];
+
+            for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
+                const config = moduleConfigs[moduleNum];
+                const scoreData = getScoreData(moduleNum);
+                const completed = Object.keys(scoreData.currentRun).length;
+                const correct = Object.values(scoreData.currentRun).filter(v => v === true).length;
+                const total = config.total;
+
+                totalScenarios += total;
+                completedScenarios += completed;
+                totalCorrect += correct;
+
+                const isComplete = completed === total;
+                const isInProgress = completed > 0 && !isComplete;
+                const isPerfect = correct === total && isComplete;
+
+                if (isComplete) modulesComplete++;
+
+                let statusClass = '';
+                if (isComplete) statusClass = 'complete';
+                else if (isInProgress) statusClass = 'in-progress';
+
+                let scoreText = '';
+                if (completed === 0) {
+                    scoreText = 'Not started';
+                } else if (isComplete) {
+                    scoreText = `${correct}/${total} correct`;
+                } else {
+                    scoreText = `${completed}/${total} done`;
+                }
+
+                breakdownHtml.push(`
+                    <div class="module-mini-card ${statusClass}">
+                        <span class="module-mini-icon">${moduleIcons[moduleNum]}</span>
+                        <div class="module-mini-info">
+                            <div class="module-mini-name">${moduleNames[moduleNum]}</div>
+                            <div class="module-mini-score ${isPerfect ? 'perfect' : ''}">${scoreText}</div>
+                        </div>
+                    </div>
+                `);
+            }
+
+            // Update overall stats
+            document.getElementById('modulesCompleted').textContent = `${modulesComplete}/6`;
+            document.getElementById('scenariosCompleted').textContent = `${completedScenarios}/${totalScenarios}`;
+            
+            // Calculate accuracy only if there are completed scenarios
+            if (completedScenarios > 0) {
+                const accuracy = Math.round((totalCorrect / completedScenarios) * 100);
+                document.getElementById('overallAccuracy').textContent = `${accuracy}%`;
+            } else {
+                document.getElementById('overallAccuracy').textContent = '--%';
+            }
+
+            // Update module breakdown
+            document.getElementById('moduleBreakdown').innerHTML = breakdownHtml.join('');
+        }
+
         function updateDisplay() {
             // Update all modules
             updateModuleDisplay(1);
@@ -1600,7 +1821,10 @@
                 updateNavStatus();
             }
 
-            // Update overall best score display
+            // Update overall progress card
+            updateOverallProgress();
+
+            // Update overall best score display (legacy)
             const module1Data = getScoreData(1);
             if (module1Data.bestScore > 0) {
                 document.getElementById('scoreDisplay').classList.add('visible');
