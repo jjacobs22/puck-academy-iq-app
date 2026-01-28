@@ -307,12 +307,12 @@
                 <circle cx="320" cy="240" r="50" fill="none" stroke="#C8102E" stroke-width="2"/>
                 <circle cx="320" cy="240" r="4" fill="#C8102E"/>
 
-                <!-- Puck going to opponent D -->
-                <circle cx="200" cy="240" r="8" fill="#1a1a1a" stroke="#333" stroke-width="1">
+                <!-- Puck going back to opponent D near their net -->
+                <circle cx="400" cy="280" r="8" fill="#1a1a1a" stroke="#333" stroke-width="1">
                     <animate attributeName="opacity" values="1;0.7;1" dur="1.5s" repeatCount="indefinite"/>
                 </circle>
-                <path d="M 320 240 L 210 240" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
-                <text x="250" y="215" font-family="Work Sans, sans-serif" font-size="10" fill="#C8102E">Puck to opp D →</text>
+                <path d="M 320 240 L 390 275" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+                <text x="350" y="235" font-family="Work Sans, sans-serif" font-size="10" fill="#C8102E">Lost → opp D</text>
 
                 <!-- Feedback - recovery zone -->
                 <g id="recoveryZone" class="feedback-element">
@@ -345,10 +345,10 @@
                     <text x="350" y="285" text-anchor="middle" fill="white" font-weight="bold" font-size="12">W</text>
                 </g>
                 
-                <!-- Opposing D with puck -->
+                <!-- Opposing D with puck - near their net -->
                 <g class="player">
-                    <circle cx="190" cy="240" r="22" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
-                    <text x="190" y="246" text-anchor="middle" fill="white" font-weight="bold" font-size="14">D</text>
+                    <circle cx="400" cy="300" r="22" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                    <text x="400" y="306" text-anchor="middle" fill="white" font-weight="bold" font-size="14">D</text>
                 </g>
                 
                 <!-- Late opponent forward -->
