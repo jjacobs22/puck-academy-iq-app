@@ -435,6 +435,27 @@
             background: rgba(255, 255, 255, 0.12);
         }
 
+        .feedback-email {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: var(--ice-blue);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        .feedback-email::placeholder {
+            color: var(--silver);
+            font-size: 0.85rem;
+        }
+        .feedback-email:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
         .feedback-detailed-link {
             display: block;
             text-align: center;
@@ -1371,6 +1392,7 @@
     <!-- Hidden Netlify Form (for detection) -->
     <form name="quick-feedback" netlify netlify-honeypot="bot-field" hidden>
         <input type="text" name="feedback">
+        <input type="email" name="email">
         <input type="text" name="page">
     </form>
 
@@ -1392,6 +1414,12 @@
                         id="feedbackText" 
                         placeholder="What's working well? What's confusing? What's missing?"
                     ></textarea>
+                    <input 
+                        type="email" 
+                        class="feedback-email" 
+                        id="feedbackEmail" 
+                        placeholder="Your email (optional - if you'd like a response)"
+                    >
                     <button class="btn btn-primary" style="width: 100%;" onclick="submitFeedback()">Send Feedback</button>
                 </div>
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform" target="_blank" class="feedback-detailed-link">
@@ -1675,6 +1703,7 @@
 
         function submitFeedback() {
             const feedbackText = document.getElementById('feedbackText').value.trim();
+            const feedbackEmail = document.getElementById('feedbackEmail').value.trim();
             
             if (!feedbackText) {
                 // Highlight the textarea if empty
@@ -1686,6 +1715,7 @@
             const formData = new FormData();
             formData.append('form-name', 'quick-feedback');
             formData.append('feedback', feedbackText);
+            formData.append('email', feedbackEmail);
             formData.append('page', window.location.pathname);
             
             fetch('/', {
@@ -1720,6 +1750,7 @@
                 document.getElementById('feedbackSuccessView').style.display = 'none';
                 document.getElementById('feedbackText').value = '';
                 document.getElementById('feedbackText').style.borderColor = '';
+                document.getElementById('feedbackEmail').value = '';
             }, 300);
         }
         
