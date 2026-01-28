@@ -506,7 +506,8 @@
             Storage.saveScenarioScore(MODULE_NUMBER, 7, isCorrect);
             
             // Check if module complete
-            if (Object.keys(scoreData.currentRun).length === 7) {
+            const currentScores = Storage.getModuleScores(MODULE_NUMBER);
+            if (Object.keys(currentScores.currentRun || {}).length === 7) {
                 localStorage.setItem('puckAcademy_module3_justCompleted', 'true');
             }
 
