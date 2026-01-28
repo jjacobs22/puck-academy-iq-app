@@ -129,6 +129,24 @@ export const Storage = {
     const scores = this.getModuleScores(moduleNumber);
     scores.currentRun[scenarioNumber] = isCorrect;
     this.set(key, scores);
+
+    // Sync to Supabase if logged in (async, non-blocking)
+    this.syncToSupabase();
+  },
+
+  /**
+   * Sync progress to Supabase (if available and logged in)
+   * Called automatically when scores are saved
+   */
+  async syncToSupabase() {
+    try {
+      // Dynamic import to avoid circular dependencies
+      const { syncProgressToServer } = await import('./supabase.js');
+      await syncProgressToServer();
+    } catch (e) {
+      // Silently fail if not logged in or supabase not available
+      console.log('Sync skipped:', e.message);
+    }
   },
 
   /**

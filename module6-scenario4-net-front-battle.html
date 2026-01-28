@@ -190,6 +190,7 @@
         // Import shared modules
         import { Storage } from './js/storage.js';
         import { Analytics } from './js/analytics.js';
+        import { syncProgressToServer, getUser } from './js/supabase.js';
         // ====== ELEVENLABS VOICE AUDIO ======
         let voiceEnabled = true;
         let currentAudio = null;
@@ -256,6 +257,9 @@
             let scoreData = JSON.parse(localStorage.getItem('puckAcademy_module6_scores') || '{"currentRun": {}, "bestScore": 0}');
             scoreData.currentRun[4] = isCorrect;
             localStorage.setItem('puckAcademy_module6_scores', JSON.stringify(scoreData));
+
+            // Sync to Supabase if logged in
+            syncProgressToServer().catch(e => console.log('Sync skipped:', e.message));
 
             showFeedbackDiagram();
 
