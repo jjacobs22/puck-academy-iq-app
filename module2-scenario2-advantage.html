@@ -261,14 +261,14 @@
                     </marker>
                 </defs>
 
-                <!-- Linesman - between centers, leaning toward opponent's forehand -->
+                <!-- Linesman - between centers, leaning toward you (blocking your angle) -->
                 <g class="player">
                     <circle cx="250" cy="130" r="18" fill="#FF6B00" stroke="#CC5500" stroke-width="2"/>
                     <text x="250" y="135" text-anchor="middle" fill="white" font-weight="bold" font-size="12">LM</text>
                 </g>
-                <!-- Arrow showing linesman lean toward opponent's side -->
-                <line x1="258" y1="140" x2="275" y2="155" stroke="#FF6B00" stroke-width="2" stroke-dasharray="4,2"/>
-                <text x="280" y="150" font-family="Work Sans, sans-serif" font-size="8" fill="#FF6B00">lean</text>
+                <!-- Arrow showing linesman lean toward you (gives opponent cleaner angle) -->
+                <line x1="242" y1="140" x2="225" y2="155" stroke="#FF6B00" stroke-width="2" stroke-dasharray="4,2"/>
+                <text x="205" y="150" font-family="Work Sans, sans-serif" font-size="8" fill="#FF6B00">lean</text>
                 
                 <!-- YOU (#23) - left shot center -->
                 <g id="playerYou" class="player player-you">
@@ -306,7 +306,7 @@
             <p class="situation-label">Situation:</p>
             <p class="situation-text">
                 Neutral zone faceoff. You're a left-shot center. The opposing center is also left-shot. 
-                The linesman sets up on your backhand side.
+                The linesman's body angle is leaning toward you, giving your opponent a cleaner line to the puck.
                 <span class="highlight">Who has the natural advantage on this draw?</span>
             </p>
         </div>
