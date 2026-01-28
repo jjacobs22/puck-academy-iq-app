@@ -264,7 +264,7 @@
                 <!-- Ref - on your backhand side -->
                 <g class="player">
                     <circle cx="290" cy="140" r="18" fill="#FF6B00" stroke="#CC5500" stroke-width="2"/>
-                    <text x="290" y="145" text-anchor="middle" fill="white" font-weight="bold" font-size="12">REF</text>
+                    <text x="290" y="145" text-anchor="middle" fill="white" font-weight="bold" font-size="12">LM</text>
                 </g>
                 
                 <!-- YOU (#23) - left shot center -->
@@ -295,7 +295,7 @@
             <div class="legend">
                 <div class="legend-item"><div class="legend-dot you"></div><span>You - Left Shot</span></div>
                 <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent - Left Shot</span></div>
-                <div class="legend-item"><div class="legend-dot ref"></div><span>Referee</span></div>
+                <div class="legend-item"><div class="legend-dot ref"></div><span>Linesman</span></div>
             </div>
         </div>
 
@@ -303,7 +303,7 @@
             <p class="situation-label">Situation:</p>
             <p class="situation-text">
                 Neutral zone faceoff. You're a left-shot center. The opposing center is also left-shot. 
-                The ref sets up on your backhand side.
+                The linesman sets up on your backhand side.
                 <span class="highlight">Who has the natural advantage on this draw?</span>
             </p>
         </div>
@@ -317,7 +317,7 @@
             </div>
             <div class="option" onclick="selectAnswer(this)" data-correct="true">
                 <span class="option-letter">B)</span>
-                <span class="option-text">The other center — ref position favors his forehand</span>
+                <span class="option-text">The other center — linesman position favors his forehand</span>
             </div>
             <div class="option" onclick="selectAnswer(this)" data-correct="false">
                 <span class="option-letter">C)</span>
@@ -430,11 +430,11 @@
                 if (isCorrect) {
                     playAudio('correct');
                     feedbackTitle.textContent = '✓ You see it.';
-                    feedbackText.innerHTML = '<strong>Same-handed matchups come down to ref position.</strong> If the ref is on your backhand, you\'re fighting uphill. Recognize this early and adjust your approach — go for a tie-up, cheat your positioning, or try a quick forehand counter. Knowing you\'re at a disadvantage is the first step to overcoming it. — Coach';
+                    feedbackText.innerHTML = '<strong>Same-handed matchups come down to linesman position.</strong> If the linesman is on your backhand, you\'re fighting uphill. Recognize this early and adjust your approach — go for a tie-up, cheat your positioning, or try a quick forehand counter. Knowing you\'re at a disadvantage is the first step to overcoming it. — Coach';
                 } else {
                     playAudio('incorrect');
                     feedbackTitle.textContent = '✗ Look at the ref.';
-                    feedbackText.innerHTML = '<strong>When both centers are the same handedness, it\'s all about ref position.</strong> The ref is on your backhand side, which means his forehand has a cleaner angle. That\'s his advantage. Knowing this before the puck drops lets you adjust — tie-up, counter move, or positioning change. Awareness is everything. — Coach';
+                    feedbackText.innerHTML = '<strong>When both centers are the same handedness, it\'s all about linesman position.</strong> The linesman is on your backhand side, which means his forehand has a cleaner angle. That\'s his advantage. Knowing this before the puck drops lets you adjust — tie-up, counter move, or positioning change. Awareness is everything. — Coach';
                 }
 
                 setTimeout(() => {
