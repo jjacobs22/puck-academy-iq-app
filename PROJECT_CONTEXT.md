@@ -693,6 +693,45 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 28, 2026 - Feedback Form Email Field & Bug Fixes
+
+**Added optional email field to feedback form:**
+- Users can now optionally provide their email if they'd like a response
+- Field labeled "Your email (optional - if you'd like a response)"
+- Submits to Netlify Forms alongside feedback text
+- Enables direct follow-up with engaged beta testers
+
+**Fixed faceoff diagram text alignment issues:**
+- Scenarios 1, 2, and 6 had overlapping/unclear text labels
+- Replaced single "lean" label with clearer "LM leaning your way ↘" positioned off to the side
+- Consolidated player handedness labels (e.g., "You (R) vs Opp (L)")
+- Consistent styling across all faceoff scenarios with linesman positioning
+
+**Made diagram labels gender-neutral:**
+- Changed "Him (L)" to "Opp (L)" in scenario 6 for inclusivity
+
+**Fixed Module 2 Scenario 7 (Post-Draw) diagram:**
+- Puck direction was incorrect - showed going to blue line instead of toward opponent's net
+- In offensive zone lost faceoff, opponent pulls puck back toward their goal
+- Moved opposing D and puck to correct positions (near their net)
+- Updated label to "Lost → opp D" for clarity
+
+**Fixed JavaScript error preventing feedback from showing:**
+- Module 2 Scenario 7 and Module 3 Scenario 7 both referenced undefined `scoreData` variable
+- This caused a JS error that prevented the feedback panel (with "Back to Modules" button) from appearing
+- Fixed by using `Storage.getModuleScores(MODULE_NUMBER)` to get score data
+- Users can now properly complete these scenarios and navigate back to the module hub
+
+**Files updated:**
+- `training.html` — Added email field to feedback form
+- `module2-scenario1-ref-position.html` — Fixed text alignment
+- `module2-scenario2-advantage.html` — Fixed text alignment  
+- `module2-scenario6-forehand-backhand.html` — Fixed text alignment, gender-neutral labels
+- `module2-scenario7-post-draw.html` — Fixed diagram direction, fixed JS error
+- `module3-scenario7-broken-play.html` — Fixed JS error
+
+---
+
 ### January 28, 2026 - Fixed Faceoff Intro Diagram (Missing Ref)
 
 **Added referee to Module 2 faceoff intro slide:**
