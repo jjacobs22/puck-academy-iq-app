@@ -302,37 +302,54 @@
     </div>
 
     <script>
-        // Check for score parameter in URL
+        // Check for challenge parameters in URL
         const urlParams = new URLSearchParams(window.location.search);
         const score = urlParams.get('score');
+        const moduleNum = urlParams.get('module');
+        const total = urlParams.get('total');
+
+        const moduleNames = {
+            1: 'Defensive Zone',
+            2: 'Faceoffs',
+            3: 'Breakouts',
+            4: 'Offensive Zone',
+            5: 'Forechecking',
+            6: 'D-Zone (Defensemen)'
+        };
 
         if (score !== null) {
             const scoreNum = parseInt(score);
+            const totalNum = total ? parseInt(total) : 7;
+            const moduleName = moduleNum ? moduleNames[moduleNum] : null;
+
             const banner = document.getElementById('challengeBanner');
             const icon = document.getElementById('challengeIcon');
             const scoreDisplay = document.getElementById('challengeScore');
             const text = document.getElementById('challengeText');
 
             banner.classList.add('visible');
-            scoreDisplay.textContent = `${scoreNum}/5`;
+            scoreDisplay.textContent = `${scoreNum}/${totalNum}`;
 
-            if (scoreNum === 5) {
+            const isPerfect = scoreNum === totalNum;
+            const moduleText = moduleName ? ` on ${moduleName}` : '';
+
+            if (isPerfect) {
                 icon.textContent = '🏆';
                 scoreDisplay.classList.add('perfect');
-                text.textContent = "Your friend got a PERFECT SCORE. Think you can match it?";
-            } else if (scoreNum >= 4) {
+                text.textContent = `Your friend got a PERFECT SCORE${moduleText}. Think you can match it?`;
+            } else if (scoreNum >= totalNum - 1) {
                 icon.textContent = '🔥';
-                text.textContent = `Your friend scored ${scoreNum}/5. Can you beat them?`;
-            } else if (scoreNum >= 2) {
+                text.textContent = `Your friend scored ${scoreNum}/${totalNum}${moduleText}. Can you beat them?`;
+            } else if (scoreNum >= Math.floor(totalNum / 2)) {
                 icon.textContent = '🏒';
-                text.textContent = `Your friend scored ${scoreNum}/5. Show them how it's done!`;
+                text.textContent = `Your friend scored ${scoreNum}/${totalNum}${moduleText}. Show them how it's done!`;
             } else {
                 icon.textContent = '😬';
-                text.textContent = `Your friend only got ${scoreNum}/5. Easy to beat, right?`;
+                text.textContent = `Your friend only got ${scoreNum}/${totalNum}${moduleText}. Easy to beat, right?`;
             }
 
             // Hide the regular start button since challenge banner has one
-            document.getElementById('startBtn').textContent = 'Start Training →';
+            document.getElementById('startBtn').textContent = 'Accept the Challenge →';
         }
 
         // Register Service Worker for PWA

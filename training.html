@@ -1334,7 +1334,7 @@
                 Defensive positioning takes time to master. Review each scenario and focus on understanding why each answer is correct.
             </p>
             <div class="modal-buttons">
-                <button class="btn btn-primary" onclick="shareResults()">📤 Share Score</button>
+                <button class="btn btn-primary" onclick="shareResults()">🏒 Challenge a Friend</button>
                 <button class="btn btn-secondary" onclick="closeResults()">Review Scenarios</button>
                 <button class="btn btn-secondary" onclick="retryModule()">Try Again</button>
             </div>
@@ -1740,15 +1740,15 @@
                 6: 'D-Zone (Defensemen)'
             };
             
-            const shareUrl = `https://hockeyiq.netlify.app/share/${correctCount}`;
+            const shareUrl = `https://hockeyiq.netlify.app/?score=${correctCount}&module=${moduleNum}&total=${total}`;
             let shareText = '';
-            
+
             if (correctCount === total) {
-                shareText = `I got a PERFECT SCORE on Puck Academy's ${moduleNames[moduleNum]} Hockey IQ training! 🏆 Think you can beat me?`;
+                shareText = `I got a PERFECT SCORE on Puck Academy's ${moduleNames[moduleNum]} training! 🏆 Think you can beat me?`;
             } else if (correctCount >= total - 1) {
-                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🔥 Think you can do better?`;
+                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🔥 Think you can beat me?`;
             } else {
-                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🏒 Test your hockey brain:`;
+                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🏒 Think you can beat me?`;
             }
 
             const fullShareText = `${shareText}\n\n${shareUrl}`;
