@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 27, 2026  
+**Last Updated:** January 28, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -439,7 +439,7 @@ puck-academy-iq-app/
 - **Tyler's personalized training:** Standalone printable coaching notes based on game feedback
 - **Mobile responsive:** Works on phone/tablet
 - **GitHub → Netlify pipeline:** Auto-deploy on push
-- **User accounts (Stage 1):** Supabase auth with magic link email, progress syncs to server
+- **User accounts (Stage 1):** Supabase auth with magic link email, progress syncs to server in real-time
 
 ### What's Partially Working ⚠️
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
@@ -688,6 +688,25 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 28, 2026 - Real-Time Supabase Score Sync
+
+**Added real-time syncing of scores to Supabase whenever a scenario is answered:**
+
+Previously, scores only synced to Supabase on login or when returning to training.html. This meant users who completed scenarios but didn't return to the hub might lose their progress if they switched devices.
+
+**The fix:**
+- Added `syncToSupabase()` call inside `Storage.saveScenarioScore()` in `js/storage.js`
+- Added direct sync calls to Module 4-6 scenarios that use direct localStorage writes
+- All 43 scenarios now sync progress to Supabase immediately after each answer (if user is logged in)
+
+**Files updated:**
+- `js/storage.js` — Added sync method to saveScenarioScore
+- 17 scenario files in Modules 4-6 — Added direct Supabase sync calls
+
+**Result:** Users logged in with magic link now have their progress saved to the server in real-time, enabling seamless cross-device experience.
+
+---
 
 ### January 28, 2026 - Fixed Module 6 Diagram Orientations
 
