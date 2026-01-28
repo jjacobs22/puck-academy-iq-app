@@ -689,6 +689,24 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 28, 2026 - Fixed Module 6 Diagram Orientations
+
+**Standardized all D-Zone (Defensemen) scenarios to have consistent diagram orientation:**
+
+The problem: Scenarios 1, 4, and 7 had the goal on the right side of the diagram, while scenarios 2, 3, 5, and 6 had the goal on the left side. This inconsistency was confusing, especially on mobile (reported via Reddit feedback).
+
+The fix:
+- Flipped diagrams in scenarios 1, 4, and 7 so goal is on the left side
+- All Module 6 scenarios now show opponents attacking from right to left
+- Consistent with how defensemen would view the play in their own zone
+
+**Files updated:**
+- `module6-scenario1-gap-control.html`
+- `module6-scenario4-net-front-battle.html` 
+- `module6-scenario7-zone-coverage.html`
+
+---
+
 ### January 27, 2026 - Added Sticky Module Navigation
 
 **Added sticky navigation bar to training.html for quick module access:**
