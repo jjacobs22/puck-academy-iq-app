@@ -521,16 +521,18 @@
                     <text x="220" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="12">REF</text>
                 </g>
                 
-                <!-- YOU - center taking faceoff -->
+                <!-- YOU - center taking faceoff (left-handed) -->
                 <g id="playerYou" class="player player-you">
                     <circle cx="160" cy="120" r="26" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
-                    <text x="160" y="125" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="11">YOU</text>
+                    <text x="160" y="118" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="10">YOU</text>
+                    <text x="160" y="130" text-anchor="middle" fill="#1a1a1a" font-size="9">(L)</text>
                 </g>
                 
-                <!-- Opposing center -->
+                <!-- Opposing center (right-handed) -->
                 <g class="player">
                     <circle cx="200" cy="120" r="22" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
-                    <text x="200" y="126" text-anchor="middle" fill="white" font-weight="bold" font-size="14">C</text>
+                    <text x="200" y="118" text-anchor="middle" fill="white" font-weight="bold" font-size="12">C</text>
+                    <text x="200" y="130" text-anchor="middle" fill="white" font-size="9">(R)</text>
                 </g>
                 
                 <!-- Puck at dot -->
@@ -550,8 +552,8 @@
             </svg>
 
             <div class="legend">
-                <div class="legend-item"><div class="legend-dot you"></div><span>You</span></div>
-                <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent</span></div>
+                <div class="legend-item"><div class="legend-dot you"></div><span>You (L = lefty)</span></div>
+                <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponent (R = righty)</span></div>
                 <div class="legend-item"><div class="legend-dot ref"></div><span>Referee</span></div>
                 <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
             </div>
@@ -560,8 +562,9 @@
         <div class="situation-box">
             <p class="situation-label">Situation:</p>
             <p class="situation-text">
-                Defensive zone faceoff to the goalie's left. The ref is positioned on your forehand side. 
-                The opposing center is set up low with a strong backhand grip.
+                Defensive zone faceoff to the goalie's left. You're a <strong>left-handed</strong> shot. 
+                The ref is positioned on your forehand side (your left). 
+                The opposing center is a righty, set up low with a strong backhand grip.
                 <span class="highlight">What's your best approach on this draw?</span>
             </p>
         </div>
