@@ -189,19 +189,24 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 }
 ```
 
-### Share Functionality
+### Share Functionality (Challenge a Friend)
 
 **Current Implementation:**
-- Share Score button appears in results modal after completing module
+- "🏒 Challenge a Friend" button appears in results modal after completing module
 - Uses Web Share API on mobile (native share sheet)
 - Falls back to clipboard copy on desktop
-- Share message includes score and challenge text
-- URL includes score parameter: `hockeyiq.netlify.app?score=X`
+- Share message includes score, module name, and competitive challenge text
+- URL includes module context: `hockeyiq.netlify.app?score=X&module=Y&total=Z`
+
+**Challenge Banner on Landing Page:**
+- Shows module name (D-Zone, Faceoffs, Breakouts, Offense, Forecheck, D-Men)
+- Displays correct score total based on module (7 or 8 scenarios)
+- "Accept the Challenge →" button replaces standard "Start Training" CTA
 
 **Share Messages:**
-- 5/5: "I got a PERFECT SCORE on Puck Academy's Defensive Zone Hockey IQ training! 🏆 Think you can beat me?"
-- 4/5: "I scored 4/5 on Puck Academy's Defensive Zone Hockey IQ training! 🔥 Think you can do better?"
-- 0-3/5: "I scored X/5 on Puck Academy's Hockey IQ training! 🏒 Test your hockey brain:"
+- Perfect: "I got a PERFECT SCORE on Puck Academy's [Module] training! 🏆 Think you can beat me?"
+- Great: "I scored X/Y on Puck Academy's [Module] training! 🔥 Think you can do better?"
+- Other: "I scored X/Y on Puck Academy's Hockey IQ training! 🏒 Test your hockey brain:"
 
 **Static Share Pages (January 26, 2026):**
 Share links now point to static HTML pages (`/share/0.html` through `/share/7.html`) with pre-baked OG meta tags:
@@ -688,6 +693,28 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 28, 2026 - Challenge a Friend Feature
+
+**Enhanced sharing to be more competitive and module-aware:**
+
+The share functionality has been upgraded to make challenging friends more engaging and contextual.
+
+**Changes:**
+- Share button text changed from "Share Score" to "🏒 Challenge a Friend"
+- Share URL now includes module number and total scenarios (e.g., `?score=5&module=3&total=7`)
+- Landing page challenge banner now shows the specific module name (e.g., "D-Zone", "Faceoffs", "Breakouts")
+- Challenge banner displays correct score total based on module (e.g., "5/7" for 7-scenario modules, "6/8" for Module 5)
+- Share text is more competitive: "Think you can beat me?"
+- Start Training button changes to "Accept the Challenge →" when accessed via challenge link
+
+**Files updated:**
+- `index.html` — Enhanced challenge banner with module-aware messaging
+- `training.html` — Updated share function to include module context
+
+**Result:** Sharing scores now feels more like a direct challenge and provides proper context about which module was completed.
+
+---
 
 ### January 28, 2026 - Real-Time Supabase Score Sync
 
