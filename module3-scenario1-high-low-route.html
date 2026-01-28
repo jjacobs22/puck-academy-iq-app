@@ -71,6 +71,46 @@
             letter-spacing: 2px;
         }
 
+        
+        /* Module Progress Indicator */
+        .module-progress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0 25px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        .progress-stat {
+            text-align: center;
+        }
+
+        .progress-stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            color: var(--ice-blue);
+        }
+
+        .progress-stat-value.correct {
+            color: var(--success-green);
+        }
+
+        .progress-stat-label {
+            font-size: 0.7rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-divider {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         .scenario-title {
             font-family: var(--font-header);
             font-size: 1.8rem;
@@ -490,7 +530,21 @@
             <p class="subtitle">Hockey IQ Training</p>
         </header>
 
-        <h2 class="scenario-title">Scenario 1: High Route vs. Low Route</h2>
+        
+        <!-- Module Progress Indicator -->
+        <div class="module-progress" id="moduleProgress">
+            <div class="progress-stat">
+                <div class="progress-stat-value" id="scenarioProgress">1/7</div>
+                <div class="progress-stat-label">Scenario</div>
+            </div>
+            <div class="progress-divider"></div>
+            <div class="progress-stat">
+                <div class="progress-stat-value correct" id="correctCount">-</div>
+                <div class="progress-stat-label">Correct</div>
+            </div>
+        </div>
+
+<h2 class="scenario-title">Scenario 1: High Route vs. Low Route</h2>
 
         <div class="rink-container">
             <svg class="rink-svg" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
@@ -650,6 +704,24 @@
 
         // ====== THEORY INTRO MANAGEMENT ======
         const MODULE_NUMBER = 3;
+
+        const SCENARIO_NUMBER = 1;
+        const TOTAL_SCENARIOS = 7;
+
+        // Update progress display
+        function updateProgressDisplay() {
+            const scores = Storage.getModuleScores(MODULE_NUMBER);
+            const currentRun = scores.currentRun || {};
+            const answeredCount = Object.keys(currentRun).length;
+            const correct = Object.values(currentRun).filter(v => v === true).length;
+            
+            document.getElementById('scenarioProgress').textContent = `${SCENARIO_NUMBER}/${TOTAL_SCENARIOS}`;
+            document.getElementById('correctCount').textContent = answeredCount > 0 ? `${correct}/${answeredCount}` : '-';
+        }
+        
+        // Call on page load
+        updateProgressDisplay();
+
         let currentSlide = 1;
         const totalSlides = 3;
 
