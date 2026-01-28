@@ -447,9 +447,20 @@
             }
         }
         
-        // Auto-play setup narration when page loads
+        // Auto-play setup narration (only if intro already seen)
+        function playSetupIfReady() {
+            const introSeen = Storage.get('puckAcademy_introSeen') || {};
+            const urlParams = new URLSearchParams(window.location.search);
+            const forceReview = urlParams.get('review') === 'intro';
+            
+            // Only auto-play if intro won't be shown
+            if (introSeen.module5 && !forceReview) {
+                setTimeout(() => playAudio('setup'), 500);
+            }
+        }
+        
         window.addEventListener('load', () => {
-            setTimeout(() => playAudio('setup'), 500);
+            playSetupIfReady();
         });
 
 
@@ -509,6 +520,9 @@
             const url = new URL(window.location);
             url.searchParams.delete('review');
             window.history.replaceState({}, '', url);
+            
+            // Now play the setup audio after intro is dismissed
+            setTimeout(() => playAudio('setup'), 300);
         }
 
         function skipIntro() { hideIntro(); }
