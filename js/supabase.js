@@ -177,7 +177,6 @@ export async function syncProgressToServer() {
                     .select('score')
                     .eq('user_id', user.id)
                     .eq('module_id', moduleNum)
-                    .eq('is_best', true)
                     .single();
 
                 if (!existingScore || parsed.bestScore > existingScore.score) {
@@ -187,10 +186,9 @@ export async function syncProgressToServer() {
                         module_id: moduleNum,
                         score: parsed.bestScore,
                         total: getModuleTotal(moduleNum),
-                        is_best: true,
                         completed_at: new Date().toISOString()
                     }, {
-                        onConflict: 'user_id,module_id,is_best'
+                        onConflict: 'user_id,module_id'
                     });
                 }
             }
@@ -216,8 +214,7 @@ export async function loadProgressFromServer() {
     const { data: scores } = await supabase
         .from('scores')
         .select('*')
-        .eq('user_id', user.id)
-        .eq('is_best', true);
+        .eq('user_id', user.id);
 
     // Organize by module
     const moduleData = {};
@@ -264,7 +261,7 @@ export async function loadProgressFromServer() {
 
 // Helper to get total scenarios per module
 function getModuleTotal(moduleNum) {
-    const totals = { 1: 5, 2: 7, 3: 7, 4: 7, 5: 7, 6: 7 };
+    const totals = { 1: 7, 2: 7, 3: 7, 4: 7, 5: 8, 6: 7 };
     return totals[moduleNum] || 7;
 }
 
