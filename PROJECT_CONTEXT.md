@@ -90,7 +90,7 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 - Challenge banner on landing page when accessed via shared link
 
 **Data Collection:**
-- Netlify Forms integration for email capture during onboarding
+- Supabase accounts for user registration (email via magic link auth)
 - Google Forms integration for beta feedback collection
 
 ### Post-MVP Features (Nice to Have)
@@ -149,7 +149,7 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 ### Core User Flow
 
 1. **Discovery:** User finds app via Puck Academy podcast/newsletter or direct link
-2. **Onboarding:** Complete 5-step flow (position → level → goals → email → start)
+2. **Onboarding:** Complete 5-step flow (value prop → position → level → goals → start)
 3. **Module Hub:** See all 6 modules available with 43 total scenarios
 4. **Scenario Experience:**
    - View rink diagram with situation description
@@ -395,7 +395,7 @@ puck-academy-iq-app/
 
 | Service | Purpose | Integration Point |
 |---------|---------|-------------------|
-| Netlify Forms | Email capture | Hidden form field in onboarding.html, form name: `player-signup` |
+| Supabase | User accounts & data sync | Magic link auth, progress/scores stored in Postgres |
 | Static Share Pages | Social OG previews | `/share/*.html` pages with pre-baked OG meta tags |
 | Google Forms | Beta feedback | External link from scenario completion and results modal |
 | Google Fonts | Typography | Bebas Neue (headers), Work Sans (body) |
@@ -437,7 +437,6 @@ puck-academy-iq-app/
 - **Scoring system:** Tracks correct/incorrect per scenario per module, calculates score, saves best score
 - **Results modal:** Shows score with module-specific performance-based messaging
 - **Share button:** Opens native share sheet (mobile) or copies to clipboard (desktop), uses static share pages for OG previews
-- **Email capture:** Netlify Forms collecting onboarding emails
 - **Feedback form:** Google Forms linked from results modal + prompt after first module completion
 - **Google Analytics 4:** Full tracking with custom events (scenario_answer, module_complete, share_score, feedback_form_open)
 - **Position clarity in onboarding:** Defense/Goalie show "Coming Soon", wingers get note about Faceoffs being center-specific
@@ -693,6 +692,30 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 28, 2026 - Streamlined Onboarding & Prominent Account Registration
+
+**Removed redundant email capture from onboarding:**
+
+With Supabase accounts now available, the "Notify Me" email step in onboarding was redundant. Users who create accounts provide their email anyway, and the account registration prompt on training.html comes at a better moment (after experiencing value).
+
+**Changes to onboarding.html:**
+- Removed Step 5 (email capture via Netlify Forms)
+- Reduced onboarding from 6 steps to 5 steps
+- Removed hidden Netlify Forms element
+- Cleaner, faster path from discovery to training
+
+**Enhanced account registration on training.html:**
+- Added "Already have an account? Sign In" link in header for returning users
+- Updated account banner copy: "Don't lose your progress!" (more compelling)
+- Changed button text to "Create Free Account"
+- Changed icon from 💾 to 🔒 (emphasizes security/permanence)
+- Sign In link hidden when user is logged in
+- Sign In link opens auth modal in signin mode
+
+**Result:** Onboarding is faster (one less step), and account creation is more prominent with clear value proposition.
+
+---
 
 ### January 28, 2026 - Challenge a Friend Feature
 

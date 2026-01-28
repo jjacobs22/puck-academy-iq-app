@@ -83,6 +83,27 @@
             letter-spacing: 2px;
         }
 
+        .header-signin {
+            display: block;
+            margin-top: 12px;
+            color: var(--silver);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .header-signin:hover {
+            color: var(--ice-blue);
+        }
+
+        .header-signin strong {
+            color: var(--accent-red);
+        }
+
+        .header-signin.hidden {
+            display: none;
+        }
+
         .score-display {
             text-align: center;
             margin-bottom: 20px;
@@ -860,17 +881,19 @@
         <header class="header">
             <h1 class="logo">Puck <span>Academy</span></h1>
             <p class="subtitle">Hockey IQ Training</p>
+            <!-- Sign In link for returning users (hidden when logged in) -->
+            <a href="#" class="header-signin" id="headerSignIn">Already have an account? <strong>Sign In</strong></a>
         </header>
 
-        <!-- Account Banner -->
+        <!-- Account Banner - More prominent CTA -->
         <div class="account-banner" id="accountBanner">
             <div class="account-banner-content">
-                <span class="account-banner-icon">💾</span>
+                <span class="account-banner-icon">🔒</span>
                 <div class="account-banner-text">
-                    <strong>Save your progress</strong>
-                    <span>Create a free account to sync across devices</span>
+                    <strong>Don't lose your progress!</strong>
+                    <span>Create a free account to save scores and sync across devices</span>
                 </div>
-                <button class="account-banner-btn" id="createAccountBtn">Create Account</button>
+                <button class="account-banner-btn" id="createAccountBtn">Create Free Account</button>
             </div>
             <button class="account-banner-close" id="closeBannerBtn" aria-label="Close">×</button>
         </div>
@@ -1983,6 +2006,7 @@
         const createAccountBtn = document.getElementById('createAccountBtn');
         const closeBannerBtn = document.getElementById('closeBannerBtn');
         const signOutBtn = document.getElementById('signOutBtn');
+        const headerSignIn = document.getElementById('headerSignIn');
 
         // Check if banner was dismissed
         const bannerDismissed = localStorage.getItem('puckAcademy_bannerDismissed');
@@ -1993,11 +2017,13 @@
             if (user) {
                 // User is logged in
                 accountBanner.classList.add('hidden');
+                headerSignIn?.classList.add('hidden');
                 userStatus.style.display = 'flex';
                 userEmail.textContent = user.email;
             } else {
                 // User is not logged in
                 userStatus.style.display = 'none';
+                headerSignIn?.classList.remove('hidden');
                 if (!bannerDismissed) {
                     accountBanner.classList.remove('hidden');
                 } else {
@@ -2009,6 +2035,11 @@
         // Event listeners
         createAccountBtn?.addEventListener('click', () => {
             showAuthModal({ mode: 'signup' });
+        });
+
+        headerSignIn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            showAuthModal({ mode: 'signin' });
         });
 
         closeBannerBtn?.addEventListener('click', () => {
