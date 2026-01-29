@@ -693,6 +693,39 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 29, 2026 - Glossary, Bug Fixes, and UX Improvements
+
+**Created hockey terminology glossary (glossary.html):**
+Based on beta feedback from a newer player struggling with hockey terminology ("wtf is a half wall? is that the boards?"), created a comprehensive glossary page with:
+- 20+ hockey terms with definitions, examples, and diagrams
+- Categories: Rink Areas, Positioning, Plays & Systems, Faceoffs
+- Search functionality to find terms quickly
+- Visual diagrams for concepts like "half wall," "cycle," and "linesman lean"
+- Linked from training.html coach intro: "New to hockey terms? Check the Glossary →"
+
+**Fixed Firefox/Android bug preventing answer selection:**
+- `module5-scenario8-f2-gassed.html` had duplicate `const SCENARIO_NUMBER = 8;` declaration (lines 311 and 328)
+- This caused a JavaScript error in strict mode, preventing the last answer from being selected
+- Removed duplicate declaration and fixed voice toggle scoping issue
+
+**Added X close button to results modal:**
+- User feedback requested an X button instead of only having text options to close
+- Added `<button class="modal-close">` to resultsModal in training.html
+
+**Fixed "Back to Modules" link overflow on mobile:**
+- Updated `styles/main.css` .back-link with `max-width` and `white-space: nowrap`
+- Added responsive breakpoint at 480px to make link relative-positioned on small screens
+- Prevents link from overlapping title on narrow viewports
+
+**Improved faceoff scenario clarity for beginners:**
+- Enhanced module2-scenario1-ref-position.html situation text with explicit explanation:
+  - "Your forehand is to your right as you face the opponent" (for lefties)
+  - Explanation of what linesman lean means and how to read it
+- Added "YOUR FOREHAND SIDE →" label to the diagram
+- Updated intro slide 2 with clearer explanation of forehand/backhand concept
+
+---
+
 ### January 28, 2026 - Feedback Form Email Field & Bug Fixes
 
 **Added optional email field to feedback form:**

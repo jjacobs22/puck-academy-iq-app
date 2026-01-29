@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0N3XTSRTM2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey Glossary - Puck Academy</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            color: var(--ice-blue);
+            margin-bottom: 10px;
+        }
+
+        .logo span {
+            color: var(--accent-red);
+        }
+
+        .subtitle {
+            color: var(--silver);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .page-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--ice-blue);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: var(--ice-blue);
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .search-input::placeholder {
+            color: var(--silver);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        .category-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            color: var(--silver);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: rgba(200, 16, 46, 0.2);
+            border-color: var(--accent-red);
+            color: var(--ice-blue);
+        }
+
+        .glossary-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--accent-red);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .term-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: border-color 0.2s ease;
+        }
+
+        .term-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .term-card.hidden {
+            display: none;
+        }
+
+        .term-name {
+            font-weight: 600;
+            color: var(--ice-blue);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .term-aka {
+            font-size: 0.85rem;
+            color: var(--silver);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .term-definition {
+            color: var(--silver);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .term-example {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            color: var(--ice-blue);
+            border-left: 3px solid var(--accent-red);
+        }
+
+        .term-example-label {
+            color: var(--accent-red);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .term-diagram {
+            margin-top: 15px;
+            background: var(--ice-blue);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .term-diagram svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--silver);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            transition: color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--ice-blue);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: var(--silver);
+        }
+
+        @media (max-width: 600px) {
+            .logo { font-size: 2rem; }
+            .page-title { font-size: 1.5rem; }
+            .term-card { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="training.html" class="back-btn">← Back to Training</a>
+
+        <header class="header">
+            <h1 class="logo">Puck <span>Academy</span></h1>
+            <p class="subtitle">Hockey IQ Training</p>
+        </header>
+
+        <h2 class="page-title">📖 Hockey Glossary</h2>
+
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search for a term..." oninput="filterTerms()">
+        </div>
+
+        <div class="category-nav">
+            <button class="category-btn active" data-category="all" onclick="filterByCategory('all')">All</button>
+            <button class="category-btn" data-category="rink" onclick="filterByCategory('rink')">Rink Areas</button>
+            <button class="category-btn" data-category="positioning" onclick="filterByCategory('positioning')">Positioning</button>
+            <button class="category-btn" data-category="plays" onclick="filterByCategory('plays')">Plays & Systems</button>
+            <button class="category-btn" data-category="faceoffs" onclick="filterByCategory('faceoffs')">Faceoffs</button>
+        </div>
+
+        <div id="glossaryContent">
+            <!-- RINK AREAS -->
+            <div class="glossary-section" data-section="rink">
+                <h3 class="section-title">🏒 Rink Areas</h3>
+
+                <div class="term-card" data-category="rink" data-terms="boards wall sideboards">
+                    <div class="term-name">Boards</div>
+                    <div class="term-aka">Also called: "The wall"</div>
+                    <div class="term-definition">
+                        The wooden or fiberglass wall that surrounds the entire ice surface. When someone says "along the boards" or "on the wall," they mean the area right next to this barrier. Players often battle for pucks here.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Chip it off the boards to your winger."
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="rink" data-terms="half wall halfwall half-wall">
+                    <div class="term-name">Half Wall</div>
+                    <div class="term-definition">
+                        The area of the boards between the blue line and the goal line, roughly halfway down the zone. It's a key positioning spot in both the offensive and defensive zones—where a lot of puck battles happen during cycles and breakouts.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Support the half wall on the breakout" means position yourself along the boards, about halfway between the blue line and the goal line, ready to receive a pass.
+                    </div>
+                    <div class="term-diagram">
+                        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="0" width="300" height="200" fill="#E8F4F8" rx="5"/>
+                            <!-- Goal line -->
+                            <line x1="50" y1="20" x2="50" y2="180" stroke="#C8102E" stroke-width="2"/>
+                            <!-- Blue line -->
+                            <line x1="200" y1="20" x2="200" y2="180" stroke="#1E40AF" stroke-width="3"/>
+                            <!-- Boards (top and bottom) -->
+                            <line x1="30" y1="20" x2="220" y2="20" stroke="#333" stroke-width="3"/>
+                            <line x1="30" y1="180" x2="220" y2="180" stroke="#333" stroke-width="3"/>
+                            <!-- Goal -->
+                            <rect x="35" y="85" width="15" height="30" fill="none" stroke="#333" stroke-width="2"/>
+                            <!-- Half wall highlight -->
+                            <rect x="100" y="15" x2="150" width="50" height="25" fill="rgba(200, 16, 46, 0.3)" stroke="#C8102E" stroke-width="2" rx="3"/>
+                            <rect x="100" y="160" width="50" height="25" fill="rgba(200, 16, 46, 0.3)" stroke="#C8102E" stroke-width="2" rx="3"/>
+                            <!-- Labels -->
+                            <text x="125" y="10" text-anchor="middle" font-family="Work Sans" font-size="9" fill="#C8102E" font-weight="600">HALF WALL</text>
+                            <text x="125" y="198" text-anchor="middle" font-family="Work Sans" font-size="9" fill="#C8102E" font-weight="600">HALF WALL</text>
+                            <text x="50" y="208" text-anchor="middle" font-family="Work Sans" font-size="8" fill="#666">Goal Line</text>
+                            <text x="200" y="208" text-anchor="middle" font-family="Work Sans" font-size="8" fill="#1E40AF">Blue Line</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="rink" data-terms="slot high slot low slot">
+                    <div class="term-name">The Slot</div>
+                    <div class="term-aka">Also called: "The house," "the danger zone"</div>
+                    <div class="term-definition">
+                        The high-scoring area directly in front of the net, extending from the crease out to about the faceoff circles. The "high slot" is the area further from the net (near the top of the circles), while the "low slot" is closer to the crease. Defensively, protecting this area is your top priority.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Don't chase the puck behind the net—hold your position in the slot."
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="rink" data-terms="crease goal crease blue paint">
+                    <div class="term-name">Crease</div>
+                    <div class="term-aka">Also called: "The blue paint"</div>
+                    <div class="term-definition">
+                        The blue semi-circle in front of the goal. This is the goalie's protected area. Offensively, you want to establish position at the edge of the crease for tips and rebounds. Defensively, you clear opponents out of here.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="rink" data-terms="point blue line defensemen">
+                    <div class="term-name">The Point</div>
+                    <div class="term-definition">
+                        The area near the blue line in the offensive zone where defensemen typically position themselves. When you hear "cover the point," it means take away the opposing defenseman at the blue line.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "I'm rotating back to cover the point" means moving to defend the opposing D-man near the blue line.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="rink" data-terms="hash marks faceoff circle">
+                    <div class="term-name">Hash Marks</div>
+                    <div class="term-definition">
+                        The short lines inside the faceoff circles and along the boards. Players must line up outside these marks during faceoffs until the puck is dropped. They're reference points for positioning.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="rink" data-terms="behind the net below goal line wrap around">
+                    <div class="term-name">Behind the Net</div>
+                    <div class="term-aka">Also called: "Below the goal line"</div>
+                    <div class="term-definition">
+                        The area between the goal and the end boards. A key area for cycling on offense and puck retrieval on defense. When diagrams show the puck "behind the net," it's in this trapezoid-shaped space.
+                    </div>
+                </div>
+            </div>
+
+            <!-- POSITIONING -->
+            <div class="glossary-section" data-section="positioning">
+                <h3 class="section-title">📍 Positioning & Movement</h3>
+
+                <div class="term-card" data-category="positioning" data-terms="gap control gap distance">
+                    <div class="term-name">Gap Control</div>
+                    <div class="term-definition">
+                        The distance a defender maintains between themselves and an attacking player. A "tight gap" means staying close to take away time and space. A "loose gap" gives the attacker more room but gives the defender more time to react.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Close your gap as they cross the blue line" means skate toward the attacker to reduce their time and space.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="positioning" data-terms="inside position inside lane">
+                    <div class="term-name">Inside Position / Getting Inside</div>
+                    <div class="term-definition">
+                        Positioning yourself between your opponent and the net (or between your opponent and where they want to go). Having "inside position" means you're closer to the dangerous area than they are. In faceoffs, "getting on someone's inside" means positioning your body between them and where the puck is going.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Get inside position on their winger" means get your body between that player and your net.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="positioning" data-terms="soft ice open space quiet ice">
+                    <div class="term-name">Soft Ice</div>
+                    <div class="term-aka">Also called: "Open ice," "quiet ice"</div>
+                    <div class="term-definition">
+                        Areas of the ice with no defenders nearby—open space where you can receive a pass with time. Smart players are always scanning for soft ice.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Find soft ice in the high slot" means move to an open area where you can receive a pass uncovered.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="positioning" data-terms="net front presence screen tip">
+                    <div class="term-name">Net Front Presence</div>
+                    <div class="term-definition">
+                        Positioning yourself in front of the opposing goalie to screen their view, deflect shots, or collect rebounds. It's a gritty role—you'll take crosschecks from defenders. But it's where a lot of goals come from.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="positioning" data-terms="backcheck defensive responsibility back pressure">
+                    <div class="term-name">Backcheck</div>
+                    <div class="term-definition">
+                        Skating hard back toward your own zone when the other team has the puck. Good backchecking means picking up your man and applying pressure, not just skating near the play.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Backcheck hard through the middle" means hustle back while staying in the middle of the ice to cut off passing lanes.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="positioning" data-terms="pinch stay home blue line">
+                    <div class="term-name">Pinch</div>
+                    <div class="term-definition">
+                        When a defenseman moves down from the blue line (into the offensive zone) to keep the puck in or make a play. It's a calculated risk—if you pinch and the puck gets past you, you've given up a potential odd-man rush.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Don't pinch there—stay home" means don't take the risk of moving down; stay at the blue line.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAYS & SYSTEMS -->
+            <div class="glossary-section" data-section="plays">
+                <h3 class="section-title">⚡ Plays & Systems</h3>
+
+                <div class="term-card" data-category="plays" data-terms="cycle cycling puck cycle">
+                    <div class="term-name">Cycle / Cycling</div>
+                    <div class="term-definition">
+                        An offensive strategy where players move the puck along the boards and behind the net in a circular pattern, maintaining possession while looking for scoring chances. The goal is to tire out defenders and create openings.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Let's cycle it low" means work the puck around the boards in the offensive zone, usually below the circles.
+                    </div>
+                    <div class="term-diagram">
+                        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="0" width="300" height="200" fill="#E8F4F8" rx="5"/>
+                            <!-- Goal -->
+                            <rect x="35" y="85" width="15" height="30" fill="none" stroke="#333" stroke-width="2"/>
+                            <!-- Crease -->
+                            <path d="M 50 85 Q 30 100 50 115" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="1"/>
+                            <!-- Cycle arrows -->
+                            <path d="M 80 40 Q 150 30 200 70 Q 220 100 200 130 Q 150 170 80 160 Q 60 100 80 40" fill="none" stroke="#2D7A3E" stroke-width="2" stroke-dasharray="5,3"/>
+                            <!-- Arrow head -->
+                            <polygon points="85,45 75,35 78,50" fill="#2D7A3E"/>
+                            <!-- Players -->
+                            <circle cx="80" cy="50" r="12" fill="#1E40AF"/>
+                            <text x="80" y="54" text-anchor="middle" fill="white" font-size="10" font-weight="bold">1</text>
+                            <circle cx="200" cy="100" r="12" fill="#1E40AF"/>
+                            <text x="200" y="104" text-anchor="middle" fill="white" font-size="10" font-weight="bold">2</text>
+                            <circle cx="80" cy="160" r="12" fill="#1E40AF"/>
+                            <text x="80" y="164" text-anchor="middle" fill="white" font-size="10" font-weight="bold">3</text>
+                            <!-- Label -->
+                            <text x="150" y="195" text-anchor="middle" font-family="Work Sans" font-size="10" fill="#2D7A3E" font-weight="600">Cycle Pattern</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="plays" data-terms="breakout d-zone breakout exit zone">
+                    <div class="term-name">Breakout</div>
+                    <div class="term-definition">
+                        The organized play to move the puck out of your defensive zone. Typically involves specific routes and passing options. Common breakout routes include "up the wall" (along the boards), "rim" (around the boards), and "middle" (through center ice).
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Run the breakout" means execute your team's planned pattern to exit the zone with control.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="plays" data-terms="forecheck f1 f2 f3 pressure">
+                    <div class="term-name">Forecheck</div>
+                    <div class="term-definition">
+                        Pressuring the opposing team in their defensive zone to force turnovers. F1 is the first forechecker (usually the first player in), F2 is the second, and F3 is the third. Different systems have different roles for each.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "You're F1—angle the D" means you're the first in, and your job is to force the defenseman toward the boards.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="plays" data-terms="odd man rush 2 on 1 3 on 2 outnumbered">
+                    <div class="term-name">Odd-Man Rush</div>
+                    <div class="term-aka">Examples: 2-on-1, 3-on-2</div>
+                    <div class="term-definition">
+                        When the attacking team has more players than defenders on a rush. A "2-on-1" means two attackers against one defender. These are high-danger situations—defenders need to take away passes and force shots from bad angles.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="plays" data-terms="rim around the boards chip">
+                    <div class="term-name">Rim</div>
+                    <div class="term-definition">
+                        Shooting the puck around the boards (the curved glass/wall around the rink) to move it to a teammate or clear the zone. A useful tactic when direct passes are blocked.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Rim it around" means shoot the puck along the boards to your teammate on the other side.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="plays" data-terms="backdoor play weak side far post">
+                    <div class="term-name">Backdoor</div>
+                    <div class="term-definition">
+                        A play where a player sneaks to the far side of the net (the "weak side") to receive a cross-ice pass for an easy tap-in goal. The defender isn't expecting it because the play appears to be developing on the other side.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FACEOFFS -->
+            <div class="glossary-section" data-section="faceoffs">
+                <h3 class="section-title">⚔️ Faceoffs</h3>
+
+                <div class="term-card" data-category="faceoffs" data-terms="linesman ref referee lean drop">
+                    <div class="term-name">Linesman Lean / Ref Position</div>
+                    <div class="term-definition">
+                        Before dropping the puck, the linesman's body position can give you a clue about where they'll drop it. If they're leaning toward your forehand side, you may have an easier line to the puck on that side. Watch their shoulders, hips, and where they're looking.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "The ref is leaning your way" means the linesman's body is angled toward you, suggesting the drop may favor your forehand.
+                    </div>
+                    <div class="term-diagram">
+                        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0" y="0" width="300" height="180" fill="#E8F4F8" rx="5"/>
+                            <!-- Faceoff circle -->
+                            <circle cx="150" cy="100" r="45" fill="none" stroke="#C8102E" stroke-width="2"/>
+                            <!-- Linesman -->
+                            <circle cx="150" cy="55" r="16" fill="#FF6B00" stroke="#CC5500" stroke-width="2"/>
+                            <text x="150" y="60" text-anchor="middle" fill="white" font-weight="bold" font-size="10">LM</text>
+                            <!-- Lean indicator -->
+                            <line x1="145" y1="68" x2="125" y2="85" stroke="#2D7A3E" stroke-width="3" stroke-dasharray="4,2"/>
+                            <text x="100" y="75" font-family="Work Sans" font-size="9" fill="#2D7A3E" font-weight="600">LEAN</text>
+                            <!-- You -->
+                            <circle cx="125" cy="100" r="14" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                            <text x="125" y="104" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="9">YOU</text>
+                            <!-- Opponent -->
+                            <circle cx="175" cy="100" r="12" fill="#C8102E"/>
+                            <text x="175" y="104" text-anchor="middle" fill="white" font-weight="bold" font-size="9">C</text>
+                            <!-- Puck -->
+                            <circle cx="150" cy="100" r="4" fill="#1a1a1a"/>
+                            <!-- Explanation -->
+                            <text x="150" y="170" text-anchor="middle" font-family="Work Sans" font-size="9" fill="#666">Linesman leaning toward your forehand = forehand advantage</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="faceoffs" data-terms="forehand backhand grip hand">
+                    <div class="term-name">Forehand vs. Backhand</div>
+                    <div class="term-definition">
+                        Your forehand is the side of your stick blade that faces forward when you hold your stick naturally. Your backhand is the opposite side. On faceoffs, going "forehand" means attacking the puck with your forehand side; going "backhand" means using your backhand. Which to use depends on the situation, your opponent, and the linesman's position.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="faceoffs" data-terms="tie up tie-up body faceoff">
+                    <div class="term-name">Tie-Up</div>
+                    <div class="term-definition">
+                        A faceoff technique where instead of trying to win the puck cleanly, you use your body and stick to tie up (block) the opposing center, allowing your winger to come in and retrieve the puck.
+                    </div>
+                    <div class="term-example">
+                        <div class="term-example-label">In context</div>
+                        "Tie him up and let your winger get it" means focus on blocking the opponent, not winning the draw yourself.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="faceoffs" data-terms="cheat feet stance faceoff">
+                    <div class="term-name">Cheat Your Feet</div>
+                    <div class="term-definition">
+                        Adjusting your stance in the faceoff circle to give yourself an advantage—often by positioning your feet slightly forward or to one side before the puck drops. This can help you get a quicker start, but if the linesman notices, you might get kicked out of the circle.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="faceoffs" data-terms="leverage body position low center">
+                    <div class="term-name">Leverage</div>
+                    <div class="term-definition">
+                        Using your body position—low center of gravity, strong base, stick pressure—to overpower your opponent on the draw. Good leverage means you're harder to push around and can direct the puck where you want it.
+                    </div>
+                </div>
+
+                <div class="term-card" data-category="faceoffs" data-terms="post draw after faceoff responsibility">
+                    <div class="term-name">Post-Draw Responsibility</div>
+                    <div class="term-definition">
+                        What you do immediately after the faceoff, whether you won or lost it. Winning the draw is only half the battle—you need to know where the puck is going and what your next move is. Lose the draw? Recover and get into defensive position.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <p>No terms found matching your search.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Try a different keyword or browse by category.</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <p style="color: var(--silver); font-size: 0.9rem;">Missing a term? <a href="#" onclick="openFeedback(); return false;" style="color: var(--accent-red);">Let us know →</a></p>
+        </div>
+    </div>
+
+    <script>
+        function filterTerms() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const termCards = document.querySelectorAll('.term-card');
+            const sections = document.querySelectorAll('.glossary-section');
+            let visibleCount = 0;
+
+            termCards.forEach(card => {
+                const name = card.querySelector('.term-name').textContent.toLowerCase();
+                const definition = card.querySelector('.term-definition').textContent.toLowerCase();
+                const terms = card.dataset.terms?.toLowerCase() || '';
+                const aka = card.querySelector('.term-aka')?.textContent.toLowerCase() || '';
+
+                const matches = name.includes(searchInput) ||
+                               definition.includes(searchInput) ||
+                               terms.includes(searchInput) ||
+                               aka.includes(searchInput);
+
+                if (matches) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Show/hide sections based on visible cards
+            sections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.term-card:not(.hidden)');
+                section.style.display = visibleCards.length > 0 ? 'block' : 'none';
+            });
+
+            // Show no results message
+            document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+            document.getElementById('glossaryContent').style.display = visibleCount === 0 ? 'none' : 'block';
+        }
+
+        function filterByCategory(category) {
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+
+            // Clear search
+            document.getElementById('searchInput').value = '';
+
+            const termCards = document.querySelectorAll('.term-card');
+            const sections = document.querySelectorAll('.glossary-section');
+
+            if (category === 'all') {
+                termCards.forEach(card => card.classList.remove('hidden'));
+                sections.forEach(section => section.style.display = 'block');
+            } else {
+                termCards.forEach(card => {
+                    const cardCategory = card.dataset.category;
+                    card.classList.toggle('hidden', cardCategory !== category);
+                });
+
+                sections.forEach(section => {
+                    const sectionCategory = section.dataset.section;
+                    section.style.display = sectionCategory === category ? 'block' : 'none';
+                });
+            }
+
+            document.getElementById('noResults').style.display = 'none';
+            document.getElementById('glossaryContent').style.display = 'block';
+        }
+
+        function openFeedback() {
+            // Could link to feedback form or open a modal
+            window.location.href = 'training.html#feedback';
+        }
+
+        // Track page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Hockey Glossary',
+                page_location: window.location.href
+            });
+        }
+    </script>
+</body>
+</html>

@@ -126,11 +126,22 @@ strong {
   border-radius: var(--radius-md);
   transition: all var(--transition-base);
   z-index: 10;
+  max-width: calc(100% - 30px);
+  white-space: nowrap;
 }
 
 .back-link:hover {
   color: var(--ice-blue);
   background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 480px) {
+  .back-link {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-bottom: var(--spacing-md);
+  }
 }
 
 .container-wide {
