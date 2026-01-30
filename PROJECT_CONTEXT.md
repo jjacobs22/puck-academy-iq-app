@@ -694,6 +694,18 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Landing Page Auth Indicator
+
+**Added auth status display to landing page header:**
+- Shows user email + "Sign Out" button when logged in (top-right corner)
+- Shows "Sign In" button when logged out
+- CTA button changes from "Start Training" to "Continue Training" for logged-in users
+- Consistent auth experience across landing page and training page
+
+**File modified:** `index.html`
+
+---
+
 ### January 30, 2026 - Required Registration
 
 **Made registration required to use the app:**
