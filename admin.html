@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Puck Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ice-blue: #E8F4F8;
+            --dark-blue: #0A1628;
+            --accent-red: #C8102E;
+            --success-green: #2D7A3E;
+            --silver: #A8B2BE;
+            --warning-yellow: #F59E0B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            color: var(--ice-blue);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+        }
+
+        .logo span { color: var(--accent-red); }
+
+        .header-meta {
+            text-align: right;
+            color: var(--silver);
+            font-size: 0.85rem;
+        }
+
+        .refresh-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: #a50d26;
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: var(--silver);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scorecards Grid */
+        .scorecards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .scorecard {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .scorecard-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: white;
+            line-height: 1;
+        }
+
+        .scorecard-value.highlight {
+            color: var(--accent-red);
+        }
+
+        .scorecard-value.success {
+            color: var(--success-green);
+        }
+
+        .scorecard-label {
+            color: var(--silver);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        /* Section */
+        .section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 1.2rem;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table th {
+            color: var(--silver);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .data-table .num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            height: 8px;
+            overflow: hidden;
+            width: 100px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-red);
+            transition: width 0.3s;
+        }
+
+        .progress-fill.high {
+            background: var(--success-green);
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 800px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* User List */
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-email {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .user-meta {
+            color: var(--silver);
+            font-size: 0.75rem;
+        }
+
+        .user-stats {
+            text-align: right;
+        }
+
+        .user-streak {
+            color: var(--warning-yellow);
+            font-weight: 600;
+        }
+
+        /* Chart placeholder */
+        .chart-placeholder {
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            color: var(--silver);
+        }
+
+        /* Distribution bars */
+        .dist-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .dist-label {
+            width: 50px;
+            font-size: 0.85rem;
+            color: var(--silver);
+        }
+
+        .dist-bar {
+            flex: 1;
+            background: rgba(255,255,255,0.1);
+            height: 24px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .dist-fill {
+            height: 100%;
+            background: var(--accent-red);
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            min-width: 30px;
+        }
+
+        .dist-count {
+            width: 40px;
+            text-align: right;
+            font-size: 0.85rem;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--silver);
+        }
+
+        /* Auth required */
+        .auth-required {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .auth-required h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .auth-required p {
+            color: var(--silver);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div>
+                <h1 class="logo">Puck <span>Academy</span> Admin</h1>
+            </div>
+            <div class="header-meta">
+                <div id="lastUpdated">Loading...</div>
+                <button class="refresh-btn" id="refreshBtn" onclick="loadDashboard()">
+                    Refresh Data
+                </button>
+            </div>
+        </header>
+
+        <!-- Auth Check -->
+        <div id="authRequired" class="auth-required" style="display: none;">
+            <h2>Admin Access Required</h2>
+            <p>Sign in with an admin account to view the dashboard.</p>
+            <a href="/training.html" class="refresh-btn" style="text-decoration: none;">Back to Training</a>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading dashboard data...</p>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboardContent" style="display: none;">
+            <!-- Scorecards -->
+            <div class="scorecards">
+                <div class="scorecard">
+                    <div class="scorecard-value highlight" id="totalUsers">0</div>
+                    <div class="scorecard-label">Total Users</div>
+                </div>
+                <div class="scorecard">
+                    <div class="scorecard-value" id="activeToday">0</div>
+                    <div class="scorecard-label">Active Today</div>
+                </div>
+                <div class="scorecard">
+                    <div class="scorecard-value" id="activeWeek">0</div>
+                    <div class="scorecard-label">Active This Week</div>
+                </div>
+                <div class="scorecard">
+                    <div class="scorecard-value success" id="totalScenarios">0</div>
+                    <div class="scorecard-label">Scenarios Completed</div>
+                </div>
+                <div class="scorecard">
+                    <div class="scorecard-value" id="avgAccuracy">0%</div>
+                    <div class="scorecard-label">Avg Accuracy</div>
+                </div>
+                <div class="scorecard">
+                    <div class="scorecard-value" id="avgStreak">0</div>
+                    <div class="scorecard-label">Avg Streak</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <!-- Module Performance -->
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">📊</span> Module Performance</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Started</th>
+                                <th>Completed</th>
+                                <th>Completion %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="moduleTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Score Distribution -->
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🎯</span> Score Distribution</h2>
+                    <div id="scoreDistribution">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <!-- Recent Users -->
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">👥</span> Recent Users</h2>
+                    <div id="recentUsers">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Top Streakers -->
+                <div class="section">
+                    <h2 class="section-title"><span class="icon">🔥</span> Top Streaks</h2>
+                    <div id="topStreaks">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Progress Detail -->
+            <div class="section">
+                <h2 class="section-title"><span class="icon">📋</span> All Users</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Position</th>
+                            <th>Level</th>
+                            <th>Scenarios</th>
+                            <th>Accuracy</th>
+                            <th>Streak</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allUsersTable">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        // Supabase config (same as main app)
+        const SUPABASE_URL = 'https://hufwosdutqekeedtcfnj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_zERe940R5SamJ5gjP0Cpfw_PsjsM2D-';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const MODULE_NAMES = {
+            1: 'D-Zone',
+            2: 'Faceoffs',
+            3: 'Breakouts',
+            4: 'Offense',
+            5: 'Forecheck',
+            6: 'D-Men'
+        };
+
+        const MODULE_TOTALS = {
+            1: 7, 2: 7, 3: 7, 4: 7, 5: 8, 6: 7
+        };
+
+        // DOM Elements
+        const loadingState = document.getElementById('loadingState');
+        const dashboardContent = document.getElementById('dashboardContent');
+        const authRequired = document.getElementById('authRequired');
+        const refreshBtn = document.getElementById('refreshBtn');
+
+        async function loadDashboard() {
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = 'Loading...';
+
+            try {
+                // Fetch all data in parallel
+                const [
+                    { data: profiles, error: profilesError },
+                    { data: progress, error: progressError },
+                    { data: scores, error: scoresError }
+                ] = await Promise.all([
+                    supabase.from('profiles').select('*'),
+                    supabase.from('progress').select('*'),
+                    supabase.from('scores').select('*').eq('is_best', true)
+                ]);
+
+                if (profilesError) throw profilesError;
+                if (progressError) throw progressError;
+                if (scoresError) throw scoresError;
+
+                // Process and display data
+                displayDashboard(profiles || [], progress || [], scores || []);
+
+                // Update timestamp
+                document.getElementById('lastUpdated').textContent =
+                    `Last updated: ${new Date().toLocaleTimeString()}`;
+
+            } catch (error) {
+                console.error('Dashboard error:', error);
+                // Show dashboard with whatever data we have
+                displayDashboard([], [], []);
+            }
+
+            loadingState.style.display = 'none';
+            dashboardContent.style.display = 'block';
+            refreshBtn.disabled = false;
+            refreshBtn.textContent = 'Refresh Data';
+        }
+
+        function displayDashboard(profiles, progress, scores) {
+            // --- Scorecards ---
+            const totalUsers = profiles.length;
+            document.getElementById('totalUsers').textContent = totalUsers;
+
+            // Active users (based on progress timestamps)
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            const usersActiveToday = new Set();
+            const usersActiveWeek = new Set();
+
+            progress.forEach(p => {
+                if (p.completed_at) {
+                    const date = new Date(p.completed_at);
+                    if (date >= today) usersActiveToday.add(p.user_id);
+                    if (date >= weekAgo) usersActiveWeek.add(p.user_id);
+                }
+            });
+
+            document.getElementById('activeToday').textContent = usersActiveToday.size;
+            document.getElementById('activeWeek').textContent = usersActiveWeek.size;
+
+            // Total scenarios completed
+            const completedScenarios = progress.filter(p => p.completed).length;
+            document.getElementById('totalScenarios').textContent = completedScenarios;
+
+            // Average accuracy
+            const correctCount = progress.filter(p => p.correct).length;
+            const avgAccuracy = completedScenarios > 0
+                ? Math.round((correctCount / completedScenarios) * 100)
+                : 0;
+            document.getElementById('avgAccuracy').textContent = avgAccuracy + '%';
+
+            // Average streak
+            const streaks = profiles.map(p => {
+                try {
+                    const streakData = typeof p.streak === 'string' ? JSON.parse(p.streak) : p.streak;
+                    return streakData?.count || 0;
+                } catch {
+                    return 0;
+                }
+            });
+            const avgStreak = streaks.length > 0
+                ? (streaks.reduce((a, b) => a + b, 0) / streaks.length).toFixed(1)
+                : 0;
+            document.getElementById('avgStreak').textContent = avgStreak;
+
+            // --- Module Performance Table ---
+            const moduleStats = {};
+            for (let i = 1; i <= 6; i++) {
+                moduleStats[i] = { started: new Set(), completed: new Set() };
+            }
+
+            // Group progress by user and module
+            const userModuleProgress = {};
+            progress.forEach(p => {
+                const key = `${p.user_id}-${p.module_id}`;
+                if (!userModuleProgress[key]) {
+                    userModuleProgress[key] = { scenarios: new Set(), module_id: p.module_id, user_id: p.user_id };
+                }
+                if (p.completed) {
+                    userModuleProgress[key].scenarios.add(p.scenario_id);
+                }
+            });
+
+            Object.values(userModuleProgress).forEach(ump => {
+                const moduleId = ump.module_id;
+                if (moduleStats[moduleId]) {
+                    moduleStats[moduleId].started.add(ump.user_id);
+                    if (ump.scenarios.size >= MODULE_TOTALS[moduleId]) {
+                        moduleStats[moduleId].completed.add(ump.user_id);
+                    }
+                }
+            });
+
+            const moduleTable = document.getElementById('moduleTable');
+            moduleTable.innerHTML = Object.entries(moduleStats).map(([moduleId, stats]) => {
+                const started = stats.started.size;
+                const completed = stats.completed.size;
+                const pct = started > 0 ? Math.round((completed / started) * 100) : 0;
+                return `
+                    <tr>
+                        <td>${MODULE_NAMES[moduleId]}</td>
+                        <td class="num">${started}</td>
+                        <td class="num">${completed}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill ${pct >= 50 ? 'high' : ''}" style="width: ${pct}%"></div>
+                                </div>
+                                <span>${pct}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // --- Score Distribution ---
+            const scoreCounts = {};
+            for (let i = 0; i <= 8; i++) scoreCounts[i] = 0;
+
+            scores.forEach(s => {
+                if (scoreCounts[s.score] !== undefined) {
+                    scoreCounts[s.score]++;
+                }
+            });
+
+            const maxScore = Math.max(...Object.values(scoreCounts), 1);
+            const scoreDistribution = document.getElementById('scoreDistribution');
+            scoreDistribution.innerHTML = Object.entries(scoreCounts)
+                .filter(([score]) => parseInt(score) <= 8)
+                .map(([score, count]) => {
+                    const pct = (count / maxScore) * 100;
+                    return `
+                        <div class="dist-row">
+                            <div class="dist-label">${score}/7</div>
+                            <div class="dist-bar">
+                                <div class="dist-fill" style="width: ${Math.max(pct, 5)}%">${count}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            // --- Recent Users ---
+            const recentUsers = [...profiles]
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .slice(0, 5);
+
+            const recentUsersEl = document.getElementById('recentUsers');
+            if (recentUsers.length === 0) {
+                recentUsersEl.innerHTML = '<div class="empty-state">No users yet</div>';
+            } else {
+                recentUsersEl.innerHTML = recentUsers.map(user => {
+                    const initial = (user.email || '?')[0].toUpperCase();
+                    const joined = new Date(user.created_at).toLocaleDateString();
+                    return `
+                        <div class="user-item">
+                            <div class="user-avatar">${initial}</div>
+                            <div class="user-info">
+                                <div class="user-email">${user.email || 'Unknown'}</div>
+                                <div class="user-meta">Joined ${joined} • ${user.position || 'No position'}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // --- Top Streaks ---
+            const topStreakers = [...profiles]
+                .map(p => {
+                    let streakCount = 0;
+                    try {
+                        const streakData = typeof p.streak === 'string' ? JSON.parse(p.streak) : p.streak;
+                        streakCount = streakData?.count || 0;
+                    } catch {}
+                    return { ...p, streakCount };
+                })
+                .filter(p => p.streakCount > 0)
+                .sort((a, b) => b.streakCount - a.streakCount)
+                .slice(0, 5);
+
+            const topStreaksEl = document.getElementById('topStreaks');
+            if (topStreakers.length === 0) {
+                topStreaksEl.innerHTML = '<div class="empty-state">No active streaks</div>';
+            } else {
+                topStreaksEl.innerHTML = topStreakers.map((user, i) => {
+                    const initial = (user.email || '?')[0].toUpperCase();
+                    return `
+                        <div class="user-item">
+                            <div class="user-avatar">${initial}</div>
+                            <div class="user-info">
+                                <div class="user-email">${user.email || 'Unknown'}</div>
+                                <div class="user-meta">${user.position || 'No position'}</div>
+                            </div>
+                            <div class="user-stats">
+                                <div class="user-streak">🔥 ${user.streakCount} days</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // --- All Users Table ---
+            const userProgress = {};
+            progress.forEach(p => {
+                if (!userProgress[p.user_id]) {
+                    userProgress[p.user_id] = { total: 0, correct: 0 };
+                }
+                if (p.completed) {
+                    userProgress[p.user_id].total++;
+                    if (p.correct) userProgress[p.user_id].correct++;
+                }
+            });
+
+            const allUsersTable = document.getElementById('allUsersTable');
+            if (profiles.length === 0) {
+                allUsersTable.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--silver);">No users yet</td></tr>';
+            } else {
+                allUsersTable.innerHTML = profiles
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                    .map(user => {
+                        const prog = userProgress[user.id] || { total: 0, correct: 0 };
+                        const accuracy = prog.total > 0 ? Math.round((prog.correct / prog.total) * 100) : 0;
+                        let streakCount = 0;
+                        try {
+                            const streakData = typeof user.streak === 'string' ? JSON.parse(user.streak) : user.streak;
+                            streakCount = streakData?.count || 0;
+                        } catch {}
+                        const joined = new Date(user.created_at).toLocaleDateString();
+
+                        return `
+                            <tr>
+                                <td>${user.email || 'Unknown'}</td>
+                                <td>${user.position || '-'}</td>
+                                <td>${user.age_level || '-'}</td>
+                                <td class="num">${prog.total}</td>
+                                <td>${accuracy}%</td>
+                                <td>${streakCount > 0 ? '🔥 ' + streakCount : '-'}</td>
+                                <td>${joined}</td>
+                            </tr>
+                        `;
+                    }).join('');
+            }
+        }
+
+        // Check if user is authorized (simple check - you may want to add admin roles later)
+        async function checkAuth() {
+            const { data: { user } } = await supabase.auth.getUser();
+
+            // For now, allow any logged-in user
+            // Later you can check for admin role: user?.app_metadata?.role === 'admin'
+            if (user) {
+                loadDashboard();
+            } else {
+                loadingState.style.display = 'none';
+                authRequired.style.display = 'block';
+            }
+        }
+
+        // Expose refresh function
+        window.loadDashboard = loadDashboard;
+
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+</html>

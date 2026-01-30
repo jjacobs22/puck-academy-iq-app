@@ -83,25 +83,122 @@
             letter-spacing: 2px;
         }
 
-        .header-signin {
-            display: block;
-            margin-top: 12px;
+        /* Header Auth Area */
+        .header-auth {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header {
+            position: relative;
+        }
+
+        .header-auth-guest,
+        .header-auth-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-signin-btn {
+            background: transparent;
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-signin-btn:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .header-user-email {
             color: var(--silver);
             font-size: 0.85rem;
-            text-decoration: none;
-            transition: color 0.2s;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .header-signin:hover {
-            color: var(--ice-blue);
+        .header-signout-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--silver);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .header-signin strong {
-            color: var(--accent-red);
+        .header-signout-btn:hover {
+            border-color: var(--silver);
+            color: white;
         }
 
-        .header-signin.hidden {
+        /* Welcome Toast */
+        .welcome-toast {
             display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(45, 122, 62, 0.2);
+            border: 1px solid var(--success-green);
+            color: var(--success-green);
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: slideDown 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+        }
+
+        .welcome-toast.visible {
+            display: flex;
+        }
+
+        .welcome-toast-icon {
+            font-size: 1.1rem;
+        }
+
+        .welcome-toast-text {
+            font-size: 0.9rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        @media (max-width: 600px) {
+            .header-auth {
+                position: static;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+
+            .header-user-email {
+                max-width: 120px;
+            }
         }
 
         .score-display {
@@ -918,36 +1015,7 @@
             opacity: 1;
         }
 
-        /* User Status (logged in) */
-        .user-status {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-bottom: 16px;
-            padding: 8px 0;
-        }
-
-        .user-email {
-            color: var(--silver);
-            font-size: 0.85rem;
-        }
-
-        .sign-out-btn {
-            background: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--silver);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .sign-out-btn:hover {
-            border-color: var(--silver);
-            color: white;
-        }
+        /* Old user-status styles removed - now using header-auth */
 
         @media (max-width: 600px) {
             .account-banner {
@@ -1022,13 +1090,30 @@
         </nav>
 
         <header class="header">
+            <!-- Header Auth Area -->
+            <div class="header-auth" id="headerAuth">
+                <!-- Shown when NOT logged in -->
+                <div class="header-auth-guest" id="headerAuthGuest">
+                    <button class="header-signin-btn" id="headerSignIn">Sign In</button>
+                </div>
+                <!-- Shown when logged in -->
+                <div class="header-auth-user" id="headerAuthUser" style="display: none;">
+                    <span class="header-user-email" id="userEmail"></span>
+                    <button class="header-signout-btn" id="signOutBtn">Sign Out</button>
+                </div>
+            </div>
+
             <h1 class="logo">Puck <span>Academy</span></h1>
             <p class="subtitle">Hockey IQ Training</p>
-            <!-- Sign In link for returning users (hidden when logged in) -->
-            <a href="#" class="header-signin" id="headerSignIn">Already have an account? <strong>Sign In</strong></a>
         </header>
 
-        <!-- Account Banner - More prominent CTA -->
+        <!-- Welcome Toast (shown briefly for returning logged-in users) -->
+        <div class="welcome-toast" id="welcomeToast">
+            <span class="welcome-toast-icon">✓</span>
+            <span class="welcome-toast-text">Welcome back! Your progress is synced.</span>
+        </div>
+
+        <!-- Account Banner - More prominent CTA for guests -->
         <div class="account-banner" id="accountBanner">
             <div class="account-banner-content">
                 <span class="account-banner-icon">🔒</span>
@@ -1039,12 +1124,6 @@
                 <button class="account-banner-btn" id="createAccountBtn">Create Free Account</button>
             </div>
             <button class="account-banner-close" id="closeBannerBtn" aria-label="Close">×</button>
-        </div>
-
-        <!-- User Status (shown when logged in) -->
-        <div class="user-status" id="userStatus" style="display: none;">
-            <span class="user-email" id="userEmail"></span>
-            <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
         </div>
 
         <div class="score-display" id="scoreDisplay">
@@ -2608,30 +2687,51 @@
         import { getUser, signOut, syncProgressToServer, loadProgressFromServer, onAuthStateChange } from './js/supabase.js';
         import { showAuthModal } from './js/auth-modal.js';
 
+        // Element references
         const accountBanner = document.getElementById('accountBanner');
-        const userStatus = document.getElementById('userStatus');
+        const headerAuthGuest = document.getElementById('headerAuthGuest');
+        const headerAuthUser = document.getElementById('headerAuthUser');
         const userEmail = document.getElementById('userEmail');
         const createAccountBtn = document.getElementById('createAccountBtn');
         const closeBannerBtn = document.getElementById('closeBannerBtn');
         const signOutBtn = document.getElementById('signOutBtn');
         const headerSignIn = document.getElementById('headerSignIn');
+        const welcomeToast = document.getElementById('welcomeToast');
 
         // Check if banner was dismissed
         const bannerDismissed = localStorage.getItem('puckAcademy_bannerDismissed');
 
-        async function updateAuthUI() {
+        function showWelcomeToast() {
+            if (welcomeToast) {
+                welcomeToast.classList.add('visible');
+                // Auto-hide after 3 seconds (animation handles fade)
+                setTimeout(() => {
+                    welcomeToast.classList.remove('visible');
+                }, 3000);
+            }
+        }
+
+        async function updateAuthUI(options = {}) {
+            const { showWelcome = false } = options;
             const user = await getUser();
 
             if (user) {
-                // User is logged in
+                // User is logged in - show user area, hide guest area
                 accountBanner.classList.add('hidden');
-                headerSignIn?.classList.add('hidden');
-                userStatus.style.display = 'flex';
-                userEmail.textContent = user.email;
+                if (headerAuthGuest) headerAuthGuest.style.display = 'none';
+                if (headerAuthUser) headerAuthUser.style.display = 'flex';
+                if (userEmail) userEmail.textContent = user.email;
+
+                // Show welcome toast if requested
+                if (showWelcome) {
+                    showWelcomeToast();
+                }
             } else {
-                // User is not logged in
-                userStatus.style.display = 'none';
-                headerSignIn?.classList.remove('hidden');
+                // User is not logged in - show guest area, hide user area
+                if (headerAuthUser) headerAuthUser.style.display = 'none';
+                if (headerAuthGuest) headerAuthGuest.style.display = 'flex';
+
+                // Show account banner if not dismissed
                 if (!bannerDismissed) {
                     accountBanner.classList.remove('hidden');
                 } else {
@@ -2665,7 +2765,7 @@
             if (event === 'SIGNED_IN') {
                 await loadProgressFromServer();
                 await syncProgressToServer();
-                updateAuthUI();
+                updateAuthUI({ showWelcome: true });
                 // Refresh the display to show synced progress
                 if (typeof updateDisplay === 'function') {
                     updateDisplay();
@@ -2675,12 +2775,13 @@
             }
         });
 
-        // Check for welcome parameter (just signed in)
+        // Check for welcome parameter (just signed in via magic link)
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('welcome') === 'true') {
             // Clean up URL
             window.history.replaceState({}, '', window.location.pathname);
-            // Could show a welcome toast here
+            // Show welcome toast
+            setTimeout(() => showWelcomeToast(), 500);
         }
 
         // Initialize auth UI
