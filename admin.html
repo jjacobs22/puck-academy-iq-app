@@ -484,6 +484,10 @@
                     <div class="scorecard-value" id="avgStreak">0</div>
                     <div class="scorecard-label">Avg Streak</div>
                 </div>
+                <div class="scorecard">
+                    <div class="scorecard-value" id="totalAttempts">0</div>
+                    <div class="scorecard-label">Module Attempts</div>
+                </div>
             </div>
 
             <div class="grid-2">
@@ -538,10 +542,12 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Email</th>
+                            <th>Name / Email</th>
+                            <th>Age</th>
                             <th>Position</th>
                             <th>Level</th>
                             <th>Scenarios</th>
+                            <th>Attempts</th>
                             <th>Accuracy</th>
                             <th>Streak</th>
                             <th>Joined</th>
@@ -671,6 +677,10 @@
                 : 0;
             document.getElementById('avgStreak').textContent = avgStreak;
 
+            // Total module attempts (all score entries = module completions)
+            const totalAttempts = scores.length;
+            document.getElementById('totalAttempts').textContent = totalAttempts;
+
             // --- Module Performance Table ---
             const moduleStats = {};
             for (let i = 1; i <= 6; i++) {
@@ -762,14 +772,20 @@
                 recentUsersEl.innerHTML = '<div class="empty-state">No users yet</div>';
             } else {
                 recentUsersEl.innerHTML = recentUsers.map(user => {
-                    const initial = (user.email || '?')[0].toUpperCase();
+                    const displayName = user.name || user.email || 'Unknown';
+                    const initial = displayName[0].toUpperCase();
                     const joined = new Date(user.created_at).toLocaleDateString();
+                    const age = user.birth_year ? (new Date().getFullYear() - user.birth_year) : null;
+                    const ageText = age ? `${age}yo` : '';
+                    const posText = user.position ? user.position.charAt(0).toUpperCase() + user.position.slice(1) : '';
+                    const levelText = user.age_level || '';
+                    const metaParts = [posText, levelText, ageText].filter(Boolean).join(' • ');
                     return `
                         <div class="user-item">
                             <div class="user-avatar">${initial}</div>
                             <div class="user-info">
-                                <div class="user-email">${user.email || 'Unknown'}</div>
-                                <div class="user-meta">Joined ${joined} • ${user.position || 'No position'}</div>
+                                <div class="user-email">${displayName}</div>
+                                <div class="user-meta">Joined ${joined}${metaParts ? ' • ' + metaParts : ''}</div>
                             </div>
                         </div>
                     `;
@@ -823,28 +839,41 @@
                 }
             });
 
+            // Count attempts (module completions) per user
+            const userAttempts = {};
+            scores.forEach(s => {
+                if (!userAttempts[s.user_id]) userAttempts[s.user_id] = 0;
+                userAttempts[s.user_id]++;
+            });
+
             const allUsersTable = document.getElementById('allUsersTable');
             if (profiles.length === 0) {
-                allUsersTable.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--silver);">No users yet</td></tr>';
+                allUsersTable.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px; color: var(--silver);">No users yet</td></tr>';
             } else {
                 allUsersTable.innerHTML = profiles
                     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                     .map(user => {
                         const prog = userProgress[user.id] || { total: 0, correct: 0 };
                         const accuracy = prog.total > 0 ? Math.round((prog.correct / prog.total) * 100) : 0;
+                        const attempts = userAttempts[user.id] || 0;
                         let streakCount = 0;
                         try {
                             const streakData = typeof user.streak === 'string' ? JSON.parse(user.streak) : user.streak;
                             streakCount = streakData?.count || 0;
                         } catch {}
                         const joined = new Date(user.created_at).toLocaleDateString();
+                        const displayName = user.name || user.email || 'Unknown';
+                        const age = user.birth_year ? (new Date().getFullYear() - user.birth_year) : null;
+                        const posText = user.position ? user.position.charAt(0).toUpperCase() + user.position.slice(1) : '-';
 
                         return `
                             <tr>
-                                <td>${user.email || 'Unknown'}</td>
-                                <td>${user.position || '-'}</td>
+                                <td>${displayName}</td>
+                                <td class="num">${age || '-'}</td>
+                                <td>${posText}</td>
                                 <td>${user.age_level || '-'}</td>
                                 <td class="num">${prog.total}</td>
+                                <td class="num">${attempts}</td>
                                 <td>${accuracy}%</td>
                                 <td>${streakCount > 0 ? '🔥 ' + streakCount : '-'}</td>
                                 <td>${joined}</td>

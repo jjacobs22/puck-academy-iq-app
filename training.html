@@ -1043,6 +1043,145 @@
                 position: relative;
             }
         }
+
+        /* Your Program Card (Assessment-based) */
+        .your-program {
+            background: linear-gradient(135deg, rgba(200, 16, 46, 0.15), rgba(200, 16, 46, 0.05));
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none; /* Hidden by default, shown if assessment exists */
+        }
+
+        .your-program.visible {
+            display: block;
+        }
+
+        .your-program-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .your-program-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            color: var(--ice-blue);
+        }
+
+        .your-program-subtitle {
+            color: var(--silver);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .retake-assessment-link {
+            color: var(--silver);
+            font-size: 0.8rem;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .retake-assessment-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .program-modules {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .program-module-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .program-module-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .program-module-item.priority {
+            border-color: rgba(200, 16, 46, 0.4);
+            background: rgba(200, 16, 46, 0.1);
+        }
+
+        .program-module-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-red);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .program-module-info {
+            flex: 1;
+        }
+
+        .program-module-name {
+            color: var(--ice-blue);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .program-module-reason {
+            color: var(--silver);
+            font-size: 0.8rem;
+        }
+
+        .program-module-badge {
+            background: rgba(200, 16, 46, 0.2);
+            color: var(--accent-red);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .program-module-progress {
+            font-size: 0.8rem;
+            color: var(--silver);
+        }
+
+        .program-module-progress.complete {
+            color: var(--success-green);
+        }
+
+        /* Module priority badge in module section */
+        .module-priority-badge {
+            display: inline-block;
+            background: rgba(200, 16, 46, 0.2);
+            color: var(--accent-red);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -1139,6 +1278,20 @@
                 <div style="margin-top: 10px; font-size: 0.9rem;">
                     <a href="glossary.html" style="color: var(--silver); text-decoration: none;">📖 New to hockey terms? Check the Glossary →</a>
                 </div>
+            </div>
+        </div>
+
+        <!-- Your Progress (shown if profile exists) -->
+        <div class="your-program" id="yourProgram">
+            <div class="your-program-header">
+                <div>
+                    <h3 class="your-program-title">Your Progress</h3>
+                    <p class="your-program-subtitle" id="programSubtitle">Track your improvement over time</p>
+                </div>
+                <a href="assessment.html" class="retake-assessment-link">✏️ Update Profile</a>
+            </div>
+            <div class="program-modules" id="programModules">
+                <!-- Populated by JS based on score history -->
             </div>
         </div>
 
@@ -1950,12 +2103,15 @@
             const scoreData = getScoreData(moduleNum);
             const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
             const total = config.total;
-            
+
             // Update best score
             if (correctCount > scoreData.bestScore) {
                 scoreData.bestScore = correctCount;
                 saveScoreData(moduleNum, scoreData);
             }
+
+            // Save to score history (for progress tracking over time)
+            saveScoreToHistory(moduleNum, correctCount, total);
 
             const moduleNames = {
                 1: 'Defensive Zone',
@@ -2245,6 +2401,169 @@
                 return null;
             }
         }
+
+        // ===== PROFILE-BASED PERSONALIZATION =====
+
+        // Get player profile
+        function getProfile() {
+            try {
+                return JSON.parse(localStorage.getItem('puckAcademy_profile') || 'null');
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Get score history for a module
+        function getScoreHistory(moduleNum) {
+            try {
+                const key = `puckAcademy_history_module${moduleNum}`;
+                return JSON.parse(localStorage.getItem(key) || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+
+        // Save score to history
+        function saveScoreToHistory(moduleNum, score, total) {
+            // Save to localStorage
+            const key = `puckAcademy_history_module${moduleNum}`;
+            const history = getScoreHistory(moduleNum);
+            history.push({
+                score: score,
+                total: total,
+                percentage: Math.round((score / total) * 100),
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem(key, JSON.stringify(history));
+
+            // Sync to Supabase if logged in
+            if (typeof window.saveScoreAttempt === 'function') {
+                window.saveScoreAttempt(moduleNum, score, total);
+            }
+        }
+
+        // Personalize the experience based on profile
+        function personalizeFromAssessment() {
+            const profile = getProfile();
+
+            if (!profile) {
+                // No profile - show default experience
+                return;
+            }
+
+            const coachMessage = document.getElementById('coachMessage');
+            const yourProgram = document.getElementById('yourProgram');
+            const programModules = document.getElementById('programModules');
+            const programSubtitle = document.getElementById('programSubtitle');
+
+            // Update coach message with user's name
+            if (coachMessage && profile.name) {
+                let coachText = `<strong>Hey ${profile.name}.</strong> `;
+                coachText += `These are real game situations — the kind that separate good players from great ones. `;
+                coachText += `Take your time, think through each read, and I'll explain the <em>why</em> behind every answer. Let's get to work. 🏒`;
+                coachText += `<div style="margin-top: 10px; font-size: 0.9rem;">`;
+                coachText += `<a href="glossary.html" style="color: var(--silver); text-decoration: none;">📖 New to hockey terms? Check the Glossary →</a>`;
+                coachText += `</div>`;
+
+                coachMessage.innerHTML = coachText;
+            }
+
+            // Show "Your Progress" section with score history
+            if (yourProgram && programModules && profile.name) {
+                const moduleInfo = [
+                    { num: 1, name: 'D-Zone Coverage', icon: '🛡️' },
+                    { num: 2, name: 'Faceoffs', icon: '⚔️' },
+                    { num: 3, name: 'Breakouts', icon: '🚀' },
+                    { num: 4, name: 'O-Zone Play', icon: '🎯' },
+                    { num: 5, name: 'Forechecking', icon: '🔥' },
+                    { num: 6, name: 'D-Zone (Defensemen)', icon: '🏒' }
+                ];
+
+                // Filter by position
+                let relevantModules = moduleInfo;
+                if (profile.position === 'defense') {
+                    relevantModules = moduleInfo.filter(m => m.num === 6);
+                } else if (profile.position === 'winger') {
+                    relevantModules = moduleInfo.filter(m => m.num !== 2 && m.num !== 6);
+                } else {
+                    relevantModules = moduleInfo.filter(m => m.num !== 6);
+                }
+
+                let modulesHtml = '';
+                relevantModules.forEach(mod => {
+                    const history = getScoreHistory(mod.num);
+                    const config = moduleConfigs[mod.num];
+                    const total = config?.total || 7;
+
+                    if (history.length > 0) {
+                        const latest = history[history.length - 1];
+                        const first = history[0];
+                        const improved = history.length > 1 && latest.score > first.score;
+
+                        modulesHtml += `
+                            <div class="program-module-item" onclick="scrollToModule(${mod.num})">
+                                <div class="program-module-number">${mod.icon}</div>
+                                <div class="program-module-info">
+                                    <div class="program-module-name">${mod.name}</div>
+                                    <div class="program-module-reason">
+                                        ${history.length > 1
+                                            ? `First: ${first.score}/${first.total} → Latest: ${latest.score}/${latest.total}`
+                                            : `Score: ${latest.score}/${latest.total}`}
+                                        ${improved ? ' 📈' : ''}
+                                    </div>
+                                </div>
+                                <span class="program-module-progress">${history.length} attempt${history.length !== 1 ? 's' : ''}</span>
+                            </div>
+                        `;
+                    } else {
+                        modulesHtml += `
+                            <div class="program-module-item" onclick="scrollToModule(${mod.num})" style="opacity: 0.6;">
+                                <div class="program-module-number">${mod.icon}</div>
+                                <div class="program-module-info">
+                                    <div class="program-module-name">${mod.name}</div>
+                                    <div class="program-module-reason">Not started yet</div>
+                                </div>
+                                <span class="program-module-progress">0/${total}</span>
+                            </div>
+                        `;
+                    }
+                });
+
+                yourProgram.classList.add('visible');
+
+                if (programSubtitle) {
+                    const levelDisplay = {
+                        'youth-aa': 'Youth A/AA',
+                        'youth-aaa': 'Youth AAA',
+                        'highschool': 'High School/Prep',
+                        'juniors': 'Juniors/College',
+                        'pro': 'Pro',
+                        'adult-rec': 'Adult Rec'
+                    };
+                    const levelText = levelDisplay[profile.level] || profile.level;
+                    const posText = profile.position?.charAt(0).toUpperCase() + profile.position?.slice(1);
+                    programSubtitle.textContent = `${profile.name} • ${posText} • ${levelText}`;
+                }
+
+                programModules.innerHTML = modulesHtml;
+            }
+        }
+
+        // Scroll to a specific module
+        function scrollToModule(moduleNum) {
+            const moduleElement = document.getElementById(`module${moduleNum}`);
+            if (moduleElement) {
+                const navHeight = document.getElementById('moduleNav')?.offsetHeight || 60;
+                const elementPosition = moduleElement.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: elementPosition - navHeight - 20,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Expose for onclick
+        window.scrollToModule = scrollToModule;
 
         // Reorder modules based on user position
         function organizeModulesByPosition() {
@@ -2670,6 +2989,7 @@
         updateActiveNavItem();
         updateStreakDisplay();
         checkForMilestoneOnLoad();
+        personalizeFromAssessment();  // Apply assessment-based personalization
 
         // Update streak display when window regains focus (user returns to tab)
         window.addEventListener('focus', updateStreakDisplay);
@@ -2684,7 +3004,7 @@
 
     <!-- Auth Module -->
     <script type="module">
-        import { getUser, signOut, syncProgressToServer, loadProgressFromServer, onAuthStateChange } from './js/supabase.js';
+        import { getUser, signOut, syncProgressToServer, loadProgressFromServer, onAuthStateChange, saveScoreAttempt } from './js/supabase.js';
         import { showAuthModal } from './js/auth-modal.js';
 
         // Element references
@@ -2803,8 +3123,9 @@
         // Initialize - check auth first
         checkAuthAndGate();
 
-        // Expose sync function globally so showResults can call it
+        // Expose sync functions globally so showResults can call them
         window.syncProgressToServer = syncProgressToServer;
+        window.saveScoreAttempt = saveScoreAttempt;
     </script>
 </body>
 </html>

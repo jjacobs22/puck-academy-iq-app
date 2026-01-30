@@ -268,6 +268,50 @@ function getModuleTotal(moduleNum) {
     return totals[moduleNum] || 7;
 }
 
+/**
+ * Save a score attempt to history (Supabase)
+ */
+export async function saveScoreAttempt(moduleNum, score, total) {
+    const user = await getUser();
+    if (!user) return;
+
+    try {
+        await supabase.from('scores').insert({
+            user_id: user.id,
+            module_id: moduleNum,
+            score: score,
+            total: total,
+            is_best: false,  // History entries are not "best" - best is tracked separately
+            completed_at: new Date().toISOString()
+        });
+        console.log(`Score attempt saved: Module ${moduleNum}, ${score}/${total}`);
+    } catch (err) {
+        console.error('Error saving score attempt:', err);
+    }
+}
+
+/**
+ * Get score history for a module from server
+ */
+export async function getScoreHistoryFromServer(moduleNum) {
+    const user = await getUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+        .from('scores')
+        .select('score, total, completed_at')
+        .eq('user_id', user.id)
+        .eq('module_id', moduleNum)
+        .order('completed_at', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching score history:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
 // =============================================================================
 // AUTH STATE LISTENER
 // =============================================================================
