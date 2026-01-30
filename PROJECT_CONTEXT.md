@@ -723,6 +723,28 @@ puck-academy-iq-app/
 
 ---
 
+### January 30, 2026 - Admin Dashboard & Auth UI Improvements
+
+**Created admin dashboard for user analytics:**
+- New `admin.html` page with user statistics dashboard
+- Displays registered users, active streaks, module completion data
+- Connects to Supabase for real-time user data
+
+**Improved training.html header auth UI:**
+- Redesigned sign in/sign out button styling
+- Added user email display in header when logged in
+- Added welcome toast notification for returning users
+- Better responsive design for different auth states
+- Cleaner visual hierarchy in header area
+
+**Files added:**
+- `admin.html` — Admin dashboard page
+
+**Files modified:**
+- `training.html` — Header auth area improvements
+
+---
+
 ### January 30, 2026 - Diagram Label Fix
 
 **Fixed YOUR ZONE label position in intro diagram:**
