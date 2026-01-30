@@ -308,6 +308,67 @@
             color: var(--silver);
         }
 
+        /* Module completion badge */
+        .module-score-badge {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--success-green);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--success-green);
+            white-space: nowrap;
+        }
+
+        .module-section.module-complete .module-score-badge {
+            display: flex;
+        }
+
+        .module-section.module-complete .module-header {
+            opacity: 0.9;
+        }
+
+        .module-section.module-complete .progress-container {
+            display: none;
+        }
+
+        .module-section.module-complete .progress-text {
+            display: none;
+        }
+
+        /* Try again button */
+        .try-again-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(200, 16, 46, 0.1);
+            border: 1px solid var(--accent-red);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: var(--accent-red);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .try-again-btn:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .module-actions {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+        }
+
         .module-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2rem;
@@ -1434,6 +1495,7 @@
                         Master the fundamentals of two-way center play in your defensive zone.
                     </p>
                 </div>
+                <div class="module-score-badge" id="scoreBadge1">✓ <span id="scoreBadgeText1">7/7</span></div>
                 <span class="module-expand-icon">▼</span>
             </div>
             
@@ -1494,6 +1556,11 @@
                     <span class="scenario-status status-available" id="status-1-7">Start</span>
                 </div>
             </div>
+            <div class="module-actions" id="moduleActions1" style="display: none;">
+                <button class="try-again-btn" onclick="resetModule(1); event.stopPropagation();">
+                    🔄 Try Again
+                </button>
+            </div>
             </div><!-- end module-scenarios-wrapper -->
         </div>
 
@@ -1506,6 +1573,7 @@
                         Faceoffs aren't just about winning the draw — they're about reading the situation and setting up the next play.
                     </p>
                 </div>
+                <div class="module-score-badge" id="scoreBadge2">✓ <span id="scoreBadgeText2">7/7</span></div>
                 <span class="module-expand-icon">▼</span>
             </div>
             
@@ -1566,6 +1634,11 @@
                     <span class="scenario-status status-available" id="status-2-7">Start</span>
                 </div>
             </div>
+            <div class="module-actions" id="moduleActions2" style="display: none;">
+                <button class="try-again-btn" onclick="resetModule(2); event.stopPropagation();">
+                    🔄 Try Again
+                </button>
+            </div>
             </div><!-- end module-scenarios-wrapper -->
         </div>
 
@@ -1578,6 +1651,7 @@
                         Breakout success is about route selection and timing — being in the right place with time and space.
                     </p>
                 </div>
+                <div class="module-score-badge" id="scoreBadge3">✓ <span id="scoreBadgeText3">7/7</span></div>
                 <span class="module-expand-icon">▼</span>
             </div>
             
@@ -1638,6 +1712,11 @@
                     <span class="scenario-status status-available" id="status-3-7">Start</span>
                 </div>
             </div>
+            <div class="module-actions" id="moduleActions3" style="display: none;">
+                <button class="try-again-btn" onclick="resetModule(3); event.stopPropagation();">
+                    🔄 Try Again
+                </button>
+            </div>
             </div><!-- end module-scenarios-wrapper -->
         </div>
 
@@ -1650,6 +1729,7 @@
                         Create scoring chances by being in the right spot at the right time. Offense is about options.
                     </p>
                 </div>
+                <div class="module-score-badge" id="scoreBadge4">✓ <span id="scoreBadgeText4">7/7</span></div>
                 <span class="module-expand-icon">▼</span>
             </div>
             
@@ -1710,6 +1790,11 @@
                     <span class="scenario-status status-available" id="status-4-7">Start</span>
                 </div>
             </div>
+            <div class="module-actions" id="moduleActions4" style="display: none;">
+                <button class="try-again-btn" onclick="resetModule(4); event.stopPropagation();">
+                    🔄 Try Again
+                </button>
+            </div>
             </div><!-- end module-scenarios-wrapper -->
         </div>
 
@@ -1722,6 +1807,7 @@
                         Hunt in packs, not alone. Learn the layers of a smart forecheck — F1 dictates, F2 supports, F3 protects.
                     </p>
                 </div>
+                <div class="module-score-badge" id="scoreBadge5">✓ <span id="scoreBadgeText5">8/8</span></div>
                 <span class="module-expand-icon">▼</span>
             </div>
             
@@ -1789,6 +1875,11 @@
                     <span class="scenario-status status-available" id="status-5-8">Start</span>
                 </div>
             </div>
+            <div class="module-actions" id="moduleActions5" style="display: none;">
+                <button class="try-again-btn" onclick="resetModule(5); event.stopPropagation();">
+                    🔄 Try Again
+                </button>
+            </div>
             </div><!-- end module-scenarios-wrapper -->
         </div>
 
@@ -1801,6 +1892,7 @@
                         Defense starts with position. Gap control, puck retrievals, coverage — be the last line that never breaks.
                     </p>
                 </div>
+                <div class="module-score-badge" id="scoreBadge6">✓ <span id="scoreBadgeText6">7/7</span></div>
                 <span class="module-expand-icon">▼</span>
             </div>
             
@@ -1860,6 +1952,11 @@
                     <p class="scenario-description">Know your responsibility — strong side vs. weak side.</p>
                     <span class="scenario-status status-available" id="status-6-7">Start</span>
                 </div>
+            </div>
+            <div class="module-actions" id="moduleActions6" style="display: none;">
+                <button class="try-again-btn" onclick="resetModule(6); event.stopPropagation();">
+                    🔄 Try Again
+                </button>
             </div>
             </div><!-- end module-scenarios-wrapper -->
         </div>
@@ -2087,14 +2184,28 @@
                 }
             }
 
-            // Check if module complete and show results
+            // Check if module complete
+            const moduleSection = document.getElementById(`module${moduleNum}`);
+            const scoreBadge = document.getElementById(`scoreBadgeText${moduleNum}`);
+            const moduleActions = document.getElementById(`moduleActions${moduleNum}`);
+            const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
+
             if (completed === total) {
+                // Module is complete
+                moduleSection.classList.add('module-complete');
+                if (scoreBadge) scoreBadge.textContent = `${correctCount}/${total}`;
+                if (moduleActions) moduleActions.style.display = 'flex';
+
                 const justCompleted = localStorage.getItem(`puckAcademy_module${moduleNum}_justCompleted`);
                 if (justCompleted === 'true' || (moduleNum === 1 && localStorage.getItem('puckAcademy_justCompleted') === 'true')) {
                     showResults(moduleNum);
                     localStorage.removeItem(`puckAcademy_module${moduleNum}_justCompleted`);
                     localStorage.removeItem('puckAcademy_justCompleted');
                 }
+            } else {
+                // Module is not complete
+                moduleSection.classList.remove('module-complete');
+                if (moduleActions) moduleActions.style.display = 'none';
             }
         }
 
@@ -2363,16 +2474,29 @@
         function retryModule() {
             const modal = document.getElementById('resultsModal');
             const moduleNum = parseInt(modal.dataset.module) || 1;
+            resetModule(moduleNum);
+            closeResults();
+        }
+
+        // Reset a module to start fresh (called from Try Again button)
+        function resetModule(moduleNum) {
             const scoreData = getScoreData(moduleNum);
             scoreData.currentRun = {};
             saveScoreData(moduleNum, scoreData);
-            closeResults();
             updateDisplay();
             
-            // Scroll to the module
+            // Ensure the module is expanded after reset
             const moduleSection = document.getElementById(`module${moduleNum}`);
             if (moduleSection) {
-                moduleSection.scrollIntoView({ behavior: 'smooth' });
+                // Close all modules first
+                document.querySelectorAll('.module-section').forEach(section => {
+                    section.classList.remove('expanded');
+                });
+                // Expand this module
+                moduleSection.classList.add('expanded');
+                setTimeout(() => {
+                    moduleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
             }
         }
 
