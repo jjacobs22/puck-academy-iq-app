@@ -9,10 +9,11 @@ import { signInWithMagicLink, signInWithGoogle } from './supabase.js';
  * Show the auth modal
  * @param {Object} options - Configuration options
  * @param {string} options.mode - 'signup' or 'signin'
+ * @param {boolean} options.required - If true, modal can't be dismissed (for gating content)
  * @param {Function} options.onSuccess - Callback after successful auth
  */
 export function showAuthModal(options = {}) {
-    const { mode = 'signup', onSuccess } = options;
+    const { mode = 'signup', required = false, onSuccess } = options;
 
     // Remove existing modal if present
     const existing = document.getElementById('auth-modal');
@@ -22,19 +23,23 @@ export function showAuthModal(options = {}) {
 
     const modal = document.createElement('div');
     modal.id = 'auth-modal';
+    if (required) modal.classList.add('auth-modal-required');
+
     modal.innerHTML = `
         <div class="auth-modal-overlay">
             <div class="auth-modal-content">
-                <button class="auth-modal-close" aria-label="Close">&times;</button>
-                
-                <h2>${isSignup ? 'Create Your Free Account' : 'Welcome Back'}</h2>
+                ${!required ? '<button class="auth-modal-close" aria-label="Close">&times;</button>' : ''}
+
+                <h2>${required ? 'Create an Account to Start' : (isSignup ? 'Create Your Free Account' : 'Welcome Back')}</h2>
                 <p class="auth-subtitle">
-                    ${isSignup 
-                        ? 'Save your progress across all your devices.' 
-                        : 'Sign in to continue your training.'}
+                    ${required
+                        ? 'Quick signup — just enter your email to begin training.'
+                        : (isSignup
+                            ? 'Save your progress across all your devices.'
+                            : 'Sign in to continue your training.')}
                 </p>
 
-                ${isSignup ? `
+                ${(isSignup || required) ? `
                 <div class="auth-benefits">
                     <div class="auth-benefit">✓ Save your progress permanently</div>
                     <div class="auth-benefit">✓ Track scores across all modules</div>
@@ -95,20 +100,23 @@ export function showAuthModal(options = {}) {
     const googleBtn = modal.querySelector('#google-signin'); // Currently disabled
     const switchLink = modal.querySelector('#switch-to-signin, #switch-to-signup');
 
-    closeBtn.addEventListener('click', () => modal.remove());
+    // Only allow closing if not required
+    if (!required) {
+        closeBtn.addEventListener('click', () => modal.remove());
 
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) modal.remove();
-    });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) modal.remove();
+        });
 
-    // Escape key closes modal
-    const handleEscape = (e) => {
-        if (e.key === 'Escape') {
-            modal.remove();
-            document.removeEventListener('keydown', handleEscape);
-        }
-    };
-    document.addEventListener('keydown', handleEscape);
+        // Escape key closes modal
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                modal.remove();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
+    }
 
     // Magic link form
     form.addEventListener('submit', async (e) => {
@@ -171,9 +179,10 @@ export function showAuthModal(options = {}) {
         switchLink.addEventListener('click', (e) => {
             e.preventDefault();
             modal.remove();
-            showAuthModal({ 
+            showAuthModal({
                 mode: isSignup ? 'signin' : 'signup',
-                onSuccess 
+                required,
+                onSuccess
             });
         });
     }

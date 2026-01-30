@@ -1032,6 +1032,9 @@
     </div>
 
     <script type="module">
+        // Auth guard - redirect if not logged in
+        import { requireAuth } from './js/auth-guard.js';
+
         import { Storage } from './js/storage.js';
         import { Analytics } from './js/analytics.js';
 

@@ -2784,8 +2784,24 @@
             setTimeout(() => showWelcomeToast(), 500);
         }
 
-        // Initialize auth UI
-        updateAuthUI();
+        // Gate content behind auth - require login to use the app
+        async function checkAuthAndGate() {
+            const user = await getUser();
+
+            if (!user) {
+                // User not logged in - show required auth modal
+                showAuthModal({
+                    mode: 'signup',
+                    required: true
+                });
+            } else {
+                // User is logged in - update UI normally
+                updateAuthUI();
+            }
+        }
+
+        // Initialize - check auth first
+        checkAuthAndGate();
 
         // Expose sync function globally so showResults can call it
         window.syncProgressToServer = syncProgressToServer;

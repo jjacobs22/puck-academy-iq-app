@@ -694,6 +694,23 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Required Registration
+
+**Made registration required to use the app:**
+- Users must now create an account to access training content
+- `training.html` shows a mandatory auth modal (can't be dismissed) for non-logged-in users
+- All 43 scenario pages redirect to training.html if user not authenticated
+- Onboarding flow unchanged — users complete onboarding, then see auth modal on training.html
+- Auth callback picks up onboarding data (position, level, goals) from localStorage and saves to profile
+
+**Technical Implementation:**
+- Created `js/auth-guard.js` — shared module that checks auth and redirects if not logged in
+- Updated `js/auth-modal.js` — added `required` option to prevent dismissing modal
+- Updated `training.html` — added `checkAuthAndGate()` function
+- Added auth-guard import to all 43 scenario files
+
+---
+
 ### January 30, 2026 - Auth UI Improvements & Admin Dashboard
 
 **Improved logged-in user experience in header:**
@@ -714,34 +731,8 @@ puck-academy-iq-app/
 - Requires login to view (any authenticated user for now, can add admin role check later)
 - Auto-refresh button to pull latest data
 
-**Files Modified:**
-- `training.html` — New header auth UI, welcome toast, updated CSS and JS
-- `PROJECT_CONTEXT.md` — This changelog entry
-
 **Files Created:**
 - `admin.html` — Full admin analytics dashboard
-
----
-
-### January 30, 2026 - Admin Dashboard & Auth UI Improvements
-
-**Created admin dashboard for user analytics:**
-- New `admin.html` page with user statistics dashboard
-- Displays registered users, active streaks, module completion data
-- Connects to Supabase for real-time user data
-
-**Improved training.html header auth UI:**
-- Redesigned sign in/sign out button styling
-- Added user email display in header when logged in
-- Added welcome toast notification for returning users
-- Better responsive design for different auth states
-- Cleaner visual hierarchy in header area
-
-**Files added:**
-- `admin.html` — Admin dashboard page
-
-**Files modified:**
-- `training.html` — Header auth area improvements
 
 ---
 
