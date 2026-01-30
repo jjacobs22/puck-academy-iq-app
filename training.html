@@ -2200,10 +2200,14 @@
                 if (scoreBadge) scoreBadge.textContent = `${correctCount}/${total}`;
                 if (moduleActions) moduleActions.style.display = 'flex';
 
-                const justCompleted = localStorage.getItem(`puckAcademy_module${moduleNum}_justCompleted`);
+                const justCompletedKey = `puckAcademy_module${moduleNum}_justCompleted`;
+                const justCompleted = localStorage.getItem(justCompletedKey);
+                console.log(`Module ${moduleNum}: completed=${completed}/${total}, justCompleted flag=${justCompleted}`);
+                
                 if (justCompleted === 'true' || (moduleNum === 1 && localStorage.getItem('puckAcademy_justCompleted') === 'true')) {
+                    console.log(`Module ${moduleNum}: Showing results modal!`);
                     showResults(moduleNum);
-                    localStorage.removeItem(`puckAcademy_module${moduleNum}_justCompleted`);
+                    localStorage.removeItem(justCompletedKey);
                     localStorage.removeItem('puckAcademy_justCompleted');
                 }
             } else {
