@@ -694,6 +694,22 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Admin Dashboard Improvements
+
+**Added sign-in form directly to admin dashboard:**
+- Built-in email input and magic link authentication on admin.html
+- Users can now sign in directly without being redirected to training.html
+- Handles auth state changes for seamless login experience
+- Styled form with success/error messaging
+
+**Fixed score distribution display:**
+- Changed labels from confusing "X/7" to "X pts"
+- Fixes issue where "8/7" appeared (Module 5 has 8 scenarios)
+
+**Files modified:** `admin.html`
+
+---
+
 ### January 30, 2026 - Landing Page Auth Indicator
 
 **Added auth status display to landing page header:**
