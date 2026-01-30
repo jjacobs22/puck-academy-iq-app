@@ -1267,7 +1267,7 @@
 
         <div class="score-display" id="scoreDisplay">
             <span class="score-label">Best Score</span>
-            <div class="score-value" id="bestScoreValue">0/5</div>
+            <div class="score-value" id="bestScoreValue">0/7</div>
         </div>
 
         <!-- Coach Intro -->
@@ -1779,7 +1779,7 @@
             <button class="modal-close" onclick="closeResults()">&times;</button>
             <div class="modal-icon" id="modalIcon">📚</div>
             <h3 class="modal-title" id="modalTitle">KEEP LEARNING!</h3>
-            <div class="modal-score" id="modalScore">0/5</div>
+            <div class="modal-score" id="modalScore">0/7</div>
             <p class="modal-message" id="modalMessage">
                 Defensive positioning takes time to master. Review each scenario and focus on understanding why each answer is correct.
             </p>
@@ -2094,7 +2094,7 @@
             const module1Data = getScoreData(1);
             if (module1Data.bestScore > 0) {
                 document.getElementById('scoreDisplay').classList.add('visible');
-                document.getElementById('bestScoreValue').textContent = `${module1Data.bestScore}/5`;
+                document.getElementById('bestScoreValue').textContent = `${module1Data.bestScore}/${moduleConfigs[1].total}`;
             }
         }
 
