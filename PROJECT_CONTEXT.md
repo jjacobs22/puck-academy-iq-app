@@ -694,20 +694,31 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Streamlined Onboarding → Assessment
+
+**Removed redundant onboarding flow:**
+- Landing page now links directly to `assessment.html` (skips `onboarding.html`)
+- The old onboarding asked Position and Level, then assessment asked them again
+- Now users go: Landing → Assessment → Training (cleaner flow)
+
+**Assessment flow (2 steps):**
+1. Name, Birth Year, Position, Level
+2. What to expect + personalized module list → Start Training
+
+**Files modified:**
+- `index.html` — all links now point to assessment.html instead of onboarding.html
+
+---
+
 ### January 30, 2026 - Assessment Flow
 
 **Added personalized assessment/program builder:**
 - Created `assessment.html` — new page for personalized program setup
-- Onboarding now redirects to assessment instead of directly to training
-- "Build My Program →" button replaces "Start Training →" at end of onboarding
-- Assessment helps users identify focus areas before starting training
+- Coach persona introduces the app and collects player info
+- Shows position-specific modules before starting
 
 **Files added:**
 - `assessment.html`
-
-**Files modified:**
-- `onboarding.html` — redirect to assessment
-- `training.html` — various updates
 
 ---
 
