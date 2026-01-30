@@ -228,8 +228,84 @@
         }
 
         .module-header {
-            text-align: center;
-            margin-bottom: 30px;
+            text-align: left;
+            margin-bottom: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        .module-header-content {
+            flex: 1;
+        }
+
+        .module-expand-icon {
+            font-size: 1.5rem;
+            color: var(--silver);
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .module-section.expanded .module-expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .module-scenarios-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+            opacity: 0;
+            padding-top: 0;
+        }
+
+        .module-section.expanded .module-scenarios-wrapper {
+            max-height: 2000px;
+            opacity: 1;
+            padding-top: 25px;
+        }
+
+        .module-section .progress-container,
+        .module-section .progress-text {
+            transition: opacity 0.3s ease;
+        }
+
+        .module-section:not(.expanded) .progress-container,
+        .module-section:not(.expanded) .progress-text {
+            margin-top: 15px;
+        }
+
+        .module-section:not(.expanded) .review-intro-link {
+            display: none;
+        }
+
+        .module-header:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin: -10px;
+            padding: 20px 10px;
+        }
+
+        .module-header:hover .module-expand-icon {
+            color: var(--accent-red);
+        }
+
+        .module-section.expanded .module-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+            margin-bottom: 0;
+        }
+
+        .module-title {
+            margin-bottom: 8px;
+        }
+
+        .module-description {
+            margin-bottom: 0;
+            color: var(--silver);
         }
 
         .module-title {
@@ -1351,12 +1427,14 @@
         <div id="modulesContainer">
         <!-- MODULE 1: Defensive Zone -->
         <div class="module-section" id="module1" data-position="center">
-            <div class="module-header">
-                <h2 class="module-title">Module 1: Defensive Zone Coverage</h2>
-                <p class="module-description">
-                    Master the fundamentals of two-way center play in your defensive zone.
-                </p>
-                <a href="hockey-iq-diagram.html?review=intro" class="review-intro-link" id="reviewIntro1">📖 Review intro</a>
+            <div class="module-header" onclick="toggleModule(1)">
+                <div class="module-header-content">
+                    <h2 class="module-title">Module 1: Defensive Zone Coverage</h2>
+                    <p class="module-description">
+                        Master the fundamentals of two-way center play in your defensive zone.
+                    </p>
+                </div>
+                <span class="module-expand-icon">▼</span>
             </div>
             
             <div class="progress-container">
@@ -1364,6 +1442,8 @@
             </div>
             <p class="progress-text" id="progressText1">0 of 7 scenarios completed</p>
 
+            <div class="module-scenarios-wrapper">
+            <a href="hockey-iq-diagram.html?review=intro" class="review-intro-link" id="reviewIntro1">📖 Review intro</a>
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(1, 1)">
                     <span class="scenario-number">1</span>
@@ -1414,16 +1494,19 @@
                     <span class="scenario-status status-available" id="status-1-7">Start</span>
                 </div>
             </div>
+            </div><!-- end module-scenarios-wrapper -->
         </div>
 
         <!-- MODULE 2: Faceoffs -->
         <div class="module-section" id="module2" data-position="center">
-            <div class="module-header">
-                <h2 class="module-title">Module 2: Faceoffs</h2>
-                <p class="module-description">
-                    Faceoffs aren't just about winning the draw — they're about reading the situation and setting up the next play.
-                </p>
-                <a href="module2-scenario1-ref-position.html?review=intro" class="review-intro-link" id="reviewIntro2">📖 Review intro</a>
+            <div class="module-header" onclick="toggleModule(2)">
+                <div class="module-header-content">
+                    <h2 class="module-title">Module 2: Faceoffs</h2>
+                    <p class="module-description">
+                        Faceoffs aren't just about winning the draw — they're about reading the situation and setting up the next play.
+                    </p>
+                </div>
+                <span class="module-expand-icon">▼</span>
             </div>
             
             <div class="progress-container">
@@ -1431,6 +1514,8 @@
             </div>
             <p class="progress-text" id="progressText2">0 of 7 scenarios completed</p>
 
+            <div class="module-scenarios-wrapper">
+            <a href="module2-scenario1-ref-position.html?review=intro" class="review-intro-link" id="reviewIntro2">📖 Review intro</a>
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(2, 1)">
                     <span class="scenario-number">1</span>
@@ -1481,16 +1566,19 @@
                     <span class="scenario-status status-available" id="status-2-7">Start</span>
                 </div>
             </div>
+            </div><!-- end module-scenarios-wrapper -->
         </div>
 
         <!-- MODULE 3: Breakouts -->
         <div class="module-section" id="module3" data-position="center">
-            <div class="module-header">
-                <h2 class="module-title">Module 3: Breakouts</h2>
-                <p class="module-description">
-                    Breakout success is about route selection and timing — being in the right place with time and space.
-                </p>
-                <a href="module3-scenario1-high-low-route.html?review=intro" class="review-intro-link" id="reviewIntro3">📖 Review intro</a>
+            <div class="module-header" onclick="toggleModule(3)">
+                <div class="module-header-content">
+                    <h2 class="module-title">Module 3: Breakouts</h2>
+                    <p class="module-description">
+                        Breakout success is about route selection and timing — being in the right place with time and space.
+                    </p>
+                </div>
+                <span class="module-expand-icon">▼</span>
             </div>
             
             <div class="progress-container">
@@ -1498,6 +1586,8 @@
             </div>
             <p class="progress-text" id="progressText3">0 of 7 scenarios completed</p>
 
+            <div class="module-scenarios-wrapper">
+            <a href="module3-scenario1-high-low-route.html?review=intro" class="review-intro-link" id="reviewIntro3">📖 Review intro</a>
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(3, 1)">
                     <span class="scenario-number">1</span>
@@ -1548,16 +1638,19 @@
                     <span class="scenario-status status-available" id="status-3-7">Start</span>
                 </div>
             </div>
+            </div><!-- end module-scenarios-wrapper -->
         </div>
 
         <!-- MODULE 4: Offensive Zone -->
         <div class="module-section" id="module4" data-position="center">
-            <div class="module-header">
-                <h2 class="module-title">Module 4: Offensive Zone</h2>
-                <p class="module-description">
-                    Create scoring chances by being in the right spot at the right time. Offense is about options.
-                </p>
-                <a href="module4-scenario1-net-front.html?review=intro" class="review-intro-link" id="reviewIntro4">📖 Review intro</a>
+            <div class="module-header" onclick="toggleModule(4)">
+                <div class="module-header-content">
+                    <h2 class="module-title">Module 4: Offensive Zone</h2>
+                    <p class="module-description">
+                        Create scoring chances by being in the right spot at the right time. Offense is about options.
+                    </p>
+                </div>
+                <span class="module-expand-icon">▼</span>
             </div>
             
             <div class="progress-container">
@@ -1565,6 +1658,8 @@
             </div>
             <p class="progress-text" id="progressText4">0 of 7 scenarios completed</p>
 
+            <div class="module-scenarios-wrapper">
+            <a href="module4-scenario1-net-front.html?review=intro" class="review-intro-link" id="reviewIntro4">📖 Review intro</a>
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(4, 1)">
                     <span class="scenario-number">1</span>
@@ -1615,16 +1710,19 @@
                     <span class="scenario-status status-available" id="status-4-7">Start</span>
                 </div>
             </div>
+            </div><!-- end module-scenarios-wrapper -->
         </div>
 
         <!-- MODULE 5: Forechecking -->
         <div class="module-section" id="module5" data-position="center">
-            <div class="module-header">
-                <h2 class="module-title">Module 5: Forechecking</h2>
-                <p class="module-description">
-                    Hunt in packs, not alone. Learn the layers of a smart forecheck — F1 dictates, F2 supports, F3 protects.
-                </p>
-                <a href="module5-scenario1-f1-angle.html?review=intro" class="review-intro-link" id="reviewIntro5">📖 Review intro</a>
+            <div class="module-header" onclick="toggleModule(5)">
+                <div class="module-header-content">
+                    <h2 class="module-title">Module 5: Forechecking</h2>
+                    <p class="module-description">
+                        Hunt in packs, not alone. Learn the layers of a smart forecheck — F1 dictates, F2 supports, F3 protects.
+                    </p>
+                </div>
+                <span class="module-expand-icon">▼</span>
             </div>
             
             <div class="progress-container">
@@ -1632,6 +1730,8 @@
             </div>
             <p class="progress-text" id="progressText5">0 of 8 scenarios completed</p>
 
+            <div class="module-scenarios-wrapper">
+            <a href="module5-scenario1-f1-angle.html?review=intro" class="review-intro-link" id="reviewIntro5">📖 Review intro</a>
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(5, 1)">
                     <span class="scenario-number">1</span>
@@ -1689,16 +1789,19 @@
                     <span class="scenario-status status-available" id="status-5-8">Start</span>
                 </div>
             </div>
+            </div><!-- end module-scenarios-wrapper -->
         </div>
 
         <!-- MODULE 6: D-Zone (Defensemen) -->
         <div class="module-section" id="module6" data-position="defense">
-            <div class="module-header">
-                <h2 class="module-title">Module 6: D-Zone (Defensemen)</h2>
-                <p class="module-description">
-                    Defense starts with position. Gap control, puck retrievals, coverage — be the last line that never breaks.
-                </p>
-                <a href="module6-scenario1-gap-control.html?review=intro" class="review-intro-link" id="reviewIntro6">📖 Review intro</a>
+            <div class="module-header" onclick="toggleModule(6)">
+                <div class="module-header-content">
+                    <h2 class="module-title">Module 6: D-Zone (Defensemen)</h2>
+                    <p class="module-description">
+                        Defense starts with position. Gap control, puck retrievals, coverage — be the last line that never breaks.
+                    </p>
+                </div>
+                <span class="module-expand-icon">▼</span>
             </div>
             
             <div class="progress-container">
@@ -1706,6 +1809,8 @@
             </div>
             <p class="progress-text" id="progressText6">0 of 7 scenarios completed</p>
 
+            <div class="module-scenarios-wrapper">
+            <a href="module6-scenario1-gap-control.html?review=intro" class="review-intro-link" id="reviewIntro6">📖 Review intro</a>
             <div class="scenarios-grid">
                 <div class="scenario-card" onclick="loadScenario(6, 1)">
                     <span class="scenario-number">1</span>
@@ -1756,6 +1861,7 @@
                     <span class="scenario-status status-available" id="status-6-7">Start</span>
                 </div>
             </div>
+            </div><!-- end module-scenarios-wrapper -->
         </div>
         </div><!-- End modulesContainer -->
 
@@ -2357,6 +2463,42 @@
             setTimeout(() => {
                 confirmation.style.display = 'none';
             }, 3000);
+        }
+
+        // Accordion toggle for modules
+        function toggleModule(moduleNum) {
+            const moduleSection = document.getElementById(`module${moduleNum}`);
+            const isExpanded = moduleSection.classList.contains('expanded');
+            
+            // Close all modules (accordion behavior)
+            document.querySelectorAll('.module-section').forEach(section => {
+                section.classList.remove('expanded');
+            });
+            
+            // Open clicked module if it wasn't already open
+            if (!isExpanded) {
+                moduleSection.classList.add('expanded');
+                // Smooth scroll to the module
+                setTimeout(() => {
+                    moduleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        // Auto-expand first incomplete module on load
+        function expandFirstIncompleteModule() {
+            for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
+                const config = moduleConfigs[moduleNum];
+                const scoreData = getScoreData(moduleNum);
+                const completed = Object.keys(scoreData.currentRun).length;
+                
+                if (completed < config.total) {
+                    document.getElementById(`module${moduleNum}`).classList.add('expanded');
+                    return;
+                }
+            }
+            // If all complete, expand module 1
+            document.getElementById('module1').classList.add('expanded');
         }
 
         function loadScenario(moduleNum, scenarioNum) {
@@ -2983,6 +3125,7 @@
         // Initialize
         organizeModulesByPosition();
         updateDisplay();
+        expandFirstIncompleteModule();
         updateNavStatus();
         updateReviewIntroLinks();
         updateActiveNavItem();
