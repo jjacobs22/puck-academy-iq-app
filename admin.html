@@ -636,6 +636,7 @@
             }).join('');
 
             // --- Score Distribution ---
+            // Group scores by score/total ratio for better visualization
             const scoreCounts = {};
             for (let i = 0; i <= 8; i++) scoreCounts[i] = 0;
 
@@ -645,15 +646,19 @@
                 }
             });
 
-            const maxScore = Math.max(...Object.values(scoreCounts), 1);
+            const maxScoreCount = Math.max(...Object.values(scoreCounts), 1);
             const scoreDistribution = document.getElementById('scoreDistribution');
+            
+            // Only show scores that are possible (0-8) and label appropriately
             scoreDistribution.innerHTML = Object.entries(scoreCounts)
                 .filter(([score]) => parseInt(score) <= 8)
                 .map(([score, count]) => {
-                    const pct = (count / maxScore) * 100;
+                    const pct = (count / maxScoreCount) * 100;
+                    const scoreNum = parseInt(score);
+                    // Show "score pts" instead of confusing "score/7"
                     return `
                         <div class="dist-row">
-                            <div class="dist-label">${score}/7</div>
+                            <div class="dist-label">${scoreNum} pts</div>
                             <div class="dist-bar">
                                 <div class="dist-fill" style="width: ${Math.max(pct, 5)}%">${count}</div>
                             </div>
