@@ -694,6 +694,30 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Bug Fixes & Share Images
+
+**Fixed module completion results modal:**
+- Module 1 scenarios were incorrectly checking for 5 scenarios (now correctly checks for 7)
+- Standardized localStorage key format to `puckAcademy_module1_justCompleted`
+- Results modal now properly shows when returning to training.html after completing a module
+
+**Fixed auth modal JavaScript errors:**
+- Added null checks for commented-out elements (Google button, divider)
+- "Sign in" link in auth modal now works correctly
+
+**Added OG share images:**
+- Created score-specific images for social sharing (score-0.png through score-8.png)
+- Added share/8.html for perfect Module 5 scores (8/8)
+- Improved social preview when sharing scores
+
+**Files modified:**
+- `js/auth-modal.js` — null element checks
+- Module 1 scenario files (7 files) — fixed completion detection
+- `share/*.html` — updated meta tags
+- Added `share/score-*.png` images
+
+---
+
 ### January 30, 2026 - Score History & Progress Tracking
 
 **Added score history tracking for improvement visualization:**
