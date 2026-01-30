@@ -463,8 +463,8 @@
             
             // Set flag if this completes the module
             const scores = Storage.getModuleScores(MODULE_NUMBER);
-            if (Object.keys(scores.currentRun).length === 5) {
-                Storage.set('puckAcademy_justCompleted', true);
+            if (Object.keys(scores.currentRun).length === 7) {
+                localStorage.setItem('puckAcademy_module1_justCompleted', 'true');
             }
 
             showFeedbackDiagram();

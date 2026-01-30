@@ -1372,8 +1372,8 @@
             Storage.saveScenarioScore(MODULE_NUMBER, 1, isCorrect);
 
             const scores = Storage.getModuleScores(MODULE_NUMBER);
-            if (Object.keys(scores.currentRun).length === 5) {
-                Storage.set('puckAcademy_justCompleted', true);
+            if (Object.keys(scores.currentRun).length === 7) {
+                localStorage.setItem('puckAcademy_module1_justCompleted', 'true');
             }
 
             options.forEach((opt, idx) => {
