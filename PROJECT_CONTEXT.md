@@ -694,6 +694,23 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Assessment Flow
+
+**Added personalized assessment/program builder:**
+- Created `assessment.html` — new page for personalized program setup
+- Onboarding now redirects to assessment instead of directly to training
+- "Build My Program →" button replaces "Start Training →" at end of onboarding
+- Assessment helps users identify focus areas before starting training
+
+**Files added:**
+- `assessment.html`
+
+**Files modified:**
+- `onboarding.html` — redirect to assessment
+- `training.html` — various updates
+
+---
+
 ### January 30, 2026 - Admin Dashboard Improvements
 
 **Added sign-in form directly to admin dashboard:**
