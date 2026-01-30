@@ -2770,8 +2770,12 @@
                     const history = getScoreHistory(mod.num);
                     const config = moduleConfigs[mod.num];
                     const total = config?.total || 7;
+                    const scoreData = getScoreData(mod.num);
+                    const currentProgress = Object.keys(scoreData.currentRun).length;
+                    const currentCorrect = Object.values(scoreData.currentRun).filter(v => v === true).length;
 
                     if (history.length > 0) {
+                        // Completed at least once
                         const latest = history[history.length - 1];
                         const first = history[0];
                         const improved = history.length > 1 && latest.score > first.score;
@@ -2791,7 +2795,20 @@
                                 <span class="program-module-progress">${history.length} attempt${history.length !== 1 ? 's' : ''}</span>
                             </div>
                         `;
+                    } else if (currentProgress > 0) {
+                        // In progress but not completed yet
+                        modulesHtml += `
+                            <div class="program-module-item" onclick="scrollToModule(${mod.num})">
+                                <div class="program-module-number">${mod.icon}</div>
+                                <div class="program-module-info">
+                                    <div class="program-module-name">${mod.name}</div>
+                                    <div class="program-module-reason" style="color: var(--warning-yellow);">In progress — ${currentCorrect}/${currentProgress} correct</div>
+                                </div>
+                                <span class="program-module-progress">${currentProgress}/${total}</span>
+                            </div>
+                        `;
                     } else {
+                        // Not started
                         modulesHtml += `
                             <div class="program-module-item" onclick="scrollToModule(${mod.num})" style="opacity: 0.6;">
                                 <div class="program-module-number">${mod.icon}</div>
