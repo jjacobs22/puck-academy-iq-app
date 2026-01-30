@@ -2713,8 +2713,12 @@
             localStorage.setItem(key, JSON.stringify(history));
 
             // Sync to Supabase if logged in
+            console.log('saveScoreToHistory: checking for saveScoreAttempt function...');
             if (typeof window.saveScoreAttempt === 'function') {
+                console.log('saveScoreToHistory: calling saveScoreAttempt');
                 window.saveScoreAttempt(moduleNum, score, total);
+            } else {
+                console.log('saveScoreToHistory: saveScoreAttempt not available');
             }
         }
 

@@ -272,21 +272,33 @@ function getModuleTotal(moduleNum) {
  * Save a score attempt to history (Supabase)
  */
 export async function saveScoreAttempt(moduleNum, score, total) {
+    console.log(`saveScoreAttempt called: Module ${moduleNum}, ${score}/${total}`);
+    
     const user = await getUser();
-    if (!user) return;
+    if (!user) {
+        console.log('saveScoreAttempt: No user logged in, skipping');
+        return;
+    }
+
+    console.log(`saveScoreAttempt: User ${user.id}, inserting to scores table...`);
 
     try {
-        await supabase.from('scores').insert({
+        const { data, error } = await supabase.from('scores').insert({
             user_id: user.id,
             module_id: moduleNum,
             score: score,
             total: total,
-            is_best: false,  // History entries are not "best" - best is tracked separately
+            is_best: false,
             completed_at: new Date().toISOString()
         });
-        console.log(`Score attempt saved: Module ${moduleNum}, ${score}/${total}`);
+        
+        if (error) {
+            console.error('saveScoreAttempt error:', error);
+        } else {
+            console.log(`Score attempt saved successfully: Module ${moduleNum}, ${score}/${total}`);
+        }
     } catch (err) {
-        console.error('Error saving score attempt:', err);
+        console.error('saveScoreAttempt exception:', err);
     }
 }
 
