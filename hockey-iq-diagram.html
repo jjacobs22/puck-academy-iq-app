@@ -1057,6 +1057,56 @@
         // Call on page load
         updateProgressDisplay();
 
+        // ====== REVIEW MODE ======
+        function checkReviewMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('review') === 'true') {
+                const scores = Storage.getModuleScores(MODULE_NUMBER);
+                const previousAnswer = scores.currentRun[SCENARIO_NUMBER];
+                
+                if (previousAnswer !== undefined) {
+                    // Show the scenario in review mode (locked)
+                    setTimeout(() => {
+                        showReviewState(previousAnswer);
+                    }, 500);
+                }
+            }
+        }
+
+        function showReviewState(wasCorrect) {
+            answered = true;
+            const correctIndex = 1; // The correct answer index for this scenario
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((opt, idx) => {
+                opt.classList.add('disabled');
+                if (idx === correctIndex) {
+                    opt.classList.add('correct');
+                } else if (!wasCorrect && idx !== correctIndex) {
+                    // We don't know which wrong answer they picked, just show correct
+                }
+            });
+
+            // Show feedback
+            const feedback = document.getElementById('feedback');
+            if (feedback) {
+                feedback.classList.add('active', wasCorrect ? 'correct' : 'incorrect');
+            }
+
+            // Show review banner
+            const reviewBanner = document.createElement('div');
+            reviewBanner.className = 'review-banner';
+            reviewBanner.innerHTML = '📖 Review Mode - Your answer is locked';
+            reviewBanner.style.cssText = 'background: rgba(59, 130, 246, 0.2); border: 1px solid #3B82F6; color: #93C5FD; padding: 12px 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-weight: 500;';
+            
+            const questionEl = document.querySelector('.question');
+            if (questionEl) {
+                questionEl.parentNode.insertBefore(reviewBanner, questionEl);
+            }
+        }
+
+        // Check review mode after page loads
+        setTimeout(checkReviewMode, 100);
         
         // ====== THEORY INTRO ======
         let currentSlide = 1;

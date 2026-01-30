@@ -406,6 +406,49 @@
         // Call on page load
         updateProgressDisplay();
 
+        // ====== REVIEW MODE ======
+        function checkReviewMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('review') === 'true') {
+                const scores = Storage.getModuleScores(MODULE_NUMBER);
+                const previousAnswer = scores.currentRun[SCENARIO_NUMBER];
+                
+                if (previousAnswer !== undefined) {
+                    setTimeout(() => {
+                        showReviewState(previousAnswer);
+                    }, 500);
+                }
+            }
+        }
+
+        function showReviewState(wasCorrect) {
+            answered = true;
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.getAttribute('data-correct') === 'true') {
+                    opt.classList.add('correct');
+                }
+            });
+
+            const feedback = document.getElementById('feedback');
+            if (feedback) {
+                feedback.classList.add('active', wasCorrect ? 'correct' : 'incorrect');
+            }
+
+            const reviewBanner = document.createElement('div');
+            reviewBanner.innerHTML = '📖 Review Mode - Your answer is locked';
+            reviewBanner.style.cssText = 'background: rgba(59, 130, 246, 0.2); border: 1px solid #3B82F6; color: #93C5FD; padding: 12px 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-weight: 500;';
+            
+            const questionEl = document.querySelector('.question');
+            if (questionEl) {
+                questionEl.parentNode.insertBefore(reviewBanner, questionEl);
+            }
+        }
+
+        setTimeout(checkReviewMode, 100);
+
         const feedback = document.getElementById('feedback');
         const feedbackTitle = document.getElementById('feedbackTitle');
         const feedbackText = document.getElementById('feedbackText');
