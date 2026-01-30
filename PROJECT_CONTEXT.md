@@ -694,6 +694,30 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Collapsible Accordion Modules
+
+**Redesigned module/scenario hierarchy for clarity:**
+- Modules now display as collapsible accordion sections
+- Click module header to expand/collapse and reveal scenarios
+- Only one module open at a time (accordion behavior)
+- Auto-expands first incomplete module on page load
+- Chevron indicator shows expand/collapse state
+- Progress bar and count visible in both collapsed/expanded states
+
+**Fixed Module 1 storage key mismatch:**
+- Scenarios were saving to `puckAcademy_module1_scores`
+- training.html was reading from legacy `puckAcademy_scores`
+- Now both use `puckAcademy_module1_scores` consistently
+- Progress now displays correctly on training.html
+
+**Fixed hardcoded /5 values:**
+- Updated default score displays from `/5` to `/7`
+- Best score now uses dynamic `moduleConfigs[1].total`
+
+**Files modified:** `training.html`
+
+---
+
 ### January 30, 2026 - Bug Fixes & Share Images
 
 **Fixed module completion results modal:**
