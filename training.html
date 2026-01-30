@@ -1012,6 +1012,12 @@
                     <span>M6: D-Men</span>
                     <span class="nav-status" id="navStatus6"></span>
                 </a>
+                <!-- Streak Display -->
+                <div class="streak-nav-display" id="streakNavDisplay">
+                    <span class="streak-icon">🔥</span>
+                    <span class="streak-count" id="streakNavCount">0</span>
+                    <span>day streak</span>
+                </div>
             </div>
         </nav>
 
@@ -1054,6 +1060,30 @@
                 <div style="margin-top: 10px; font-size: 0.9rem;">
                     <a href="glossary.html" style="color: var(--silver); text-decoration: none;">📖 New to hockey terms? Check the Glossary →</a>
                 </div>
+            </div>
+        </div>
+
+        <!-- Streak At Risk Banner (conditional) -->
+        <div class="streak-alert hidden" id="streakAlert">
+            <span class="streak-alert-icon">⚠️</span>
+            <div class="streak-alert-content">
+                <strong id="streakAlertTitle">Your streak is at risk!</strong>
+                <p id="streakAlertText">Complete any scenario today to keep it alive.</p>
+            </div>
+        </div>
+
+        <!-- Streak Card -->
+        <div class="streak-card" id="streakCard">
+            <div class="streak-card-main">
+                <span class="streak-card-emoji" id="streakEmoji">🔥</span>
+                <div class="streak-card-info">
+                    <h3 id="streakTitle">0 Day Streak</h3>
+                    <p id="streakSubtext">Start your first streak today!</p>
+                </div>
+            </div>
+            <div class="streak-card-record">
+                <span class="record-label">Your Record</span>
+                <span class="record-value" id="bestStreakDisplay">0 days</span>
             </div>
         </div>
 
@@ -2012,7 +2042,7 @@
             const scoreData = getScoreData(moduleNum);
             const correctCount = Object.values(scoreData.currentRun).filter(v => v === true).length;
             const total = config.total;
-            
+
             const moduleNames = {
                 1: 'Defensive Zone',
                 2: 'Faceoffs',
@@ -2021,17 +2051,38 @@
                 5: 'Forechecking',
                 6: 'D-Zone (Defensemen)'
             };
-            
-            const shareUrl = `https://hockeyiq.netlify.app/?score=${correctCount}&module=${moduleNum}&total=${total}`;
+
+            // Get current streak for share message
+            let streakCount = 0;
+            try {
+                const progress = JSON.parse(localStorage.getItem('puckAcademy_progress')) || {};
+                if (progress.streak && typeof progress.streak === 'object') {
+                    streakCount = progress.streak.count || 0;
+                }
+            } catch (e) {}
+
+            // Include streak in URL if active
+            let shareUrl = `https://hockeyiq.netlify.app/?score=${correctCount}&module=${moduleNum}&total=${total}`;
+            if (streakCount > 0) {
+                shareUrl += `&streak=${streakCount}`;
+            }
+
             let shareText = '';
 
             if (correctCount === total) {
-                shareText = `I got a PERFECT SCORE on Puck Academy's ${moduleNames[moduleNum]} training! 🏆 Think you can beat me?`;
+                shareText = `I got a PERFECT SCORE on Puck Academy's ${moduleNames[moduleNum]} training! 🏆`;
             } else if (correctCount >= total - 1) {
-                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🔥 Think you can beat me?`;
+                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🔥`;
             } else {
-                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🏒 Think you can beat me?`;
+                shareText = `I scored ${correctCount}/${total} on Puck Academy's ${moduleNames[moduleNum]} training! 🏒`;
             }
+
+            // Add streak info if active
+            if (streakCount >= 3) {
+                shareText += ` I'm on a ${streakCount} day streak!`;
+            }
+
+            shareText += ` Think you can beat me?`;
 
             const fullShareText = `${shareText}\n\n${shareUrl}`;
             
@@ -2239,12 +2290,310 @@
 
         window.addEventListener('scroll', updateActiveNavItem);
 
+        // ===== STREAK SYSTEM =====
+
+        // Milestone configurations
+        const milestoneConfigs = {
+            3: {
+                emoji: '🔥',
+                title: 'Three Days Strong!',
+                message: "You're building a real habit. Keep this going and you'll be unstoppable.",
+                color: '#FF6B35'
+            },
+            7: {
+                emoji: '📈',
+                title: 'One Week Warrior!',
+                message: "Seven days of consistency. You're not just training—you're transforming.",
+                color: '#10B981'
+            },
+            14: {
+                emoji: '💪',
+                title: 'Two Weeks Dedicated!',
+                message: "This is how elite players train. You're putting in the work that separates good from great.",
+                color: '#3B82F6'
+            },
+            30: {
+                emoji: '👑',
+                title: 'One Month Legend!',
+                message: "Thirty days. You've earned the title of dedicated player. This is a pattern that changes careers.",
+                color: '#FFD700'
+            },
+            50: {
+                emoji: '🏆',
+                title: 'Fifty Day Champion!',
+                message: "Half a hundred days. You're in the top 1% of committed players. This dedication shows in your game.",
+                color: '#9333EA'
+            },
+            100: {
+                emoji: '💎',
+                title: 'Hundred Day Legend!',
+                message: "One hundred days of hockey IQ training. You've achieved something most players only dream about.",
+                color: '#EC4899'
+            }
+        };
+
+        /**
+         * Update all streak displays on the page
+         */
+        function updateStreakDisplay() {
+            // Get streak data from localStorage (manually since this isn't a module)
+            let progress;
+            try {
+                progress = JSON.parse(localStorage.getItem('puckAcademy_progress')) || {};
+            } catch (e) {
+                progress = {};
+            }
+
+            // Handle old format or missing streak
+            let streak = progress.streak;
+            if (!streak || typeof streak === 'number') {
+                streak = { count: 0, lastTrainingDate: null, bestStreak: 0, milestonesSeen: [] };
+            }
+
+            // Check if streak should be reset (gap > 1 day)
+            let currentStreak = streak.count;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (streak.lastTrainingDate) {
+                const [year, month, day] = streak.lastTrainingDate.split('-').map(Number);
+                const lastDate = new Date(year, month - 1, day);
+                lastDate.setHours(0, 0, 0, 0);
+                const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays > 1) {
+                    currentStreak = 0; // Streak is broken
+                }
+            }
+
+            const bestStreak = streak.bestStreak || 0;
+            const trainedToday = streak.lastTrainingDate === getTodayDateISO();
+            const isAtRisk = currentStreak > 0 && !trainedToday && streak.lastTrainingDate;
+
+            // Update nav display
+            const navDisplay = document.getElementById('streakNavDisplay');
+            const navCount = document.getElementById('streakNavCount');
+            if (navDisplay && navCount) {
+                navCount.textContent = currentStreak;
+                if (currentStreak === 0) {
+                    navDisplay.classList.add('no-streak');
+                } else {
+                    navDisplay.classList.remove('no-streak');
+                }
+            }
+
+            // Update streak card
+            const streakCard = document.getElementById('streakCard');
+            const streakEmoji = document.getElementById('streakEmoji');
+            const streakTitle = document.getElementById('streakTitle');
+            const streakSubtext = document.getElementById('streakSubtext');
+            const bestStreakDisplay = document.getElementById('bestStreakDisplay');
+
+            if (streakCard) {
+                if (currentStreak === 0) {
+                    streakCard.classList.add('no-streak');
+                    streakEmoji.textContent = '🏒';
+                    streakTitle.textContent = 'Start Your Streak';
+                    streakSubtext.textContent = 'Complete any scenario to begin!';
+                } else {
+                    streakCard.classList.remove('no-streak');
+                    streakEmoji.textContent = '🔥';
+                    streakTitle.textContent = `${currentStreak} Day Streak`;
+
+                    // Dynamic subtext
+                    if (trainedToday) {
+                        streakSubtext.textContent = "✓ You've trained today. See you tomorrow!";
+                    } else if (isAtRisk) {
+                        streakSubtext.textContent = "⚠️ Train today to keep your streak alive!";
+                    } else if (currentStreak < 7) {
+                        streakSubtext.textContent = `${7 - currentStreak} more day${7 - currentStreak !== 1 ? 's' : ''} until a week streak!`;
+                    } else if (currentStreak === 7) {
+                        streakSubtext.textContent = "🎯 One week! Keep the momentum!";
+                    } else if (currentStreak < 30) {
+                        streakSubtext.textContent = `${30 - currentStreak} days until one month!`;
+                    } else {
+                        streakSubtext.textContent = "You're on fire! Keep it going! 🔥";
+                    }
+                }
+            }
+
+            if (bestStreakDisplay) {
+                bestStreakDisplay.textContent = `${bestStreak} day${bestStreak !== 1 ? 's' : ''}`;
+            }
+
+            // Update at-risk banner
+            const streakAlert = document.getElementById('streakAlert');
+            const streakAlertTitle = document.getElementById('streakAlertTitle');
+            const streakAlertText = document.getElementById('streakAlertText');
+
+            if (streakAlert) {
+                if (isAtRisk) {
+                    streakAlert.classList.remove('hidden');
+                    streakAlertTitle.textContent = `Your ${currentStreak} day streak is at risk!`;
+                    streakAlertText.textContent = 'Complete any scenario today to keep it alive.';
+                } else {
+                    streakAlert.classList.add('hidden');
+                }
+            }
+        }
+
+        /**
+         * Get today's date as ISO string (YYYY-MM-DD)
+         */
+        function getTodayDateISO() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        /**
+         * Show milestone modal for a specific day count
+         */
+        function showMilestoneModal(days) {
+            const config = milestoneConfigs[days];
+            if (!config) return;
+
+            // Get current/best streak for display
+            let progress;
+            try {
+                progress = JSON.parse(localStorage.getItem('puckAcademy_progress')) || {};
+            } catch (e) {
+                progress = {};
+            }
+            const streak = progress.streak || { count: days, bestStreak: days };
+
+            // Create modal HTML
+            const modal = document.createElement('div');
+            modal.className = 'milestone-modal';
+            modal.id = 'milestoneModal';
+            modal.innerHTML = `
+                <div class="modal-content" style="border-color: ${config.color};">
+                    <button class="modal-close" onclick="closeMilestoneModal()">×</button>
+
+                    <span class="milestone-emoji">${config.emoji}</span>
+                    <h2 class="milestone-title">${config.title}</h2>
+                    <p class="milestone-message">${config.message}</p>
+
+                    <div class="milestone-stats">
+                        <div class="milestone-stat">
+                            <span class="milestone-stat-label">Current Streak</span>
+                            <span class="milestone-stat-value">${days} days</span>
+                        </div>
+                        <div class="milestone-stat">
+                            <span class="milestone-stat-label">Best Streak</span>
+                            <span class="milestone-stat-value">${streak.bestStreak || days} days</span>
+                        </div>
+                    </div>
+
+                    <div class="milestone-actions">
+                        <button class="btn btn-primary" onclick="shareMilestone(${days})">🏒 Challenge a Friend</button>
+                        <button class="btn btn-secondary" onclick="closeMilestoneModal()">Keep Training</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            // Track in GA4
+            gtag('event', 'milestone_reached', {
+                streak_days: days,
+                milestone_title: config.title
+            });
+
+            // Mark milestone as seen
+            if (progress.streak && progress.streak.milestonesSeen) {
+                if (!progress.streak.milestonesSeen.includes(days)) {
+                    progress.streak.milestonesSeen.push(days);
+                    localStorage.setItem('puckAcademy_progress', JSON.stringify(progress));
+                }
+            }
+        }
+
+        /**
+         * Close milestone modal
+         */
+        function closeMilestoneModal() {
+            const modal = document.getElementById('milestoneModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        /**
+         * Share milestone achievement
+         */
+        function shareMilestone(days) {
+            const config = milestoneConfigs[days];
+
+            const messages = {
+                3: `I'm on a 🔥 3 day training streak on Puck Academy! Building real habits. You in?`,
+                7: `I hit a 📈 7 day training streak on Puck Academy! Think you can match me?`,
+                14: `I'm 2 weeks into my Puck Academy training streak! 💪 Consistency that changes careers.`,
+                30: `I'm a 👑 Puck Academy legend—30 consecutive days of hockey IQ training! Join me:`,
+                50: `50 days of training on Puck Academy! 🏆 I'm in the top 1% of committed players.`,
+                100: `100 DAYS on Puck Academy! 💎 One hundred days of hockey IQ training. Who's next?`
+            };
+
+            const shareUrl = `https://hockeyiq.netlify.app/?challenge=streak&days=${days}`;
+            const fullShareText = `${messages[days] || messages[7]}\n\n${shareUrl}`;
+
+            // Track in GA4
+            gtag('event', 'share_streak', {
+                streak_days: days
+            });
+
+            if (navigator.share) {
+                navigator.share({ text: fullShareText }).catch(() => copyToClipboard(fullShareText));
+            } else {
+                copyToClipboard(fullShareText);
+            }
+
+            closeMilestoneModal();
+        }
+
+        /**
+         * Check for milestone to show (called on page load)
+         */
+        function checkForMilestoneOnLoad() {
+            let progress;
+            try {
+                progress = JSON.parse(localStorage.getItem('puckAcademy_progress')) || {};
+            } catch (e) {
+                return;
+            }
+
+            const streak = progress.streak;
+            if (!streak || typeof streak === 'number') return;
+
+            const milestones = [3, 7, 14, 30, 50, 100];
+            const seen = streak.milestonesSeen || [];
+
+            for (const days of milestones) {
+                if (streak.count === days && !seen.includes(days)) {
+                    // Show this milestone after a short delay
+                    setTimeout(() => showMilestoneModal(days), 500);
+                    break;
+                }
+            }
+        }
+
+        // Expose functions globally for onclick handlers
+        window.closeMilestoneModal = closeMilestoneModal;
+        window.shareMilestone = shareMilestone;
+
         // Initialize
         organizeModulesByPosition();
         updateDisplay();
         updateNavStatus();
         updateReviewIntroLinks();
         updateActiveNavItem();
+        updateStreakDisplay();
+        checkForMilestoneOnLoad();
+
+        // Update streak display when window regains focus (user returns to tab)
+        window.addEventListener('focus', updateStreakDisplay);
 
         // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {

@@ -444,6 +444,7 @@ puck-academy-iq-app/
 - **Mobile responsive:** Works on phone/tablet
 - **GitHub → Netlify pipeline:** Auto-deploy on push
 - **User accounts (Stage 1):** Supabase auth with magic link email, progress syncs to server in real-time
+- **Streak system:** Daily training streaks with nav counter, hero card, at-risk banner, milestone celebrations (3/7/14/30/50/100 days)
 
 ### What's Partially Working ⚠️
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
@@ -459,7 +460,7 @@ puck-academy-iq-app/
 - Google OAuth for sign-in (magic link works, Google requires setup)
 - Branded auth emails (custom SMTP + email templates in Supabase)
 - Assessment/testing functionality
-- Streak/gamification features
+- ~~Streak/gamification features~~ ✅ **DONE** (daily streaks, milestones)
 - Coach/parent dashboards
 - Payment/subscription system (spec complete, Stage 2 pending)
 
@@ -692,6 +693,53 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 30, 2026 - Streak System Implementation
+
+**Added daily training streak system to improve retention:**
+
+Based on beta feedback that users "try it, like it, but don't return," implemented a Duolingo-style streak system to create habit formation and loss aversion.
+
+**Core Features:**
+- Track consecutive days of training (complete any scenario to maintain streak)
+- Streak counter displayed in sticky nav bar (🔥 X day streak)
+- Streak hero card below coach intro showing current streak and personal best
+- "At risk" banner when user has active streak but hasn't trained today
+- Milestone celebration modals at 3, 7, 14, 30, 50, and 100 days
+- Streak data syncs to Supabase for logged-in users
+
+**Technical Implementation:**
+- Added 10+ new streak methods to `js/storage.js`:
+  - `updateStreak()`, `getStreakCount()`, `getBestStreak()`, `trainedToday()`, `isStreakAtRisk()`
+  - `checkMilestone()`, `markMilestoneAsSeen()`, `getTodayDateISO()`, `getDaysSinceDate()`
+- `saveScenarioScore()` now calls `updateStreak()` automatically
+- Streak data stored in `puckAcademy_progress.streak` object:
+  ```javascript
+  streak: {
+    count: 3,
+    lastTrainingDate: "2026-01-30",
+    bestStreak: 7,
+    milestonesSeen: [3, 7]
+  }
+  ```
+
+**UI Changes:**
+- `training.html`: Added streak nav display, hero card, at-risk banner, milestone modal system
+- `styles/main.css`: Added ~150 lines of streak-related CSS (display, animations, modals)
+- `index.html`: Added streak challenge banner for `?challenge=streak&days=X` links
+
+**Share Integration:**
+- Share messages now include streak info if user has 3+ day streak
+- URL includes `&streak=X` parameter
+- Landing page shows friend's streak in challenge banner
+
+**Files Modified:**
+- `js/storage.js` — Core streak logic
+- `training.html` — Streak UI and JavaScript
+- `styles/main.css` — Streak styling
+- `index.html` — Streak challenge banner
+
+---
 
 ### January 29, 2026 - Glossary, Bug Fixes, and UX Improvements
 

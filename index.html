@@ -238,6 +238,52 @@
             text-decoration: underline;
         }
 
+        /* Streak Challenge Banner */
+        .streak-challenge-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(255, 107, 53, 0.05) 100%);
+            border: 2px solid #FF6B35;
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            animation: streak-pulse 2s infinite;
+        }
+
+        .streak-challenge-banner.visible {
+            display: block;
+        }
+
+        @keyframes streak-pulse {
+            0%, 100% { border-color: #FF6B35; box-shadow: 0 0 20px rgba(255, 107, 53, 0.2); }
+            50% { border-color: #FF8F5F; box-shadow: 0 0 30px rgba(255, 107, 53, 0.4); }
+        }
+
+        .streak-challenge-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        .streak-challenge-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #FF6B35;
+        }
+
+        .streak-challenge-days {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--ice-blue);
+            margin: 10px 0;
+        }
+
+        .streak-challenge-text {
+            color: var(--silver);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
         @media (max-width: 700px) {
             .logo { font-size: 3rem; }
             .hero-title { font-size: 2rem; }
@@ -246,6 +292,8 @@
             .container { padding: 40px 20px; }
             .challenge-title { font-size: 1.5rem; }
             .challenge-score { font-size: 2.5rem; }
+            .streak-challenge-title { font-size: 1.5rem; }
+            .streak-challenge-days { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -262,6 +310,15 @@
             <p class="challenge-text" id="challengeText">Your friend got a perfect score. Can you beat them?</p>
             <br>
             <a href="onboarding.html" class="btn btn-challenge">Accept Challenge →</a>
+        </div>
+
+        <!-- Streak Challenge Banner (shown when ?challenge=streak parameter present) -->
+        <div class="streak-challenge-banner" id="streakChallengeBanner">
+            <div class="streak-challenge-icon">🔥</div>
+            <h2 class="streak-challenge-title">Streak Challenge!</h2>
+            <div class="streak-challenge-days" id="streakChallengeDays">7 Day Streak</div>
+            <p class="streak-challenge-text" id="streakChallengeText">Your friend is on a training streak. Can you build one too?</p>
+            <a href="onboarding.html" class="btn btn-challenge">Start Your Streak →</a>
         </div>
 
         <div class="hero-section">
@@ -307,6 +364,8 @@
         const score = urlParams.get('score');
         const moduleNum = urlParams.get('module');
         const total = urlParams.get('total');
+        const challengeType = urlParams.get('challenge');
+        const streakDays = urlParams.get('days');
 
         const moduleNames = {
             1: 'Defensive Zone',
@@ -317,7 +376,30 @@
             6: 'D-Zone (Defensemen)'
         };
 
-        if (score !== null) {
+        // Handle streak challenge
+        if (challengeType === 'streak' && streakDays) {
+            const days = parseInt(streakDays);
+            const streakBanner = document.getElementById('streakChallengeBanner');
+            const daysDisplay = document.getElementById('streakChallengeDays');
+            const streakText = document.getElementById('streakChallengeText');
+
+            streakBanner.classList.add('visible');
+            daysDisplay.textContent = `${days} Day Streak`;
+
+            if (days >= 30) {
+                streakText.textContent = `Your friend has trained for ${days} consecutive days. That's legendary commitment. Can you match it?`;
+            } else if (days >= 14) {
+                streakText.textContent = `Your friend has trained for ${days} days straight. That's elite dedication. Think you can keep up?`;
+            } else if (days >= 7) {
+                streakText.textContent = `Your friend is on a ${days} day training streak. One week of consistency. Can you build your own?`;
+            } else {
+                streakText.textContent = `Your friend is building a training habit with a ${days} day streak. Start yours today!`;
+            }
+
+            document.getElementById('startBtn').textContent = 'Start Your Streak →';
+        }
+        // Handle score challenge
+        else if (score !== null) {
             const scoreNum = parseInt(score);
             const totalNum = total ? parseInt(total) : 7;
             const moduleName = moduleNum ? moduleNames[moduleNum] : null;
@@ -333,16 +415,23 @@
             const isPerfect = scoreNum === totalNum;
             const moduleText = moduleName ? ` on ${moduleName}` : '';
 
+            // Check if sharer also had a streak
+            const sharerStreak = urlParams.get('streak');
+            let streakNote = '';
+            if (sharerStreak && parseInt(sharerStreak) >= 3) {
+                streakNote = ` They're also on a ${sharerStreak} day training streak!`;
+            }
+
             if (isPerfect) {
                 icon.textContent = '🏆';
                 scoreDisplay.classList.add('perfect');
-                text.textContent = `Your friend got a PERFECT SCORE${moduleText}. Think you can match it?`;
+                text.textContent = `Your friend got a PERFECT SCORE${moduleText}.${streakNote} Think you can match it?`;
             } else if (scoreNum >= totalNum - 1) {
                 icon.textContent = '🔥';
-                text.textContent = `Your friend scored ${scoreNum}/${totalNum}${moduleText}. Can you beat them?`;
+                text.textContent = `Your friend scored ${scoreNum}/${totalNum}${moduleText}.${streakNote} Can you beat them?`;
             } else if (scoreNum >= Math.floor(totalNum / 2)) {
                 icon.textContent = '🏒';
-                text.textContent = `Your friend scored ${scoreNum}/${totalNum}${moduleText}. Show them how it's done!`;
+                text.textContent = `Your friend scored ${scoreNum}/${totalNum}${moduleText}.${streakNote} Show them how it's done!`;
             } else {
                 icon.textContent = '😬';
                 text.textContent = `Your friend only got ${scoreNum}/${totalNum}${moduleText}. Easy to beat, right?`;

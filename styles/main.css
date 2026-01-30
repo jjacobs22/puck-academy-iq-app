@@ -634,3 +634,314 @@ label {
     flex-direction: column;
   }
 }
+
+/* ===== STREAK SYSTEM ===== */
+
+/* Streak Display in Nav */
+.streak-nav-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(255, 107, 53, 0.15);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #FF6B35;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.streak-nav-display .streak-icon {
+  font-size: 1.1rem;
+}
+
+.streak-nav-display .streak-count {
+  font-family: var(--font-header);
+  font-size: 1.1rem;
+}
+
+.streak-nav-display.no-streak {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--silver);
+}
+
+/* Streak Hero Card */
+.streak-card {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 15px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.streak-card.no-streak {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.streak-card-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.streak-card-emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.streak-card-info h3 {
+  font-family: var(--font-header);
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  margin: 0 0 4px 0;
+  color: var(--ice-blue);
+}
+
+.streak-card-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--silver);
+}
+
+.streak-card-record {
+  text-align: right;
+}
+
+.streak-card-record .record-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--silver);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.streak-card-record .record-value {
+  font-family: var(--font-header);
+  font-size: 1.3rem;
+  color: #FF6B35;
+}
+
+@media (max-width: 500px) {
+  .streak-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .streak-card-main {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .streak-card-record {
+    text-align: center;
+  }
+}
+
+/* Streak At Risk Banner */
+.streak-alert {
+  background: linear-gradient(135deg, var(--accent-red) 0%, #8B0820 100%);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.streak-alert.hidden {
+  display: none;
+}
+
+.streak-alert-icon {
+  font-size: 1.5rem;
+}
+
+.streak-alert-content strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.streak-alert-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Milestone Modal */
+.milestone-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 22, 40, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: var(--spacing-lg);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.milestone-modal .modal-content {
+  max-width: 420px;
+  width: 100%;
+  background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+  border: 2px solid;
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  position: relative;
+}
+
+.milestone-modal .modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--silver);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.milestone-emoji {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 16px;
+  animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.milestone-title {
+  font-family: var(--font-header);
+  font-size: 2rem;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  color: var(--ice-blue);
+}
+
+.milestone-message {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--silver);
+  margin-bottom: 24px;
+}
+
+.milestone-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.milestone-stat {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 14px;
+  border-radius: 10px;
+}
+
+.milestone-stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--silver);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.milestone-stat-value {
+  font-family: var(--font-header);
+  font-size: 1.5rem;
+  color: var(--ice-blue);
+}
+
+.milestone-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.milestone-actions .btn {
+  width: 100%;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Toast Notifications */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-blue);
+  color: var(--ice-blue);
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.9rem;
+  z-index: 3000;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: var(--shadow-lg);
+}
+
+.toast.success {
+  border-color: var(--success-green);
+  background: rgba(16, 185, 129, 0.15);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
