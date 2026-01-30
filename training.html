@@ -2296,11 +2296,10 @@
                 }
             } catch (e) {}
 
-            // Include streak in URL if active
-            let shareUrl = `https://hockeyiq.netlify.app/?score=${correctCount}&module=${moduleNum}&total=${total}`;
-            if (streakCount > 0) {
-                shareUrl += `&streak=${streakCount}`;
-            }
+            // Use static share page for rich OG previews (page redirects to main app)
+            let shareUrl = `https://hockeyiq.netlify.app/share/${correctCount}.html`;
+            // Note: module and streak info is in the share text, not the URL
+            // The static page has OG tags and redirects to /?score=X
 
             let shareText = '';
 

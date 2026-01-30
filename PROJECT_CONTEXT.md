@@ -694,6 +694,41 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - Score History & Progress Tracking
+
+**Added score history tracking for improvement visualization:**
+- Each module attempt is now saved with timestamp to localStorage
+- New "Your Progress" section on training.html shows first vs latest scores
+- Users can track improvement over time (e.g., "First: 4/7 → Latest: 6/7")
+- Designed for future percentile comparisons by age/level as data accumulates
+
+**Supabase sync for score history:**
+- Added `saveScoreAttempt()` function to `js/supabase.js`
+- Every completed module attempt syncs to Supabase `scores` table
+- Enables cross-device progress tracking for logged-in users
+- Added `getScoreHistoryFromServer()` for retrieving past attempts
+
+**Files modified:**
+- `training.html` — Added score history functions and "Your Progress" UI
+- `js/supabase.js` — Added saveScoreAttempt and getScoreHistoryFromServer functions
+
+---
+
+### January 30, 2026 - Admin Dashboard Data Enhancements
+
+**Added new user data columns to admin dashboard:**
+- Name column — displays user's first name from profile
+- Age column — calculated from birth_year field
+- Attempts column — shows total module attempts per user
+
+**New "Module Attempts" scorecard:**
+- Shows total number of module attempts across all users
+- Helps track engagement depth beyond just user signups
+
+**Files modified:** `admin.html`
+
+---
+
 ### January 30, 2026 - Streamlined Onboarding → Assessment
 
 **Removed redundant onboarding flow:**

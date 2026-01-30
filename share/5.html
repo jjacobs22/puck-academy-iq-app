@@ -3,29 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I Got a Perfect Score! | Puck Academy</title>
+    <title>⭐ 5/7 on Hockey IQ Challenge</title>
     
-    <!-- Open Graph meta tags -->
-    <meta property="og:title" content="🏆 I Got a Perfect Score on Hockey IQ!">
-    <meta property="og:description" content="I scored 5/5 on the Puck Academy Hockey IQ test. Think you can match my perfect score? Take the challenge!">
+    <!-- Open Graph meta tags for rich link previews -->
+    <meta property="og:title" content="⭐ 5/7 on Hockey IQ Challenge">
+    <meta property="og:description" content="I scored 5/7 on the Hockey IQ challenge. Can you do better? Test your hockey brain.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hockeyiq.netlify.app/share/5">
-    <meta property="og:image" content="https://hockeyiq.netlify.app/icons/icon-512.png">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
+    <meta property="og:url" content="https://hockeyiq.netlify.app/share/5.html">
+    <meta property="og:image" content="https://hockeyiq.netlify.app/share/score-5.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Puck Academy">
     
     <!-- Twitter Card meta tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="🏆 I Got a Perfect Score on Hockey IQ!">
-    <meta name="twitter:description" content="I scored 5/5 on the Puck Academy Hockey IQ test. Think you can match my perfect score? Take the challenge!">
-    <meta name="twitter:image" content="https://hockeyiq.netlify.app/icons/icon-512.png">
+    <meta name="twitter:title" content="⭐ 5/7 on Hockey IQ Challenge">
+    <meta name="twitter:description" content="I scored 5/7 on the Hockey IQ challenge. Can you do better? Test your hockey brain.">
+    <meta name="twitter:image" content="https://hockeyiq.netlify.app/share/score-5.png">
     
-    <!-- Redirect to main page with score parameter -->
-    <meta http-equiv="refresh" content="0;url=/?score=5">
-    <link rel="canonical" href="https://hockeyiq.netlify.app/?score=5">
+    <!-- Redirect to main app with score parameter -->
+    <meta http-equiv="refresh" content="0;url=/?score=5&total=7">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0A1628;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .loading {
+            padding: 40px;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #A8B2BE;
+            font-size: 18px;
+        }
+        a {
+            color: #C8102E;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecting to challenge...</p>
-    <script>window.location.replace('/?score=5');</script>
+    <div class="loading">
+        <h1>5/7</h1>
+        <p>Loading Hockey IQ Challenge...</p>
+        <p><a href="/?score=5&total=7">Click here if not redirected</a></p>
+    </div>
+    
+    <script>
+        // JavaScript redirect as backup
+        window.location.href = "/?score=5&total=7";
+    </script>
 </body>
 </html>
