@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 28, 2026  
+**Last Updated:** January 30, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -693,6 +693,43 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### January 30, 2026 - Auth UI Improvements & Admin Dashboard
+
+**Improved logged-in user experience in header:**
+- Moved auth UI into header area for better visibility
+- Added prominent "Sign In" button (styled, not just a link)
+- Shows user email + "Sign Out" button when logged in
+- Added welcome toast notification for returning users ("Welcome back! Your progress is synced.")
+- Toast auto-hides after 3 seconds with fade animation
+
+**Created admin dashboard (`admin.html`):**
+- Real-time analytics dashboard querying Supabase directly
+- Scorecards: Total users, active today, active this week, scenarios completed, avg accuracy, avg streak
+- Module performance table: started vs completed counts with completion percentage
+- Score distribution visualization
+- Recent users list with join dates
+- Top streakers leaderboard
+- Full user table with email, position, level, scenarios, accuracy, streak, join date
+- Requires login to view (any authenticated user for now, can add admin role check later)
+- Auto-refresh button to pull latest data
+
+**Files Modified:**
+- `training.html` — New header auth UI, welcome toast, updated CSS and JS
+- `PROJECT_CONTEXT.md` — This changelog entry
+
+**Files Created:**
+- `admin.html` — Full admin analytics dashboard
+
+---
+
+### January 30, 2026 - Diagram Label Fix
+
+**Fixed YOUR ZONE label position in intro diagram:**
+- Moved the "YOUR ZONE" text label in `hockey-iq-diagram.html` from inside the highlighted zone to below it
+- Improves visual clarity so the label doesn't overlap with the zone indicator
+
+---
 
 ### January 30, 2026 - Streak System Implementation
 
