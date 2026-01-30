@@ -145,13 +145,15 @@ export function showAuthModal(options = {}) {
             `;
             messageEl.className = 'auth-message success';
             form.style.display = 'none';
-            googleBtn.style.display = 'none';
-            modal.querySelector('.auth-divider').style.display = 'none';
+            // Hide optional elements if they exist
+            if (googleBtn) googleBtn.style.display = 'none';
+            const divider = modal.querySelector('.auth-divider');
+            if (divider) divider.style.display = 'none';
         }
     });
 
-    // Google sign in
-    googleBtn.addEventListener('click', async () => {
+    // Google sign in (only if button exists)
+    googleBtn?.addEventListener('click', async () => {
         const messageEl = document.getElementById('auth-message');
         googleBtn.disabled = true;
         googleBtn.textContent = 'Redirecting...';
