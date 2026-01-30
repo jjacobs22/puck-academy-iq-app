@@ -2268,7 +2268,7 @@
                 }
 
                 breakdownHtml.push(`
-                    <div class="module-mini-card ${statusClass}">
+                    <div class="module-mini-card ${statusClass}" onclick="scrollToModule(${moduleNum})" style="cursor: pointer;">
                         <span class="module-mini-icon">${moduleIcons[moduleNum]}</span>
                         <div class="module-mini-info">
                             <div class="module-mini-name">${moduleNames[moduleNum]}</div>
@@ -2846,12 +2846,21 @@
         function scrollToModule(moduleNum) {
             const moduleElement = document.getElementById(`module${moduleNum}`);
             if (moduleElement) {
-                const navHeight = document.getElementById('moduleNav')?.offsetHeight || 60;
-                const elementPosition = moduleElement.getBoundingClientRect().top + window.pageYOffset;
-                window.scrollTo({
-                    top: elementPosition - navHeight - 20,
-                    behavior: 'smooth'
+                // Expand the module (collapse others)
+                document.querySelectorAll('.module-section').forEach(section => {
+                    section.classList.remove('expanded');
                 });
+                moduleElement.classList.add('expanded');
+
+                // Scroll to it
+                setTimeout(() => {
+                    const navHeight = document.getElementById('moduleNav')?.offsetHeight || 60;
+                    const elementPosition = moduleElement.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({
+                        top: elementPosition - navHeight - 20,
+                        behavior: 'smooth'
+                    });
+                }, 100);
             }
         }
 
