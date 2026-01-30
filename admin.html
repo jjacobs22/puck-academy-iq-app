@@ -329,6 +329,8 @@
         .auth-required {
             text-align: center;
             padding: 60px 20px;
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         .auth-required h2 {
@@ -340,6 +342,83 @@
         .auth-required p {
             color: var(--silver);
             margin-bottom: 20px;
+        }
+
+        .auth-form {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .auth-form input::placeholder {
+            color: var(--silver);
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .auth-form button:hover {
+            background: #a50d26;
+        }
+
+        .auth-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .auth-message {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .auth-message.success {
+            background: rgba(45, 122, 62, 0.2);
+            color: #4ade80;
+        }
+
+        .auth-message.error {
+            background: rgba(200, 16, 46, 0.2);
+            color: #f87171;
+        }
+
+        .back-link {
+            color: var(--silver);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: white;
         }
     </style>
 </head>
@@ -359,9 +438,16 @@
 
         <!-- Auth Check -->
         <div id="authRequired" class="auth-required" style="display: none;">
-            <h2>Admin Access Required</h2>
-            <p>Sign in with an admin account to view the dashboard.</p>
-            <a href="/training.html" class="refresh-btn" style="text-decoration: none;">Back to Training</a>
+            <h2>🔒 Admin Access Required</h2>
+            <p>Sign in with your email to view the dashboard.</p>
+
+            <div class="auth-form">
+                <input type="email" id="adminEmail" placeholder="Enter your email" autocomplete="email">
+                <button id="signInBtn" onclick="sendMagicLink()">Send Sign-In Link</button>
+                <div id="authMessage" class="auth-message" style="display: none;"></div>
+            </div>
+
+            <a href="/training.html" class="back-link">← Back to Training</a>
         </div>
 
         <!-- Loading State -->
@@ -782,8 +868,69 @@
             }
         }
 
-        // Expose refresh function
+        // Send magic link for sign-in
+        async function sendMagicLink() {
+            const emailInput = document.getElementById('adminEmail');
+            const signInBtn = document.getElementById('signInBtn');
+            const authMessage = document.getElementById('authMessage');
+
+            const email = emailInput.value.trim();
+
+            if (!email || !email.includes('@')) {
+                authMessage.textContent = 'Please enter a valid email address.';
+                authMessage.className = 'auth-message error';
+                authMessage.style.display = 'block';
+                return;
+            }
+
+            signInBtn.disabled = true;
+            signInBtn.textContent = 'Sending...';
+
+            try {
+                const { error } = await supabase.auth.signInWithOtp({
+                    email: email,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/admin.html'
+                    }
+                });
+
+                if (error) throw error;
+
+                authMessage.textContent = '✓ Check your email for the sign-in link!';
+                authMessage.className = 'auth-message success';
+                authMessage.style.display = 'block';
+                signInBtn.textContent = 'Link Sent!';
+
+            } catch (error) {
+                console.error('Auth error:', error);
+                authMessage.textContent = 'Error sending link. Please try again.';
+                authMessage.className = 'auth-message error';
+                authMessage.style.display = 'block';
+                signInBtn.disabled = false;
+                signInBtn.textContent = 'Send Sign-In Link';
+            }
+        }
+
+        // Handle Enter key in email input
+        document.getElementById('adminEmail')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMagicLink();
+            }
+        });
+
+        // Expose functions
         window.loadDashboard = loadDashboard;
+        window.sendMagicLink = sendMagicLink;
+
+        // Listen for auth state changes (handles magic link callback)
+        supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth state changed:', event);
+            if (event === 'SIGNED_IN' && session) {
+                // User just signed in, show the dashboard
+                authRequired.style.display = 'none';
+                loadDashboard();
+            }
+        });
 
         // Initialize
         checkAuth();
