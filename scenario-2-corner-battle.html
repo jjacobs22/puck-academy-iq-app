@@ -502,6 +502,11 @@
         // Call on page load
         updateProgressDisplay();
 
+        const feedback = document.getElementById('feedback');
+        const feedbackTitle = document.getElementById('feedbackTitle');
+        const feedbackText = document.getElementById('feedbackText');
+        let answered = false;
+
         // ====== REVIEW MODE ======
         function checkReviewMode() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -528,14 +533,11 @@
                 }
             });
 
-            const feedback = document.getElementById('feedback');
             if (feedback) {
                 feedback.classList.add('active', wasCorrect ? 'correct' : 'incorrect');
             }
 
-            // Show review banner
             const reviewBanner = document.createElement('div');
-            reviewBanner.className = 'review-banner';
             reviewBanner.innerHTML = '📖 Review Mode - Your answer is locked';
             reviewBanner.style.cssText = 'background: rgba(59, 130, 246, 0.2); border: 1px solid #3B82F6; color: #93C5FD; padding: 12px 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-weight: 500;';
             
@@ -546,11 +548,6 @@
         }
 
         setTimeout(checkReviewMode, 100);
-
-        const feedback = document.getElementById('feedback');
-        const feedbackTitle = document.getElementById('feedbackTitle');
-        const feedbackText = document.getElementById('feedbackText');
-        let answered = false;
 
         function showFeedbackDiagram() {
             document.getElementById('coverageZone').classList.add('visible');
