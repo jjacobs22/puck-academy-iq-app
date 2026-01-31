@@ -1,6 +1,6 @@
 /**
  * Auth Modal Component
- * Shows sign up / sign in modal for creating accounts
+ * Unified magic link auth - works for both new and existing users
  */
 
 import { signInWithMagicLink, signInWithGoogle } from './supabase.js';
@@ -8,18 +8,15 @@ import { signInWithMagicLink, signInWithGoogle } from './supabase.js';
 /**
  * Show the auth modal
  * @param {Object} options - Configuration options
- * @param {string} options.mode - 'signup' or 'signin'
  * @param {boolean} options.required - If true, modal can't be dismissed (for gating content)
  * @param {Function} options.onSuccess - Callback after successful auth
  */
 export function showAuthModal(options = {}) {
-    const { mode = 'signup', required = false, onSuccess } = options;
+    const { required = false, onSuccess } = options;
 
     // Remove existing modal if present
     const existing = document.getElementById('auth-modal');
     if (existing) existing.remove();
-
-    const isSignup = mode === 'signup';
 
     const modal = document.createElement('div');
     modal.id = 'auth-modal';
@@ -30,16 +27,14 @@ export function showAuthModal(options = {}) {
             <div class="auth-modal-content">
                 ${!required ? '<button class="auth-modal-close" aria-label="Close">&times;</button>' : ''}
 
-                <h2>${required ? 'Create an Account to Start' : (isSignup ? 'Create Your Free Account' : 'Welcome Back')}</h2>
+                <h2>${required ? 'Enter Your Email to Start' : 'Continue with Email'}</h2>
                 <p class="auth-subtitle">
                     ${required
-                        ? 'Quick signup — just enter your email to begin training.'
-                        : (isSignup
-                            ? 'Save your progress across all your devices.'
-                            : 'Sign in to continue your training.')}
+                        ? 'We\'ll send you a magic link — no password needed.'
+                        : 'Works for new and existing accounts.'}
                 </p>
 
-                ${(isSignup || required) ? `
+                ${required ? `
                 <div class="auth-benefits">
                     <div class="auth-benefit">✓ Save your progress permanently</div>
                     <div class="auth-benefit">✓ Track scores across all modules</div>
@@ -56,32 +51,11 @@ export function showAuthModal(options = {}) {
                         autocomplete="email"
                     >
                     <button type="submit" class="btn-primary auth-btn">
-                        ${isSignup ? 'Create Account' : 'Send Magic Link'}
+                        Send Magic Link
                     </button>
                 </form>
 
-                <!-- Google OAuth - TODO: Enable when configured in Supabase -->
-                <!-- 
-                <div class="auth-divider">
-                    <span>or</span>
-                </div>
-
-                <button id="google-signin" class="btn-google">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
-                        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
-                        <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-                        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-                    </svg>
-                    Continue with Google
-                </button>
-                -->
-
-                <p class="auth-footer">
-                    ${isSignup 
-                        ? `Already have an account? <a href="#" id="switch-to-signin">Sign in</a>` 
-                        : `Don't have an account? <a href="#" id="switch-to-signup">Sign up</a>`}
-                </p>
+                <p class="auth-hint">No password needed — just click the link in your email.</p>
 
                 <div id="auth-message" class="auth-message"></div>
             </div>
@@ -97,8 +71,6 @@ export function showAuthModal(options = {}) {
     const closeBtn = modal.querySelector('.auth-modal-close');
     const overlay = modal.querySelector('.auth-modal-overlay');
     const form = modal.querySelector('#magic-link-form');
-    const googleBtn = modal.querySelector('#google-signin'); // Currently disabled
-    const switchLink = modal.querySelector('#switch-to-signin, #switch-to-signup');
 
     // Only allow closing if not required
     if (!required) {
@@ -124,6 +96,7 @@ export function showAuthModal(options = {}) {
         const email = document.getElementById('auth-email').value;
         const messageEl = document.getElementById('auth-message');
         const submitBtn = form.querySelector('button[type="submit"]');
+        const hintEl = modal.querySelector('.auth-hint');
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
@@ -136,58 +109,18 @@ export function showAuthModal(options = {}) {
             messageEl.textContent = error.message;
             messageEl.className = 'auth-message error';
             submitBtn.disabled = false;
-            submitBtn.textContent = isSignup ? 'Create Account' : 'Send Magic Link';
+            submitBtn.textContent = 'Send Magic Link';
         } else {
             messageEl.innerHTML = `
                 <strong>Check your email!</strong><br>
                 We sent a magic link to <strong>${email}</strong>.<br>
-                Click it to ${isSignup ? 'create your account' : 'sign in'}.
+                Click it to continue.
             `;
             messageEl.className = 'auth-message success';
             form.style.display = 'none';
-            // Hide optional elements if they exist
-            if (googleBtn) googleBtn.style.display = 'none';
-            const divider = modal.querySelector('.auth-divider');
-            if (divider) divider.style.display = 'none';
+            if (hintEl) hintEl.style.display = 'none';
         }
     });
-
-    // Google sign in (only if button exists)
-    googleBtn?.addEventListener('click', async () => {
-        const messageEl = document.getElementById('auth-message');
-        googleBtn.disabled = true;
-        googleBtn.textContent = 'Redirecting...';
-
-        const { error } = await signInWithGoogle();
-
-        if (error) {
-            messageEl.textContent = error.message;
-            messageEl.className = 'auth-message error';
-            googleBtn.disabled = false;
-            googleBtn.innerHTML = `
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                    <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
-                    <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
-                    <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-                    <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-                </svg>
-                Continue with Google
-            `;
-        }
-    });
-
-    // Switch between signup/signin
-    if (switchLink) {
-        switchLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.remove();
-            showAuthModal({
-                mode: isSignup ? 'signin' : 'signup',
-                required,
-                onSuccess
-            });
-        });
-    }
 
     // Focus email input
     setTimeout(() => {
@@ -444,6 +377,14 @@ function injectAuthStyles() {
             background: rgba(239, 68, 68, 0.15);
             color: #ef4444;
             border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .auth-hint {
+            text-align: center;
+            color: #A8B2BE;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            margin-bottom: 0;
         }
 
         @media (max-width: 480px) {
