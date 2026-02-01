@@ -465,12 +465,11 @@
 
     <script type="module">
         // Import with fallbacks
-        let Storage, Analytics;
+        let Storage;
         try {
             const storageModule = await import('./js/storage.js');
             Storage = storageModule.Storage;
         } catch (e) {
-            console.log('Storage module not loaded:', e);
             Storage = { getProgress: () => null };
         }
 
@@ -546,16 +545,10 @@ ${playerContext ? `
         };
 
         window.submitMessage = async function() {
-            console.log('submitMessage called');
             const textarea = document.getElementById('userMessage');
-            console.log('textarea:', textarea);
             const message = textarea.value.trim();
-            console.log('message:', message);
 
-            if (!message) {
-                console.log('No message, returning');
-                return;
-            }
+            if (!message) return;
 
             // Track the event
             trackEvent('coach_office_message', {
@@ -686,9 +679,7 @@ ${playerContext ? `
         }
 
         async function getCoachResponse(userMessage) {
-            console.log('getCoachResponse called with:', userMessage);
             try {
-                console.log('Fetching from API...');
                 const response = await fetch('/.netlify/functions/coach', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -698,15 +689,11 @@ ${playerContext ? `
                     })
                 });
 
-                console.log('API response status:', response.status);
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('API error:', errorText);
-                    throw new Error('API request failed: ' + errorText);
+                    throw new Error('API request failed');
                 }
 
                 const data = await response.json();
-                console.log('API response data:', data);
                 return data.response;
             } catch (error) {
                 console.error('Error getting coach response:', error);
@@ -731,12 +718,10 @@ In the meantime, check out the training modules — they cover a lot of common s
             }
         });
 
-        // Also attach click handler directly (backup for onclick)
+        // Attach click handler
         document.getElementById('submitBtn').addEventListener('click', () => {
             window.submitMessage();
         });
-
-        console.log('Coach Office initialized successfully');
     </script>
 </body>
 </html>
