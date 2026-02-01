@@ -547,10 +547,16 @@ ${playerContext ? `
         };
 
         window.submitMessage = async function() {
+            console.log('submitMessage called');
             const textarea = document.getElementById('userMessage');
+            console.log('textarea:', textarea);
             const message = textarea.value.trim();
+            console.log('message:', message);
 
-            if (!message) return;
+            if (!message) {
+                console.log('No message, returning');
+                return;
+            }
 
             // Track the event
             Analytics.track('coach_office_message', {
@@ -681,7 +687,9 @@ ${playerContext ? `
         }
 
         async function getCoachResponse(userMessage) {
+            console.log('getCoachResponse called with:', userMessage);
             try {
+                console.log('Fetching from API...');
                 const response = await fetch('/.netlify/functions/coach', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -691,11 +699,15 @@ ${playerContext ? `
                     })
                 });
 
+                console.log('API response status:', response.status);
                 if (!response.ok) {
-                    throw new Error('API request failed');
+                    const errorText = await response.text();
+                    console.error('API error:', errorText);
+                    throw new Error('API request failed: ' + errorText);
                 }
 
                 const data = await response.json();
+                console.log('API response data:', data);
                 return data.response;
             } catch (error) {
                 console.error('Error getting coach response:', error);
