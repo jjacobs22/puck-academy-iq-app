@@ -614,7 +614,8 @@
                 if (profilesError) throw profilesError;
                 if (progressError) throw progressError;
                 if (scoresError) throw scoresError;
-                // Coach conversations table might not exist yet, that's okay
+                if (coachError) console.log('Coach conversations error:', coachError.message);
+                console.log('Coach conversations data:', coachConversations);
 
                 // Process and display data
                 displayDashboard(profiles || [], progress || [], scores || [], coachConversations || []);
