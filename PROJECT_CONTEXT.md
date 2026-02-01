@@ -694,6 +694,43 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - UX Improvements & Bug Fixes
+
+**Completed module UX:**
+- Completed modules show green score badge (e.g., "✓ 5/7") in collapsed state
+- Progress bar hidden for completed modules (badge shows score instead)
+- "Try Again" button inside completed modules to reset and retake
+- Completed modules collapse by default, expandable to review answers
+
+**Review mode for scenarios:**
+- Clicking completed scenarios opens in review mode
+- Shows "📖 Review Mode - Your answer is locked" banner
+- Correct answer highlighted, all options disabled
+- Users can review but not change their answer
+
+**Your Progress section fixes:**
+- Now shows "In progress" status for partially completed modules
+- Fixed "Not started yet" showing incorrectly for started modules
+- Module cards are now clickable - scrolls to and expands that module
+
+**Unified auth flow:**
+- Removed signup/signin distinction - single "Continue with Email" flow
+- Works for both new and existing accounts
+- Clearer messaging: "No password needed — just click the link in your email"
+
+**JavaScript fixes:**
+- Fixed variable ordering in review mode (answered declared before use)
+- Fixed module header click not working (pointer-events on children)
+- Added debug logging for module completion detection
+
+**Files modified:**
+- `training.html` — accordion UX, progress section, clickable cards
+- `js/auth-modal.js` — unified auth flow
+- `js/supabase.js` — debug logging for saveScoreAttempt
+- Module 1 scenario files (7 files) — review mode, variable ordering fix
+
+---
+
 ### January 30, 2026 - Collapsible Accordion Modules
 
 **Redesigned module/scenario hierarchy for clarity:**
