@@ -198,6 +198,34 @@
             box-shadow: 0 10px 30px rgba(200, 16, 46, 0.3);
         }
 
+        .secondary-cta {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cta-divider {
+            color: var(--silver);
+            font-size: 14px;
+        }
+
+        .coach-cta-link {
+            color: var(--ice-blue);
+            text-decoration: none;
+            font-size: 16px;
+            padding: 12px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .coach-cta-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
         .btn-challenge {
             background: linear-gradient(135deg, var(--accent-red) 0%, #a50d26 100%);
             color: white;
@@ -415,6 +443,11 @@
             </div>
 
             <a href="assessment.html" class="btn btn-primary" id="startBtn">Start Training →</a>
+
+            <div class="secondary-cta">
+                <span class="cta-divider">or</span>
+                <a href="coach.html" class="coach-cta-link">💬 Got a question? Talk to Coach</a>
+            </div>
         </div>
 
         <div class="footer">

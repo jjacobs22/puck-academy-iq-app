@@ -1042,6 +1042,15 @@
             background: var(--success-green);
         }
 
+        .module-nav-item.coach-nav-item {
+            background: rgba(200, 16, 46, 0.15);
+            border-color: rgba(200, 16, 46, 0.4);
+        }
+
+        .module-nav-item.coach-nav-item:hover {
+            background: rgba(200, 16, 46, 0.25);
+        }
+
         .module-nav-icon {
             font-size: 1rem;
         }
@@ -1359,6 +1368,10 @@
                     <span class="module-nav-icon">🏒</span>
                     <span>M6: D-Men</span>
                     <span class="nav-status" id="navStatus6"></span>
+                </a>
+                <a href="coach.html" class="module-nav-item coach-nav-item">
+                    <span class="module-nav-icon">💬</span>
+                    <span>Ask Coach</span>
                 </a>
                 <!-- Streak Display -->
                 <div class="streak-nav-display" id="streakNavDisplay">

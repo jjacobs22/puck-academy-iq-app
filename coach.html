@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach's Office | Puck Academy</title>
+    <meta name="description" content="Got questions about your kid's hockey development? Talk to Coach.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Coach's Office | Puck Academy">
+    <meta property="og:description" content="Got questions about your kid's hockey development? Talk to Coach.">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0N3XTSRTM2');
+    </script>
+
+    <style>
+        /* Coach's Office specific styles */
+        .coach-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--silver);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 30px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--ice-blue);
+        }
+
+        .coach-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .coach-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--ice-blue);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .intro-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .intro-card p {
+            color: var(--ice-blue);
+            line-height: 1.7;
+            margin: 0 0 16px 0;
+        }
+
+        .intro-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .intro-card .subtle {
+            color: var(--silver);
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        /* Chat interface */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .input-section label {
+            display: block;
+            color: var(--ice-blue);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .input-section textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--ice-blue);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .input-section textarea::placeholder {
+            color: var(--silver);
+            opacity: 0.7;
+        }
+
+        .input-section textarea:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            margin-top: 16px;
+            padding: 16px 24px;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .submit-btn:hover {
+            background: #a00d25;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            background: var(--silver);
+            cursor: not-allowed;
+        }
+
+        /* Conversation display */
+        .conversation {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .conversation.active {
+            display: flex;
+        }
+
+        .message {
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .message.user {
+            background: rgba(200, 16, 46, 0.15);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+        }
+
+        .message.coach {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-header {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: var(--silver);
+        }
+
+        .message.user .message-header {
+            color: var(--accent-red);
+        }
+
+        .message-content {
+            color: var(--ice-blue);
+            line-height: 1.7;
+        }
+
+        .message-content p {
+            margin: 0 0 12px 0;
+        }
+
+        .message-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-content ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        .message-content li {
+            margin-bottom: 8px;
+        }
+
+        .message-content strong {
+            color: white;
+        }
+
+        /* Scenario recommendation cards */
+        .scenario-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(200, 16, 46, 0.2);
+            border: 1px solid rgba(200, 16, 46, 0.4);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 8px 4px 8px 0;
+            color: var(--ice-blue);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .scenario-link:hover {
+            background: rgba(200, 16, 46, 0.3);
+        }
+
+        /* Loading state */
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            color: var(--silver);
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--silver);
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: 0s; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+        }
+
+        /* Follow-up input */
+        .followup-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .followup-section.active {
+            display: block;
+        }
+
+        .followup-input {
+            display: flex;
+            gap: 12px;
+        }
+
+        .followup-input textarea {
+            flex: 1;
+            min-height: 60px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--ice-blue);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 14px;
+            resize: none;
+        }
+
+        .followup-input textarea:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        .followup-input button {
+            padding: 12px 20px;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* Prompt examples */
+        .prompt-examples {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .prompt-examples p {
+            font-size: 13px;
+            color: var(--silver);
+            margin-bottom: 10px;
+        }
+
+        .example-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .example-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: var(--silver);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .example-chip:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--ice-blue);
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .coach-container {
+                padding: 16px;
+            }
+
+            .coach-header h1 {
+                font-size: 2rem;
+            }
+
+            .intro-card {
+                padding: 20px;
+            }
+
+            .followup-input {
+                flex-direction: column;
+            }
+
+            .followup-input button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="coach-container">
+        <!-- Back navigation -->
+        <a href="training.html" class="back-link">
+            ← Back to Training
+        </a>
+
+        <!-- Header -->
+        <div class="coach-header">
+            <h1>💬 Coach's Office</h1>
+        </div>
+
+        <!-- Intro copy -->
+        <div class="intro-card">
+            <p><strong>Got something on your mind?</strong></p>
+            <p>Whether it's confusing feedback from your kid's coach, questions about development, or just needing to vent about hockey parent life — I'm here.</p>
+            <p class="subtle">I'm not here to replace your kid's coach. I'm here to help you make sense of what they're seeing and figure out what to actually work on.</p>
+        </div>
+
+        <!-- Chat interface -->
+        <div class="chat-container">
+            <!-- Initial input -->
+            <div class="input-section" id="initialInput">
+                <label for="userMessage">What's going on?</label>
+                <textarea
+                    id="userMessage"
+                    placeholder="Tell me what's on your mind..."
+                    rows="4"
+                ></textarea>
+
+                <div class="prompt-examples">
+                    <p>Not sure where to start? Try one of these:</p>
+                    <div class="example-chips">
+                        <span class="example-chip" onclick="useExample(this)">"Coach says he needs more compete"</span>
+                        <span class="example-chip" onclick="useExample(this)">"Not getting ice time"</span>
+                        <span class="example-chip" onclick="useExample(this)">"What to work on in offseason?"</span>
+                    </div>
+                </div>
+
+                <button class="submit-btn" id="submitBtn" onclick="submitMessage()">
+                    Talk to Coach →
+                </button>
+            </div>
+
+            <!-- Conversation display -->
+            <div class="conversation" id="conversation">
+                <!-- Messages will be inserted here -->
+            </div>
+
+            <!-- Loading indicator -->
+            <div class="loading" id="loading">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Coach is thinking...</span>
+            </div>
+
+            <!-- Follow-up input -->
+            <div class="followup-section" id="followupSection">
+                <div class="followup-input">
+                    <textarea
+                        id="followupMessage"
+                        placeholder="Follow up or ask something else..."
+                    ></textarea>
+                    <button onclick="submitFollowup()">Send →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { Storage } from './js/storage.js';
+        import { Analytics } from './js/analytics.js';
+
+        // Get player context from localStorage
+        const playerContext = Storage.getProgress();
+
+        // Conversation history for context
+        let conversationHistory = [];
+
+        // System prompt for Coach (advisory mode)
+        const SYSTEM_PROMPT = `You are "Coach" — a hockey development advisor inside Puck Academy. You help hockey parents make sense of their kid's development, understand coach feedback, and figure out what to actually work on.
+
+## YOUR ROLE
+- You're an experienced hockey mind who's seen it all — the politics, the confusing feedback, the worried parents, the kids who figured it out eventually.
+- You are NOT replacing their kid's actual coach. You help parents understand what coaches are seeing and translate it into actionable next steps.
+- You're warm, direct, and honest. No corporate speak. No generic advice. You talk like a real hockey person.
+
+## TONE
+- Empathetic but not soft — you get that hockey parenting is stressful, but you're not here to coddle.
+- Direct — say what you think, give clear recommendations.
+- Hockey-authentic — use real hockey language, but explain terms when needed.
+- Encouraging without being fake — acknowledge what's hard, but keep perspective.
+
+## HOW TO RESPOND
+1. Acknowledge what they're feeling — don't skip past the emotional part.
+2. Translate/clarify — if they got vague feedback, explain what it probably means.
+3. Give perspective — is this normal? Common at this age/level?
+4. Recommend specific actions:
+   - Questions to ask their coach
+   - Puck Academy scenarios to train (reference specific modules when relevant)
+   - Drills or focus areas
+   - Mindset shifts
+5. Keep it concise — parents are busy. Get to the point.
+
+## PUCK ACADEMY CONTENT TO RECOMMEND
+When relevant, point them to specific training:
+- Module 1: Defensive Zone (7 scenarios) — D-zone positioning, coverage, supporting D
+- Module 2: Faceoffs (7 scenarios) — reading refs, leverage, post-draw responsibility
+- Module 3: Breakouts (7 scenarios) — routes, reading pressure, support decisions
+- Module 4: Offensive Zone (7 scenarios) — net front, cycle support, finding soft ice
+- Module 5: Forechecking (8 scenarios) — F1/F2 reads, angling, pressure vs contain
+- Module 6: D-Zone for Defensemen (7 scenarios) — gap control, puck retrieval, when to pinch
+
+Frame recommendations naturally: "There's a scenario in Module 3 that covers exactly this."
+
+## PLAYER CONTEXT
+${playerContext ? `
+- Position: ${playerContext.position || 'Unknown'}
+- Level: ${playerContext.level || 'Unknown'}
+- Goals: ${playerContext.goals?.join(', ') || 'Not specified'}
+` : 'No player profile available yet.'}
+
+## WHAT NOT TO DO
+- Don't give medical advice
+- Don't trash their kid's coach (even if the parent is frustrated)
+- Don't promise outcomes ("he'll definitely make AAA")
+- Don't be generic — if you don't have enough info, ask a follow-up question
+- Don't over-explain — keep responses focused and actionable
+- Don't use bullet points excessively — write conversationally`;
+
+        // Make functions available globally
+        window.useExample = function(chip) {
+            const textarea = document.getElementById('userMessage');
+            textarea.value = chip.textContent.replace(/"/g, '');
+            textarea.focus();
+        };
+
+        window.submitMessage = async function() {
+            const textarea = document.getElementById('userMessage');
+            const message = textarea.value.trim();
+
+            if (!message) return;
+
+            // Track the event
+            Analytics.track('coach_office_message', {
+                message_length: message.length,
+                is_first_message: conversationHistory.length === 0
+            });
+
+            // Hide initial input, show conversation
+            document.getElementById('initialInput').style.display = 'none';
+            document.getElementById('conversation').classList.add('active');
+
+            // Add user message to UI
+            addMessageToUI('user', message);
+
+            // Add to history
+            conversationHistory.push({ role: 'user', content: message });
+
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+
+            // Get Coach response
+            const response = await getCoachResponse(message);
+
+            // Hide loading
+            document.getElementById('loading').classList.remove('active');
+
+            // Add coach response to UI
+            addMessageToUI('coach', response);
+
+            // Add to history
+            conversationHistory.push({ role: 'assistant', content: response });
+
+            // Show follow-up input
+            document.getElementById('followupSection').classList.add('active');
+        };
+
+        window.submitFollowup = async function() {
+            const textarea = document.getElementById('followupMessage');
+            const message = textarea.value.trim();
+
+            if (!message) return;
+
+            // Clear input
+            textarea.value = '';
+
+            // Track
+            Analytics.track('coach_office_followup', {
+                message_length: message.length,
+                conversation_length: conversationHistory.length
+            });
+
+            // Add user message to UI
+            addMessageToUI('user', message);
+
+            // Add to history
+            conversationHistory.push({ role: 'user', content: message });
+
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('followupSection').classList.remove('active');
+
+            // Get Coach response
+            const response = await getCoachResponse(message);
+
+            // Hide loading
+            document.getElementById('loading').classList.remove('active');
+
+            // Add coach response to UI
+            addMessageToUI('coach', response);
+
+            // Add to history
+            conversationHistory.push({ role: 'assistant', content: response });
+
+            // Show follow-up input again
+            document.getElementById('followupSection').classList.add('active');
+        };
+
+        function addMessageToUI(role, content) {
+            const conversation = document.getElementById('conversation');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+
+            // Format content - convert markdown-like formatting to HTML
+            const formattedContent = formatCoachResponse(content);
+
+            messageDiv.innerHTML = `
+                <div class="message-header">${role === 'user' ? 'You' : 'Coach'}</div>
+                <div class="message-content">${formattedContent}</div>
+            `;
+
+            conversation.appendChild(messageDiv);
+
+            // Scroll to bottom
+            messageDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatCoachResponse(text) {
+            // Convert line breaks to paragraphs
+            let formatted = text
+                .split('\n\n')
+                .map(p => `<p>${p}</p>`)
+                .join('');
+
+            // Convert single line breaks within paragraphs
+            formatted = formatted.replace(/\n/g, '<br>');
+
+            // Bold text between **
+            formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // Convert module references to links
+            formatted = formatted.replace(
+                /Module (\d+)(?:,? Scenario (\d+))?(?:: ([^<\n]+))?/g,
+                (match, module, scenario, title) => {
+                    const moduleNames = {
+                        '1': 'Defensive Zone',
+                        '2': 'Faceoffs',
+                        '3': 'Breakouts',
+                        '4': 'Offensive Zone',
+                        '5': 'Forechecking',
+                        '6': 'D-Zone (Defensemen)'
+                    };
+                    const displayName = title || moduleNames[module] || `Module ${module}`;
+                    return `<a href="training.html#module${module}" class="scenario-link">🏒 ${displayName}</a>`;
+                }
+            );
+
+            return formatted;
+        }
+
+        async function getCoachResponse(userMessage) {
+            // TODO: Replace with actual API call to your backend
+            // This could be a Supabase Edge Function, Netlify Function, or other serverless endpoint
+            // that calls the Anthropic API with the system prompt and conversation history
+
+            // For now, we'll use a mock response to demonstrate the UI
+            // In production, you'd do something like:
+            /*
+            const response = await fetch('/api/coach', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    systemPrompt: SYSTEM_PROMPT,
+                    messages: conversationHistory,
+                    userMessage: userMessage
+                })
+            });
+            const data = await response.json();
+            return data.response;
+            */
+
+            // Mock delay to simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Mock responses based on keywords (replace with real AI)
+            const lowerMessage = userMessage.toLowerCase();
+
+            if (lowerMessage.includes('compete') || lowerMessage.includes('effort')) {
+                return `"Compete level" is one of those coach phrases that can mean a few different things — and I get why it's frustrating when it's vague.
+
+Usually it comes down to one of these:
+
+**Puck battles** — Is he first to loose pucks? When there's a 50/50 in the corner, does he win his share?
+
+**Backchecking** — Is he finishing shifts hard, even when the puck is going the other way?
+
+**Visible effort** — Sometimes coaches want to *see* the compete. Body language matters more than you'd think at this level.
+
+The fact that he tries hard is good — but coaches sometimes want to see that effort translate into specific moments.
+
+**Here's what I'd do:**
+
+1. Ask his coach directly: "Can you give me a specific example from last game where you wanted to see more compete?"
+
+2. Have him try Module 1, Scenario 2 in Puck Academy — it's about corner battles and when to engage vs support.
+
+3. Next game, watch for this: When there's a loose puck, is he first to arrive? Or is he a half-second late?
+
+This is very fixable. Let me know what you hear back from coach.`;
+            }
+
+            if (lowerMessage.includes('ice time') || lowerMessage.includes('bench') || lowerMessage.includes('playing time')) {
+                return `Ice time is one of the most frustrating parts of hockey parenting. I hear you.
+
+A few things to consider:
+
+**At most youth levels, ice time isn't always about who's "best"** — coaches balance development, effort in practice, and sometimes team dynamics.
+
+**What I'd ask the coach (calmly, after practice, not after a game):**
+"What's one specific thing he could work on that would help him earn more ice time?"
+
+This puts the ball in the coach's court to give actionable feedback, not just "he needs to be better."
+
+**In the meantime:**
+- Is he bringing energy in practice? Coaches notice who's working.
+- Is he doing the little things right? Backchecking, being in position?
+- How's his body language when he's not playing? That matters too.
+
+**One more thing:** At 13-14, ice time shuffles constantly. Kids develop at different rates. I've seen plenty of third-liners become top players by 16 once they grow into their bodies.
+
+What did his coach say when you asked about it?`;
+            }
+
+            if (lowerMessage.includes('offseason') || lowerMessage.includes('summer') || lowerMessage.includes('work on')) {
+                return `Good question — offseason is where real development happens.
+
+For a center, I'd focus on three things:
+
+**1. Skating** — First three steps, crossovers, and backwards-to-forwards transitions. Find a good power skating program. This is the foundation of everything.
+
+**2. Hockey IQ** — This is what Puck Academy is built for. Have him work through the modules, especially:
+- Module 3: Breakouts — reading pressure, making good decisions with the puck
+- Module 5: Forechecking — F1/F2 reads, knowing when to pressure vs contain
+
+**3. Puck skills** — Stickhandling in tight spaces, receiving passes on the backhand. Doesn't need to be fancy, just functional.
+
+**What I'd avoid:** Too much specialization too early. Let him play other sports if he wants — the cross-training helps.
+
+**Structure suggestion:**
+- 2-3x/week skating or skills sessions
+- 2-3x/week Puck Academy scenarios (10-15 min each)
+- Play some 3v3 or pond hockey to keep it fun
+
+What position does he play and what level? I can get more specific.`;
+            }
+
+            // Default response
+            return `Thanks for sharing that. Let me make sure I understand what's going on.
+
+A few questions that would help me give you better advice:
+
+1. What position does your kid play, and what level (AA, AAA, etc)?
+2. How old are they?
+3. Is this feedback you're getting from their coach, or something you're observing yourself?
+
+The more context you can give me, the more specific I can be about what to actually do about it.
+
+In the meantime, if you haven't already, have your kid work through some of the Puck Academy scenarios — they're designed to build exactly the kind of hockey sense that translates to better decisions on the ice.`;
+        }
+
+        // Handle Enter key in textareas
+        document.getElementById('userMessage').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                window.submitMessage();
+            }
+        });
+
+        document.getElementById('followupMessage').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                window.submitFollowup();
+            }
+        });
+    </script>
+</body>
+</html>
