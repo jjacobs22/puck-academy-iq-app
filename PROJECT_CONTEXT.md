@@ -694,6 +694,27 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### January 30, 2026 - AI Coach Backend
+
+**Added real AI backend for Coach's Office:**
+- Created Netlify serverless function (`netlify/functions/coach.js`) to call Anthropic API
+- Updated `coach.html` to use real API instead of mock/placeholder responses
+- Added `package.json` with `@anthropic-ai/sdk` dependency for the function
+- Updated `netlify.toml` with functions directory configuration
+
+**Setup required:**
+- `ANTHROPIC_API_KEY` environment variable must be set in Netlify dashboard
+
+**Files added:**
+- `netlify/functions/coach.js`
+- `netlify/functions/package.json`
+
+**Files modified:**
+- `coach.html`
+- `netlify.toml`
+
+---
+
 ### January 30, 2026 - UX Improvements & Bug Fixes
 
 **Completed module UX:**
