@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 30, 2026  
+**Last Updated:** January 31, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -334,13 +334,23 @@ puck-academy-iq-app/
 ├── share/
 │   ├── 0.html through 7.html     # Pre-baked OG tags, redirect to /?score=X
 │
+├── # Coach's Office (AI Advisory Chat)
+├── coach.html                    # Coach's Office chat interface
+│
+├── # Netlify Functions
+├── netlify/
+│   └── functions/
+│       ├── coach.js              # Anthropic API serverless function
+│       └── package.json          # Function dependencies
+│
 ├── # Documentation & Config
 ├── PROJECT_CONTEXT.md            # This file - project documentation
 ├── REFACTOR_PLAN.md              # Technical debt cleanup plan
 ├── QUICK_START_GUIDE.md          # Step-by-step refactoring guide
 ├── og-image.html                 # Template reference for OG image design
 ├── coach-prototype.html          # Conversational coach prototype (experimental)
-├── netlify.toml                  # Netlify configuration (edge functions removed)
+├── package.json                  # Root package.json for Netlify builds
+├── netlify.toml                  # Netlify configuration (functions directory)
 └── assets/
     └── images/
         └── rink-full.png         # Hockey rink diagram asset
@@ -445,6 +455,7 @@ puck-academy-iq-app/
 - **GitHub → Netlify pipeline:** Auto-deploy on push
 - **User accounts (Stage 1):** Supabase auth with magic link email, progress syncs to server in real-time
 - **Streak system:** Daily training streaks with nav counter, hero card, at-risk banner, milestone celebrations (3/7/14/30/50/100 days)
+- **Coach's Office:** AI-powered advisory chat for hockey parents to discuss their kid's development, get recommendations, and gain perspective
 
 ### What's Partially Working ⚠️
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
@@ -694,24 +705,70 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
-### January 30, 2026 - AI Coach Backend
+### January 30, 2026 - Coach Chat Analytics
 
-**Added real AI backend for Coach's Office:**
+**Added Coach's Office usage tracking:**
+- Coach conversations now logged to Supabase `coach_conversations` table
+- Tracks user_id, message_count, and timestamp for each conversation start
+- Admin dashboard displays "Coach Chats" count in scorecards
+
+**Files modified:**
+- `coach.html` — Supabase integration, logs conversation starts
+- `admin.html` — New "Coach Chats" scorecard, fetches from coach_conversations table
+
+**Database requirement:**
+- Create `coach_conversations` table in Supabase with columns: id, user_id, message_count, created_at
+
+---
+
+### January 30, 2026 - Coach's Office Feature
+
+**Added "Coach's Office" — an AI-powered advisory chat for hockey parents:**
+
+Based on research into player development tools (Sportlogiq, Hudl have no public APIs) and the challenge of data collection from parents, pivoted to a simpler approach: a free-text chat where parents can discuss their kid's development and get helpful guidance.
+
+**Concept:**
+- "Got something on your mind?" — parents can vent, ask questions, share concerns
+- Coach is an **advisor**, not a replacement for their kid's actual coach
+- No data entry required — just natural conversation
+- Recommends curriculum, drills, and perspective based on what parents share
+
+**System Prompt:**
+- Warm, knowledgeable youth hockey development advisor persona
+- Validates emotions before giving advice
+- Recommends relevant Puck Academy modules when appropriate
+- Stays in advisory lane — never undermines the player's actual coach
+- Keeps hockey parent politics (playing time, team drama) in perspective
+
+**Integration Points:**
+- Added "💬 Coach" nav pill to `training.html` sticky navigation
+- Added secondary CTA on `index.html`: "Got a question? Talk to Coach →"
+
+**Technical Implementation:**
+- Created `coach.html` — full chat interface with conversation history
 - Created Netlify serverless function (`netlify/functions/coach.js`) to call Anthropic API
-- Updated `coach.html` to use real API instead of mock/placeholder responses
-- Added `package.json` with `@anthropic-ai/sdk` dependency for the function
-- Updated `netlify.toml` with functions directory configuration
+- Uses Claude claude-sonnet-4-20250514 model with 1024 max tokens
+- System prompt passed with each request to maintain persona
+- Graceful error handling with fallback messaging
 
 **Setup required:**
 - `ANTHROPIC_API_KEY` environment variable must be set in Netlify dashboard
 
 **Files added:**
-- `netlify/functions/coach.js`
-- `netlify/functions/package.json`
+- `coach.html` — Coach's Office chat page
+- `netlify/functions/coach.js` — Serverless API function
+- `netlify/functions/package.json` — Function dependencies
+- `package.json` (root) — For Netlify to install dependencies
 
 **Files modified:**
-- `coach.html`
-- `netlify.toml`
+- `training.html` — Added Coach nav pill
+- `index.html` — Added secondary CTA
+- `netlify.toml` — Added functions directory configuration
+
+**Bugs fixed during development:**
+- Analytics.track not a function → Used gtag directly via trackEvent function
+- Deploy failed → Added root package.json for dependency installation
+- Double message appearing → Removed duplicate onclick handler
 
 ---
 

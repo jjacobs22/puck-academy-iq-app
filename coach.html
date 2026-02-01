@@ -464,6 +464,13 @@
     </div>
 
     <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        // Supabase config (same as main app)
+        const SUPABASE_URL = 'https://hufwosdutqekeedtcfnj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_zERe940R5SamJ5gjP0Cpfw_PsjsM2D-';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         // Import with fallbacks
         let Storage;
         try {
@@ -479,6 +486,216 @@
                 gtag('event', eventName, params);
             }
         };
+
+        // Log conversation to Supabase for admin dashboard
+        async function logCoachConversation(messageCount) {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                await supabase.from('coach_conversations').insert({
+                    user_id: user?.id || null,
+                    message_count: messageCount,
+                    created_at: new Date().toISOString()
+                });
+            } catch (e) {
+                // Silent fail - don't block the chat if logging fails
+                console.log('Coach logging skipped:', e.message);
+            }
+        }
+
+        // Check if user is logged in
+        async function isAuthenticated() {
+            const { data: { user } } = await supabase.auth.getUser();
+            return !!user;
+        }
+
+        // Pending message to show after auth
+        let pendingMessage = null;
+
+        // Show auth modal for Coach's Office
+        function showCoachAuthModal() {
+            // Remove existing modal if present
+            const existing = document.getElementById('coach-auth-modal');
+            if (existing) existing.remove();
+
+            const modal = document.createElement('div');
+            modal.id = 'coach-auth-modal';
+            modal.innerHTML = `
+                <div class="auth-overlay">
+                    <div class="auth-box">
+                        <h2>Sign in to see Coach's response</h2>
+                        <p>Your message is saved. Enter your email to continue the conversation.</p>
+
+                        <form id="coach-auth-form">
+                            <input type="email" id="coach-auth-email" placeholder="Enter your email" required>
+                            <button type="submit">Send Magic Link →</button>
+                        </form>
+
+                        <p class="auth-note">No password needed — click the link in your email to continue.</p>
+                        <div id="coach-auth-message"></div>
+                    </div>
+                </div>
+            `;
+
+            // Add styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .auth-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                    padding: 20px;
+                }
+                .auth-box {
+                    background: linear-gradient(135deg, #0A1628 0%, #1a2940 100%);
+                    border: 1px solid rgba(255,255,255,0.1);
+                    border-radius: 16px;
+                    padding: 32px;
+                    max-width: 400px;
+                    width: 100%;
+                    text-align: center;
+                }
+                .auth-box h2 {
+                    font-family: 'Bebas Neue', sans-serif;
+                    font-size: 1.5rem;
+                    color: var(--ice-blue);
+                    margin: 0 0 12px;
+                }
+                .auth-box p {
+                    color: var(--silver);
+                    font-size: 14px;
+                    margin: 0 0 20px;
+                }
+                #coach-auth-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+                #coach-auth-email {
+                    padding: 14px 16px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    border-radius: 8px;
+                    background: rgba(0,0,0,0.3);
+                    color: white;
+                    font-size: 16px;
+                }
+                #coach-auth-email:focus {
+                    outline: none;
+                    border-color: var(--accent-red);
+                }
+                #coach-auth-form button {
+                    padding: 14px;
+                    background: var(--accent-red);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+                #coach-auth-form button:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+                .auth-note {
+                    color: var(--silver);
+                    font-size: 13px;
+                    margin-top: 16px !important;
+                }
+                #coach-auth-message {
+                    margin-top: 16px;
+                    padding: 12px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                }
+                #coach-auth-message:empty { display: none; }
+                #coach-auth-message.success {
+                    background: rgba(34, 197, 94, 0.15);
+                    color: #22c55e;
+                }
+                #coach-auth-message.error {
+                    background: rgba(239, 68, 68, 0.15);
+                    color: #ef4444;
+                }
+            `;
+            modal.appendChild(style);
+            document.body.appendChild(modal);
+
+            // Handle form submit
+            const form = modal.querySelector('#coach-auth-form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('coach-auth-email').value;
+                const btn = form.querySelector('button');
+                const msg = document.getElementById('coach-auth-message');
+
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+
+                const { error } = await supabase.auth.signInWithOtp({
+                    email,
+                    options: { emailRedirectTo: window.location.href }
+                });
+
+                if (error) {
+                    msg.textContent = error.message;
+                    msg.className = 'error';
+                    btn.disabled = false;
+                    btn.textContent = 'Send Magic Link →';
+                } else {
+                    msg.innerHTML = '<strong>Check your email!</strong><br>Click the link to continue your conversation with Coach.';
+                    msg.className = 'success';
+                    form.style.display = 'none';
+                    modal.querySelector('.auth-note').style.display = 'none';
+                }
+            });
+
+            // Focus email input
+            setTimeout(() => document.getElementById('coach-auth-email')?.focus(), 100);
+        }
+
+        // Listen for auth state changes (when user clicks magic link)
+        supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'SIGNED_IN' && session && pendingMessage) {
+                // Remove auth modal
+                const modal = document.getElementById('coach-auth-modal');
+                if (modal) modal.remove();
+
+                // Continue with the conversation
+                await continueConversation(pendingMessage);
+                pendingMessage = null;
+            }
+        });
+
+        // Continue conversation after auth
+        async function continueConversation(userMessage) {
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+
+            // Get Coach response
+            const response = await getCoachResponse(userMessage);
+
+            // Hide loading
+            document.getElementById('loading').classList.remove('active');
+
+            // Add coach response to UI
+            addMessageToUI('coach', response);
+
+            // Add to history
+            conversationHistory.push({ role: 'assistant', content: response });
+
+            // Log to Supabase now that user is authenticated
+            logCoachConversation(1);
+
+            // Show follow-up input
+            document.getElementById('followupSection').classList.add('active');
+        }
 
         // Get player context from localStorage
         const playerContext = Storage.getProgress ? Storage.getProgress() : null;
@@ -551,9 +768,10 @@ ${playerContext ? `
             if (!message) return;
 
             // Track the event
+            const isFirstMessage = conversationHistory.length === 0;
             trackEvent('coach_office_message', {
                 message_length: message.length,
-                is_first_message: conversationHistory.length === 0
+                is_first_message: isFirstMessage
             });
 
             // Hide initial input, show conversation
@@ -565,6 +783,21 @@ ${playerContext ? `
 
             // Add to history
             conversationHistory.push({ role: 'user', content: message });
+
+            // Check if user is authenticated
+            const loggedIn = await isAuthenticated();
+
+            if (!loggedIn && isFirstMessage) {
+                // Save message and show auth modal
+                pendingMessage = message;
+                showCoachAuthModal();
+                return;
+            }
+
+            // Log conversation start to Supabase for admin dashboard
+            if (isFirstMessage) {
+                logCoachConversation(1);
+            }
 
             // Show loading
             document.getElementById('loading').classList.add('active');

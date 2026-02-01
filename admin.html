@@ -488,6 +488,10 @@
                     <div class="scorecard-value" id="totalAttempts">0</div>
                     <div class="scorecard-label">Module Attempts</div>
                 </div>
+                <div class="scorecard">
+                    <div class="scorecard-value highlight" id="coachChats">0</div>
+                    <div class="scorecard-label">Coach Chats</div>
+                </div>
             </div>
 
             <div class="grid-2">
@@ -598,19 +602,22 @@
                 const [
                     { data: profiles, error: profilesError },
                     { data: progress, error: progressError },
-                    { data: scores, error: scoresError }
+                    { data: scores, error: scoresError },
+                    { data: coachConversations, error: coachError }
                 ] = await Promise.all([
                     supabase.from('profiles').select('*'),
                     supabase.from('progress').select('*'),
-                    supabase.from('scores').select('*').eq('is_best', true)
+                    supabase.from('scores').select('*').eq('is_best', true),
+                    supabase.from('coach_conversations').select('*')
                 ]);
 
                 if (profilesError) throw profilesError;
                 if (progressError) throw progressError;
                 if (scoresError) throw scoresError;
+                // Coach conversations table might not exist yet, that's okay
 
                 // Process and display data
-                displayDashboard(profiles || [], progress || [], scores || []);
+                displayDashboard(profiles || [], progress || [], scores || [], coachConversations || []);
 
                 // Update timestamp
                 document.getElementById('lastUpdated').textContent =
@@ -619,7 +626,7 @@
             } catch (error) {
                 console.error('Dashboard error:', error);
                 // Show dashboard with whatever data we have
-                displayDashboard([], [], []);
+                displayDashboard([], [], [], []);
             }
 
             loadingState.style.display = 'none';
@@ -628,10 +635,13 @@
             refreshBtn.textContent = 'Refresh Data';
         }
 
-        function displayDashboard(profiles, progress, scores) {
+        function displayDashboard(profiles, progress, scores, coachConversations) {
             // --- Scorecards ---
             const totalUsers = profiles.length;
             document.getElementById('totalUsers').textContent = totalUsers;
+
+            // Coach's Office chats
+            document.getElementById('coachChats').textContent = coachConversations.length;
 
             // Active users (based on progress timestamps)
             const now = new Date();
