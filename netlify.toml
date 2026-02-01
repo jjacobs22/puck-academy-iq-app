@@ -3,6 +3,9 @@
 [build]
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+
 # Edge functions disabled - using static share pages instead
 # This saves significant edge function credits
 # See /share/*.html for static OG tag pages
