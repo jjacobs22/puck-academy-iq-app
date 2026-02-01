@@ -474,13 +474,12 @@
             Storage = { getProgress: () => null };
         }
 
-        try {
-            const analyticsModule = await import('./js/analytics.js');
-            Analytics = analyticsModule.Analytics;
-        } catch (e) {
-            console.log('Analytics module not loaded:', e);
-            Analytics = { track: () => {} };
-        }
+        // Analytics - just use gtag directly if available
+        const trackEvent = (eventName, params) => {
+            if (typeof window.gtag === 'function') {
+                gtag('event', eventName, params);
+            }
+        };
 
         // Get player context from localStorage
         const playerContext = Storage.getProgress ? Storage.getProgress() : null;
@@ -559,7 +558,7 @@ ${playerContext ? `
             }
 
             // Track the event
-            Analytics.track('coach_office_message', {
+            trackEvent('coach_office_message', {
                 message_length: message.length,
                 is_first_message: conversationHistory.length === 0
             });
@@ -603,7 +602,7 @@ ${playerContext ? `
             textarea.value = '';
 
             // Track
-            Analytics.track('coach_office_followup', {
+            trackEvent('coach_office_followup', {
                 message_length: message.length,
                 conversation_length: conversationHistory.length
             });
