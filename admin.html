@@ -325,6 +325,72 @@
             color: var(--silver);
         }
 
+        /* Trends Charts */
+        .trends-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 700px) {
+            .trends-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .trend-chart h3 {
+            font-size: 0.9rem;
+            color: var(--silver);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 120px;
+            padding-top: 10px;
+        }
+
+        .chart-bar-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .chart-bar {
+            width: 100%;
+            background: var(--accent-red);
+            border-radius: 4px 4px 0 0;
+            min-height: 4px;
+            transition: height 0.3s ease;
+            position: relative;
+        }
+
+        .chart-bar.activity {
+            background: var(--success-green);
+        }
+
+        .chart-bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .chart-bar-label {
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--silver);
+            text-align: center;
+        }
+
         /* Auth required */
         .auth-required {
             text-align: center;
@@ -540,6 +606,21 @@
                 </div>
             </div>
 
+            <!-- Usage Trends -->
+            <div class="section">
+                <h2 class="section-title"><span class="icon">📈</span> Usage Trends (Last 7 Days)</h2>
+                <div class="trends-grid">
+                    <div class="trend-chart">
+                        <h3>Daily Signups</h3>
+                        <div class="chart-bars" id="signupChart"></div>
+                    </div>
+                    <div class="trend-chart">
+                        <h3>Daily Activity</h3>
+                        <div class="chart-bars" id="activityChart"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- User Progress Detail -->
             <div class="section">
                 <h2 class="section-title"><span class="icon">📋</span> All Users</h2>
@@ -643,6 +724,9 @@
 
             // Coach's Office chats
             document.getElementById('coachChats').textContent = coachConversations.length;
+
+            // Render usage trends
+            renderTrends(profiles, progress);
 
             // Active users (based on progress timestamps)
             const now = new Date();
@@ -892,6 +976,68 @@
                         `;
                     }).join('');
             }
+        }
+
+        function renderTrends(profiles, progress) {
+            // Get last 7 days
+            const days = [];
+            const dayLabels = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                d.setHours(0, 0, 0, 0);
+                days.push(d);
+                dayLabels.push(d.toLocaleDateString('en-US', { weekday: 'short' }));
+            }
+
+            // Count signups per day
+            const signupCounts = days.map(day => {
+                const nextDay = new Date(day);
+                nextDay.setDate(nextDay.getDate() + 1);
+                return profiles.filter(p => {
+                    const created = new Date(p.created_at);
+                    return created >= day && created < nextDay;
+                }).length;
+            });
+
+            // Count activity (scenarios completed) per day
+            const activityCounts = days.map(day => {
+                const nextDay = new Date(day);
+                nextDay.setDate(nextDay.getDate() + 1);
+                return progress.filter(p => {
+                    if (!p.completed_at) return false;
+                    const completed = new Date(p.completed_at);
+                    return completed >= day && completed < nextDay;
+                }).length;
+            });
+
+            // Render signup chart
+            const maxSignups = Math.max(...signupCounts, 1);
+            document.getElementById('signupChart').innerHTML = signupCounts.map((count, i) => {
+                const height = (count / maxSignups) * 100;
+                return `
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar" style="height: ${Math.max(height, 4)}%">
+                            ${count > 0 ? `<span class="chart-bar-value">${count}</span>` : ''}
+                        </div>
+                        <div class="chart-bar-label">${dayLabels[i]}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Render activity chart
+            const maxActivity = Math.max(...activityCounts, 1);
+            document.getElementById('activityChart').innerHTML = activityCounts.map((count, i) => {
+                const height = (count / maxActivity) * 100;
+                return `
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar activity" style="height: ${Math.max(height, 4)}%">
+                            ${count > 0 ? `<span class="chart-bar-value">${count}</span>` : ''}
+                        </div>
+                        <div class="chart-bar-label">${dayLabels[i]}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Check if user is authorized (simple check - you may want to add admin roles later)
