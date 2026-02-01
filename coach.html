@@ -464,11 +464,26 @@
     </div>
 
     <script type="module">
-        import { Storage } from './js/storage.js';
-        import { Analytics } from './js/analytics.js';
+        // Import with fallbacks
+        let Storage, Analytics;
+        try {
+            const storageModule = await import('./js/storage.js');
+            Storage = storageModule.Storage;
+        } catch (e) {
+            console.log('Storage module not loaded:', e);
+            Storage = { getProgress: () => null };
+        }
+
+        try {
+            const analyticsModule = await import('./js/analytics.js');
+            Analytics = analyticsModule.Analytics;
+        } catch (e) {
+            console.log('Analytics module not loaded:', e);
+            Analytics = { track: () => {} };
+        }
 
         // Get player context from localStorage
-        const playerContext = Storage.getProgress();
+        const playerContext = Storage.getProgress ? Storage.getProgress() : null;
 
         // Conversation history for context
         let conversationHistory = [];
@@ -704,6 +719,13 @@ In the meantime, check out the training modules — they cover a lot of common s
                 window.submitFollowup();
             }
         });
+
+        // Also attach click handler directly (backup for onclick)
+        document.getElementById('submitBtn').addEventListener('click', () => {
+            window.submitMessage();
+        });
+
+        console.log('Coach Office initialized successfully');
     </script>
 </body>
 </html>
