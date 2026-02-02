@@ -391,6 +391,46 @@
             text-align: center;
         }
 
+        /* Retention Stats */
+        .retention-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+        }
+
+        .retention-stat {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .retention-stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: white;
+            line-height: 1;
+        }
+
+        .retention-stat-value.good {
+            color: var(--success-green);
+        }
+
+        .retention-stat-value.warning {
+            color: var(--warning-yellow);
+        }
+
+        .retention-stat-value.bad {
+            color: var(--accent-red);
+        }
+
+        .retention-stat-label {
+            color: var(--silver);
+            font-size: 0.75rem;
+            margin-top: 6px;
+        }
+
         /* Auth required */
         .auth-required {
             text-align: center;
@@ -606,6 +646,14 @@
                 </div>
             </div>
 
+            <!-- Retention -->
+            <div class="section">
+                <h2 class="section-title"><span class="icon">🔄</span> Retention</h2>
+                <div class="retention-grid" id="retentionStats">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
             <!-- Usage Trends -->
             <div class="section">
                 <h2 class="section-title"><span class="icon">📈</span> Usage Trends (Last 7 Days)</h2>
@@ -727,6 +775,9 @@
 
             // Render usage trends
             renderTrends(profiles, progress);
+
+            // Render retention stats
+            renderRetention(profiles, progress);
 
             // Active users (based on progress timestamps)
             const now = new Date();
@@ -1038,6 +1089,100 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        function renderRetention(profiles, progress) {
+            const retentionEl = document.getElementById('retentionStats');
+
+            if (profiles.length === 0) {
+                retentionEl.innerHTML = '<div class="empty-state">No users yet</div>';
+                return;
+            }
+
+            // Group progress by user and get unique active days per user
+            const userActiveDays = {};
+            profiles.forEach(p => {
+                userActiveDays[p.id] = new Set();
+                // Add signup day
+                const signupDay = new Date(p.created_at).toDateString();
+                userActiveDays[p.id].add(signupDay);
+            });
+
+            progress.forEach(p => {
+                if (p.completed_at && userActiveDays[p.user_id]) {
+                    const day = new Date(p.completed_at).toDateString();
+                    userActiveDays[p.user_id].add(day);
+                }
+            });
+
+            // Calculate metrics
+            let returnedDay2 = 0;
+            let returnedDay7 = 0;
+            let eligibleForDay2 = 0;
+            let eligibleForDay7 = 0;
+            let totalSessions = 0;
+            let oneAndDone = 0;
+
+            const now = new Date();
+
+            profiles.forEach(p => {
+                const signupDate = new Date(p.created_at);
+                const daysSinceSignup = Math.floor((now - signupDate) / (1000 * 60 * 60 * 24));
+                const activeDays = userActiveDays[p.id]?.size || 1;
+
+                totalSessions += activeDays;
+
+                // One-and-done: only 1 active day and signed up 2+ days ago
+                if (activeDays === 1 && daysSinceSignup >= 2) {
+                    oneAndDone++;
+                }
+
+                // Day 2 retention: signed up 2+ days ago
+                if (daysSinceSignup >= 1) {
+                    eligibleForDay2++;
+                    if (activeDays >= 2) {
+                        returnedDay2++;
+                    }
+                }
+
+                // Day 7 retention: signed up 7+ days ago
+                if (daysSinceSignup >= 7) {
+                    eligibleForDay7++;
+                    if (activeDays >= 2) {
+                        returnedDay7++;
+                    }
+                }
+            });
+
+            const day2Rate = eligibleForDay2 > 0 ? Math.round((returnedDay2 / eligibleForDay2) * 100) : 0;
+            const day7Rate = eligibleForDay7 > 0 ? Math.round((returnedDay7 / eligibleForDay7) * 100) : 0;
+            const avgSessions = profiles.length > 0 ? (totalSessions / profiles.length).toFixed(1) : 0;
+            const oneAndDonePct = profiles.length > 0 ? Math.round((oneAndDone / profiles.length) * 100) : 0;
+
+            // Determine color classes
+            const day2Class = day2Rate >= 40 ? 'good' : day2Rate >= 20 ? 'warning' : 'bad';
+            const day7Class = day7Rate >= 20 ? 'good' : day7Rate >= 10 ? 'warning' : 'bad';
+            const sessionsClass = avgSessions >= 3 ? 'good' : avgSessions >= 1.5 ? 'warning' : 'bad';
+            const oneAndDoneClass = oneAndDonePct <= 40 ? 'good' : oneAndDonePct <= 60 ? 'warning' : 'bad';
+
+            retentionEl.innerHTML = `
+                <div class="retention-stat">
+                    <div class="retention-stat-value ${day2Class}">${day2Rate}%</div>
+                    <div class="retention-stat-label">Day 2 Return</div>
+                </div>
+                <div class="retention-stat">
+                    <div class="retention-stat-value ${day7Class}">${day7Rate}%</div>
+                    <div class="retention-stat-label">Day 7 Return</div>
+                </div>
+                <div class="retention-stat">
+                    <div class="retention-stat-value ${sessionsClass}">${avgSessions}</div>
+                    <div class="retention-stat-label">Avg Sessions</div>
+                </div>
+                <div class="retention-stat">
+                    <div class="retention-stat-value ${oneAndDoneClass}">${oneAndDone}</div>
+                    <div class="retention-stat-label">One-and-Done</div>
+                </div>
+            `;
         }
 
         // Check if user is authorized (simple check - you may want to add admin roles later)
