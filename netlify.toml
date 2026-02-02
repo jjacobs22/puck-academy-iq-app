@@ -5,6 +5,11 @@
 
 [functions]
   directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Install function dependencies from netlify/functions/package.json
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
 
 # Edge functions disabled - using static share pages instead
 # This saves significant edge function credits
