@@ -733,6 +733,40 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 2, 2026 - Streak Reminder Emails & Daily Challenge
+
+**Added "Streak at Risk" email notification system:**
+- Created `netlify/functions/streak-reminder.js` — scheduled function that:
+  - Queries Supabase for users where `streak.count >= 2` AND `streak.lastTrainingDate = yesterday`
+  - Sends personalized email via Resend with their streak count
+  - Email copy: "🔥 Your [X]-day streak is at risk! Complete one scenario today to keep it alive."
+- Schedule configured in `netlify.toml` to run daily at 10am ET (3pm UTC)
+- Uses same patterns as `new-user-notification.js`
+
+**Environment variables required:**
+- `SUPABASE_URL` — Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY` — Service role key for server-side queries
+- `RESEND_API_KEY` — Already configured
+
+**Added Daily Challenge feature:**
+- New "Today's Challenge" card on training.html
+- Rotates through all 43 scenarios based on day of year (deterministic)
+- Shows module name, scenario title, and CTA button
+- Button changes to "✓ Completed" once user finishes that scenario
+- Updates when page regains focus
+- Tracks `daily_challenge_start` analytics event
+
+**Files added:**
+- `netlify/functions/streak-reminder.js`
+
+**Files modified:**
+- `netlify/functions/package.json` — Added `@supabase/supabase-js` dependency
+- `netlify.toml` — Added scheduled function config
+- `styles/main.css` — Added ~110 lines of daily challenge card styles
+- `training.html` — Added daily challenge HTML card + ~150 lines of JS logic
+
+---
+
 ### February 2, 2026 - Video Assessment Feature
 
 **Added personalized film review feature:**

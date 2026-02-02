@@ -14,3 +14,8 @@
 # Edge functions disabled - using static share pages instead
 # This saves significant edge function credits
 # See /share/*.html for static OG tag pages
+
+# Scheduled function: Streak reminder emails
+# Runs daily at 10am ET (3pm UTC) to catch users before end of day
+[functions."streak-reminder"]
+  schedule = "0 15 * * *"

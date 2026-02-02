@@ -1480,6 +1480,26 @@
             </div>
         </div>
 
+        <!-- Daily Challenge Card -->
+        <div class="daily-challenge" id="dailyChallenge">
+            <div class="daily-challenge-header">
+                <span class="daily-challenge-icon">📅</span>
+                <span class="daily-challenge-label">Today's Challenge</span>
+                <span class="daily-challenge-date" id="dailyChallengeDate"></span>
+            </div>
+            <div class="daily-challenge-content">
+                <div class="daily-challenge-module" id="dailyChallengeModule">Module 1: D-Zone</div>
+                <div class="daily-challenge-title" id="dailyChallengeTitle">Loading...</div>
+                <button class="daily-challenge-btn" id="dailyChallengeBtn" onclick="startDailyChallenge()">
+                    <span>Start Challenge</span>
+                    <span>→</span>
+                </button>
+                <div class="daily-challenge-streak-bonus">
+                    <span>🔥</span> Complete to maintain your streak
+                </div>
+            </div>
+        </div>
+
         <!-- Overall Progress Card -->
         <div class="overall-progress" id="overallProgress">
             <div class="overall-progress-header">
@@ -3177,6 +3197,187 @@
         }
 
         /**
+         * Daily Challenge System
+         * Rotates through all 43 scenarios based on day of year
+         */
+        const scenarioTitles = {
+            1: {
+                1: 'Reading Pressure on Your D',
+                2: 'Corner Battle Support',
+                3: 'Cycle Coverage',
+                4: 'Breakout Positioning',
+                5: 'Gap Control',
+                6: 'Winger Caught Up Ice',
+                7: 'D Partner Out of Position'
+            },
+            2: {
+                1: 'Reading the Ref Position',
+                2: 'Who Has the Advantage',
+                3: 'When to Cheat Your Feet',
+                4: 'The Tie-Up Decision',
+                5: 'Leverage & Body Position',
+                6: 'Forehand vs Backhand Read',
+                7: 'Post-Draw Responsibility'
+            },
+            3: {
+                1: 'High Route vs Low Route',
+                2: 'Reading Pressure',
+                3: 'Forehand Receive',
+                4: 'When to Cut Laterally',
+                5: 'Support vs Stretch',
+                6: 'Recognizing the Forecheck',
+                7: 'Broken Play Recovery'
+            },
+            4: {
+                1: 'Net Front Presence',
+                2: 'Cycle Support',
+                3: 'Finding Soft Ice',
+                4: 'Backdoor Read',
+                5: 'Screen vs Tip',
+                6: 'High Slot Threat',
+                7: 'O-Zone Turnover'
+            },
+            5: {
+                1: 'F1 Angle of Approach',
+                2: 'F1 vs F2 Read',
+                3: 'Pressure vs Contain',
+                4: 'Angling',
+                5: 'Reading the Breakout',
+                6: 'Loose Puck Battle',
+                7: 'Turnover Transition',
+                8: 'F2 is Gassed'
+            },
+            6: {
+                1: 'Gap Control',
+                2: 'Puck Retrieval',
+                3: 'D-to-D Decision',
+                4: 'Net Front Battle',
+                5: 'When to Pinch',
+                6: 'First Pass Under Pressure',
+                7: 'Zone Coverage'
+            }
+        };
+
+        const moduleNames = {
+            1: 'D-Zone',
+            2: 'Faceoffs',
+            3: 'Breakouts',
+            4: 'Offense',
+            5: 'Forecheck',
+            6: 'D-Men'
+        };
+
+        /**
+         * Get the day of year (1-365/366)
+         */
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        /**
+         * Calculate today's daily challenge scenario
+         * Rotates through all 43 scenarios deterministically
+         */
+        function getDailyChallenge() {
+            const dayOfYear = getDayOfYear();
+            
+            // Build flat list of all scenarios
+            const allScenarios = [];
+            for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
+                const config = moduleConfigs[moduleNum];
+                for (let scenarioNum = 1; scenarioNum <= config.total; scenarioNum++) {
+                    allScenarios.push({
+                        module: moduleNum,
+                        scenario: scenarioNum,
+                        url: config.scenarios[scenarioNum],
+                        title: scenarioTitles[moduleNum][scenarioNum],
+                        moduleName: moduleNames[moduleNum]
+                    });
+                }
+            }
+            
+            // Pick today's challenge based on day of year
+            const index = dayOfYear % allScenarios.length;
+            return allScenarios[index];
+        }
+
+        /**
+         * Check if user has completed today's daily challenge
+         */
+        function hasCompletedDailyChallenge() {
+            const challenge = getDailyChallenge();
+            const scoreData = getScoreData(challenge.module);
+            return scoreData.currentRun.hasOwnProperty(challenge.scenario);
+        }
+
+        /**
+         * Update the daily challenge card display
+         */
+        function updateDailyChallenge() {
+            const challenge = getDailyChallenge();
+            const completed = hasCompletedDailyChallenge();
+            
+            // Update date display
+            const dateEl = document.getElementById('dailyChallengeDate');
+            if (dateEl) {
+                const today = new Date();
+                dateEl.textContent = today.toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    month: 'short', 
+                    day: 'numeric' 
+                });
+            }
+            
+            // Update module name
+            const moduleEl = document.getElementById('dailyChallengeModule');
+            if (moduleEl) {
+                moduleEl.textContent = `Module ${challenge.module}: ${challenge.moduleName}`;
+            }
+            
+            // Update scenario title
+            const titleEl = document.getElementById('dailyChallengeTitle');
+            if (titleEl) {
+                titleEl.textContent = challenge.title;
+            }
+            
+            // Update button state
+            const btnEl = document.getElementById('dailyChallengeBtn');
+            if (btnEl) {
+                if (completed) {
+                    btnEl.classList.add('completed');
+                    btnEl.innerHTML = '<span>✓ Completed</span>';
+                    btnEl.onclick = null;
+                } else {
+                    btnEl.classList.remove('completed');
+                    btnEl.innerHTML = '<span>Start Challenge</span><span>→</span>';
+                    btnEl.onclick = startDailyChallenge;
+                }
+            }
+        }
+
+        /**
+         * Navigate to today's daily challenge
+         */
+        function startDailyChallenge() {
+            const challenge = getDailyChallenge();
+            
+            // Track the daily challenge start
+            if (typeof gtag === 'function') {
+                gtag('event', 'daily_challenge_start', {
+                    module: challenge.module,
+                    scenario: challenge.scenario,
+                    title: challenge.title
+                });
+            }
+            
+            window.location.href = challenge.url;
+        }
+
+        /**
          * Show milestone modal for a specific day count
          */
         function showMilestoneModal(days) {
@@ -3319,11 +3520,15 @@
         updateReviewIntroLinks();
         updateActiveNavItem();
         updateStreakDisplay();
+        updateDailyChallenge();
         checkForMilestoneOnLoad();
         personalizeFromAssessment();  // Apply assessment-based personalization
 
         // Update streak display when window regains focus (user returns to tab)
-        window.addEventListener('focus', updateStreakDisplay);
+        window.addEventListener('focus', () => {
+            updateStreakDisplay();
+            updateDailyChallenge();
+        });
 
         // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {

@@ -780,6 +780,133 @@ label {
   opacity: 0.9;
 }
 
+/* Daily Challenge Card */
+.daily-challenge {
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.15) 0%, rgba(200, 16, 46, 0.05) 100%);
+  border: 2px solid var(--accent-red);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.daily-challenge::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(200, 16, 46, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.daily-challenge-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.daily-challenge-icon {
+  font-size: 1.5rem;
+}
+
+.daily-challenge-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
+  color: var(--accent-red);
+  text-transform: uppercase;
+}
+
+.daily-challenge-date {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--silver);
+  opacity: 0.8;
+}
+
+.daily-challenge-content {
+  position: relative;
+  z-index: 1;
+}
+
+.daily-challenge-module {
+  font-size: 0.85rem;
+  color: var(--silver);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.daily-challenge-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  color: var(--ice-blue);
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.daily-challenge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-red);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.daily-challenge-btn:hover {
+  background: #a00d26;
+  transform: translateY(-2px);
+}
+
+.daily-challenge-btn.completed {
+  background: var(--success-green);
+  cursor: default;
+}
+
+.daily-challenge-btn.completed:hover {
+  transform: none;
+}
+
+.daily-challenge-streak-bonus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--silver);
+}
+
+.daily-challenge-streak-bonus span {
+  color: #FFD700;
+}
+
+@media (max-width: 480px) {
+  .daily-challenge {
+    padding: 16px 18px;
+  }
+  
+  .daily-challenge-title {
+    font-size: 1.2rem;
+  }
+  
+  .daily-challenge-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
