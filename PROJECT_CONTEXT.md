@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** January 31, 2026  
+**Last Updated:** February 1, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -474,6 +474,7 @@ puck-academy-iq-app/
 - ~~Streak/gamification features~~ ✅ **DONE** (daily streaks, milestones)
 - Coach/parent dashboards
 - Payment/subscription system (spec complete, Stage 2 pending)
+- **Animated correct answer playback** (beta feedback Feb 2026) — show the correct play animated after answering, like a mini replay
 
 ### Known Bugs 🐛
 1. ~~**Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message~~ **FIXED** - Combined text+URL into single share parameter; iOS now shows context text with link preview
@@ -705,7 +706,63 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
-### January 30, 2026 - Coach Chat Analytics
+### February 1, 2026 - Admin Dashboard Enhancements
+
+**Added usage trends charts:**
+- New "Usage Trends (Last 7 Days)" section with two bar charts
+- Daily Signups chart (red bars) — new user registrations per day
+- Daily Activity chart (green bars) — scenarios completed per day
+- Visual at-a-glance view of whether usage is growing or declining
+
+**Files modified:**
+- `admin.html` — Added trends section HTML, CSS for chart styling, renderTrends() function
+
+---
+
+### February 1, 2026 - Coach's Office Auth Requirement
+
+**Require sign-in to see Coach's response (Option B):**
+- Users can type their first message freely
+- Auth modal appears before showing Coach's response: "Sign in to see Coach's response"
+- Message is saved; after magic link auth, conversation continues seamlessly
+- Captures high-intent users (parents actively seeking help)
+- Follow-up messages work normally once authenticated
+
+**Technical implementation:**
+- `isAuthenticated()` check before showing response
+- `pendingMessage` stores message during auth flow
+- `showCoachAuthModal()` displays inline auth form
+- `supabase.auth.onAuthStateChange()` listener continues conversation after sign-in
+
+**Files modified:**
+- `coach.html` — Auth flow, modal UI, conversation continuation logic
+
+---
+
+### February 1, 2026 - Supabase RLS Fixes for Admin Dashboard
+
+**Fixed Row Level Security policies blocking admin dashboard queries:**
+- `profiles` table: Added policy to let authenticated users view all profiles
+- `progress` table: Added policy to let authenticated users view all progress
+- `coach_conversations` table: Disabled RLS (analytics data, no sensitive info)
+
+**SQL required in Supabase:**
+```sql
+-- Profiles: allow viewing all
+create policy "Authenticated users can view all profiles"
+  on profiles for select using (auth.uid() is not null);
+
+-- Progress: allow viewing all
+create policy "Authenticated users can view all progress"
+  on progress for select using (auth.uid() is not null);
+
+-- Coach conversations: disable RLS
+alter table coach_conversations disable row level security;
+```
+
+---
+
+### January 31, 2026 - Coach Chat Analytics
 
 **Added Coach's Office usage tracking:**
 - Coach conversations now logged to Supabase `coach_conversations` table
