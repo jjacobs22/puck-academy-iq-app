@@ -1,8 +1,0 @@
-{
-  "name": "puck-academy",
-  "version": "1.0.0",
-  "description": "Puck Academy - Hockey IQ Training",
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.52.0"
-  }
-}
