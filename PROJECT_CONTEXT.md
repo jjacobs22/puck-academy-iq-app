@@ -710,6 +710,33 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 2, 2026 - Video Assessment Feature
+
+**Added personalized film review feature:**
+- New `video-assessment.html` page for uploading game footage
+- AI-powered analysis of player's hockey IQ from video clips
+- Generates personalized recommendations tied to Puck Academy modules
+- Created `VIDEO_ASSESSMENT_SPEC.md` with detailed product spec
+- Created `VIDEO_ANALYSIS_PROMPT.md` with AI analysis prompt template
+- Added `scripts/analyze_video.py` for video processing
+
+**Navigation updates:**
+- Added "Film Review" link to training.html nav bar
+- Added video assessment CTA to index.html landing page
+- Promotional link in training.html coach section
+
+**Files added:**
+- `video-assessment.html`
+- `VIDEO_ASSESSMENT_SPEC.md`
+- `VIDEO_ANALYSIS_PROMPT.md`
+- `scripts/analyze_video.py`
+
+**Files modified:**
+- `index.html` — added CTA link
+- `training.html` — added nav item and promo link
+
+---
+
 ### February 1, 2026 - New User Email Notifications
 
 **Added email notifications for new signups:**

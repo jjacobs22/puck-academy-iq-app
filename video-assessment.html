@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0N3XTSRTM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0N3XTSRTM2');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey IQ Assessment - Puck Academy</title>
+
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="Get Your Hockey IQ Assessed - Puck Academy">
+    <meta property="og:description" content="Upload game film and get personalized feedback on your player's hockey IQ with specific training recommendations.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hockeyiq.netlify.app/video-assessment">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 40px 20px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--silver);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--ice-blue);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .page-title {
+            font-family: var(--font-header);
+            font-size: 2.5rem;
+            color: var(--ice-blue);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .page-subtitle {
+            color: var(--silver);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Form Styles */
+        .assessment-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-family: var(--font-header);
+            font-size: 1.3rem;
+            color: var(--ice-blue);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--silver);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--ice-blue);
+            font-size: 1rem;
+            font-family: var(--font-body);
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: rgba(168, 178, 190, 0.5);
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A8B2BE' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .form-select option {
+            background: var(--dark-blue);
+            color: var(--ice-blue);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Checkbox group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-red);
+            cursor: pointer;
+        }
+
+        .checkbox-item span {
+            color: var(--silver);
+            font-size: 0.95rem;
+        }
+
+        /* Video link section */
+        .video-help {
+            background: rgba(200, 16, 46, 0.1);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .video-help-title {
+            color: var(--accent-red);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .video-help ul {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--silver);
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .video-help li {
+            margin-bottom: 5px;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            width: 100%;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, var(--accent-red) 0%, #a00d26 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-header);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(200, 16, 46, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success state */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-message.visible {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            font-family: var(--font-header);
+            font-size: 2rem;
+            color: var(--success-green);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .success-text {
+            color: var(--silver);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .success-details {
+            background: rgba(45, 122, 62, 0.1);
+            border: 1px solid rgba(45, 122, 62, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .success-details h4 {
+            color: var(--success-green);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .success-details ul {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--silver);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        /* Privacy note */
+        .privacy-note {
+            text-align: center;
+            color: rgba(168, 178, 190, 0.6);
+            font-size: 0.8rem;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 15px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .assessment-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <span>&larr;</span> Back to Home
+        </a>
+
+        <div class="page-header">
+            <div class="page-icon">📹</div>
+            <h1 class="page-title">HOCKEY IQ ASSESSMENT</h1>
+            <p class="page-subtitle">
+                Upload game film and get personalized feedback on your player's positioning,
+                reads, and decision-making — with specific training recommendations.
+            </p>
+        </div>
+
+        <!-- Assessment Form -->
+        <form class="assessment-form" id="assessmentForm" name="video-assessment" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="video-assessment">
+            <p style="display: none;">
+                <label>Don't fill this out: <input name="bot-field"></label>
+            </p>
+
+            <!-- Player Info Section -->
+            <div class="form-section">
+                <h3 class="section-title">PLAYER INFO</h3>
+
+                <div class="form-group">
+                    <label class="form-label" for="playerName">Player's First Name</label>
+                    <input type="text" id="playerName" name="playerName" class="form-input" placeholder="Tyler" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="position">Position</label>
+                    <select id="position" name="position" class="form-select" required>
+                        <option value="">Select position...</option>
+                        <option value="center">Center</option>
+                        <option value="wing">Wing</option>
+                        <option value="defense">Defense</option>
+                        <option value="goalie">Goalie</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="level">Level</label>
+                    <select id="level" name="level" class="form-select" required>
+                        <option value="">Select level...</option>
+                        <option value="youth-aa">Youth A/AA</option>
+                        <option value="youth-aaa">Youth AAA</option>
+                        <option value="high-school">High School / Prep</option>
+                        <option value="juniors">Juniors / College</option>
+                        <option value="adult-rec">Adult Rec</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="jerseyNumber">Jersey Number (helps us track)</label>
+                    <input type="text" id="jerseyNumber" name="jerseyNumber" class="form-input" placeholder="87" required>
+                </div>
+            </div>
+
+            <!-- Focus Areas Section -->
+            <div class="form-section">
+                <h3 class="section-title">WHAT DO YOU WANT TO KNOW?</h3>
+                <p style="color: var(--silver); font-size: 0.9rem; margin-bottom: 15px;">
+                    Select areas you're most curious about (check all that apply)
+                </p>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="focus[]" value="defensive-zone">
+                        <span>Defensive zone coverage</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="focus[]" value="breakouts">
+                        <span>Breakout support & timing</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="focus[]" value="offensive-zone">
+                        <span>Offensive zone positioning</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="focus[]" value="neutral-zone">
+                        <span>Neutral zone play & backchecking</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="focus[]" value="overall">
+                        <span>Overall hockey IQ assessment</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Video Link Section -->
+            <div class="form-section">
+                <h3 class="section-title">GAME FILM</h3>
+
+                <div class="form-group">
+                    <label class="form-label" for="videoLink">Link to Video</label>
+                    <input type="url" id="videoLink" name="videoLink" class="form-input"
+                           placeholder="https://livebarn.com/... or Google Drive/Dropbox link" required>
+
+                    <div class="video-help">
+                        <div class="video-help-title">How to share your video:</div>
+                        <ul>
+                            <li><strong>LiveBarn:</strong> Go to your game, click "Share" on the player highlight video</li>
+                            <li><strong>Google Drive:</strong> Upload video, right-click → "Get link" → set to "Anyone with link"</li>
+                            <li><strong>Dropbox:</strong> Upload video, click "Share" → "Copy link"</li>
+                            <li><strong>YouTube:</strong> Upload as unlisted, copy link</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="videoNotes">Anything specific you want us to look at? (optional)</label>
+                    <textarea id="videoNotes" name="videoNotes" class="form-textarea"
+                              placeholder="e.g., 'He seems to always be in the wrong spot on breakouts' or 'Watch the 2nd period, there was a bad turnover'"></textarea>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="form-section">
+                <h3 class="section-title">WHERE TO SEND RESULTS</h3>
+
+                <div class="form-group">
+                    <label class="form-label" for="parentEmail">Your Email</label>
+                    <input type="email" id="parentEmail" name="parentEmail" class="form-input"
+                           placeholder="parent@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="parentName">Your Name (optional)</label>
+                    <input type="text" id="parentName" name="parentName" class="form-input"
+                           placeholder="Parent's name">
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                SUBMIT FOR ASSESSMENT
+            </button>
+
+            <p class="privacy-note">
+                Your video will only be used for this assessment. We don't share footage with anyone.
+                Results typically delivered within 48 hours.
+            </p>
+        </form>
+
+        <!-- Success Message (shown after submit) -->
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">ASSESSMENT SUBMITTED!</h2>
+            <p class="success-text">
+                We've received your video and will analyze <strong id="playerNameConfirm"></strong>'s game film.
+                You'll receive a detailed Hockey IQ assessment at <strong id="emailConfirm"></strong> within 48 hours.
+            </p>
+
+            <div class="success-details">
+                <h4>What happens next:</h4>
+                <ul>
+                    <li>We'll watch the footage and analyze positioning patterns</li>
+                    <li>You'll get a personalized report with strengths & areas to develop</li>
+                    <li>We'll recommend specific Puck Academy modules to train</li>
+                    <li>Optional: schedule a quick call to walk through the report</li>
+                </ul>
+            </div>
+
+            <a href="training.html" class="submit-btn" style="display: inline-block; text-decoration: none; margin-top: 30px;">
+                START TRAINING NOW &rarr;
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Track page view
+        gtag('event', 'page_view', {
+            page_title: 'Video Assessment',
+            page_location: window.location.href
+        });
+
+        // Form submission handling
+        const form = document.getElementById('assessmentForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'SUBMITTING...';
+
+            // Get form data
+            const formData = new FormData(form);
+            const playerName = formData.get('playerName');
+            const email = formData.get('parentEmail');
+
+            try {
+                // Submit to Netlify Forms
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+
+                if (response.ok) {
+                    // Track submission
+                    gtag('event', 'assessment_submitted', {
+                        position: formData.get('position'),
+                        level: formData.get('level')
+                    });
+
+                    // Show success message
+                    form.style.display = 'none';
+                    document.getElementById('playerNameConfirm').textContent = playerName;
+                    document.getElementById('emailConfirm').textContent = email;
+                    successMessage.classList.add('visible');
+
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error submitting. Please try again or email us at support@puckacademy.com');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'SUBMIT FOR ASSESSMENT';
+            }
+        });
+
+        // Pre-fill from localStorage if user has onboarding data
+        const progress = localStorage.getItem('puckAcademy_progress');
+        if (progress) {
+            try {
+                const data = JSON.parse(progress);
+                if (data.position) {
+                    document.getElementById('position').value = data.position;
+                }
+            } catch (e) {}
+        }
+    </script>
+</body>
+</html>
