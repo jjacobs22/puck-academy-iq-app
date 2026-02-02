@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** February 1, 2026  
+**Last Updated:** February 2, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -48,6 +48,29 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 3. **Retention:** 80%+ user retention after first week
 4. **Learning outcomes:** Pre/post assessment shows improvement in decision-making scenarios
 5. **Qualitative signal:** Players and parents report genuine value in feedback
+
+### User Feedback Insights (February 2026)
+
+**Emerging audience: Adult beer league players**
+- Multiple users discovering the app via Reddit are adult beginners/beer league players
+- They see value in learning positioning & strategy fundamentals they never learned growing up
+- One user forwarded the site to his entire beer league team (beginners)
+
+**Content feedback:**
+- "Highlights answers to a lot of common questions regarding positioning & strategy" — validates core value prop
+- "More geared towards forwards" — opportunity for defense-specific content
+- Request for "big picture" module on team zone setups/strategy
+- "Very little resources for these topics vs gear/skating/shooting tutorials" — confirms market gap
+
+**Use cases beyond target demo:**
+- Coaches using it to teach systems to youth teams (U9+)
+- Adult learners who didn't grow up playing minor hockey
+- Players learning new systems when joining a new team
+
+**Quotes:**
+> "I'd use a resource like this for my minor hockey kids teams once we start teaching positioning & strategy" — Andrew L. (coaches U5, plays men's beer league)
+
+> "I definitely can see getting value from it, and I actually forwarded the website to my beer league team, as a lot of my teammates are beginners." — Brandan I.
 
 ---
 
