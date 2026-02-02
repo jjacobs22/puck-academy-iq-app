@@ -2,6 +2,7 @@
   "name": "puck-academy-functions",
   "version": "1.0.0",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.52.0"
+    "@anthropic-ai/sdk": "^0.52.0",
+    "resend": "^4.0.0"
   }
 }

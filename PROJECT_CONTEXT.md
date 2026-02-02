@@ -406,6 +406,8 @@ puck-academy-iq-app/
 | Service | Purpose | Integration Point |
 |---------|---------|-------------------|
 | Supabase | User accounts & data sync | Magic link auth, progress/scores stored in Postgres |
+| Resend | Transactional email | New user signup notifications, future: weekly progress emails |
+| Anthropic API | AI chat | Coach's Office feature (`netlify/functions/coach.js`) |
 | Static Share Pages | Social OG previews | `/share/*.html` pages with pre-baked OG meta tags |
 | Google Forms | Beta feedback | External link from scenario completion and results modal |
 | Google Fonts | Typography | Bebas Neue (headers), Work Sans (body) |
@@ -423,7 +425,9 @@ puck-academy-iq-app/
 - Netlify auto-deploys within ~30 seconds
 - Live URL: `https://hockeyiq.netlify.app/`
 
-**No environment variables required for MVP**
+**Environment Variables (Netlify):**
+- `ANTHROPIC_API_KEY` — For Coach's Office AI chat
+- `RESEND_API_KEY` — For email notifications
 
 ---
 
@@ -705,6 +709,26 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### February 1, 2026 - New User Email Notifications
+
+**Added email notifications for new signups:**
+- Created `netlify/functions/new-user-notification.js` — receives Supabase webhook, sends email via Resend
+- Email includes: user email, name, position, level, age (calculated from birth_year), signup time
+- Link to admin dashboard included in notification email
+- Optional webhook secret verification for security
+
+**Setup required:**
+1. Add `RESEND_API_KEY` environment variable in Netlify (already have Resend account)
+2. Create Database Webhook in Supabase pointing to `/.netlify/functions/new-user-notification`
+
+**Files added:**
+- `netlify/functions/new-user-notification.js`
+
+**Files modified:**
+- `netlify/functions/package.json` — added resend dependency
+
+---
 
 ### February 1, 2026 - Admin Dashboard Enhancements
 
