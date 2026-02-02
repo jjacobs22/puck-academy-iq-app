@@ -1369,14 +1369,6 @@
                     <span>M6: D-Men</span>
                     <span class="nav-status" id="navStatus6"></span>
                 </a>
-                <a href="coach.html" class="module-nav-item coach-nav-item">
-                    <span class="module-nav-icon">💬</span>
-                    <span>Ask Coach</span>
-                </a>
-                <a href="video-assessment.html" class="module-nav-item assess-nav-item">
-                    <span class="module-nav-icon">📹</span>
-                    <span>Film Review</span>
-                </a>
                 <!-- Streak Display -->
                 <div class="streak-nav-display" id="streakNavDisplay">
                     <span class="streak-icon">🔥</span>
@@ -1435,9 +1427,6 @@
                 <strong>Coach here.</strong> These are real game situations — the kind that separate good centers from great ones. Take your time, think through each read, and I'll explain the <em>why</em> behind every answer. Let's get to work. 🏒
                 <div style="margin-top: 10px; font-size: 0.9rem;">
                     <a href="glossary.html" style="color: var(--silver); text-decoration: none;">📖 New to hockey terms? Check the Glossary →</a>
-                </div>
-                <div style="margin-top: 8px; font-size: 0.9rem;">
-                    <a href="video-assessment.html" style="color: var(--accent-red); text-decoration: none; font-weight: 500;">📹 NEW: Upload game film for personalized analysis →</a>
                 </div>
             </div>
         </div>
@@ -2014,8 +2003,9 @@
 
         <div class="module-footer">
             <button class="btn btn-primary" id="assessmentBtn" disabled onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSf9t7HEA-8_8CNHMoJF7iMiRFPrnQgoToyG-SyOT6vtRBPrNw/viewform', '_blank')">Complete Module Assessment</button>
-            <div style="margin-top: 20px;">
-                <a href="#" onclick="openFeedbackModal(); return false;" style="color: var(--silver); text-decoration: none; font-size: 0.9rem;">📝 Share your feedback →</a>
+            <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                <a href="coach.html" style="color: var(--silver); text-decoration: none; font-size: 0.9rem;">💬 Need advice? Ask Coach</a>
+                <a href="#" onclick="openFeedbackModal(); return false;" style="color: var(--silver); text-decoration: none; font-size: 0.9rem;">📝 Share your feedback</a>
             </div>
         </div>
     </div>

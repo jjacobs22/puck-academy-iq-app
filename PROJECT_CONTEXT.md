@@ -733,6 +733,35 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 2, 2026 - UX Polish & Navigation Cleanup
+
+**Accessibility improvements (CRITICAL fixes from POLISH_CHECKLIST.md):**
+- Added focus-visible states globally for keyboard navigation
+- Added `@media (prefers-reduced-motion: reduce)` to respect user preferences
+- Enhanced disabled button states (gray background, clearer visual)
+- Added `.btn.loading` class with spinner animation for async actions
+- Limited infinite animations to 3-5 iterations (index.html, hockey-iq-diagram.html)
+
+**Removed Video Assessment from navigation:**
+- Removed "📹 Film Review" from training.html sticky nav
+- Removed "📹 Get personalized film review" CTA from index.html
+- Removed promo link from training.html coach intro
+- Files kept but not linked (video-assessment.html, specs still exist)
+
+**Demoted Coach's Office:**
+- Removed "💬 Ask Coach" from training.html sticky nav
+- Removed "Talk to Coach" secondary CTA from index.html
+- Added subtle "💬 Need advice? Ask Coach" link in training.html footer area
+
+**Files modified:**
+- `styles/main.css` — Focus states, reduced motion, disabled/loading buttons
+- `index.html` — Removed secondary CTAs, limited animations
+- `training.html` — Removed nav items, added footer Coach link
+- `hockey-iq-diagram.html` — Limited pulse animations
+- `prototype-animated-scenario.html` — Limited pulse animations
+
+---
+
 ### February 2, 2026 - Streak Reminder Emails & Daily Challenge
 
 **Added "Streak at Risk" email notification system:**

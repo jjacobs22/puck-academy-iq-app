@@ -69,6 +69,36 @@ body {
   min-height: 100vh;
 }
 
+/* ===== FOCUS STATES (Accessibility) ===== */
+/* Remove default outline, show only for keyboard navigation */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Specific focus for buttons */
+.btn:focus-visible,
+.answer-btn:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.2);
+}
+
+/* Focus for form inputs */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+}
+
 /* ===== TYPOGRAPHY ===== */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-header);
@@ -203,13 +233,43 @@ strong {
   display: block;
 }
 
-.btn:disabled {
-  opacity: 0.5;
+.btn:disabled,
+.btn[disabled],
+button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+  pointer-events: none;
+  background: var(--silver) !important;
+  border-color: var(--silver) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
-.btn:disabled:hover {
-  transform: none;
+/* Button loading state */
+.btn.loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btn.loading::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  left: 50%;
+  margin-left: -9px;
+  margin-top: -9px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: btn-spinner 0.6s linear infinite;
+}
+
+@keyframes btn-spinner {
+  to { transform: rotate(360deg); }
 }
 
 /* ===== ANSWER BUTTONS (Scenario-specific) ===== */
@@ -1070,5 +1130,18 @@ label {
   to {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+}
+
+/* ===== REDUCED MOTION (Accessibility) ===== */
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
