@@ -748,10 +748,12 @@ puck-academy-iq-app/
 - Removed promo link from training.html coach intro
 - Files kept but not linked (video-assessment.html, specs still exist)
 
-**Demoted Coach's Office:**
+**Disabled Coach's Office (to reduce Netlify function credits):**
 - Removed "💬 Ask Coach" from training.html sticky nav
 - Removed "Talk to Coach" secondary CTA from index.html
-- Added subtle "💬 Need advice? Ask Coach" link in training.html footer area
+- Removed all links to coach.html — feature is now hidden
+- Files kept (coach.html, netlify/functions/coach.js) but not discoverable
+- Can be re-enabled later by adding links back
 
 **Files modified:**
 - `styles/main.css` — Focus states, reduced motion, disabled/loading buttons
