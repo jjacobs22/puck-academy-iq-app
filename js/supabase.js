@@ -336,3 +336,124 @@ export function onAuthStateChange(callback) {
         callback(event, session);
     });
 }
+
+// =============================================================================
+// SUBSCRIPTION HELPERS
+// =============================================================================
+
+/**
+ * Check if user has active subscription (Pro access)
+ * @returns {Promise<boolean>}
+ */
+export async function hasActiveSubscription() {
+    const user = await getUser();
+    if (!user) return false;
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('subscription_status, subscription_end_date')
+        .eq('id', user.id)
+        .single();
+
+    if (!profile) return false;
+
+    // Active subscription
+    if (profile.subscription_status === 'active') return true;
+
+    // Canceled but still within paid period
+    if (profile.subscription_status === 'canceled' && profile.subscription_end_date) {
+        const endDate = new Date(profile.subscription_end_date);
+        if (endDate > new Date()) return true;
+    }
+
+    return false;
+}
+
+/**
+ * Get full subscription status info
+ * @returns {Promise<{subscription_status: string, stripe_customer_id: string|null, subscription_end_date: string|null}>}
+ */
+export async function getSubscriptionStatus() {
+    const user = await getUser();
+    if (!user) return { subscription_status: 'free', stripe_customer_id: null, subscription_end_date: null };
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('subscription_status, stripe_customer_id, subscription_end_date')
+        .eq('id', user.id)
+        .single();
+
+    return profile || { subscription_status: 'free', stripe_customer_id: null, subscription_end_date: null };
+}
+
+/**
+ * Check if a specific module is accessible
+ * Module 1 is always free, Modules 2-6 require Pro
+ * @param {number} moduleNum - Module number (1-6)
+ * @returns {Promise<boolean>}
+ */
+export async function canAccessModule(moduleNum) {
+    // Module 1 is always free
+    if (moduleNum === 1) return true;
+    
+    // Modules 2-6 require Pro
+    return await hasActiveSubscription();
+}
+
+/**
+ * Create a Stripe Checkout session and redirect to payment
+ * @param {string} priceType - 'monthly' or 'annual'
+ */
+export async function createCheckoutSession(priceType = 'monthly') {
+    const user = await getUser();
+    if (!user) {
+        throw new Error('Must be logged in to subscribe');
+    }
+
+    const response = await fetch('/.netlify/functions/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            userId: user.id,
+            userEmail: user.email,
+            priceType
+        })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create checkout session');
+    }
+
+    const { url } = await response.json();
+    
+    // Redirect to Stripe Checkout
+    window.location.href = url;
+}
+
+/**
+ * Open Stripe Customer Portal for subscription management
+ */
+export async function openCustomerPortal() {
+    const { stripe_customer_id } = await getSubscriptionStatus();
+    
+    if (!stripe_customer_id) {
+        throw new Error('No subscription found');
+    }
+
+    const response = await fetch('/.netlify/functions/create-portal-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerId: stripe_customer_id })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to open portal');
+    }
+
+    const { url } = await response.json();
+    
+    // Redirect to Stripe Customer Portal
+    window.location.href = url;
+}

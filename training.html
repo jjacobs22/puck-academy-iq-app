@@ -1332,6 +1332,305 @@
             margin-left: 10px;
             vertical-align: middle;
         }
+
+        /* ===== PAYWALL STYLES ===== */
+        
+        /* Locked module section */
+        .module-section.locked {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .module-section.locked::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.75);
+            border-radius: 20px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .module-section.locked .module-header {
+            position: relative;
+            z-index: 11;
+        }
+
+        .module-section.locked .module-scenarios-wrapper,
+        .module-section.locked .progress-container,
+        .module-section.locked .progress-text {
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 12;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 30px;
+            background: rgba(10, 22, 40, 0.95);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .lock-icon {
+            font-size: 2.5rem;
+        }
+
+        .lock-text {
+            color: var(--ice-blue);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .lock-subtitle {
+            color: var(--silver);
+            font-size: 0.85rem;
+            max-width: 200px;
+        }
+
+        .unlock-btn {
+            background: linear-gradient(135deg, var(--accent-red), #e01030);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unlock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+        }
+
+        /* PRO badge */
+        .pro-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .pro-badge.header-badge {
+            margin-left: 12px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+        }
+
+        /* Nav item locked state */
+        .module-nav-item.locked-nav {
+            opacity: 0.6;
+        }
+
+        .module-nav-item.locked-nav .nav-lock {
+            font-size: 0.75rem;
+            margin-left: 4px;
+        }
+
+        /* Upgrade Modal */
+        .upgrade-modal {
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .upgrade-modal .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .upgrade-modal .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .upgrade-subtitle {
+            color: var(--silver);
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+        }
+
+        .pricing-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .pricing-option {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            color: var(--ice-blue);
+        }
+
+        .pricing-option:hover {
+            border-color: rgba(200, 16, 46, 0.5);
+            background: rgba(200, 16, 46, 0.05);
+        }
+
+        .pricing-option.selected {
+            border-color: var(--accent-red);
+            background: rgba(200, 16, 46, 0.1);
+        }
+
+        .pricing-option .price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            display: block;
+            line-height: 1;
+        }
+
+        .pricing-option .period {
+            color: var(--silver);
+            font-size: 0.85rem;
+        }
+
+        .save-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success-green);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .upgrade-features {
+            text-align: left;
+            margin-bottom: 24px;
+            padding: 0 10px;
+        }
+
+        .upgrade-features .feature {
+            padding: 10px 0;
+            color: var(--ice-blue);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upgrade-features .feature-check {
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        .upgrade-cta {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-red), #e01030);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .upgrade-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 16, 46, 0.4);
+        }
+
+        .upgrade-cta:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cancel-note {
+            color: var(--silver);
+            font-size: 0.85rem;
+        }
+
+        /* Manage subscription link */
+        .manage-subscription-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--silver);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .manage-subscription-link:hover {
+            color: var(--ice-blue);
+        }
+
+        /* Upgrade success toast */
+        .upgrade-toast {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--success-green);
+            color: var(--success-green);
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .upgrade-toast.visible {
+            display: flex;
+        }
+
+        .upgrade-toast-icon {
+            font-size: 1.3rem;
+        }
+
+        .upgrade-toast-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .pricing-options {
+                flex-direction: column;
+            }
+
+            .pricing-option {
+                padding: 16px;
+            }
+
+            .pricing-option .price {
+                font-size: 1.8rem;
+            }
+
+            .lock-overlay {
+                padding: 20px;
+                width: 85%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2079,6 +2378,49 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Upgrade Modal -->
+    <div id="upgradeModal" class="modal">
+        <div class="modal-content upgrade-modal">
+            <button class="modal-close" onclick="closeUpgradeModal()">&times;</button>
+            
+            <div class="modal-icon">🏒</div>
+            <h2 class="modal-title">UNLOCK ALL TRAINING</h2>
+            <p class="upgrade-subtitle">Get full access to all 43 scenarios across 6 modules</p>
+
+            <div class="pricing-options">
+                <button class="pricing-option" data-price="monthly" onclick="selectPricingOption('monthly')">
+                    <span class="price">$9.99</span>
+                    <span class="period">/month</span>
+                </button>
+
+                <button class="pricing-option selected" data-price="annual" onclick="selectPricingOption('annual')">
+                    <span class="save-badge">Save 34%</span>
+                    <span class="price">$79</span>
+                    <span class="period">/year</span>
+                </button>
+            </div>
+
+            <div class="upgrade-features">
+                <div class="feature"><span class="feature-check">✓</span> 43 game scenarios</div>
+                <div class="feature"><span class="feature-check">✓</span> 6 complete modules</div>
+                <div class="feature"><span class="feature-check">✓</span> Track your progress</div>
+                <div class="feature"><span class="feature-check">✓</span> Daily challenges</div>
+            </div>
+
+            <button class="upgrade-cta" id="upgradeCta" onclick="handleUpgrade()">
+                Start Pro - $79/year
+            </button>
+
+            <p class="cancel-note">Cancel anytime. Keep your progress.</p>
+        </div>
+    </div>
+
+    <!-- Upgrade Success Toast (shown after payment) -->
+    <div class="upgrade-toast" id="upgradeToast">
+        <span class="upgrade-toast-icon">🎉</span>
+        <span class="upgrade-toast-text">Welcome to Pro! All modules are now unlocked.</span>
     </div>
 
     <script>
@@ -3529,7 +3871,18 @@
 
     <!-- Auth Module -->
     <script type="module">
-        import { getUser, signOut, syncProgressToServer, loadProgressFromServer, onAuthStateChange, saveScoreAttempt } from './js/supabase.js';
+        import { 
+            getUser, 
+            signOut, 
+            syncProgressToServer, 
+            loadProgressFromServer, 
+            onAuthStateChange, 
+            saveScoreAttempt,
+            hasActiveSubscription,
+            getSubscriptionStatus,
+            createCheckoutSession,
+            openCustomerPortal
+        } from './js/supabase.js';
         import { showAuthModal } from './js/auth-modal.js';
 
         // Element references
@@ -3642,8 +3995,278 @@
             } else {
                 // User is logged in - update UI normally
                 updateAuthUI();
+                // Check subscription and update paywall UI
+                await initPaywall();
             }
         }
+
+        // ===== PAYWALL FUNCTIONALITY =====
+        
+        // Track selected pricing option
+        let selectedPriceType = 'annual';
+
+        // Initialize paywall state
+        async function initPaywall() {
+            try {
+                const isPro = await hasActiveSubscription();
+                const { subscription_status, stripe_customer_id, subscription_end_date } = await getSubscriptionStatus();
+
+                console.log('Subscription status:', subscription_status, 'isPro:', isPro);
+
+                // Update module UI based on subscription
+                updateModuleAccessUI(isPro);
+
+                // Update nav items
+                updateNavAccessUI(isPro);
+
+                // Show Pro badge if subscribed
+                if (isPro) {
+                    showProBadge();
+                }
+
+                // Show manage subscription link if has customer ID
+                if (stripe_customer_id && isPro) {
+                    showManageSubscriptionLink();
+                }
+
+                // Check for upgrade success URL param
+                const paywallUrlParams = new URLSearchParams(window.location.search);
+                if (paywallUrlParams.get('upgraded') === 'true') {
+                    showUpgradeSuccessToast();
+                    // Clean URL
+                    window.history.replaceState({}, '', window.location.pathname);
+                }
+
+                // Show cancellation notice if subscription ending
+                if (subscription_status === 'canceled' && subscription_end_date) {
+                    const endDate = new Date(subscription_end_date);
+                    if (endDate > new Date()) {
+                        showCancellationNotice(endDate);
+                    }
+                }
+            } catch (error) {
+                console.error('Error initializing paywall:', error);
+                // Default to showing locked state for safety
+                updateModuleAccessUI(false);
+            }
+        }
+
+        // Update module sections based on access
+        function updateModuleAccessUI(isPro) {
+            for (let moduleNum = 2; moduleNum <= 6; moduleNum++) {
+                const moduleSection = document.getElementById(`module${moduleNum}`);
+                if (!moduleSection) continue;
+
+                if (isPro) {
+                    // Unlock module
+                    moduleSection.classList.remove('locked');
+                    const lockOverlay = moduleSection.querySelector('.lock-overlay');
+                    if (lockOverlay) {
+                        lockOverlay.remove();
+                    }
+                } else {
+                    // Lock module
+                    moduleSection.classList.add('locked');
+                    
+                    // Add lock overlay if not present
+                    if (!moduleSection.querySelector('.lock-overlay')) {
+                        const lockOverlay = document.createElement('div');
+                        lockOverlay.className = 'lock-overlay';
+                        lockOverlay.innerHTML = `
+                            <span class="lock-icon">🔒</span>
+                            <span class="lock-text">Pro Module</span>
+                            <span class="lock-subtitle">Unlock all 43 scenarios</span>
+                            <button class="unlock-btn" onclick="window.showUpgradeModal(event)">Unlock Now</button>
+                        `;
+                        moduleSection.appendChild(lockOverlay);
+                    }
+
+                    // Override click on locked module header
+                    const header = moduleSection.querySelector('.module-header');
+                    if (header) {
+                        header.onclick = (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            showUpgradeModal();
+                        };
+                    }
+                }
+            }
+        }
+
+        // Update nav items
+        function updateNavAccessUI(isPro) {
+            for (let moduleNum = 2; moduleNum <= 6; moduleNum++) {
+                const navItem = document.querySelector(`.module-nav-item[data-module="${moduleNum}"]`);
+                if (!navItem) continue;
+
+                if (isPro) {
+                    navItem.classList.remove('locked-nav');
+                    const lockIcon = navItem.querySelector('.nav-lock');
+                    if (lockIcon) lockIcon.remove();
+                    navItem.onclick = null; // Reset to default behavior
+                } else {
+                    navItem.classList.add('locked-nav');
+                    if (!navItem.querySelector('.nav-lock')) {
+                        const lockIcon = document.createElement('span');
+                        lockIcon.className = 'nav-lock';
+                        lockIcon.textContent = '🔒';
+                        navItem.appendChild(lockIcon);
+                    }
+                    // Override click to show upgrade modal
+                    navItem.onclick = (e) => {
+                        e.preventDefault();
+                        showUpgradeModal();
+                    };
+                }
+            }
+        }
+
+        // Show Pro badge in header
+        function showProBadge() {
+            const logo = document.querySelector('.logo');
+            if (logo && !logo.querySelector('.pro-badge')) {
+                const badge = document.createElement('span');
+                badge.className = 'pro-badge header-badge';
+                badge.textContent = 'PRO';
+                logo.appendChild(badge);
+            }
+        }
+
+        // Show manage subscription link
+        function showManageSubscriptionLink() {
+            const headerAuth = document.querySelector('.header-auth-user');
+            if (headerAuth && !headerAuth.querySelector('.manage-subscription-link')) {
+                const link = document.createElement('a');
+                link.className = 'manage-subscription-link';
+                link.innerHTML = '⚙️ Manage';
+                link.onclick = handleManageSubscription;
+                headerAuth.insertBefore(link, headerAuth.firstChild);
+            }
+        }
+
+        // Show upgrade modal
+        function showUpgradeModal(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            document.getElementById('upgradeModal').classList.add('active');
+            
+            // Track in GA4
+            if (typeof gtag === 'function') {
+                gtag('event', 'view_upgrade_modal');
+            }
+        }
+
+        // Close upgrade modal
+        function closeUpgradeModal() {
+            document.getElementById('upgradeModal').classList.remove('active');
+        }
+
+        // Select pricing option
+        function selectPricingOption(priceType) {
+            selectedPriceType = priceType;
+            
+            // Update UI
+            document.querySelectorAll('.pricing-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.querySelector(`.pricing-option[data-price="${priceType}"]`).classList.add('selected');
+            
+            // Update CTA text
+            const cta = document.getElementById('upgradeCta');
+            if (priceType === 'annual') {
+                cta.textContent = 'Start Pro - $79/year';
+            } else {
+                cta.textContent = 'Start Pro - $9.99/month';
+            }
+        }
+
+        // Handle upgrade button click
+        async function handleUpgrade() {
+            const cta = document.getElementById('upgradeCta');
+            const originalText = cta.textContent;
+            
+            try {
+                cta.disabled = true;
+                cta.textContent = 'Loading...';
+                
+                // Track in GA4
+                if (typeof gtag === 'function') {
+                    gtag('event', 'begin_checkout', {
+                        price_type: selectedPriceType
+                    });
+                }
+                
+                await createCheckoutSession(selectedPriceType);
+            } catch (error) {
+                console.error('Upgrade error:', error);
+                cta.disabled = false;
+                cta.textContent = originalText;
+                alert('Something went wrong. Please try again.');
+            }
+        }
+
+        // Handle manage subscription click
+        async function handleManageSubscription(e) {
+            e.preventDefault();
+            try {
+                await openCustomerPortal();
+            } catch (error) {
+                console.error('Portal error:', error);
+                alert('Could not open subscription management. Please try again.');
+            }
+        }
+
+        // Show upgrade success toast
+        function showUpgradeSuccessToast() {
+            const toast = document.getElementById('upgradeToast');
+            if (toast) {
+                toast.classList.add('visible');
+                
+                // Track in GA4
+                if (typeof gtag === 'function') {
+                    gtag('event', 'purchase_complete');
+                }
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    toast.classList.remove('visible');
+                }, 5000);
+            }
+        }
+
+        // Show cancellation notice
+        function showCancellationNotice(endDate) {
+            const formattedDate = endDate.toLocaleDateString('en-US', { 
+                month: 'long', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+            
+            const notice = document.createElement('div');
+            notice.className = 'welcome-toast visible';
+            notice.style.background = 'rgba(245, 158, 11, 0.2)';
+            notice.style.borderColor = 'var(--warning-yellow)';
+            notice.style.color = 'var(--warning-yellow)';
+            notice.innerHTML = `
+                <span class="welcome-toast-icon">⚠️</span>
+                <span class="welcome-toast-text">Your Pro access ends ${formattedDate}</span>
+            `;
+            
+            const container = document.querySelector('.container');
+            const header = container.querySelector('.header');
+            if (header) {
+                header.insertAdjacentElement('afterend', notice);
+            }
+        }
+
+        // Make functions globally available for onclick handlers
+        window.showUpgradeModal = showUpgradeModal;
+        window.closeUpgradeModal = closeUpgradeModal;
+        window.selectPricingOption = selectPricingOption;
+        window.handleUpgrade = handleUpgrade;
 
         // Initialize - check auth first
         checkAuthAndGate();
