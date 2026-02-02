@@ -1,0 +1,93 @@
+{
+  "overallScore": 74,
+  "summary": "Tyler shows solid defensive zone instincts and maintains good central positioning through the neutral zone — exactly what you want from a center at the Youth AAA level. His slot coverage is consistent, and he doesn't chase pucks into corners. The primary area to develop is breakout support timing: he tends to be stationary waiting for passes rather than skating into space to create passing options for his D.",
+  "strengths": [
+    {
+      "area": "D-Zone Slot Coverage",
+      "observation": "Tyler consistently positions himself in the high slot when the puck is below the goal line. Across multiple defensive zone frames (Shifts 1, 2, 5, 10, 13), he held his position in the middle of the ice rather than chasing to corners or getting pulled out of position. This is textbook center play at any level.",
+      "evidenceFrames": ["shift_001", "shift_005", "shift_010", "shift_030", "shift_045"],
+      "confidence": "high",
+      "relatedModule": 1,
+      "coachNote": "This is exactly what elite programs teach. Own the slot, take away the dangerous pass, trust your D to handle the boards. The goals you prevent by staying home are just as valuable as the ones you score."
+    },
+    {
+      "area": "Neutral Zone Tracking",
+      "observation": "When transitioning through the neutral zone, Tyler stays through the middle of the ice rather than drifting to the boards. In backchecking situations, he tracked back through the center lane, putting himself in position to break up plays through the slot.",
+      "evidenceFrames": ["shift_025", "shift_050"],
+      "confidence": "medium",
+      "relatedModule": 1,
+      "coachNote": "The middle lane is the most dangerous area on the ice. By owning it on the backcheck, you're taking away odd-man rush opportunities. Good habit."
+    },
+    {
+      "area": "Ice Time Management",
+      "observation": "Tyler logged 16 shifts with appropriate 1-3 minute shift lengths, showing coaches trust him in various game situations.",
+      "evidenceFrames": ["all"],
+      "confidence": "high",
+      "relatedModule": null,
+      "coachNote": "The fact that you're getting this much ice time at AAA means you're doing something right."
+    }
+  ],
+  "areasToImprove": [
+    {
+      "area": "Breakout Support Timing",
+      "observation": "Tyler tends to stop at the hash marks and wait for passes on breakouts. This makes him a stationary target that forecheckers can easily take away. In Shifts 5, 10, and 12, the D had the puck behind the net while Tyler was standing still rather than skating through the zone.",
+      "severity": "primary",
+      "whatToWorkOn": "Breakout timing is about 'skating to where you'll receive the puck, not standing where you are now.' Your route should be in motion before the pass, not after. Start moving earlier — this pulls defenders with you and opens up passing lanes for your D.",
+      "evidenceFrames": ["shift_015", "shift_035", "shift_040"],
+      "relatedModule": 3,
+      "recommendedScenarios": [1, 2, 3],
+      "coachNote": "The fix here is simple: feet moving earlier. Every second you're skating on a breakout, you're gaining an advantage. The best centermen are never still in the D-zone."
+    },
+    {
+      "area": "O-Zone Net Front Presence",
+      "observation": "When the team enters the offensive zone, Tyler tends to float to the high slot or half-wall rather than establishing net-front position. The puck was cycling below the goal line but Tyler stayed high instead of battling for position at the crease.",
+      "severity": "secondary",
+      "whatToWorkOn": "When the puck goes below the goal line in the O-zone, that's your cue to get to the net. Battle for position, get your stick on the ice, look for tips and rebounds.",
+      "evidenceFrames": ["shift_040", "shift_045"],
+      "relatedModule": 4,
+      "recommendedScenarios": [1, 5],
+      "coachNote": "Centers who go to the net score goals that wingers can't. Add some net-front presence and you'll start putting up points."
+    },
+    {
+      "area": "Reading Forecheck Pressure",
+      "observation": "A few sequences showed Tyler making safe plays when more aggressive options were available. While this isn't necessarily wrong, learning to read when to attack vs. when to be patient will elevate his game.",
+      "severity": "secondary",
+      "whatToWorkOn": "Scan early. Before you receive the puck, check your shoulders to know what's coming. If there's space, attack it. If there's pressure, go quick and safe.",
+      "evidenceFrames": ["shift_020", "shift_035"],
+      "relatedModule": 3,
+      "recommendedScenarios": [4, 5, 6, 7],
+      "coachNote": "Right now you're defaulting to safe, which is fine. As you develop, you'll learn to read when the aggressive play is actually the smarter play."
+    }
+  ],
+  "trainingPlan": {
+    "week1": {
+      "module": 3,
+      "moduleName": "Breakouts",
+      "focus": "Focus on breakout timing and route selection. The key concept: 'Be moving before the puck moves.' Complete all 7 scenarios, paying special attention to Scenarios 1-3 on high vs. low routes and reading pressure."
+    },
+    "week2": {
+      "module": 4,
+      "moduleName": "Offensive Zone",
+      "focus": "Build on your D-zone strength by adding O-zone presence. Focus on Scenarios 1 (net front) and 5 (screen vs. deflection). Learn where to be when the puck is below the goal line."
+    },
+    "week3": {
+      "module": 1,
+      "moduleName": "Defensive Zone",
+      "focus": "Reinforcement - you're already strong here. Use Module 1 to maintain good habits. Scenarios 6-7 (covering for teammates) will be especially useful."
+    }
+  },
+  "analysisMetadata": {
+    "framesAnalyzed": 53,
+    "shiftsTracked": 16,
+    "videoSource": "livebarn",
+    "trackingQuality": "excellent",
+    "confidenceLevel": "high",
+    "gameDate": "2026-01-31",
+    "team": "Boston Jr Terriers 2012 Elite",
+    "opponent": "Away",
+    "limitations": [
+      "Could not assess faceoff technique from camera angles",
+      "Far-side positioning occasionally obscured"
+    ]
+  }
+}

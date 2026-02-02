@@ -720,6 +720,10 @@ puck-academy-iq-app/
 - Created `VIDEO_ANALYSIS_PROMPT.md` with AI analysis prompt template
 - Added `scripts/analyze_video.py` for video processing
 
+**Sample assessment output:**
+- `tyler_assessment.md` — example assessment report (Hockey IQ Score: 74/100)
+- `tyler_assessment_raw.json` — raw API response for debugging/reference
+
 **Navigation updates:**
 - Added "Film Review" link to training.html nav bar
 - Added video assessment CTA to index.html landing page
