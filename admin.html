@@ -666,7 +666,6 @@
                             <th>Position</th>
                             <th>Level</th>
                             <th>Scenarios</th>
-                            <th>Attempts</th>
                             <th>Accuracy</th>
                             <th>Streak</th>
                             <th>Joined</th>
@@ -717,23 +716,19 @@
                 const [
                     { data: profiles, error: profilesError },
                     { data: progress, error: progressError },
-                    { data: scores, error: scoresError },
                     { data: coachConversations, error: coachError }
                 ] = await Promise.all([
                     supabase.from('profiles').select('*'),
                     supabase.from('progress').select('*'),
-                    supabase.from('scores').select('*').eq('is_best', true),
                     supabase.from('coach_conversations').select('*')
                 ]);
 
                 if (profilesError) throw profilesError;
                 if (progressError) throw progressError;
-                if (scoresError) throw scoresError;
                 if (coachError) console.log('Coach conversations error:', coachError.message);
-                console.log('Coach conversations data:', coachConversations);
 
                 // Process and display data
-                displayDashboard(profiles || [], progress || [], scores || [], coachConversations || []);
+                displayDashboard(profiles || [], progress || [], coachConversations || []);
 
                 // Update timestamp
                 document.getElementById('lastUpdated').textContent =
@@ -742,7 +737,7 @@
             } catch (error) {
                 console.error('Dashboard error:', error);
                 // Show dashboard with whatever data we have
-                displayDashboard([], [], [], []);
+                displayDashboard([], [], []);
             }
 
             loadingState.style.display = 'none';
@@ -751,7 +746,7 @@
             refreshBtn.textContent = 'Refresh Data';
         }
 
-        function displayDashboard(profiles, progress, scores, coachConversations) {
+        function displayDashboard(profiles, progress, coachConversations) {
             // --- Scorecards ---
             const totalUsers = profiles.length;
             document.getElementById('totalUsers').textContent = totalUsers;
@@ -809,10 +804,6 @@
                 : 0;
             document.getElementById('avgStreak').textContent = avgStreak;
 
-            // Total module attempts (all score entries = module completions)
-            const totalAttempts = scores.length;
-            document.getElementById('totalAttempts').textContent = totalAttempts;
-
             // --- Module Performance Table ---
             const moduleStats = {};
             for (let i = 1; i <= 6; i++) {
@@ -862,37 +853,6 @@
                     </tr>
                 `;
             }).join('');
-
-            // --- Score Distribution ---
-            // Group scores by score/total ratio for better visualization
-            const scoreCounts = {};
-            for (let i = 0; i <= 8; i++) scoreCounts[i] = 0;
-
-            scores.forEach(s => {
-                if (scoreCounts[s.score] !== undefined) {
-                    scoreCounts[s.score]++;
-                }
-            });
-
-            const maxScoreCount = Math.max(...Object.values(scoreCounts), 1);
-            const scoreDistribution = document.getElementById('scoreDistribution');
-            
-            // Only show scores that are possible (0-8) and label appropriately
-            scoreDistribution.innerHTML = Object.entries(scoreCounts)
-                .filter(([score]) => parseInt(score) <= 8)
-                .map(([score, count]) => {
-                    const pct = (count / maxScoreCount) * 100;
-                    const scoreNum = parseInt(score);
-                    // Show "score pts" instead of confusing "score/7"
-                    return `
-                        <div class="dist-row">
-                            <div class="dist-label">${scoreNum} pts</div>
-                            <div class="dist-bar">
-                                <div class="dist-fill" style="width: ${Math.max(pct, 5)}%">${count}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
 
             // --- Recent Users ---
             const recentUsers = [...profiles]
@@ -971,23 +931,15 @@
                 }
             });
 
-            // Count attempts (module completions) per user
-            const userAttempts = {};
-            scores.forEach(s => {
-                if (!userAttempts[s.user_id]) userAttempts[s.user_id] = 0;
-                userAttempts[s.user_id]++;
-            });
-
             const allUsersTable = document.getElementById('allUsersTable');
             if (profiles.length === 0) {
-                allUsersTable.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 40px; color: var(--silver);">No users yet</td></tr>';
+                allUsersTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--silver);">No users yet</td></tr>';
             } else {
                 allUsersTable.innerHTML = profiles
                     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                     .map(user => {
                         const prog = userProgress[user.id] || { total: 0, correct: 0 };
                         const accuracy = prog.total > 0 ? Math.round((prog.correct / prog.total) * 100) : 0;
-                        const attempts = userAttempts[user.id] || 0;
                         let streakCount = 0;
                         try {
                             const streakData = typeof user.streak === 'string' ? JSON.parse(user.streak) : user.streak;
@@ -1005,7 +957,6 @@
                                 <td>${posText}</td>
                                 <td>${user.age_level || '-'}</td>
                                 <td class="num">${prog.total}</td>
-                                <td class="num">${attempts}</td>
                                 <td>${accuracy}%</td>
                                 <td>${streakCount > 0 ? '🔥 ' + streakCount : '-'}</td>
                                 <td>${joined}</td>
