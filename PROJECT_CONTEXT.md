@@ -733,7 +733,7 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
-### February 3, 2026 - Re-engagement Email Functions
+### February 3, 2026 - Re-engagement Email Functions & Documentation
 
 **Added two new scheduled email functions for user re-engagement:**
 
@@ -764,9 +764,11 @@ Based on `REENGAGEMENT_EMAILS_SPEC.md`, implemented automated email campaigns to
 **Files added:**
 - `netlify/functions/day2-nudge.js`
 - `netlify/functions/winback.js`
+- `REENGAGEMENT_EMAILS_SPEC.md` — Full spec for re-engagement email system
 
 **Files modified:**
 - `netlify.toml` — Added schedules for both functions
+- `training.html` — Temporarily disabled paywall initialization (click issue workaround)
 
 ---
 
