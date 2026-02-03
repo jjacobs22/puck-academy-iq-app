@@ -745,6 +745,7 @@ A modern, component-based version of the app with hot reload for faster iteratio
 - Progress/streak tracking with Supabase sync
 - SSR disabled for pure SPA mode
 - Netlify static adapter configured
+- Auto-unregisters legacy service workers (fixes caching issues from old HTML app)
 - 3 sample scenarios (Module 1 scenarios 1-3)
 
 **Key files:**
