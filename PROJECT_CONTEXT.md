@@ -733,6 +733,15 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Hockey IQ Test Page & Migrations
+
+**Added:**
+- `hockey-iq-test.html` - Standalone Hockey IQ test page
+- `og-hockey-iq-test.png` / `.svg` - Open Graph images for social sharing
+- `migrations/create_email_signups.sql` - Database migration for email signups
+
+---
+
 ### February 3, 2026 - SvelteKit SPA Version Added
 
 **Created new SvelteKit SPA in `puck-academy-spa/` folder:**
