@@ -1,0 +1,63 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A1628"/>
+      <stop offset="100%" style="stop-color:#1a2940"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Subtle ice rink lines -->
+  <line x1="600" y1="0" x2="600" y2="630" stroke="rgba(200,16,46,0.15)" stroke-width="4"/>
+  <circle cx="600" cy="315" r="120" fill="none" stroke="rgba(200,16,46,0.15)" stroke-width="3"/>
+  <line x1="200" y1="0" x2="200" y2="630" stroke="rgba(30,64,175,0.1)" stroke-width="3"/>
+  <line x1="1000" y1="0" x2="1000" y2="630" stroke="rgba(30,64,175,0.1)" stroke-width="3"/>
+
+  <!-- Hockey stick emoji/icon area -->
+  <text x="600" y="180" text-anchor="middle" font-size="100" fill="#E8F4F8">🏒</text>
+
+  <!-- Main Title -->
+  <text x="600" y="300" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="72" font-weight="900" fill="#E8F4F8" letter-spacing="4">
+    WHAT'S YOUR
+  </text>
+  <text x="600" y="385" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="90" font-weight="900" fill="#C8102E" letter-spacing="6">
+    HOCKEY IQ?
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#A8B2BE" letter-spacing="2">
+    10 scenarios • 3 minutes • Find your level
+  </text>
+
+  <!-- Tier badges -->
+  <g transform="translate(250, 510)">
+    <rect x="0" y="0" width="140" height="50" rx="25" fill="rgba(205,127,50,0.3)" stroke="#CD7F32" stroke-width="2"/>
+    <text x="70" y="33" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#CD7F32">ROOKIE</text>
+  </g>
+  <g transform="translate(410, 510)">
+    <rect x="0" y="0" width="140" height="50" rx="25" fill="rgba(168,178,190,0.3)" stroke="#A8B2BE" stroke-width="2"/>
+    <text x="70" y="33" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#A8B2BE">STARTER</text>
+  </g>
+  <g transform="translate(570, 510)">
+    <rect x="0" y="0" width="140" height="50" rx="25" fill="rgba(96,165,250,0.3)" stroke="#60A5FA" stroke-width="2"/>
+    <text x="70" y="33" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#60A5FA">ALL-STAR</text>
+  </g>
+  <g transform="translate(730, 510)">
+    <rect x="0" y="0" width="140" height="50" rx="25" fill="rgba(255,215,0,0.3)" stroke="#FFD700" stroke-width="2"/>
+    <text x="70" y="33" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFD700">ELITE</text>
+  </g>
+
+  <!-- Puck Academy branding -->
+  <text x="600" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#A8B2BE" letter-spacing="3">
+    PUCK ACADEMY
+  </text>
+</svg>
