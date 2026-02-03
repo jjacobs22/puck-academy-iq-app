@@ -3108,31 +3108,43 @@
 
         // Find next incomplete scenario and update Continue button
         function updateContinueButton() {
-            const wrapper = document.getElementById('continueBtnWrapper');
-            const scenarioText = document.getElementById('continueBtnScenario');
+            try {
+                const wrapper = document.getElementById('continueBtnWrapper');
+                const scenarioText = document.getElementById('continueBtnScenario');
 
-            for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
-                const config = moduleConfigs[moduleNum];
-                const scoreData = getScoreData(moduleNum);
+                if (!wrapper || !scenarioText) {
+                    console.error('Continue button elements not found');
+                    return;
+                }
 
-                for (let scenarioNum = 1; scenarioNum <= config.total; scenarioNum++) {
-                    if (scoreData.currentRun[scenarioNum] === undefined) {
-                        // Found next incomplete scenario
-                        const title = scenarioTitles[moduleNum]?.[scenarioNum] || `Scenario ${scenarioNum}`;
-                        scenarioText.textContent = `M${moduleNum}: ${title}`;
-                        wrapper.classList.remove('all-complete', 'hidden');
-                        wrapper.dataset.module = moduleNum;
-                        wrapper.dataset.scenario = scenarioNum;
-                        return;
+                for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
+                    const config = moduleConfigs[moduleNum];
+                    if (!config) continue;
+                    
+                    const scoreData = getScoreData(moduleNum);
+                    if (!scoreData || !scoreData.currentRun) continue;
+
+                    for (let scenarioNum = 1; scenarioNum <= config.total; scenarioNum++) {
+                        if (scoreData.currentRun[scenarioNum] === undefined) {
+                            // Found next incomplete scenario
+                            const title = scenarioTitles[moduleNum]?.[scenarioNum] || `Scenario ${scenarioNum}`;
+                            scenarioText.textContent = `M${moduleNum}: ${title}`;
+                            wrapper.classList.remove('all-complete', 'hidden');
+                            wrapper.dataset.module = moduleNum;
+                            wrapper.dataset.scenario = scenarioNum;
+                            return;
+                        }
                     }
                 }
-            }
 
-            // All complete
-            scenarioText.textContent = 'All scenarios complete! 🏆';
-            wrapper.classList.add('all-complete');
-            wrapper.dataset.module = '1';
-            wrapper.dataset.scenario = '1';
+                // All complete
+                scenarioText.textContent = 'All scenarios complete! 🏆';
+                wrapper.classList.add('all-complete');
+                wrapper.dataset.module = '1';
+                wrapper.dataset.scenario = '1';
+            } catch (err) {
+                console.error('Error updating continue button:', err);
+            }
         }
 
         // Resume next scenario when Continue button clicked
@@ -3978,23 +3990,31 @@
             }
         }
 
-        // Expose functions globally for onclick handlers
+        // Expose functions globally for onclick handlers and auth module
         window.closeMilestoneModal = closeMilestoneModal;
         window.shareMilestone = shareMilestone;
         window.resumeNextScenario = resumeNextScenario;
+        window.updateContinueButton = updateContinueButton;
+        window.updateDisplay = updateDisplay;
 
         // Initialize
-        organizeModulesByPosition();
-        updateDisplay();
-        expandFirstIncompleteModule();
-        updateContinueButton();
-        updateNavStatus();
-        updateReviewIntroLinks();
-        updateActiveNavItem();
-        updateStreakDisplay();
-        updateDailyChallenge();
-        checkForMilestoneOnLoad();
-        personalizeFromAssessment();  // Apply assessment-based personalization
+        try {
+            organizeModulesByPosition();
+            updateDisplay();
+            expandFirstIncompleteModule();
+            updateContinueButton();
+            updateNavStatus();
+            updateReviewIntroLinks();
+            updateActiveNavItem();
+            updateStreakDisplay();
+            updateDailyChallenge();
+            checkForMilestoneOnLoad();
+            personalizeFromAssessment();  // Apply assessment-based personalization
+        } catch (initError) {
+            console.error('Initialization error:', initError);
+            // Still try to update continue button even if other init fails
+            try { updateContinueButton(); } catch(e) {}
+        }
 
         // Update streak display when window regains focus (user returns to tab)
         window.addEventListener('focus', () => {
@@ -4108,6 +4128,10 @@
                 // Refresh the display to show synced progress
                 if (typeof updateDisplay === 'function') {
                     updateDisplay();
+                }
+                // Update continue button with synced progress
+                if (typeof updateContinueButton === 'function') {
+                    updateContinueButton();
                 }
             } else if (event === 'SIGNED_OUT') {
                 updateAuthUI();
