@@ -1,10 +1,24 @@
 <script lang="ts">
   import '../app.css';
+  import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
   import Header from '$lib/components/Shell/Header.svelte';
   import Footer from '$lib/components/Shell/Footer.svelte';
   import Toast from '$lib/components/Shell/Toast.svelte';
   import AuthModal from '$lib/components/Overlays/AuthModal.svelte';
   import { showAuthModal } from '$lib/stores/ui';
+
+  // Clean up any legacy service workers from the old HTML app
+  onMount(() => {
+    if (browser && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => {
+          registration.unregister();
+          console.log('Unregistered legacy service worker');
+        });
+      });
+    }
+  });
 </script>
 
 <div class="app-shell">
