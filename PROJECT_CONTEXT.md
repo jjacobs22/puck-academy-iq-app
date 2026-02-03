@@ -733,6 +733,46 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - SvelteKit SPA Version Added
+
+**Created new SvelteKit SPA in `puck-academy-spa/` folder:**
+
+A modern, component-based version of the app with hot reload for faster iteration.
+
+**Features included:**
+- GA4 analytics integration (`src/lib/services/analytics.ts`)
+- Audio service with folder mapping for all 43 scenarios
+- Progress/streak tracking with Supabase sync
+- SSR disabled for pure SPA mode
+- Netlify static adapter configured
+- 3 sample scenarios (Module 1 scenarios 1-3)
+
+**Key files:**
+| File | Purpose |
+|------|---------|
+| `src/routes/+page.svelte` | Landing page |
+| `src/routes/hub/+page.svelte` | Module hub |
+| `src/lib/components/Scenarios/ScenarioContainer.svelte` | Core scenario experience |
+| `src/lib/data/scenarios.ts` | Scenario data (3 samples, 40 more to migrate) |
+| `src/app.css` | Design system variables |
+
+**To run locally:**
+```bash
+cd puck-academy-spa
+npm install
+npm run dev
+# Open http://localhost:5173
+```
+
+**To deploy:** Create new Netlify site pointing to `puck-academy-spa` subfolder with base directory set.
+
+**Still needed:**
+- Migrate remaining 40 scenarios to `scenarios.ts`
+- Add results modal for module completion
+- Theory intro overlays
+
+---
+
 ### February 3, 2026 - Fix Continue Button Loading Issue
 
 **Fixed bug where Continue button was stuck on "Loading...":**
