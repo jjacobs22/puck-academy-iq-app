@@ -1636,6 +1636,71 @@
                 width: 85%;
             }
         }
+
+        /* Continue Button - Quick resume for returning users */
+        .continue-btn-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .continue-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--accent-red), #e01030);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 16, 46, 0.4);
+        }
+
+        .continue-btn-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .continue-btn-icon {
+            font-size: 1.3rem;
+        }
+
+        .continue-btn-text {
+            text-align: left;
+        }
+
+        .continue-btn-label {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .continue-btn-scenario {
+            font-size: 1.05rem;
+        }
+
+        .continue-btn-arrow {
+            font-size: 1.4rem;
+            opacity: 0.9;
+        }
+
+        .continue-btn-wrapper.all-complete .continue-btn {
+            background: linear-gradient(135deg, var(--success-green), #1a8f4a);
+        }
+
+        .continue-btn-wrapper.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1719,24 +1784,36 @@
             <button class="account-banner-close" id="closeBannerBtn" aria-label="Close">×</button>
         </div>
 
-        <div class="score-display" id="scoreDisplay">
+        <!-- Score Display - HIDDEN (scores shown per module instead) -->
+        <div class="score-display" id="scoreDisplay" style="display: none;">
             <span class="score-label">Best Score</span>
             <div class="score-value" id="bestScoreValue">0/7</div>
         </div>
 
-        <!-- Coach Intro -->
+        <!-- Coach Intro - Shortened -->
         <div class="coach-intro" id="coachIntro">
             <div class="coach-avatar">C</div>
             <div class="coach-message" id="coachMessage">
-                <strong>Coach here.</strong> These are real game situations — the kind that separate good centers from great ones. Take your time, think through each read, and I'll explain the <em>why</em> behind every answer. Let's get to work. 🏒
-                <div style="margin-top: 10px; font-size: 0.9rem;">
-                    <a href="glossary.html" style="color: var(--silver); text-decoration: none;">📖 New to hockey terms? Check the Glossary →</a>
-                </div>
+                <strong>Pick a module and let's work.</strong> I'll explain the <em>why</em> behind every answer. <a href="glossary.html" style="color: var(--silver); text-decoration: none; margin-left: 8px;">📖 Glossary</a>
             </div>
         </div>
 
-        <!-- Your Progress (shown if profile exists) -->
-        <div class="your-program" id="yourProgram">
+        <!-- Continue Button - One-tap resume -->
+        <div class="continue-btn-wrapper" id="continueBtnWrapper">
+            <button class="continue-btn" id="continueBtn" onclick="resumeNextScenario()">
+                <div class="continue-btn-left">
+                    <span class="continue-btn-icon">▶</span>
+                    <div class="continue-btn-text">
+                        <div class="continue-btn-label">Continue</div>
+                        <div class="continue-btn-scenario" id="continueBtnScenario">Loading...</div>
+                    </div>
+                </div>
+                <span class="continue-btn-arrow">→</span>
+            </button>
+        </div>
+
+        <!-- Your Progress - HIDDEN for simplicity (redundant with module progress) -->
+        <div class="your-program" id="yourProgram" style="display: none;">
             <div class="your-program-header">
                 <div>
                     <h3 class="your-program-title">Your Progress</h3>
@@ -1758,8 +1835,8 @@
             </div>
         </div>
 
-        <!-- Streak Card -->
-        <div class="streak-card" id="streakCard">
+        <!-- Streak Card - HIDDEN (streak shown in nav instead) -->
+        <div class="streak-card" id="streakCard" style="display: none;">
             <div class="streak-card-main">
                 <span class="streak-card-emoji" id="streakEmoji">🔥</span>
                 <div class="streak-card-info">
@@ -1773,8 +1850,8 @@
             </div>
         </div>
 
-        <!-- Daily Challenge Card -->
-        <div class="daily-challenge" id="dailyChallenge">
+        <!-- Daily Challenge Card - HIDDEN (reduces cognitive load) -->
+        <div class="daily-challenge" id="dailyChallenge" style="display: none;">
             <div class="daily-challenge-header">
                 <span class="daily-challenge-icon">📅</span>
                 <span class="daily-challenge-label">Today's Challenge</span>
@@ -1793,8 +1870,8 @@
             </div>
         </div>
 
-        <!-- Overall Progress Card -->
-        <div class="overall-progress" id="overallProgress">
+        <!-- Overall Progress Card - HIDDEN for simplicity -->
+        <div class="overall-progress" id="overallProgress" style="display: none;">
             <div class="overall-progress-header">
                 <h3 class="overall-progress-title">Your Progress</h3>
             </div>
@@ -2993,13 +3070,13 @@
             }
         }
 
-        // Auto-expand first incomplete module on load
+        // Auto-expand first incomplete module on load (no scroll - Continue button is primary CTA)
         function expandFirstIncompleteModule() {
             for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
                 const config = moduleConfigs[moduleNum];
                 const scoreData = getScoreData(moduleNum);
                 const completed = Object.keys(scoreData.currentRun).length;
-                
+
                 if (completed < config.total) {
                     document.getElementById(`module${moduleNum}`).classList.add('expanded');
                     return;
@@ -3007,6 +3084,63 @@
             }
             // If all complete, expand module 1
             document.getElementById('module1').classList.add('expanded');
+        }
+
+        // Module names for Continue button
+        const moduleNames = {
+            1: 'D-Zone Coverage',
+            2: 'Faceoffs',
+            3: 'Breakouts',
+            4: 'Offensive Zone',
+            5: 'Forechecking',
+            6: 'D-Zone for Defensemen'
+        };
+
+        // Scenario titles for Continue button
+        const scenarioTitles = {
+            1: { 1: 'High Slot Coverage', 2: 'Corner Battle Support', 3: 'Reading the Cycle', 4: 'Breakout Timing', 5: 'Gap Control', 6: 'Winger Caught Up Ice', 7: 'D Partner Bites' },
+            2: { 1: 'Reading the Ref Position', 2: 'Who Has the Advantage?', 3: 'When to Cheat Your Feet', 4: 'The Tie-Up Decision', 5: 'Leverage and Body Position', 6: 'Forehand vs. Backhand Read', 7: 'Post-Draw Responsibility' },
+            3: { 1: 'High Route vs. Low Route', 2: 'Reading Pressure', 3: 'Forehand vs. Backhand Receive', 4: 'When to Cut Laterally', 5: 'Support vs. Stretch', 6: 'Reading the Forecheck Pattern', 7: 'Broken Play Recovery' },
+            4: { 1: 'Net Front Presence', 2: 'Cycle Support', 3: 'Finding Soft Ice', 4: 'Backdoor Play', 5: 'Screen & Tip', 6: 'High Slot Options', 7: 'O-Zone Turnover Recovery' },
+            5: { 1: 'F1 Angle of Pursuit', 2: 'F2 Read & React', 3: 'F3 High Support', 4: 'Dump Chase Decision', 5: 'Pinch or Stay', 6: 'Loose Puck Battles', 7: 'Transition Defense', 8: 'Change on the Fly' },
+            6: { 1: 'Net Front Battle', 2: 'Corner Coverage', 3: 'Weak Side Rotation', 4: 'Point Shot Positioning', 5: 'Rim Read', 6: 'Breakout First Pass', 7: 'Gap Control' }
+        };
+
+        // Find next incomplete scenario and update Continue button
+        function updateContinueButton() {
+            const wrapper = document.getElementById('continueBtnWrapper');
+            const scenarioText = document.getElementById('continueBtnScenario');
+
+            for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
+                const config = moduleConfigs[moduleNum];
+                const scoreData = getScoreData(moduleNum);
+
+                for (let scenarioNum = 1; scenarioNum <= config.total; scenarioNum++) {
+                    if (scoreData.currentRun[scenarioNum] === undefined) {
+                        // Found next incomplete scenario
+                        const title = scenarioTitles[moduleNum]?.[scenarioNum] || `Scenario ${scenarioNum}`;
+                        scenarioText.textContent = `M${moduleNum}: ${title}`;
+                        wrapper.classList.remove('all-complete', 'hidden');
+                        wrapper.dataset.module = moduleNum;
+                        wrapper.dataset.scenario = scenarioNum;
+                        return;
+                    }
+                }
+            }
+
+            // All complete
+            scenarioText.textContent = 'All scenarios complete! 🏆';
+            wrapper.classList.add('all-complete');
+            wrapper.dataset.module = '1';
+            wrapper.dataset.scenario = '1';
+        }
+
+        // Resume next scenario when Continue button clicked
+        function resumeNextScenario() {
+            const wrapper = document.getElementById('continueBtnWrapper');
+            const moduleNum = parseInt(wrapper.dataset.module) || 1;
+            const scenarioNum = parseInt(wrapper.dataset.scenario) || 1;
+            loadScenario(moduleNum, scenarioNum);
         }
 
         function loadScenario(moduleNum, scenarioNum) {
@@ -3847,11 +3981,13 @@
         // Expose functions globally for onclick handlers
         window.closeMilestoneModal = closeMilestoneModal;
         window.shareMilestone = shareMilestone;
+        window.resumeNextScenario = resumeNextScenario;
 
         // Initialize
         organizeModulesByPosition();
         updateDisplay();
         expandFirstIncompleteModule();
+        updateContinueButton();
         updateNavStatus();
         updateReviewIntroLinks();
         updateActiveNavItem();

@@ -733,6 +733,33 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - UX Declutter & Continue Button
+
+**Major UX simplification based on audit findings:**
+
+The training hub had accumulated 15+ UI elements, showing progress 6 different ways. Users saw a wall of cards before reaching actual scenarios.
+
+**Changes to training.html:**
+- Added **"Continue" button** at top — one-tap resume showing next incomplete scenario (e.g., "M2: The Tie-Up Decision")
+- **Hidden redundant elements:**
+  - Best Score display (scores shown per module instead)
+  - "Your Progress" card (redundant with module progress bars)
+  - Streak hero card (kept streak in nav counter only)
+  - Daily Challenge card (reduces cognitive load)
+  - Overall Progress card (info already in nav + modules)
+- **Shortened Coach intro** from 3 sentences to 1, moved glossary link inline
+- Continue button turns green with "All scenarios complete! 🏆" when done
+
+**Result:** Training hub now focuses on one clear action: Continue where you left off, or pick a module.
+
+**Files added:**
+- `UX_AUDIT.md` — Full audit documenting bloat issues, 10 recommendations, visual before/after
+
+**Files modified:**
+- `training.html` — ~200 lines: Continue button, hidden elements, shortened intro
+
+---
+
 ### February 3, 2026 - Re-engagement Email Functions & Documentation
 
 **Added two new scheduled email functions for user re-engagement:**
