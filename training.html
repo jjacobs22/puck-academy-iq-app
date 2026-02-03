@@ -3108,6 +3108,7 @@
 
         // Find next incomplete scenario and update Continue button
         function updateContinueButton() {
+            console.log('updateContinueButton called');
             try {
                 const wrapper = document.getElementById('continueBtnWrapper');
                 const scenarioText = document.getElementById('continueBtnScenario');
@@ -3119,15 +3120,22 @@
 
                 for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
                     const config = moduleConfigs[moduleNum];
-                    if (!config) continue;
+                    if (!config) {
+                        console.log('No config for module', moduleNum);
+                        continue;
+                    }
                     
                     const scoreData = getScoreData(moduleNum);
-                    if (!scoreData || !scoreData.currentRun) continue;
+                    if (!scoreData || !scoreData.currentRun) {
+                        console.log('No scoreData for module', moduleNum);
+                        continue;
+                    }
 
                     for (let scenarioNum = 1; scenarioNum <= config.total; scenarioNum++) {
                         if (scoreData.currentRun[scenarioNum] === undefined) {
                             // Found next incomplete scenario
                             const title = scenarioTitles[moduleNum]?.[scenarioNum] || `Scenario ${scenarioNum}`;
+                            console.log('Setting continue to:', `M${moduleNum}: ${title}`);
                             scenarioText.textContent = `M${moduleNum}: ${title}`;
                             wrapper.classList.remove('all-complete', 'hidden');
                             wrapper.dataset.module = moduleNum;
@@ -3138,6 +3146,7 @@
                 }
 
                 // All complete
+                console.log('All scenarios complete');
                 scenarioText.textContent = 'All scenarios complete! 🏆';
                 wrapper.classList.add('all-complete');
                 wrapper.dataset.module = '1';
@@ -4028,6 +4037,17 @@
                 .then(reg => console.log('SW registered'))
                 .catch(err => console.log('SW registration failed:', err));
         }
+
+        // Backup: ensure Continue button updates on page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                try {
+                    updateContinueButton();
+                } catch(e) {
+                    console.error('Backup updateContinueButton failed:', e);
+                }
+            }, 100);
+        });
     </script>
 
     <!-- Auth Module -->
