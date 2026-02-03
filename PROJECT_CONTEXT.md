@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** February 2, 2026  
+**Last Updated:** February 3, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -732,6 +732,43 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### February 3, 2026 - Re-engagement Email Functions
+
+**Added two new scheduled email functions for user re-engagement:**
+
+Based on `REENGAGEMENT_EMAILS_SPEC.md`, implemented automated email campaigns to bring back users who've dropped off.
+
+**Day 2 Nudge (`netlify/functions/day2-nudge.js`):**
+- Targets users who signed up yesterday but haven't been active today
+- Catches the biggest drop-off point (day 2 churn)
+- Subject: "Ready for your next scenario?"
+- Friendly, low-pressure copy encouraging return
+- Scheduled daily at 6pm ET (11pm UTC)
+
+**Win-back (`netlify/functions/winback.js`):**
+- Targets users whose last activity was exactly 7 days ago
+- Personalizes subject based on streak history:
+  - Users with 3+ day streak: "Your X-day streak is waiting"
+  - Others: "We saved your spot"
+- Adds urgency for users who had built streaks
+- Scheduled daily at 1pm ET (6pm UTC)
+
+**Email cadence summary:**
+| Email | Trigger | Time (ET) |
+|-------|---------|-----------|
+| Streak-at-Risk | Has 2+ streak, didn't train today | 10am |
+| Day 2 Nudge | Signed up yesterday, no activity today | 6pm |
+| Win-back | Last active exactly 7 days ago | 1pm |
+
+**Files added:**
+- `netlify/functions/day2-nudge.js`
+- `netlify/functions/winback.js`
+
+**Files modified:**
+- `netlify.toml` — Added schedules for both functions
+
+---
 
 ### February 2, 2026 - UX Polish & Navigation Cleanup
 

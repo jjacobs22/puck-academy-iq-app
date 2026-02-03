@@ -19,3 +19,13 @@
 # Runs daily at 10am ET (3pm UTC) to catch users before end of day
 [functions."streak-reminder"]
   schedule = "0 15 * * *"
+
+# Scheduled function: Day 2 Nudge emails
+# Runs daily at 6pm ET (11pm UTC) to catch users who signed up yesterday but haven't returned
+[functions."day2-nudge"]
+  schedule = "0 23 * * *"
+
+# Scheduled function: Win-back emails
+# Runs daily at 1pm ET (6pm UTC) to re-engage users inactive for 7 days
+[functions."winback"]
+  schedule = "0 18 * * *"
