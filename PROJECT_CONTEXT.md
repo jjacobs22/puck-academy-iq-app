@@ -733,6 +733,17 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Fix Continue Button Loading Issue
+
+**Fixed bug where Continue button was stuck on "Loading...":**
+- Added try/catch error handling to `updateContinueButton()` function
+- Wrapped initialization sequence in try/catch with fallback
+- Exposed `updateContinueButton` and `updateDisplay` globally via `window` object
+- Auth module now calls `updateContinueButton()` after syncing progress from server
+- This ensures the Continue button updates correctly after login
+
+---
+
 ### February 3, 2026 - UX Declutter & Continue Button
 
 **Major UX simplification based on audit findings:**
