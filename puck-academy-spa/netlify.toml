@@ -1,0 +1,9 @@
+[build]
+  command = "cp -r ../audio static/ && npm run build"
+  publish = "build"
+
+# SPA fallback - redirect all routes to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
