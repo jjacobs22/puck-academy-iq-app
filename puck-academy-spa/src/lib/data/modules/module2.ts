@@ -9,6 +9,12 @@ export const module2Scenarios: Scenario[] = [
     scenarioNum: 1,
     totalInModule: 7,
     title: 'D-Zone Faceoff Positioning',
+    coachCue: "On a D-zone draw, your first job is coverage. Know who you're responsible for — and if they like to crash the net, be tight.",
+    introSlides: [
+      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
+      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
+      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+    ],
     situation: 'Defensive zone faceoff at the left dot. You\'re the left winger. Your center is about to take the draw. The opposing right winger is aggressive and likes to crash the net hard after every draw.',
     question: 'Where should you position yourself on this defensive zone faceoff?',
     answers: [
@@ -30,6 +36,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 48, y: 35, label: 'LW', note: 'Left forward' }
       ],
       puck: { x: 35, y: 25 },
+      ref: { x: 35, y: 20, label: 'REF' },
       arrows: [
         { from: { x: 48, y: 15 }, to: { x: 18, y: 38 }, style: 'dashed', label: 'Net crash threat' }
       ],
@@ -45,6 +52,12 @@ export const module2Scenarios: Scenario[] = [
     scenarioNum: 2,
     totalInModule: 7,
     title: 'O-Zone Faceoff — One-Timer Setup',
+    coachCue: "When your D has a one-timer from the point, you're the relay. Be where the puck is going — receive the draw, get it to the point, then get to the net.",
+    introSlides: [
+      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
+      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
+      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+    ],
     situation: 'Offensive zone faceoff at the right dot. Your left D has a bomb from the point and is set up for a one-timer. If your center wins the draw back cleanly, the scoring chance is there immediately.',
     question: 'Where should you position yourself to maximize scoring chances?',
     answers: [
@@ -65,6 +78,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 172, y: 42, label: 'LW', note: 'Cheating boards' }
       ],
       puck: { x: 165, y: 60 },
+      ref: { x: 165, y: 55, label: 'REF' },
       arrows: [
         { from: { x: 165, y: 60 }, to: { x: 158, y: 60 }, style: 'dashed', label: 'Draw back' },
         { from: { x: 158, y: 60 }, to: { x: 140, y: 20 }, style: 'dashed', label: 'Relay to point' }
@@ -81,6 +95,12 @@ export const module2Scenarios: Scenario[] = [
     scenarioNum: 3,
     totalInModule: 7,
     title: 'Neutral Zone Faceoff Read',
+    coachCue: "Read the other team's setup before the puck drops. A winger playing high isn't there for the draw — they're there for transition. Be ready.",
+    introSlides: [
+      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
+      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
+      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+    ],
     situation: 'Neutral zone faceoff. You\'re the center about to take the draw. You notice the opposing winger on your left is positioned very high — almost at the hash marks instead of staying low near the dot.',
     question: 'What does this opponent positioning tell you?',
     answers: [
@@ -102,6 +122,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 128, y: 38, label: 'RW', note: 'Right forward' }
       ],
       puck: { x: 120, y: 25 },
+      ref: { x: 120, y: 20, label: 'REF' },
       arrows: [
         { from: { x: 135, y: 12 }, to: { x: 80, y: 12 }, style: 'dashed', label: 'Transition threat' }
       ],
@@ -117,6 +138,12 @@ export const module2Scenarios: Scenario[] = [
     scenarioNum: 4,
     totalInModule: 7,
     title: 'Faceoff Loss Recovery',
+    coachCue: "You lost the draw — now it's damage control. The puck is loose and their winger is going for it. Your job: pressure before they get set.",
+    introSlides: [
+      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
+      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
+      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+    ],
     situation: 'Your center just lost the D-zone faceoff cleanly. The puck squirted toward the boards. The opposing winger on your side is advancing on it. You\'re the right winger with a chance to affect the outcome before they establish possession.',
     question: 'What\'s your immediate priority?',
     answers: [
@@ -137,6 +164,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 30, y: 25, label: 'C', note: 'Won the draw' }
       ],
       puck: { x: 32, y: 38 },
+      ref: { x: 35, y: 20, label: 'REF' },
       arrows: [
         { from: { x: 40, y: 42 }, to: { x: 32, y: 38 }, style: 'solid', label: 'Opponent advancing' },
         { from: { x: 42, y: 35 }, to: { x: 34, y: 38 }, style: 'dashed', label: 'Your pressure' }
@@ -153,6 +181,12 @@ export const module2Scenarios: Scenario[] = [
     scenarioNum: 5,
     totalInModule: 7,
     title: 'Faceoff Win Execution',
+    coachCue: "You won the draw and the puck is at the point. Don't stand still — the D are scrambling. Attack the net and create a scoring chance.",
+    introSlides: [
+      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
+      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
+      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+    ],
     situation: 'Offensive zone faceoff. Your center just won the draw cleanly back to the left D at the point. The defense is already pushing up. You\'re the left winger — time to execute.',
     question: 'What\'s your best next move?',
     answers: [
@@ -173,6 +207,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 172, y: 55, label: 'D', note: 'Scrambling' }
       ],
       puck: { x: 140, y: 18 },
+      ref: { x: 165, y: 20, label: 'REF' },
       arrows: [
         { from: { x: 158, y: 25 }, to: { x: 178, y: 42 }, style: 'solid', label: 'Attack net' },
         { from: { x: 140, y: 18 }, to: { x: 178, y: 42 }, style: 'dashed', label: 'Pass to net' }
@@ -189,6 +224,12 @@ export const module2Scenarios: Scenario[] = [
     scenarioNum: 6,
     totalInModule: 7,
     title: 'Late-Game Faceoff — Protecting the Lead',
+    coachCue: "Thirty seconds left, up one. This isn't the time for risk. Keep everyone low, between the puck and the net. Win the draw, then clear or eat clock.",
+    introSlides: [
+      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
+      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
+      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+    ],
     situation: 'You\'re a defenseman. 30 seconds left, up 2-1, D-zone faceoff. The opposing team pulled their goalie earlier. This draw could decide the game. Your forwards are asking where they should set up.',
     question: 'What\'s the best positioning strategy for this critical defensive faceoff?',
     answers: [
@@ -210,6 +251,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 48, y: 55, label: 'RW', note: 'Right forward' }
       ],
       puck: { x: 35, y: 25 },
+      ref: { x: 35, y: 20, label: 'REF' },
       arrows: [],
       annotations: []
     },
@@ -223,6 +265,12 @@ export const module2Scenarios: Scenario[] = [
     scenarioNum: 7,
     totalInModule: 7,
     title: 'Power Play Faceoff — Umbrella Setup',
+    coachCue: "On the PP you have the extra man — use it. Win the draw, get the puck to the point, and have your forwards attack the net for tips and rebounds.",
+    introSlides: [
+      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
+      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
+      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+    ],
     situation: 'You\'re the center on a 5-on-4 power play. Offensive zone faceoff at the left dot. Your team runs an umbrella formation — D-men at the points, forwards attacking the net. The PK is trying to disrupt your setup.',
     question: 'How should your team execute this power play faceoff?',
     answers: [
@@ -245,6 +293,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 175, y: 42, label: 'D', note: 'PK defenseman' }
       ],
       puck: { x: 165, y: 25 },
+      ref: { x: 165, y: 20, label: 'REF' },
       arrows: [
         { from: { x: 165, y: 25 }, to: { x: 142, y: 18 }, style: 'dashed', label: 'Draw to point' },
         { from: { x: 142, y: 18 }, to: { x: 178, y: 42 }, style: 'dashed', label: 'Shot on net' }

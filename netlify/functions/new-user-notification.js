@@ -106,7 +106,7 @@ exports.handler = async (event) => {
                 </div>
 
                 <p style="color: #666; font-size: 14px; margin-top: 20px;">
-                    <a href="https://hockeyiq.netlify.app/admin.html" style="color: #C8102E;">View Admin Dashboard →</a>
+                    <a href="https://hockeyiq.netlify.app/admin" style="color: #C8102E;">View Admin Dashboard →</a>
                 </p>
             </div>
         `;
@@ -121,7 +121,7 @@ Level: ${level || 'Not selected'}
 ${age ? `Age: ${age} years old` : ''}
 Signed up: ${signupTime}
 
-View dashboard: https://hockeyiq.netlify.app/admin.html
+View dashboard: https://hockeyiq.netlify.app/admin
         `.trim();
 
         // Send the email

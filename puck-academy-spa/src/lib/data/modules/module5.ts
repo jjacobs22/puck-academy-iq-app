@@ -9,6 +9,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 1,
     totalInModule: 8,
     title: '1-2-2 Forecheck — Your Lane',
+    coachCue: "In a 1-2-2 you're not chasing the puck — you're taking away a lane. Pick the weak-side D and own that space. F1 has the puck; you take the outlet.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'The opposing D just picked up the puck in their zone. Your first forechecker (F1) is already pressuring high. You\'re coming in as the second wave. You need to pick a lane and execute.',
     question: 'As the second forward in a 1-2-2, what\'s your primary responsibility?',
     answers: [
@@ -44,6 +50,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 2,
     totalInModule: 8,
     title: 'Aggressive 2-1-2 Decision',
+    coachCue: "A 2-1-2 is a read, not a default. When they look tired or disorganized, that's when you commit the second forechecker. Evidence first.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'Puck is loose in the opposing zone after a dump-in. You sense the opposing team is tired and disorganized — slow line change, sloppy passes. Two of your forwards are already in deep.',
     question: 'When should you commit to a 2-1-2 (two forecheckers) instead of a standard 1-2-2?',
     answers: [
@@ -78,6 +90,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 3,
     totalInModule: 8,
     title: 'First Man In — Angling the Puck Carrier',
+    coachCue: "Don't skate straight at him — take away the middle and funnel him to the boards. You're deciding where he goes, not chasing where he's going.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'An opposing D is exiting their zone with the puck, heading toward center ice. You\'re the closest forechecker. He can cut to the middle or go wide. You have one job: make his decision for him.',
     question: 'How do you angle the puck carrier as the first forechecker?',
     answers: [
@@ -112,6 +130,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 4,
     totalInModule: 8,
     title: 'Second Man Support — Reading F1',
+    coachCue: "F1 is in the battle. Your job: read whether to go high and cut the breakout or stay low and help. Don't double the puck — take away the next option.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'Your forechecker (F1) just engaged the puck carrier on the boards in the opposing zone. The puck is still being battled for. You\'re F2 — do you go high to cut off the breakout, or stay low to help?',
     question: 'How do you read where to position as the second forechecker?',
     answers: [
@@ -146,6 +170,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 5,
     totalInModule: 8,
     title: 'Third Man High — Safety Valve',
+    coachCue: "When your two forwards are deep, someone has to be high. That's you. You're the safety valve — if the puck gets past the forecheck, you're the last line before your D.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'Two of your forwards are deep in the offensive zone forechecking hard. The opposing team just cleared the puck to their point. Your forecheckers won\'t get there in time. Where are you?',
     question: 'What\'s the role of the third man high in a forecheck?',
     answers: [
@@ -179,6 +209,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 6,
     totalInModule: 8,
     title: 'Dump and Chase Execution',
+    coachCue: "Where you dump the puck decides whether your forecheck can recover it. Soft area for the goalie? Wrong. Corner or hard area where your forwards can win the race? Right.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'Your team is heading into the offensive zone but the D is set up tight at the blue line. You decide to dump it in. The key: WHERE you dump it determines whether your forecheck can recover it.',
     question: 'What\'s the critical factor in a successful dump-and-chase?',
     answers: [
@@ -213,6 +249,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 7,
     totalInModule: 8,
     title: 'Forecheck to Offense Transition',
+    coachCue: "Turnover in their zone — the switch from forecheck to offense happens in a split second. You're now the attacker. Move the puck and attack the net.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'You\'re forechecking hard in the opposing zone. The puck battle is going and then — turnover! The puck is suddenly loose, your linemate scoops it. Now it\'s YOUR possession in THEIR zone. The switch happens in half a second.',
     question: 'When you gain possession during a forecheck, what\'s your immediate read?',
     answers: [
@@ -247,6 +289,12 @@ export const module5Scenarios: Scenario[] = [
     scenarioNum: 8,
     totalInModule: 8,
     title: 'Reading Forecheck Intensity',
+    coachCue: "If they're handling your 1-2-2 easily — calm D, clean breakouts — you're burning energy for nothing. Read the game. Sometimes you need to back off and reset.",
+    introSlides: [
+      { title: 'Forecheck Structure', body: '"F1 pressures the puck. F2 and F3 take away passing lanes. You don\'t all chase — you divide the ice and force turnovers."' },
+      { title: 'Read Before You Commit', body: '"When to go 2-1-2 and when to stay 1-2-2? Read the opponent: tired, disorganized, or calm and breaking out clean?"' },
+      { title: 'Angles Over Speed', body: '"First man in: take away the middle, funnel the puck carrier to the boards. You\'re herding him into traffic, not chasing him."' }
+    ],
     situation: 'You\'re running a standard 1-2-2 forecheck, but the opponent is handling your pressure easily. Calm D-men, clean breakouts. Your guys are chasing ghosts and burning energy.',
     question: 'How do you adjust forecheck pressure to stay effective?',
     answers: [

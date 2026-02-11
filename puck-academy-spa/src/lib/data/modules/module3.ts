@@ -8,6 +8,12 @@ export const module3Scenarios: Scenario[] = [
     scenarioNum: 1,
     totalInModule: 7,
     title: 'Standard Breakout — Getting Open on the Wall',
+    coachCue: "Your D is under pressure. As a winger, your lane is the wall. Get low, be a target, and give him a short safe pass — that's how breakouts start.",
+    introSlides: [
+      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
+      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
+      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+    ],
     situation: 'Your D retrieves the puck behind the goal line. A single forechecker is bearing down. You\'re the right winger up near the neutral zone. Your D needs an outlet.',
     question: 'What do you do to create a breakout passing lane?',
     answers: [
@@ -42,6 +48,12 @@ export const module3Scenarios: Scenario[] = [
     scenarioNum: 2,
     totalInModule: 7,
     title: 'Reverse Breakout',
+    coachCue: "When one wall is cut off, don't force it. Puck goes behind the net to the other D — they'll find you on the open side. Patient beats risky.",
+    introSlides: [
+      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
+      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
+      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+    ],
     situation: 'Your D has the puck behind the goal line but the forechecker is cutting off the strong-side wall outlet. Your D partner is on the other side of the net. You\'re the left winger on the weak side.',
     question: 'What\'s the right play here?',
     answers: [
@@ -77,6 +89,12 @@ export const module3Scenarios: Scenario[] = [
     scenarioNum: 3,
     totalInModule: 7,
     title: 'Center Support on a Hard Forecheck',
+    coachCue: "When both wingers are covered, the middle is the escape valve. Fill it. Your D needs one safe option to break the forecheck.",
+    introSlides: [
+      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
+      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
+      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+    ],
     situation: 'Two forecheckers are aggressively attacking your D behind the net. Both wingers are being covered on the boards. You\'re the center sitting near the top of the circles.',
     question: 'What should you do?',
     answers: [
@@ -113,6 +131,12 @@ export const module3Scenarios: Scenario[] = [
     scenarioNum: 4,
     totalInModule: 7,
     title: 'Winger Board Positioning',
+    coachCue: "Get low on the boards — hash-mark area. A short pass is a pass your D can make under pressure. High is too far; low is the outlet.",
+    introSlides: [
+      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
+      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
+      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+    ],
     situation: 'Your D is retrieving the puck behind the net. A forechecker is moving in. You\'re the right winger — your positioning on the boards will determine if the D can make a clean outlet pass.',
     question: 'Where should you position on the wall?',
     answers: [
@@ -146,6 +170,12 @@ export const module3Scenarios: Scenario[] = [
     scenarioNum: 5,
     totalInModule: 7,
     title: 'Wheel Play — Fill the Lane',
+    coachCue: "When the D wheels it up the boards, don't chase behind him. Fill the middle lane — stay with his pace and be the pass option that turns this into a rush.",
+    introSlides: [
+      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
+      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
+      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+    ],
     situation: 'Your D reads the forecheck and decides to wheel the puck up ice himself. He\'s skating hard from behind the net along the boards. You\'re the right winger and need to fill a support lane.',
     question: 'Where do you skate to support the D on the wheel play?',
     answers: [
@@ -180,6 +210,12 @@ export const module3Scenarios: Scenario[] = [
     scenarioNum: 6,
     totalInModule: 7,
     title: 'Breakout Under Heavy Pressure',
+    coachCue: "Two forecheckers closing — no time for a stretch pass. Get the puck to the winger on the wall with a short, safe pass. Escape first, then build.",
+    introSlides: [
+      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
+      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
+      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+    ],
     situation: 'Your D just got the puck behind the goal line. Both forecheckers are closing in hard from each side. Your winger is low on the wall and your center is in the middle — both within passing range.',
     question: 'What should the D prioritize?',
     answers: [
@@ -215,6 +251,12 @@ export const module3Scenarios: Scenario[] = [
     scenarioNum: 7,
     totalInModule: 7,
     title: 'Stretch Pass Recognition',
+    coachCue: "Forechecker backed off? You have time. Your center has speed and their forward is beat. The stretch pass is the dangerous play — use it.",
+    introSlides: [
+      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
+      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
+      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+    ],
     situation: 'Your D has the puck behind the goal line with time. The forechecker backed off and is playing a soft gap. Your center is at center ice with speed, and the opposing forward is way behind him. The stretch pass is there.',
     question: 'How should you capitalize on this time and space?',
     answers: [

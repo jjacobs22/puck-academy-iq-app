@@ -1,12 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
   import { supabase } from '$lib/services/supabase';
   import { toasts } from '$lib/stores/ui';
 
   onMount(async () => {
-    // Handle the OAuth callback
     const { data: { session }, error } = await supabase.auth.getSession();
+    const redirectTo = $page.url.searchParams.get('redirect') || '/hub';
 
     if (error) {
       toasts.show('Sign in failed. Please try again.', 'error');
@@ -16,9 +17,8 @@
 
     if (session) {
       toasts.show('Welcome back! Your progress is synced.', 'success');
-      goto('/hub');
+      goto(redirectTo.startsWith('/') ? redirectTo : '/' + redirectTo);
     } else {
-      // No session, redirect to home
       goto('/');
     }
   });

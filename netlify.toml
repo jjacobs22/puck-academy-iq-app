@@ -12,7 +12,18 @@
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
 
-# SPA fallback — redirect all routes to index.html for client-side routing
+# Explicit route rewrites so /admin and /hub etc. serve their prerendered HTML (avoids 404 before SPA loads)
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/hub"
+  to = "/hub.html"
+  status = 200
+
+# SPA fallback — all other routes serve index.html for client-side routing
 [[redirects]]
   from = "/*"
   to = "/index.html"

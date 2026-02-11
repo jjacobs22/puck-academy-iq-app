@@ -7,13 +7,15 @@
   import { navigateWithTransition } from '$lib/stores/ui';
 
   let expandedModule: number | null = null;
+  let hasAutoExpanded = false;
 
-  // Auto-expand first incomplete module
-  $: if ($allModulesProgress) {
+  // Auto-expand first incomplete module on initial load only
+  $: if ($allModulesProgress && !hasAutoExpanded) {
     const firstIncomplete = $allModulesProgress.find(m => !m.isComplete);
-    if (firstIncomplete && expandedModule === null) {
+    if (firstIncomplete) {
       expandedModule = firstIncomplete.moduleId;
     }
+    hasAutoExpanded = true;
   }
 
   function toggleModule(moduleId: number) {

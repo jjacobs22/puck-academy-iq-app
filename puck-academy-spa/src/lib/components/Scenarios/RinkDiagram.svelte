@@ -15,6 +15,7 @@
       note?: string;
     }>;
     puck?: { x: number; y: number };
+    ref?: { x: number; y: number; label?: string };
     arrows?: Array<{
       from: { x: number; y: number };
       to: { x: number; y: number };
@@ -193,6 +194,10 @@
         <stop offset="0%" stop-color="#444" />
         <stop offset="100%" stop-color="#0A0A0A" />
       </radialGradient>
+      <radialGradient id="refJersey" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#FB923C" />
+        <stop offset="100%" stop-color="#EA580C" />
+      </radialGradient>
 
       <marker id="arrowDark" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
         <polygon points="0 0, 8 3, 0 6" fill="#1E293B" opacity="0.7" />
@@ -291,6 +296,16 @@
       />
     {/if}
 
+    <!-- Ref / Linesman (optional; e.g. faceoff scenarios) -->
+    {#if diagram.ref && showIce}
+      <g class="player-group ref-marker" class:anim-pop={animated}>
+        <circle cx={diagram.ref.x} cy={diagram.ref.y} r="5"
+          fill="url(#refJersey)" stroke="#C2410C" stroke-width="1" />
+        <text x={diagram.ref.x} y={diagram.ref.y + 2} font-size="3.5" fill="white"
+          text-anchor="middle" font-weight="bold">{diagram.ref.label || 'REF'}</text>
+      </g>
+    {/if}
+
     <!-- Players — circles with position labels only, no role notes -->
     {#each diagram.players as player, i}
       {#if revealedPlayers.has(i)}
@@ -347,6 +362,9 @@
     <span class="legend-item"><span class="ldot you"></span> You</span>
     <span class="legend-item"><span class="ldot team"></span> Team</span>
     <span class="legend-item"><span class="ldot opp"></span> Opp</span>
+    {#if diagram.ref}
+      <span class="legend-item"><span class="ldot ref"></span> Ref</span>
+    {/if}
     <span class="legend-item"><span class="lline red"></span> Threat</span>
     <span class="legend-item"><span class="lline dark"></span> Move</span>
   </div>
@@ -495,6 +513,8 @@
   .ldot.you { background: linear-gradient(135deg, #FFE44D, #DAA520); }
   .ldot.team { background: linear-gradient(135deg, #5B9FE6, #1E40AF); }
   .ldot.opp { background: linear-gradient(135deg, #F87171, #B91C1C); }
+  .ldot.ref { background: linear-gradient(135deg, #FB923C, #EA580C); }
+  .ref-marker { opacity: 0.95; }
   .lline {
     width: 14px;
     height: 0;

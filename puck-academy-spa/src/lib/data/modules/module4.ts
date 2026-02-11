@@ -9,6 +9,12 @@ export const module4Scenarios: Scenario[] = [
     scenarioNum: 1,
     totalInModule: 7,
     title: 'Net-Front Positioning',
+    coachCue: "Net front isn't just screening — it's being a threat. See the puck so you can tip it. One foot in the hard area, shoulders to the point.",
+    introSlides: [
+      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
+      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
+      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+    ],
     situation: 'Your D has the puck at the point and is about to shoot. You\'re planted about 15 feet in front of the goalie. A defenseman is trying to clear you out. The shot is coming.',
     question: 'What\'s your primary job on this net-front play?',
     answers: [
@@ -42,6 +48,12 @@ export const module4Scenarios: Scenario[] = [
     scenarioNum: 2,
     totalInModule: 7,
     title: 'Cycling the Puck Low',
+    coachCue: "Cycling isn't just moving the puck — it's moving it to someone who can use it. If your linemate has inside position, that's when the cycle pays off.",
+    introSlides: [
+      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
+      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
+      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+    ],
     situation: 'You\'re below the goal line on the boards with the puck. A defender is closing fast. Your linemate has inside position at the hash marks, and there\'s a winger high in the slot. You feel the pressure coming.',
     question: 'When is the RIGHT time to cycle the puck around the boards?',
     answers: [
@@ -76,6 +88,12 @@ export const module4Scenarios: Scenario[] = [
     scenarioNum: 3,
     totalInModule: 7,
     title: 'Shot Selection',
+    coachCue: "It's not always shoot. If the pass to the slot is there and the trailer has a better angle, that's the higher-percentage play. Read what's open.",
+    introSlides: [
+      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
+      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
+      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+    ],
     situation: 'You\'re in the left circle with the puck, 30 feet from goal. Decent angle. But a trailer is moving into the slot with a better scoring chance — there\'s a defender between you and him though. One second to decide.',
     question: 'What drives your shoot-or-pass decision?',
     answers: [
@@ -110,6 +128,12 @@ export const module4Scenarios: Scenario[] = [
     scenarioNum: 4,
     totalInModule: 7,
     title: 'Screening the Goalie',
+    coachCue: "Make the goalie's job harder — but stay legal. You're a screen and a tip threat. Stay in the hard area without crossing the line.",
+    introSlides: [
+      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
+      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
+      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+    ],
     situation: 'Your team has possession at the point. A shot is coming and you\'re positioned 12 feet in front of the goalie. You want to make his job harder — but the refs are watching for interference.',
     question: 'How do you screen effectively without getting called?',
     answers: [
@@ -143,6 +167,12 @@ export const module4Scenarios: Scenario[] = [
     scenarioNum: 5,
     totalInModule: 7,
     title: 'Back-Door Play Recognition',
+    coachCue: "When your center drives the net and pulls the D with him, the back door opens. Be ready — the puck carrier is looking for you.",
+    introSlides: [
+      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
+      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
+      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+    ],
     situation: 'You\'re the winger on the weak side. Your center is driving hard toward the net, pulling the defenseman with him. The puck carrier on the perimeter is looking around. That leaves you wide open on the back door.',
     question: 'What tells you the back-door pass is coming to you?',
     answers: [
@@ -177,6 +207,12 @@ export const module4Scenarios: Scenario[] = [
     scenarioNum: 6,
     totalInModule: 7,
     title: 'Getting Point Shots Through',
+    coachCue: "Your forwards are in front — screen and tip. Your job at the point is to get the shot through. Find the lane, don't force it through traffic.",
+    introSlides: [
+      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
+      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
+      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+    ],
     situation: 'You\'re at the point with the puck. Opposing D-men are converging to block. A forward is screening in front of the net, another is crashing for rebounds. You need to get this shot through.',
     question: 'What\'s your best tactic to get the puck to the net?',
     answers: [
@@ -210,6 +246,12 @@ export const module4Scenarios: Scenario[] = [
     scenarioNum: 7,
     totalInModule: 7,
     title: 'Winning the Dump-In Battle',
+    coachCue: "Dump-in races are about angles and urgency. If you have the better angle on the puck, win it. First touch often decides the shift.",
+    introSlides: [
+      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
+      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
+      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+    ],
     situation: 'Your team dumps the puck in deep during an offensive push. It\'s a race for the loose puck behind the net. The opposing D is closer but has his back turned. You\'re coming from a different angle.',
     question: 'What\'s your best move to win this puck battle?',
     answers: [

@@ -9,6 +9,12 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 1,
     totalInModule: 7,
     title: 'Gap Control on the Rush',
+    coachCue: "Gap isn't one size. On his strong side he's dangerous — play tighter. On his weak side he has to work for the shot — you can give a little more space.",
+    introSlides: [
+      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
+      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
+      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+    ],
     situation: 'An opposing forward is carrying the puck up ice with speed. You\'re the last D back. He\'s on his strong side with the puck on his forehand. You need to decide how much space to surrender.',
     question: 'What determines the right gap on a 1-on-1 rush?',
     answers: [
@@ -41,6 +47,12 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 2,
     totalInModule: 7,
     title: 'Pinching vs Staying Home',
+    coachCue: "Before you pinch, ask: where's my partner? Where are their fast guys? If you can't answer both, stay home. A bad pinch is an odd-man rush the other way.",
+    introSlides: [
+      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
+      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
+      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+    ],
     situation: 'Your team has the puck cycling in the offensive zone. You\'re at the point watching the play develop. There\'s a loose puck along the boards — you could jump down and keep possession. But the opposing center is lurking, looking for a transition.',
     question: 'What\'s the key indicator that you should NOT pinch?',
     answers: [
@@ -75,6 +87,12 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 3,
     totalInModule: 7,
     title: 'Clearing the Crease',
+    coachCue: "Your crease, your responsibility. A guy camped in the paint is a tip, screen, and rebound threat. Move him. Your goalie needs a clean office.",
+    introSlides: [
+      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
+      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
+      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+    ],
     situation: 'Scramble in front of your net. Two opposing forwards are in tight — one has planted himself in the crease. Your goalie is fighting for sight lines. The puck is loose in the high slot.',
     question: 'What\'s your responsibility when an opponent is camped in your crease?',
     answers: [
@@ -107,6 +125,12 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 4,
     totalInModule: 7,
     title: 'D-to-D Under Pressure',
+    coachCue: "D-to-D is great when the lane is clean. If there's a forward in the lane, that's a turnover in the slot. Read the traffic — sometimes the wall is the safe play.",
+    introSlides: [
+      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
+      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
+      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+    ],
     situation: 'Your team is under pressure in the D-zone. You have the puck. Your partner is on the other side, open. But there\'s a forward between you who could intercept a cross-ice pass. A winger is also available up the wall.',
     question: 'What\'s the higher-percentage outlet?',
     answers: [
@@ -141,6 +165,12 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 5,
     totalInModule: 7,
     title: 'Blocking Passing Lanes',
+    coachCue: "They're working the perimeter to open the slot. You see the lane opening. Collapse to take it away — but don't leave the weak side exposed. One step at a time.",
+    introSlides: [
+      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
+      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
+      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+    ],
     situation: 'The opposing team is working the puck on the perimeter in your zone. They\'re looking for a pass through the middle to the slot. You can see the lane opening. Your partner is already engaged. You need to collapse without leaving the weak side exposed.',
     question: 'How do you block a passing lane without getting outmaneuvered?',
     answers: [
@@ -174,6 +204,12 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 6,
     totalInModule: 7,
     title: 'Stepping Up in the Neutral Zone',
+    coachCue: "You can step up and pressure before he gains the zone — or hang back and let your forwards pressure first. The read: do you have support? Is the timing right?",
+    introSlides: [
+      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
+      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
+      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+    ],
     situation: 'The opposing team is transitioning through the neutral zone with possession. You\'re a D with the option to step up and pressure the puck carrier before he gains your zone, or hang back and let your forwards pressure him first.',
     question: 'When should you step up and attack in the neutral zone?',
     answers: [
@@ -208,6 +244,12 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 7,
     totalInModule: 7,
     title: 'Recovery After Being Beaten Wide',
+    coachCue: "He beat you wide — panic is the worst move. You still have inside position. Don't chase his back; stay between him and the net and close the gap.",
+    introSlides: [
+      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
+      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
+      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+    ],
     situation: 'A winger just beat you along the boards. He\'s got speed and possession heading toward your goal line. Your first instinct is panic — but you\'ve got inside positioning and he hasn\'t shot yet.',
     question: 'What\'s your recovery play after getting beaten to the outside?',
     answers: [

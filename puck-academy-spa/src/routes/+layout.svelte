@@ -1,6 +1,7 @@
 <script lang="ts">
   import '../app.css';
   import { onMount } from 'svelte';
+  import { page } from '$app/stores';
   import { browser } from '$app/environment';
   import Header from '$lib/components/Shell/Header.svelte';
   import Footer from '$lib/components/Shell/Footer.svelte';
@@ -8,7 +9,8 @@
   import AuthModal from '$lib/components/Overlays/AuthModal.svelte';
   import { showAuthModal } from '$lib/stores/ui';
 
-  // Clean up any legacy service workers from the old HTML app
+  $: isAdmin = $page.url.pathname.startsWith('/admin');
+
   onMount(() => {
     if (browser && 'serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(registrations => {
@@ -21,22 +23,25 @@
   });
 </script>
 
-<div class="app-shell">
-  <Header />
+{#if isAdmin}
+  <slot />
+{:else}
+  <div class="app-shell">
+    <Header />
 
-  <main class="main-content">
-    <slot />
-  </main>
+    <main class="main-content">
+      <slot />
+    </main>
 
-  <Footer />
+    <Footer />
 
-  <!-- Global overlays -->
-  <Toast />
+    <Toast />
 
-  {#if $showAuthModal}
-    <AuthModal />
-  {/if}
-</div>
+    {#if $showAuthModal}
+      <AuthModal />
+    {/if}
+  </div>
+{/if}
 
 <style>
   .app-shell {

@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** February 3, 2026  
+**Last Updated:** February 11, 2026  
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -174,12 +174,13 @@ Unlike expensive private coaching ($1,000+ per package), Puck Academy makes elit
 1. **Discovery:** User finds app via Puck Academy podcast/newsletter or direct link
 2. **Onboarding:** Complete 5-step flow (value prop → position → level → goals → start)
 3. **Module Hub:** See all 6 modules available with 43 total scenarios
-4. **Scenario Experience:**
-   - View rink diagram with situation description
-   - Read the question ("What should you do?")
-   - Select from 4 answer options
-   - Receive immediate feedback (correct/incorrect with explanation)
-   - Scenario marked complete, return to module hub
+4. **Scenario Experience (SPA):**
+   - View rink diagram; optional **inline coach cue** (short framing line before the situation)
+   - Read **Situation** (labeled) — copy does more work to set up the decision
+   - Optional **"Learn the Basics"** link opens 3-slide theory intro in a modal (no longer blocking)
+   - Click **"I'm Ready"** → timed question with 4 answer options
+   - Receive immediate feedback (correct/incorrect with Coach explanation)
+   - Scenario marked complete, advance to next or return to hub
 5. **Module Completion:** Finish all 5 scenarios, see results modal with score
 6. **Share Score:** Option to share results via native share or clipboard
 7. **Feedback:** Prompted to complete Google Form with beta feedback
@@ -270,7 +271,8 @@ Social platforms (iMessage, Twitter, Facebook) fetch OG tags from the static pag
 
 | Layer | Technology | Notes |
 |-------|------------|-------|
-| Frontend | HTML, CSS, JavaScript (vanilla) | No framework for simplicity |
+| Frontend (live) | SvelteKit SPA (`puck-academy-spa/`) | Primary deployment; Netlify publishes `puck-academy-spa/build` |
+| Frontend (legacy) | HTML, CSS, JavaScript (vanilla) | Root HTML files; admin, share, coach, etc. |
 | Hosting | Netlify | Auto-deploy from GitHub, free tier sufficient |
 | Version Control | GitHub | Repository: `jjacobs22/puck-academy-iq-app` |
 | Form Handling | Netlify Forms | Captures onboarding emails (form name: `player-signup`) |
@@ -460,8 +462,8 @@ puck-academy-iq-app/
 - **Landing page:** Shows challenge banner when accessed via shared link with `?score=X`
 - **Onboarding flow:** 5-step personalization working end-to-end
 - **Module hub (training.html):** Shows all 6 modules with independent progress tracking, position-based ordering
-- **Theory Intro overlays:** 3-slide Coach intro appears first time entering each module, with "Review intro" links
-- **43 complete scenarios across 6 modules:** All playable with questions, answers, and Coach feedback
+- **Inline coaching (SPA):** Each scenario has an optional **coach cue** (one-line framing before the situation) and **"Learn the Basics"** link that opens a 3-slide theory intro in a modal — intros no longer block the scenario
+- **43 complete scenarios across 6 modules:** All have `coachCue` and `introSlides` in SPA data; playable with situation label, questions, answers, and Coach feedback
   - Module 1: Defensive Zone (7 scenarios) — Centers
   - Module 2: Faceoffs (7 scenarios) — Centers
   - Module 3: Breakouts (7 scenarios) — Centers
@@ -732,6 +734,21 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### February 11, 2026 - Inline Coaching & Optional "Learn the Basics"
+
+**Scenario UX (SPA):** Embedded coach cue inline, situation text does more work, 3-slide intros moved to optional "Learn the Basics."
+
+- **Inline coach cue:** Optional `coachCue` string per scenario — short framing line (e.g. "Your D-men handle the boards. Your job? Take away the slot.") shown after the diagram, before the situation. Styled with red left border and coach avatar.
+- **Situation label:** Situation block now has a "Situation" label (red, small caps) so the copy carries more of the setup.
+- **Optional 3-slide intro:** `introSlides` (title + body per slide) per scenario; when present, a **"Learn the Basics"** link in the study phase opens a modal with Back/Next/Done. No blocking intro — users go straight to diagram → cue → situation → "I'm Ready."
+- **All 43 scenarios updated:** Every scenario in all 6 modules has `coachCue` and `introSlides` in `puck-academy-spa/src/lib/data/modules/` (module1–module6.ts). One set of 3 intro slides per module theme, reused for every scenario in that module; coach cues are scenario-specific.
+- **New component:** `IntroSlidesModal.svelte` — modal for the 3 theory slides.
+- **Types:** `scenarios.ts` — added `IntroSlide` interface and optional `coachCue?: string`, `introSlides?: IntroSlide[]` on `Scenario`.
+
+Reference: `mockup-inline-coaching.html` (comparison of old 3-slide intro vs new inline cue approach).
+
+---
 
 ### February 3, 2026 - Module Results Component Update
 

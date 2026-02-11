@@ -8,6 +8,12 @@ export const module1Scenarios: Scenario[] = [
     scenarioNum: 1,
     totalInModule: 7,
     title: 'Reading Pressure on Your D-Man',
+    coachCue: "Your D-men handle the boards. Your job? Take away the slot. That's the center's rule in the D-zone. Let's see if you can read this one.",
+    introSlides: [
+      { title: 'Your Job in the D-Zone', body: '"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."' },
+      { title: 'Trust the Structure', body: '"When your D pressures the puck, don\'t chase. Stay home, cover the dangerous player, and be ready to transition."' },
+      { title: 'Defense Creates Offense', body: '"Good positioning in the D-zone sets up the breakout. You\'re not just defending — you\'re the first step in the attack."' }
+    ],
     situation: 'Your team is defending in your own zone. The opponent has the puck behind your net and is looking to make a play. Your defenseman is battling for position. You\'re the center, positioned in the low slot.',
     question: 'What should you focus on?',
     answers: [
@@ -39,6 +45,12 @@ export const module1Scenarios: Scenario[] = [
     scenarioNum: 2,
     totalInModule: 7,
     title: 'The Corner Battle',
+    coachCue: "Don't stack the corner — your winger can battle. Your job is between the corner and the net: support the battle and cut off the slot.",
+    introSlides: [
+      { title: 'Your Job in the D-Zone', body: '"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."' },
+      { title: 'Trust the Structure', body: '"When your D pressures the puck, don\'t chase. Stay home, cover the dangerous player, and be ready to transition."' },
+      { title: 'Defense Creates Offense', body: '"Good positioning in the D-zone sets up the breakout. You\'re not just defending — you\'re the first step in the attack."' }
+    ],
     situation: 'A loose puck is in the corner of your defensive zone. An opponent is racing to get it. Your winger is closest but will arrive at the same time as the opponent.',
     question: 'What\'s your best positioning as the center?',
     answers: [
@@ -72,6 +84,12 @@ export const module1Scenarios: Scenario[] = [
     scenarioNum: 3,
     totalInModule: 7,
     title: 'Cycle Coverage',
+    coachCue: "The cycle is designed to open up one thing: a pass to the slot. Your D handle the boards. You take away the middle.",
+    introSlides: [
+      { title: 'Your Job in the D-Zone', body: '"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."' },
+      { title: 'Trust the Structure', body: '"When your D pressures the puck, don\'t chase. Stay home, cover the dangerous player, and be ready to transition."' },
+      { title: 'Defense Creates Offense', body: '"Good positioning in the D-zone sets up the breakout. You\'re not just defending — you\'re the first step in the attack."' }
+    ],
     situation: 'The opponents are cycling the puck low in your zone. They\'ve completed two passes around the boards. Your D-men are tracking the puck carrier.',
     question: 'What\'s your role in this situation?',
     answers: [
@@ -106,6 +124,12 @@ export const module1Scenarios: Scenario[] = [
     scenarioNum: 4,
     totalInModule: 7,
     title: 'Breakout Timing',
+    coachCue: "Your D is under pressure. He doesn't need a stretch pass — he needs a short, safe option. Swing through the middle and be that option.",
+    introSlides: [
+      { title: 'Your Job in the D-Zone', body: '"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."' },
+      { title: 'Trust the Structure', body: '"When your D pressures the puck, don\'t chase. Stay home, cover the dangerous player, and be ready to transition."' },
+      { title: 'Defense Creates Offense', body: '"Good positioning in the D-zone sets up the breakout. You\'re not just defending — you\'re the first step in the attack."' }
+    ],
     situation: 'Your D has recovered the puck behind the net. One forechecker is pressuring, another is high. Your winger is on the boards providing a safe option. The D is looking to start the breakout.',
     question: 'What\'s the best way to support the breakout as the center?',
     answers: [
@@ -141,6 +165,12 @@ export const module1Scenarios: Scenario[] = [
     scenarioNum: 5,
     totalInModule: 7,
     title: 'Gap Control',
+    coachCue: "Backchecking isn't about matching speed — it's about taking away the middle. Angle him to the outside and close the gap without overcommitting.",
+    introSlides: [
+      { title: 'Your Job in the D-Zone', body: '"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."' },
+      { title: 'Trust the Structure', body: '"When your D pressures the puck, don\'t chase. Stay home, cover the dangerous player, and be ready to transition."' },
+      { title: 'Defense Creates Offense', body: '"Good positioning in the D-zone sets up the breakout. You\'re not just defending — you\'re the first step in the attack."' }
+    ],
     situation: 'The opposing center has the puck in the neutral zone and is driving toward your blue line. Your D is backing up to defend. You\'re backchecking from the high slot area.',
     question: 'What\'s your best backchecking play?',
     answers: [
@@ -173,6 +203,12 @@ export const module1Scenarios: Scenario[] = [
     scenarioNum: 6,
     totalInModule: 7,
     title: 'Winger Caught Up Ice',
+    coachCue: "On a 3-on-2, the slot is the danger. Your two D handle the wide guys. Your job: take away the middle and don't chase the puck.",
+    introSlides: [
+      { title: 'Your Job in the D-Zone', body: '"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."' },
+      { title: 'Trust the Structure', body: '"When your D pressures the puck, don\'t chase. Stay home, cover the dangerous player, and be ready to transition."' },
+      { title: 'Defense Creates Offense', body: '"Good positioning in the D-zone sets up the breakout. You\'re not just defending — you\'re the first step in the attack."' }
+    ],
     situation: 'Your team just turned the puck over at the offensive blue line. Your left winger got caught deep — it\'s a 3-on-2 against your team. You\'re the center tracking back.',
     question: 'What\'s your priority on this 3-on-2 rush?',
     answers: [
@@ -210,6 +246,12 @@ export const module1Scenarios: Scenario[] = [
     scenarioNum: 7,
     totalInModule: 7,
     title: 'D Partner Bites on the Cycle',
+    coachCue: "When your D is out of position, someone has to be the safety valve. The high slot is the most dangerous pass — that's your job now.",
+    introSlides: [
+      { title: 'Your Job in the D-Zone', body: '"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."' },
+      { title: 'Trust the Structure', body: '"When your D pressures the puck, don\'t chase. Stay home, cover the dangerous player, and be ready to transition."' },
+      { title: 'Defense Creates Offense', body: '"Good positioning in the D-zone sets up the breakout. You\'re not just defending — you\'re the first step in the attack."' }
+    ],
     situation: 'Your D partner got sucked down behind the net chasing the puck carrier. The opponent quickly moved it up to the point. You\'re the center and you\'re the only one in position to react.',
     question: 'Your D is out of position. What\'s your responsibility?',
     answers: [

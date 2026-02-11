@@ -17,11 +17,19 @@ export interface DiagramPlayer {
   note?: string;
 }
 
+/** Optional ref/linesman position (e.g. for faceoff scenarios where audio mentions "watch the ref") */
+export interface DiagramRef {
+  x: number;
+  y: number;
+  label?: string;
+}
+
 export interface Diagram {
   viewBox?: string;
   zone: 'defensive' | 'offensive' | 'neutral';
   players: DiagramPlayer[];
   puck?: { x: number; y: number };
+  ref?: DiagramRef;
   arrows?: Array<{
     from: { x: number; y: number };
     to: { x: number; y: number };
@@ -42,6 +50,12 @@ export interface GameContext {
   timeLeft: string;
 }
 
+/** Optional intro slides (theory) — shown via "Learn the Basics" link instead of blocking the scenario */
+export interface IntroSlide {
+  title: string;
+  body: string;
+}
+
 export interface Scenario {
   id: string;
   moduleId: number;
@@ -55,6 +69,10 @@ export interface Scenario {
   gameContext: GameContext;
   audioFolder: string;
   nextScenarioId: string | null;
+  /** Short coach framing cue shown inline before the situation (replaces 3-slide intro) */
+  coachCue?: string;
+  /** Optional 3-slide theory intro; linked as "Learn the Basics" instead of blocking */
+  introSlides?: IntroSlide[];
 }
 
 // ── RINK COORDINATE REFERENCE (viewBox 0 0 200 85) ──
