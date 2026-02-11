@@ -733,6 +733,14 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Navigation & Training Page Updates
+
+**Navigation cleanup:** All CTA links (Start Training, Accept Challenge, Sign In, etc.) now point to `/training.html` instead of `assessment.html`.
+
+**Training page improvements:** Additional UX enhancements to the training hub.
+
+---
+
 ### February 3, 2026 - Auth Flow & UX Improvements
 
 **Login redirect:** Logged-in users visiting index.html now redirect straight to `/training.html` (unless arriving via challenge link with `?score` or `?challenge` params).
