@@ -1,11 +1,11 @@
 // Service Worker for Puck Academy PWA
-const CACHE_NAME = 'puck-academy-v1';
+// v2: Network-first strategy — always fetch fresh content, cache as fallback for offline
+const CACHE_NAME = 'puck-academy-v2';
 
-// Files to cache for offline use
+// Core assets to pre-cache for offline fallback
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/onboarding.html',
   '/training.html',
   '/styles/main.css',
   '/js/storage.js',
@@ -13,19 +13,18 @@ const STATIC_ASSETS = [
   'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap'
 ];
 
-// Install event - cache static assets
+// Install event - cache core assets for offline fallback
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('Caching static assets');
+      console.log('Caching core assets for offline fallback');
       return cache.addAll(STATIC_ASSETS);
     })
   );
-  // Activate immediately
   self.skipWaiting();
 });
 
-// Activate event - clean up old caches
+// Activate event - clean up ALL old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -36,30 +35,24 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-  // Take control of all pages immediately
   self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - NETWORK FIRST, fall back to cache only when offline
 self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
   if (event.request.method !== 'GET') return;
-  
-  // Skip analytics and external requests
-  if (event.request.url.includes('google') && event.request.url.includes('analytics')) {
+
+  // Skip analytics and external API requests entirely
+  const url = event.request.url;
+  if (url.includes('google-analytics') || url.includes('googletagmanager') ||
+      url.includes('supabase') || url.includes('/functions/')) {
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Return cached version
-        return cachedResponse;
-      }
-
-      // Not in cache - fetch from network
-      return fetch(event.request).then((networkResponse) => {
-        // Cache successful responses for future
+    fetch(event.request)
+      .then((networkResponse) => {
+        // Got a fresh response — update the cache with it
         if (networkResponse.ok) {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -67,12 +60,18 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return networkResponse;
-      }).catch(() => {
-        // Network failed, return offline fallback for HTML pages
-        if (event.request.headers.get('accept').includes('text/html')) {
-          return caches.match('/training.html');
-        }
-      });
-    })
+      })
+      .catch(() => {
+        // Network failed — try cache as offline fallback
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          // No cache either — return offline fallback for HTML pages
+          if (event.request.headers.get('accept')?.includes('text/html')) {
+            return caches.match('/training.html');
+          }
+        });
+      })
   );
 });

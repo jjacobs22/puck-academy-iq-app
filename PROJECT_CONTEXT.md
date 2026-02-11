@@ -733,6 +733,24 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Hockey IQ Test & Service Worker Fix
+
+**Hockey IQ Test (`hockey-iq-test.html`):**
+- Standalone 10-question quiz for top-of-funnel acquisition
+- Shareable results with OG images for social
+- Email capture at end for lead nurturing
+- Updated "Reading Pressure" scenario with position context ("You're the center...")
+
+**Service Worker Update (`sw.js`):**
+- Changed from cache-first to **network-first strategy**
+- Fixes stale content issues during development
+- Cache now only used as offline fallback
+- Bumped cache version to v2
+
+**Strategic decision:** Focus on HTML version (all 42 scenarios working) rather than SvelteKit SPA rewrite. SPA is technical refactor with no user-facing benefit; IQ test is growth lever.
+
+---
+
 ### February 3, 2026 - Hockey IQ Test Page & Migrations
 
 **Added:**
