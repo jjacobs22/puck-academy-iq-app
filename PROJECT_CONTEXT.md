@@ -733,6 +733,18 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Storage & Streak System Improvements
+
+**Storage updates (`js/storage.js`):** Enhanced local storage handling.
+
+**Supabase updates (`js/supabase.js`):** Added new Supabase integration features.
+
+**Streak reminder (`netlify/functions/streak-reminder.js`):** Simplified and improved streak reminder email function.
+
+**Training page:** Minor refinements.
+
+---
+
 ### February 3, 2026 - Navigation & Training Page Updates
 
 **Navigation cleanup:** All CTA links (Start Training, Accept Challenge, Sign In, etc.) now point to `/training.html` instead of `assessment.html`.
