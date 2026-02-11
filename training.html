@@ -1639,7 +1639,7 @@
 
         /* Continue Button - Quick resume for returning users */
         .continue-btn-wrapper {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .continue-btn {
@@ -1647,10 +1647,10 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 16px 20px;
+            padding: 20px 24px;
             background: linear-gradient(135deg, var(--accent-red), #e01030);
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             color: white;
             font-size: 1rem;
             font-weight: 600;
@@ -1667,11 +1667,11 @@
         .continue-btn-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .continue-btn-icon {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
         }
 
         .continue-btn-text {
@@ -1686,11 +1686,12 @@
         }
 
         .continue-btn-scenario {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
+            font-weight: 700;
         }
 
         .continue-btn-arrow {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             opacity: 0.9;
         }
 
@@ -1700,6 +1701,49 @@
 
         .continue-btn-wrapper.hidden {
             display: none;
+        }
+
+        /* Focused next-scenario context below Continue button */
+        .next-scenario-context {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 12px;
+        }
+
+        .next-scenario-description {
+            color: var(--silver);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .next-scenario-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .next-scenario-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .next-scenario-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-red), #ff4d6a);
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        .next-scenario-progress-text {
+            color: var(--silver);
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -1790,26 +1834,35 @@
             <div class="score-value" id="bestScoreValue">0/7</div>
         </div>
 
-        <!-- Coach Intro - Shortened -->
-        <div class="coach-intro" id="coachIntro">
+        <!-- Coach Intro - Hidden (Continue button provides all the context needed) -->
+        <div class="coach-intro" id="coachIntro" style="display: none;">
             <div class="coach-avatar">C</div>
             <div class="coach-message" id="coachMessage">
                 <strong>Pick a module and let's work.</strong> I'll explain the <em>why</em> behind every answer. <a href="glossary.html" style="color: var(--silver); text-decoration: none; margin-left: 8px;">📖 Glossary</a>
             </div>
         </div>
 
-        <!-- Continue Button - One-tap resume -->
+        <!-- Continue Button - One-tap resume with context -->
         <div class="continue-btn-wrapper" id="continueBtnWrapper">
             <button class="continue-btn" id="continueBtn" onclick="resumeNextScenario()">
                 <div class="continue-btn-left">
                     <span class="continue-btn-icon">▶</span>
                     <div class="continue-btn-text">
-                        <div class="continue-btn-label">Continue</div>
+                        <div class="continue-btn-label">Up Next</div>
                         <div class="continue-btn-scenario" id="continueBtnScenario">Loading...</div>
                     </div>
                 </div>
                 <span class="continue-btn-arrow">→</span>
             </button>
+            <div class="next-scenario-context" id="nextScenarioContext">
+                <p class="next-scenario-description" id="nextScenarioDescription"></p>
+                <div class="next-scenario-progress">
+                    <div class="next-scenario-progress-bar">
+                        <div class="next-scenario-progress-fill" id="nextScenarioProgressFill"></div>
+                    </div>
+                    <span class="next-scenario-progress-text" id="nextScenarioProgressText"></span>
+                </div>
+            </div>
         </div>
 
         <!-- Your Progress - HIDDEN for simplicity (redundant with module progress) -->
@@ -1835,8 +1888,8 @@
             </div>
         </div>
 
-        <!-- Streak Card -->
-        <div class="streak-card" id="streakCard">
+        <!-- Streak Card - Hidden (streak shown in nav counter) -->
+        <div class="streak-card" id="streakCard" style="display: none;">
             <div class="streak-card-main">
                 <span class="streak-card-emoji" id="streakEmoji">🔥</span>
                 <div class="streak-card-info">
@@ -1850,8 +1903,8 @@
             </div>
         </div>
 
-        <!-- Daily Challenge Card -->
-        <div class="daily-challenge" id="dailyChallenge">
+        <!-- Daily Challenge Card - Hidden (reduces clutter, Continue button is primary CTA) -->
+        <div class="daily-challenge" id="dailyChallenge" style="display: none;">
             <div class="daily-challenge-header">
                 <span class="daily-challenge-icon">📅</span>
                 <span class="daily-challenge-label">Today's Challenge</span>
@@ -3131,20 +3184,10 @@
             }
         }
 
-        // Auto-expand first incomplete module on load (no scroll - Continue button is primary CTA)
+        // Modules start collapsed — the Continue button is the primary CTA
+        // Users can still tap any module header to browse/review scenarios
         function expandFirstIncompleteModule() {
-            for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
-                const config = moduleConfigs[moduleNum];
-                const scoreData = getScoreData(moduleNum);
-                const completed = Object.keys(scoreData.currentRun).length;
-
-                if (completed < config.total) {
-                    document.getElementById(`module${moduleNum}`).classList.add('expanded');
-                    return;
-                }
-            }
-            // If all complete, expand module 1
-            document.getElementById('module1').classList.add('expanded');
+            // No auto-expand — keep the view focused on the "Up Next" card
         }
 
         // Module names for Continue button
@@ -3157,6 +3200,65 @@
             6: 'D-Zone for Defensemen'
         };
 
+        // Scenario descriptions for the focused next-scenario view
+        const scenarioDescriptions = {
+            1: {
+                1: "Learn your primary responsibility when opponents have the puck on the boards.",
+                2: "Understand when to help in corners vs. protecting the middle.",
+                3: "Anticipate passes and position yourself to intercept during opponent cycling.",
+                4: "Know when to transition from defense to offense and support the breakout.",
+                5: "Maintain proper distance from opponents while staying in defensive position.",
+                6: "Cover for your teammate on a 3-on-2 rush against.",
+                7: "React when your D partner gets sucked out of position on the cycle."
+            },
+            2: {
+                1: "Learn how ref positioning affects your faceoff approach.",
+                2: "Recognize when you have the edge vs. when you're fighting uphill.",
+                3: "Know when to push the limits in high-leverage situations.",
+                4: "Learn when to tie up instead of trying to win clean.",
+                5: "Master the stance that generates power from the ground up.",
+                6: "Adapt your approach when one move isn't working.",
+                7: "What to do immediately after losing a draw."
+            },
+            3: {
+                1: "Learn why coming underneath the puck changes everything.",
+                2: "Know when to flash weak side for a quick outlet.",
+                3: "Small route adjustments that create big advantages.",
+                4: "Use soft ice to buy time and create options.",
+                5: "Know when to stay close vs. when to push up ice.",
+                6: "Beat the 1-2-2 by recognizing what they give up.",
+                7: "Transition to defense when the breakout fails."
+            },
+            4: {
+                1: "Know when to crash the net vs. stay high for a one-timer.",
+                2: "Find the bumper position when your linemates cycle low.",
+                3: "Move to where the defense isn't to create opportunities.",
+                4: "Recognize when the defense overcommits and exploit it.",
+                5: "Maximize scoring chances on point shots.",
+                6: "When you have time and space in the slot — shoot.",
+                7: "Transition to defense when possession is lost."
+            },
+            5: {
+                1: "Take away their best option, don't just chase.",
+                2: "Know your role — who pressures, who supports.",
+                3: "Read if you have support before committing.",
+                4: "Steer the puck carrier where you want them.",
+                5: "Anticipate where the puck is going and jump it.",
+                6: "Win 50/50s with body position, not just stick.",
+                7: "Attack the chaos when the forecheck wins it.",
+                8: "Adjust your forecheck when your support is tired and late."
+            },
+            6: {
+                1: "Maintain the right distance on the rush.",
+                2: "Get to dumps first and make the right play.",
+                3: "Know when the pass across is there vs. covered.",
+                4: "Win the crease with position, not just strength.",
+                5: "Read when you can jump vs. stay home.",
+                6: "Get it out clean when the forecheck is heavy.",
+                7: "Know your responsibility — strong side vs. weak side."
+            }
+        };
+
         // Scenario titles for Continue button
         const scenarioTitles = {
             1: { 1: 'High Slot Coverage', 2: 'Corner Battle Support', 3: 'Reading the Cycle', 4: 'Breakout Timing', 5: 'Gap Control', 6: 'Winger Caught Up Ice', 7: 'D Partner Bites' },
@@ -3167,12 +3269,16 @@
             6: { 1: 'Net Front Battle', 2: 'Corner Coverage', 3: 'Weak Side Rotation', 4: 'Point Shot Positioning', 5: 'Rim Read', 6: 'Breakout First Pass', 7: 'Gap Control' }
         };
 
-        // Find next incomplete scenario and update Continue button
+        // Find next incomplete scenario and update Continue button + context
         function updateContinueButton() {
             console.log('updateContinueButton called');
             try {
                 const wrapper = document.getElementById('continueBtnWrapper');
                 const scenarioText = document.getElementById('continueBtnScenario');
+                const descEl = document.getElementById('nextScenarioDescription');
+                const progressFill = document.getElementById('nextScenarioProgressFill');
+                const progressText = document.getElementById('nextScenarioProgressText');
+                const contextEl = document.getElementById('nextScenarioContext');
 
                 if (!wrapper || !scenarioText) {
                     console.error('Continue button elements not found');
@@ -3181,37 +3287,41 @@
 
                 for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
                     const config = moduleConfigs[moduleNum];
-                    if (!config) {
-                        console.log('No config for module', moduleNum);
-                        continue;
-                    }
-                    
+                    if (!config) continue;
+
                     const scoreData = getScoreData(moduleNum);
-                    if (!scoreData || !scoreData.currentRun) {
-                        console.log('No scoreData for module', moduleNum);
-                        continue;
-                    }
+                    if (!scoreData || !scoreData.currentRun) continue;
 
                     for (let scenarioNum = 1; scenarioNum <= config.total; scenarioNum++) {
                         if (scoreData.currentRun[scenarioNum] === undefined) {
                             // Found next incomplete scenario
                             const title = scenarioTitles[moduleNum]?.[scenarioNum] || `Scenario ${scenarioNum}`;
-                            console.log('Setting continue to:', `M${moduleNum}: ${title}`);
-                            scenarioText.textContent = `M${moduleNum}: ${title}`;
+                            const description = scenarioDescriptions[moduleNum]?.[scenarioNum] || '';
+                            const completed = Object.keys(scoreData.currentRun).length;
+
+                            scenarioText.textContent = title;
                             wrapper.classList.remove('all-complete', 'hidden');
                             wrapper.dataset.module = moduleNum;
                             wrapper.dataset.scenario = scenarioNum;
+
+                            // Populate context area
+                            if (descEl) descEl.textContent = description;
+                            if (progressFill) progressFill.style.width = ((completed / config.total) * 100) + '%';
+                            if (progressText) progressText.textContent = `${completed}/${config.total} · ${moduleNames[moduleNum]}`;
+                            if (contextEl) contextEl.style.display = '';
                             return;
                         }
                     }
                 }
 
                 // All complete
-                console.log('All scenarios complete');
-                scenarioText.textContent = 'All scenarios complete! 🏆';
+                scenarioText.textContent = 'All 43 scenarios complete!';
                 wrapper.classList.add('all-complete');
                 wrapper.dataset.module = '1';
                 wrapper.dataset.scenario = '1';
+                if (descEl) descEl.textContent = 'You crushed every module. Tap to review any scenario.';
+                if (progressFill) progressFill.style.width = '100%';
+                if (progressText) progressText.textContent = '43/43 complete';
             } catch (err) {
                 console.error('Error updating continue button:', err);
             }
