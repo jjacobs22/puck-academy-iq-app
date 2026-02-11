@@ -4,6 +4,9 @@
   import { unlockAudio } from '$lib/services/soundEffects';
   import { audioUnlocked } from '$lib/stores/gameSession';
 
+  export let moduleName: string = 'DEFENSIVE ZONE';
+  export let totalScenarios: number = 7;
+
   const dispatch = createEventDispatcher();
 
   function handleStart() {
@@ -28,8 +31,8 @@
       </svg>
     </div>
 
-    <h2 class="gate-title">DEFENSIVE ZONE</h2>
-    <p class="gate-subtitle">Module 1 - 7 Scenarios</p>
+    <h2 class="gate-title">{moduleName.toUpperCase()}</h2>
+    <p class="gate-subtitle">{totalScenarios} Scenarios</p>
 
     <button class="drop-puck-btn" on:click={handleStart}>
       DROP THE PUCK

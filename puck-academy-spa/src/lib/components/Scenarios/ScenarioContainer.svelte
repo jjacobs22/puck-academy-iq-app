@@ -207,7 +207,11 @@
 
 <!-- Start Gate -->
 {#if showStartGate}
-  <StartGate on:start={handleGateStart} />
+  <StartGate
+    moduleName={MODULE_CONFIG[scenario.moduleId]?.name || 'Hockey IQ'}
+    totalScenarios={scenario.totalInModule}
+    on:start={handleGateStart}
+  />
 {/if}
 
 <!-- Module Results -->

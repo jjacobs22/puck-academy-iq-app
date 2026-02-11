@@ -1,7 +1,8 @@
-# Netlify configuration
+# Netlify configuration — SvelteKit SPA deployment
 
 [build]
-  publish = "."
+  command = "cd puck-academy-spa && cp -r ../audio static/ && npm install && npm run build"
+  publish = "puck-academy-spa/build"
 
 [functions]
   directory = "netlify/functions"
@@ -11,9 +12,11 @@
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
 
-# Edge functions disabled - using static share pages instead
-# This saves significant edge function credits
-# See /share/*.html for static OG tag pages
+# SPA fallback — redirect all routes to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 # Scheduled function: Streak reminder emails
 # Runs daily at 10am ET (3pm UTC) to catch users before end of day
