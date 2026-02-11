@@ -733,6 +733,16 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Audio & Config Updates
+
+**Audio service:** Updated `audio.ts` in SPA.
+
+**Svelte config:** Modified `svelte.config.js`.
+
+**Netlify:** Further `netlify.toml` refinements.
+
+---
+
 ### February 3, 2026 - Netlify & SPA Component Updates
 
 **Netlify config:** Updated `netlify.toml` configuration.
