@@ -51,6 +51,10 @@
   /* Shell Layout */
   --header-height: 60px;
   --footer-height: 50px;
+
+  /* Game Enhancement Colors */
+  --xp-gold: #FFD700;
+  --combo-purple: #8B5CF6;
 }
 
 /* ---------- Reset & Base ---------- */

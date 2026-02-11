@@ -11,6 +11,10 @@ export interface DiagramPlayer {
   x: number;
   y: number;
   label?: string;
+  faded?: boolean;
+  targetX?: number;
+  targetY?: number;
+  note?: string;
 }
 
 export interface Diagram {
@@ -22,7 +26,20 @@ export interface Diagram {
     from: { x: number; y: number };
     to: { x: number; y: number };
     style?: 'solid' | 'dashed';
+    label?: string;
   }>;
+  annotations?: Array<{
+    x: number;
+    y: number;
+    text: string;
+  }>;
+}
+
+export interface GameContext {
+  period: number;
+  teamScore: number;
+  oppScore: number;
+  timeLeft: string;
 }
 
 export interface Scenario {
@@ -35,143 +52,43 @@ export interface Scenario {
   question: string;
   answers: Answer[];
   diagram: Diagram;
+  gameContext: GameContext;
+  audioFolder: string;
   nextScenarioId: string | null;
 }
 
-// Sample scenario data (would be migrated from existing JSON)
+// ── RINK COORDINATE REFERENCE (viewBox 0 0 200 85) ──
+// End boards:    x=4 (left), x=196 (right)
+// Goal lines:   x=10 (left), x=190 (right)
+// Blue lines:   x=65 (left), x=135 (right)
+// Center line:  x=100
+// Net center:   (10, 42.5) left, (190, 42.5) right
+// Goal crease:  curves (10,32) → peak ~(22,42.5) → (10,53)
+// "Behind net":  x=5–8, y≈35–50  (between boards and goal line)
+// "Net front":   x=12–22, y≈35–50
+// "Low slot":    x=25–40, y≈35–50
+// "High slot":   x=40–55, y≈30–55
+// "Point":       x=55–65
+// "Corner" (bot): ~(10–15, 70–75)
+// "Corner" (top): ~(10–15, 10–15)
+// Faceoff dots:  (35,25), (35,60), (165,25), (165,60)
+
+// Import all module scenarios
+import { module1Scenarios } from './modules/module1';
+import { module2Scenarios } from './modules/module2';
+import { module3Scenarios } from './modules/module3';
+import { module4Scenarios } from './modules/module4';
+import { module5Scenarios } from './modules/module5';
+import { module6Scenarios } from './modules/module6';
+
+// Combined scenario list — all 43 scenarios across 6 modules
 export const scenarios: Scenario[] = [
-  {
-    id: 'module1-scenario1',
-    moduleId: 1,
-    scenarioNum: 1,
-    totalInModule: 7,
-    title: 'Reading Pressure on Your D-Man',
-    situation: 'Your team is defending in your own zone. The opponent has the puck behind your net and is looking to make a play. Your defenseman is battling for position. You\'re the center, positioned in the low slot.',
-    question: 'What should you focus on?',
-    answers: [
-      {
-        text: 'Chase the puck carrier behind the net',
-        correct: false,
-        feedback: 'Chasing behind the net leaves the slot wide open. Your D-man has the puck carrier - trust them and protect the dangerous area in front.'
-      },
-      {
-        text: 'Stay in the slot and read the play',
-        correct: true,
-        feedback: 'Perfect! By staying in the slot, you\'re covering the most dangerous scoring area. You can read where the puck is going and react to support your D or pick up a free opponent.'
-      },
-      {
-        text: 'Skate to the corner to help your D-man',
-        correct: false,
-        feedback: 'Going to the corner creates a 2-on-1 on the puck but leaves the middle of the ice exposed. One pass across and there\'s an open shooter.'
-      },
-      {
-        text: 'Head to the front of the net for a rebound',
-        correct: false,
-        feedback: 'Getting to the net makes sense on offense, but you\'re defending! You need to cover the slot and be ready to block a pass or shot.'
-      }
-    ],
-    diagram: {
-      zone: 'defensive',
-      players: [
-        { type: 'you', x: 35, y: 42 },
-        { type: 'teammate', x: 15, y: 55, label: 'D' },
-        { type: 'opponent', x: 20, y: 70 },
-        { type: 'opponent', x: 45, y: 30 },
-        { type: 'opponent', x: 50, y: 55 }
-      ],
-      puck: { x: 18, y: 68 }
-    },
-    nextScenarioId: 'module1-scenario2'
-  },
-  {
-    id: 'module1-scenario2',
-    moduleId: 1,
-    scenarioNum: 2,
-    totalInModule: 7,
-    title: 'The Corner Battle',
-    situation: 'A loose puck is in the corner of your defensive zone. An opponent is racing to get it. Your winger is closest but will arrive at the same time as the opponent.',
-    question: 'What\'s your best positioning as the center?',
-    answers: [
-      {
-        text: 'Join the corner battle to outnumber them',
-        correct: false,
-        feedback: 'Stacking the corner leaves the front of the net unprotected. If they win the battle, there\'s no one home to stop the play.'
-      },
-      {
-        text: 'Position between the corner and the net',
-        correct: true,
-        feedback: 'Smart positioning! You\'re close enough to support if your winger wins the battle, but also cutting off the passing lane to the slot if the opponent gets the puck.'
-      },
-      {
-        text: 'Stay at the top of the circles',
-        correct: false,
-        feedback: 'Too far from the action. You won\'t be able to help your winger or cut off a pass in time. Get closer to the play while staying in your lane.'
-      },
-      {
-        text: 'Go to the front of the net',
-        correct: false,
-        feedback: 'Parking at the net is your goalie\'s territory. You\'re more useful cutting off passing lanes and being ready to transition if your team gets the puck.'
-      }
-    ],
-    diagram: {
-      zone: 'defensive',
-      players: [
-        { type: 'you', x: 35, y: 35 },
-        { type: 'teammate', x: 25, y: 60, label: 'LW' },
-        { type: 'opponent', x: 28, y: 65 },
-        { type: 'opponent', x: 45, y: 45 }
-      ],
-      puck: { x: 20, y: 65 }
-    },
-    nextScenarioId: 'module1-scenario3'
-  },
-  {
-    id: 'module1-scenario3',
-    moduleId: 1,
-    scenarioNum: 3,
-    totalInModule: 7,
-    title: 'Cycle Coverage',
-    situation: 'The opponents are cycling the puck low in your zone. They\'ve completed two passes around the boards. Your D-men are tracking the puck carrier.',
-    question: 'What\'s your role in this situation?',
-    answers: [
-      {
-        text: 'Pressure the puck carrier from behind',
-        correct: false,
-        feedback: 'Chasing the cycle is exhausting and ineffective. They\'ll just move the puck before you arrive. Let your D handle the boards.'
-      },
-      {
-        text: 'Cover the slot and anticipate the pass to the middle',
-        correct: true,
-        feedback: 'Exactly right! The cycle is designed to open up a pass to the slot. By staying disciplined in the middle, you take away their best scoring opportunity.'
-      },
-      {
-        text: 'Drop down to help your goalie',
-        correct: false,
-        feedback: 'You\'ll just screen your goalie and clog up their movement. Trust them to handle the shot - your job is to prevent it from getting through.'
-      },
-      {
-        text: 'Move to the weak side to cover the far post',
-        correct: false,
-        feedback: 'The weak side isn\'t the threat right now. The danger is the slot - that\'s where the cycle is trying to create a scoring chance.'
-      }
-    ],
-    diagram: {
-      zone: 'defensive',
-      players: [
-        { type: 'you', x: 35, y: 40 },
-        { type: 'teammate', x: 20, y: 50, label: 'D' },
-        { type: 'teammate', x: 50, y: 50, label: 'D' },
-        { type: 'opponent', x: 18, y: 65 },
-        { type: 'opponent', x: 40, y: 30 },
-        { type: 'opponent', x: 55, y: 60 }
-      ],
-      puck: { x: 16, y: 63 },
-      arrows: [
-        { from: { x: 16, y: 63 }, to: { x: 40, y: 30 }, style: 'dashed' }
-      ]
-    },
-    nextScenarioId: null // End of sample scenarios
-  }
+  ...module1Scenarios,
+  ...module2Scenarios,
+  ...module3Scenarios,
+  ...module4Scenarios,
+  ...module5Scenarios,
+  ...module6Scenarios,
 ];
 
 // Get scenario by ID

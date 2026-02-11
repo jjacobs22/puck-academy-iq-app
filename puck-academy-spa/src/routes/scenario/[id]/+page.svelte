@@ -21,7 +21,9 @@
 </svelte:head>
 
 {#if scenario}
-  <ScenarioContainer {scenario} />
+  {#key scenarioId}
+    <ScenarioContainer {scenario} />
+  {/key}
 {:else}
   <div class="loading">
     <p>Loading scenario...</p>

@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puck Academy — Enhanced Prototype</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ice-blue: #E8F4F8;
+            --dark-blue: #0A1628;
+            --accent-red: #C8102E;
+            --silver: #A8B2BE;
+            --success-green: #10B981;
+            --gold: #FFD700;
+            --font-header: 'Bebas Neue', sans-serif;
+            --font-body: 'Work Sans', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            color: var(--ice-blue);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== TOP HUD ===== */
+        .hud {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hud-left { display: flex; align-items: center; gap: 16px; }
+
+        .hud-logo {
+            font-family: var(--font-header);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+        }
+        .hud-logo span { color: var(--accent-red); }
+
+        .hud-xp {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--gold);
+        }
+        .hud-xp .xp-icon { font-size: 1.1rem; }
+
+        .xp-value {
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .xp-value.bump {
+            animation: xpBump 0.4s ease;
+        }
+        @keyframes xpBump {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); color: #fff; }
+            100% { transform: scale(1); }
+        }
+
+        .hud-right { display: flex; align-items: center; gap: 16px; }
+
+        .hud-streak {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #F97316;
+        }
+
+        .hud-sound {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--silver);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .hud-sound:hover { border-color: var(--ice-blue); color: var(--ice-blue); }
+
+        /* ===== GAME CONTEXT BANNER ===== */
+        .game-context {
+            text-align: center;
+            padding: 14px 20px;
+            background: linear-gradient(90deg, rgba(200,16,46,0.15), rgba(200,16,46,0.05), rgba(200,16,46,0.15));
+            border-bottom: 1px solid rgba(200,16,46,0.2);
+        }
+        .game-context-period {
+            font-family: var(--font-header);
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--accent-red);
+        }
+        .game-context-score {
+            font-size: 0.85rem;
+            color: var(--silver);
+            margin-top: 2px;
+        }
+        .game-context-score b { color: var(--ice-blue); }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 20px 80px;
+        }
+
+        /* ===== SCENARIO HEADER ===== */
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .scenario-badge {
+            font-family: var(--font-header);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--silver);
+            text-transform: uppercase;
+        }
+        .scenario-num {
+            font-family: var(--font-header);
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        /* ===== PROGRESS DOTS ===== */
+        .progress-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .progress-dot {
+            width: 32px;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.12);
+            transition: all 0.3s;
+        }
+        .progress-dot.correct { background: var(--success-green); }
+        .progress-dot.incorrect { background: var(--accent-red); }
+        .progress-dot.current {
+            background: var(--gold);
+            box-shadow: 0 0 8px rgba(255,215,0,0.4);
+        }
+
+        /* ===== RINK ===== */
+        .rink-container {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+        .rink-container.shake { animation: shake 0.5s ease; }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        .rink-container.flash-green {
+            animation: flashGreen 0.6s ease;
+        }
+        @keyframes flashGreen {
+            0% { box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+            50% { box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 40px 5px rgba(16,185,129,0.25); }
+            100% { box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+        }
+        .rink-svg { width: 100%; height: auto; display: block; border-radius: 8px; }
+
+        /* Player shadows and glow */
+        .player-marker { filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3)); }
+        .player-you-glow { filter: drop-shadow(0 0 8px rgba(255,215,0,0.5)) drop-shadow(0 2px 3px rgba(0,0,0,0.3)); }
+
+        @keyframes playerPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        .pulse-ring { animation: playerPulse 1.5s ease-in-out infinite; }
+
+        /* ===== NARRATION BAR ===== */
+        .narration-bar {
+            background: rgba(0,0,0,0.7);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: var(--ice-blue);
+            line-height: 1.5;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        .narration-bar .narrator-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .typewriter { overflow: hidden; }
+
+        /* ===== DECISION CLOCK ===== */
+        .clock-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+        .clock-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .clock-ring {
+            width: 56px;
+            height: 56px;
+            position: relative;
+        }
+        .clock-ring svg { transform: rotate(-90deg); }
+        .clock-ring circle {
+            fill: none;
+            stroke-width: 4;
+        }
+        .clock-bg { stroke: rgba(255,255,255,0.1); }
+        .clock-progress {
+            stroke: var(--success-green);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear, stroke 0.3s;
+        }
+        .clock-progress.warning { stroke: #F59E0B; }
+        .clock-progress.danger { stroke: var(--accent-red); }
+
+        .clock-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-header);
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+        .clock-value.danger { color: var(--accent-red); }
+
+        .clock-label {
+            font-size: 0.8rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .bonus-label {
+            font-size: 0.75rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* ===== QUESTION ===== */
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        /* ===== OPTIONS ===== */
+        .options { display: flex; flex-direction: column; gap: 10px; }
+
+        .option {
+            background: rgba(255,255,255,0.06);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px 18px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .option:hover:not(.disabled) {
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            transform: translateX(4px);
+        }
+        .option.disabled { cursor: default; pointer-events: none; }
+
+        .option.correct-reveal {
+            border-color: var(--success-green);
+            background: rgba(16,185,129,0.15);
+        }
+        .option.correct-reveal .option-letter { color: var(--success-green); }
+
+        .option.incorrect-reveal {
+            border-color: var(--accent-red);
+            background: rgba(200,16,46,0.1);
+            opacity: 0.7;
+        }
+
+        .option.user-wrong {
+            border-color: var(--accent-red);
+            background: rgba(200,16,46,0.15);
+        }
+
+        .option-letter {
+            font-weight: 700;
+            color: var(--accent-red);
+            min-width: 24px;
+            font-size: 1rem;
+        }
+        .option-text { flex: 1; font-size: 0.95rem; line-height: 1.5; }
+
+        .option-result-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .option.correct-reveal .option-result-icon,
+        .option.user-wrong .option-result-icon { opacity: 1; }
+
+        /* ===== FEEDBACK ===== */
+        .feedback-panel {
+            margin-top: 20px;
+            border-radius: 12px;
+            padding: 24px;
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .feedback-panel.active { display: block; }
+        .feedback-panel.correct {
+            background: rgba(16,185,129,0.12);
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+        .feedback-panel.incorrect {
+            background: rgba(200,16,46,0.1);
+            border: 1px solid rgba(200,16,46,0.2);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .feedback-icon { font-size: 1.6rem; }
+        .feedback-title {
+            font-family: var(--font-header);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        .feedback-panel.correct .feedback-title { color: var(--success-green); }
+        .feedback-panel.incorrect .feedback-title { color: var(--accent-red); }
+
+        .feedback-body {
+            color: var(--silver);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .feedback-body strong { color: var(--ice-blue); }
+
+        .xp-earned {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 14px;
+            background: rgba(255,215,0,0.15);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gold);
+            animation: popIn 0.5s ease 0.3s both;
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .combo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 8px;
+            padding: 4px 10px;
+            background: rgba(249,115,22,0.2);
+            border: 1px solid rgba(249,115,22,0.4);
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #F97316;
+            animation: popIn 0.5s ease 0.5s both;
+        }
+
+        /* ===== NEXT BUTTON ===== */
+        .next-btn {
+            display: none;
+            width: 100%;
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-header);
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: slideUp 0.4s ease 0.2s both;
+        }
+        .next-btn.visible { display: block; }
+        .next-btn:hover { background: #a50d26; transform: translateY(-2px); }
+
+        /* ===== CONFETTI ===== */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+        }
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.3); }
+        }
+
+        /* ===== FLOATING +XP ===== */
+        .float-xp {
+            position: fixed;
+            font-family: var(--font-header);
+            font-size: 1.8rem;
+            color: var(--gold);
+            pointer-events: none;
+            z-index: 1000;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            animation: floatUp 1.2s ease-out forwards;
+        }
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(0.5); }
+            30% { transform: translateY(-20px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-80px) scale(0.8); }
+        }
+
+        /* ===== START GATE ===== */
+        .start-gate {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            cursor: pointer;
+            transition: opacity 0.4s ease;
+        }
+        .start-gate.hidden { opacity: 0; pointer-events: none; }
+        .start-gate-logo {
+            font-family: var(--font-header);
+            font-size: 3rem;
+            letter-spacing: 4px;
+        }
+        .start-gate-logo span { color: var(--accent-red); }
+        .start-gate-sub {
+            font-size: 0.95rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .start-gate-btn {
+            margin-top: 16px;
+            padding: 16px 48px;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-header);
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .start-gate-btn:hover { background: #a50d26; transform: scale(1.05); }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(200,16,46,0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(200,16,46,0); }
+        }
+        .start-gate-hint {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .container { padding: 16px 14px 60px; }
+            .scenario-num { font-size: 1.5rem; }
+            .option { padding: 14px 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Start Gate (unlocks audio) -->
+<div class="start-gate" id="startGate">
+    <div class="start-gate-logo">PUCK <span>ACADEMY</span></div>
+    <div class="start-gate-sub">Hockey IQ Training</div>
+    <button class="start-gate-btn" onclick="startGame()">DROP THE PUCK</button>
+    <div class="start-gate-hint">🔊 Sound on for the full experience</div>
+</div>
+
+<!-- HUD -->
+<div class="hud">
+    <div class="hud-left">
+        <div class="hud-logo">PUCK <span>ACADEMY</span></div>
+        <div class="hud-xp">
+            <span class="xp-icon">⚡</span>
+            <span class="xp-value" id="xpDisplay">0</span> XP
+        </div>
+    </div>
+    <div class="hud-right">
+        <div class="hud-streak" id="streakDisplay" style="display:none;">
+            🔥 <span id="streakCount">0</span> streak
+        </div>
+        <button class="hud-sound" id="soundBtn" onclick="toggleSound()">🔊</button>
+    </div>
+</div>
+
+<!-- Game Context -->
+<div class="game-context">
+    <div class="game-context-period" id="gamePeriod">3RD PERIOD • 4:32 LEFT</div>
+    <div class="game-context-score">Your team <b id="teamScore">2</b> — Opponent <b id="oppScore">2</b></div>
+</div>
+
+<!-- Confetti Container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<div class="container">
+
+    <!-- Scenario Header -->
+    <div class="scenario-header">
+        <div class="scenario-badge">MODULE 1 • DEFENSIVE ZONE</div>
+    </div>
+
+    <!-- Progress Dots -->
+    <div class="progress-dots" id="progressDots"></div>
+
+    <!-- Rink -->
+    <div class="rink-container" id="rinkContainer">
+        <svg class="rink-svg" id="rinkSvg" viewBox="0 0 540 380" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Ice texture gradient -->
+                <radialGradient id="iceGradient" cx="40%" cy="45%" r="65%">
+                    <stop offset="0%" stop-color="#f0f8ff"/>
+                    <stop offset="40%" stop-color="#e8f2f8"/>
+                    <stop offset="100%" stop-color="#dce8f0"/>
+                </radialGradient>
+                <!-- Overhead arena light -->
+                <radialGradient id="arenaLight" cx="50%" cy="40%" r="60%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,0.12)"/>
+                    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                </radialGradient>
+                <!-- Ice scratch texture -->
+                <filter id="iceNoise" x="0%" y="0%" width="100%" height="100%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" seed="2"/>
+                    <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+                    <feBlend in="SourceGraphic" in2="grayNoise" mode="soft-light"/>
+                </filter>
+                <!-- Board shadow (inner) -->
+                <filter id="boardShadowInner">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+                    <feOffset dx="0" dy="0"/>
+                    <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                    <feFlood flood-color="#000" flood-opacity="0.25"/>
+                    <feComposite in2="SourceGraphic" operator="in"/>
+                    <feComposite in="SourceGraphic"/>
+                </filter>
+                <!-- Player jersey gradient - Team (blue) -->
+                <radialGradient id="jerseyBlue" cx="40%" cy="35%" r="60%">
+                    <stop offset="0%" stop-color="#3B6FD4"/>
+                    <stop offset="100%" stop-color="#1A3A7A"/>
+                </radialGradient>
+                <!-- Player jersey gradient - Opponent (red) -->
+                <radialGradient id="jerseyRed" cx="40%" cy="35%" r="60%">
+                    <stop offset="0%" stop-color="#E8293E"/>
+                    <stop offset="100%" stop-color="#8B0000"/>
+                </radialGradient>
+                <!-- Player jersey gradient - YOU (gold) -->
+                <radialGradient id="jerseyGold" cx="40%" cy="35%" r="60%">
+                    <stop offset="0%" stop-color="#FFE44D"/>
+                    <stop offset="100%" stop-color="#CC9900"/>
+                </radialGradient>
+                <!-- Puck gradient -->
+                <radialGradient id="puckGrad" cx="35%" cy="30%" r="65%">
+                    <stop offset="0%" stop-color="#444"/>
+                    <stop offset="100%" stop-color="#111"/>
+                </radialGradient>
+                <!-- Danger zone glow -->
+                <filter id="dangerGlow">
+                    <feGaussianBlur stdDeviation="6" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <!-- Green coverage glow -->
+                <filter id="coverageGlow">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+            </defs>
+
+            <!-- === BOARDS (dark surround) === -->
+            <rect x="0" y="0" width="540" height="380" rx="40" ry="40" fill="#2c2c3a"/>
+            <!-- Board top highlight -->
+            <rect x="0" y="0" width="540" height="380" rx="40" ry="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+            <!-- === ICE SURFACE === -->
+            <rect x="12" y="12" width="516" height="356" rx="32" ry="32" fill="url(#iceGradient)" filter="url(#iceNoise)"/>
+            <!-- Overhead light reflection -->
+            <rect x="12" y="12" width="516" height="356" rx="32" ry="32" fill="url(#arenaLight)"/>
+            <!-- Board inner shadow -->
+            <rect x="12" y="12" width="516" height="356" rx="32" ry="32" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="6"/>
+
+            <!-- === RINK MARKINGS === -->
+
+            <!-- Goal line (red) -->
+            <line x1="90" y1="32" x2="90" y2="348" stroke="#C8102E" stroke-width="2.5" opacity="0.85"/>
+
+            <!-- Blue line -->
+            <line x1="370" y1="32" x2="370" y2="348" stroke="#1E4DA0" stroke-width="5" opacity="0.7"/>
+            <!-- Blue line center stripe -->
+            <line x1="370" y1="32" x2="370" y2="348" stroke="#dce8f0" stroke-width="1.5" opacity="0.35"/>
+
+            <!-- Goal crease (proper semi-circle) -->
+            <path d="M 90 155 A 32 32 0 0 0 90 225" fill="rgba(135,206,250,0.35)" stroke="#C8102E" stroke-width="2"/>
+            <!-- Crease hash lines -->
+            <line x1="66" y1="155" x2="90" y2="155" stroke="#C8102E" stroke-width="1.5" opacity="0.6"/>
+            <line x1="66" y1="225" x2="90" y2="225" stroke="#C8102E" stroke-width="1.5" opacity="0.6"/>
+
+            <!-- Goal net -->
+            <rect x="56" y="168" width="34" height="44" rx="3" fill="none" stroke="#666" stroke-width="2.5"/>
+            <!-- Net mesh lines -->
+            <line x1="60" y1="172" x2="60" y2="208" stroke="#888" stroke-width="0.5" opacity="0.5"/>
+            <line x1="68" y1="172" x2="68" y2="208" stroke="#888" stroke-width="0.5" opacity="0.5"/>
+            <line x1="76" y1="172" x2="76" y2="208" stroke="#888" stroke-width="0.5" opacity="0.5"/>
+            <line x1="84" y1="172" x2="84" y2="208" stroke="#888" stroke-width="0.5" opacity="0.5"/>
+            <line x1="56" y1="178" x2="90" y2="178" stroke="#888" stroke-width="0.5" opacity="0.5"/>
+            <line x1="56" y1="188" x2="90" y2="188" stroke="#888" stroke-width="0.5" opacity="0.5"/>
+            <line x1="56" y1="198" x2="90" y2="198" stroke="#888" stroke-width="0.5" opacity="0.5"/>
+
+            <!-- Trapezoid behind net -->
+            <path d="M 56 145 L 24 120 L 24 260 L 56 235" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.3" stroke-dasharray="4,3"/>
+
+            <!-- Left faceoff circle (top) -->
+            <circle cx="165" cy="120" r="42" fill="none" stroke="#C8102E" stroke-width="1.8" opacity="0.55"/>
+            <circle cx="165" cy="120" r="3" fill="#C8102E" opacity="0.7"/>
+            <!-- Hashmarks -->
+            <line x1="122" y1="112" x2="122" y2="102" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+            <line x1="122" y1="128" x2="122" y2="138" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+            <line x1="208" y1="112" x2="208" y2="102" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+            <line x1="208" y1="128" x2="208" y2="138" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+
+            <!-- Left faceoff circle (bottom) -->
+            <circle cx="165" cy="260" r="42" fill="none" stroke="#C8102E" stroke-width="1.8" opacity="0.55"/>
+            <circle cx="165" cy="260" r="3" fill="#C8102E" opacity="0.7"/>
+            <!-- Hashmarks -->
+            <line x1="122" y1="252" x2="122" y2="242" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+            <line x1="122" y1="268" x2="122" y2="278" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+            <line x1="208" y1="252" x2="208" y2="242" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+            <line x1="208" y1="268" x2="208" y2="278" stroke="#C8102E" stroke-width="1.5" opacity="0.45"/>
+
+            <!-- Center zone faceoff dots (near blue line) -->
+            <circle cx="340" cy="120" r="3" fill="#C8102E" opacity="0.5"/>
+            <circle cx="340" cy="260" r="3" fill="#C8102E" opacity="0.5"/>
+
+            <!-- Subtle "D-ZONE" label on ice -->
+            <text x="230" y="348" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="14" fill="rgba(30,64,175,0.12)" letter-spacing="6">DEFENSIVE ZONE</text>
+
+            <!-- === DYNAMIC OVERLAYS === -->
+
+            <!-- Danger zone (hidden initially) -->
+            <ellipse id="dangerZone" cx="150" cy="190" rx="55" ry="50"
+                fill="rgba(200,16,46,0.08)" stroke="rgba(200,16,46,0.4)" stroke-width="2" stroke-dasharray="8,4"
+                opacity="0" filter="url(#dangerGlow)"/>
+
+            <!-- Coverage zone (hidden initially) -->
+            <ellipse id="coverageZone" cx="195" cy="190" rx="42" ry="38"
+                fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.5)" stroke-width="2" stroke-dasharray="6,3"
+                opacity="0" filter="url(#coverageGlow)"/>
+
+            <!-- === PLAYERS === -->
+
+            <!-- Opponent LW (red jersey) -->
+            <g id="player-oppW" class="player-marker">
+                <circle cx="115" cy="100" r="4" fill="rgba(0,0,0,0.15)" cy="103"/><!-- shadow -->
+                <circle cx="115" cy="100" r="18" fill="url(#jerseyRed)" stroke="#6B0015" stroke-width="2.5"/>
+                <circle cx="115" cy="100" r="18" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                <text x="115" y="105" text-anchor="middle" fill="white" font-weight="700" font-size="12" font-family="Work Sans, sans-serif">LW</text>
+            </g>
+
+            <!-- Puck -->
+            <g id="puckGroup">
+                <ellipse cx="105" cy="112" rx="7" ry="3" fill="rgba(0,0,0,0.2)"/><!-- puck shadow -->
+                <circle id="puck" cx="105" cy="108" r="7" fill="url(#puckGrad)" stroke="#333" stroke-width="1.5"/>
+                <circle cx="103" cy="106" r="2" fill="rgba(255,255,255,0.15)"/><!-- highlight -->
+            </g>
+
+            <!-- Team D1 (blue jersey) -->
+            <g id="player-teamD1" class="player-marker">
+                <circle cx="145" cy="128" r="18" fill="url(#jerseyBlue)" stroke="#0D2557" stroke-width="2.5"/>
+                <circle cx="145" cy="128" r="18" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                <text x="145" y="133" text-anchor="middle" fill="white" font-weight="700" font-size="13" font-family="Work Sans, sans-serif">D</text>
+            </g>
+
+            <!-- Opponent C (red jersey) -->
+            <g id="player-oppC" class="player-marker">
+                <circle cx="205" cy="198" r="18" fill="url(#jerseyRed)" stroke="#6B0015" stroke-width="2.5"/>
+                <circle cx="205" cy="198" r="18" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                <text x="205" y="203" text-anchor="middle" fill="white" font-weight="700" font-size="12" font-family="Work Sans, sans-serif">C</text>
+            </g>
+
+            <!-- YOU (gold jersey with pulse ring) -->
+            <g id="player-you" class="player-you-glow">
+                <circle cx="225" cy="232" r="30" fill="rgba(255,215,0,0.12)" stroke="none" class="pulse-ring"/>
+                <circle cx="225" cy="232" r="22" fill="url(#jerseyGold)" stroke="#8B6914" stroke-width="3"/>
+                <circle cx="225" cy="232" r="22" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                <text x="225" y="237" text-anchor="middle" fill="#1a1a1a" font-weight="800" font-size="11" font-family="Work Sans, sans-serif">YOU</text>
+            </g>
+
+            <!-- Team D2 (blue jersey) -->
+            <g id="player-teamD2" class="player-marker">
+                <circle cx="135" cy="255" r="18" fill="url(#jerseyBlue)" stroke="#0D2557" stroke-width="2.5"/>
+                <circle cx="135" cy="255" r="18" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                <text x="135" y="260" text-anchor="middle" fill="white" font-weight="700" font-size="13" font-family="Work Sans, sans-serif">D</text>
+            </g>
+
+            <!-- === LEGEND (on-ice, subtle) === -->
+            <g opacity="0.6" transform="translate(390, 310)">
+                <circle cx="0" cy="0" r="6" fill="url(#jerseyGold)" stroke="#8B6914" stroke-width="1"/>
+                <text x="10" y="4" font-size="9" fill="#555" font-family="Work Sans, sans-serif" font-weight="600">You</text>
+                <circle cx="55" cy="0" r="6" fill="url(#jerseyBlue)" stroke="#0D2557" stroke-width="1"/>
+                <text x="65" y="4" font-size="9" fill="#555" font-family="Work Sans, sans-serif" font-weight="600">Team</text>
+                <circle cx="115" cy="0" r="6" fill="url(#jerseyRed)" stroke="#6B0015" stroke-width="1"/>
+                <text x="125" y="4" font-size="9" fill="#555" font-family="Work Sans, sans-serif" font-weight="600">Opp</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Narration Bar -->
+    <div class="narration-bar" id="narrationBar">
+        <span class="narrator-icon">🏒</span>
+        <span class="typewriter" id="narrationText">Loading scenario...</span>
+    </div>
+
+    <!-- Decision Clock -->
+    <div class="clock-section" id="clockSection">
+        <div>
+            <div class="clock-label">DECISION TIME</div>
+            <div class="bonus-label" id="bonusLabel">Quick answer = bonus XP</div>
+        </div>
+        <div class="clock-ring">
+            <svg width="56" height="56" viewBox="0 0 56 56">
+                <circle class="clock-bg" cx="28" cy="28" r="24"/>
+                <circle class="clock-progress" id="clockProgress" cx="28" cy="28" r="24"
+                    stroke-dasharray="150.8"
+                    stroke-dashoffset="0"/>
+            </svg>
+            <div class="clock-value" id="clockValue">10</div>
+        </div>
+    </div>
+
+    <!-- Question -->
+    <div id="questionSection" style="display:none;">
+        <p class="question-text" id="questionText"></p>
+        <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <!-- Feedback -->
+    <div class="feedback-panel" id="feedbackPanel">
+        <div class="feedback-header">
+            <span class="feedback-icon" id="feedbackIcon"></span>
+            <span class="feedback-title" id="feedbackTitle"></span>
+        </div>
+        <div class="feedback-body" id="feedbackBody"></div>
+        <div id="xpEarnedContainer"></div>
+    </div>
+
+    <!-- Next Button -->
+    <button class="next-btn" id="nextBtn" onclick="nextScenario()">NEXT SCENARIO →</button>
+
+</div>
+
+<script>
+// ============================================
+// SOUND ENGINE (Web Audio API — no files needed)
+// ============================================
+let soundEnabled = true;
+let audioCtx = null;
+
+function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+}
+
+function playTone(freq, duration, type = 'square', vol = 0.15) {
+    if (!soundEnabled) return;
+    try {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.value = vol;
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+    } catch(e) {}
+}
+
+function sfxCorrect() {
+    playTone(523, 0.12, 'square', 0.12);
+    setTimeout(() => playTone(659, 0.12, 'square', 0.12), 100);
+    setTimeout(() => playTone(784, 0.2, 'square', 0.15), 200);
+}
+
+function sfxIncorrect() {
+    playTone(200, 0.25, 'sawtooth', 0.1);
+    setTimeout(() => playTone(160, 0.35, 'sawtooth', 0.1), 200);
+}
+
+function sfxTick() {
+    playTone(800, 0.05, 'square', 0.06);
+}
+
+function sfxBuzzer() {
+    playTone(150, 0.5, 'sawtooth', 0.15);
+}
+
+function sfxSelect() {
+    playTone(440, 0.06, 'sine', 0.08);
+}
+
+function sfxWhoosh() {
+    playTone(300, 0.15, 'sine', 0.05);
+    setTimeout(() => playTone(600, 0.1, 'sine', 0.03), 50);
+}
+
+function sfxGoalHorn() {
+    playTone(220, 0.6, 'sawtooth', 0.12);
+    setTimeout(() => playTone(220, 0.6, 'sawtooth', 0.12), 700);
+    setTimeout(() => playTone(220, 0.8, 'sawtooth', 0.15), 1400);
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    document.getElementById('soundBtn').textContent = soundEnabled ? '🔊' : '🔇';
+    if (!soundEnabled) stopVoice();
+}
+
+
+// ============================================
+// VOICE NARRATION (ElevenLabs MP3s)
+// ============================================
+let currentVoice = null;
+
+function playVoice(scenarioAudioPath, cue) {
+    if (!soundEnabled) return;
+    stopVoice();
+    try {
+        currentVoice = new Audio(scenarioAudioPath + cue + '.mp3');
+        currentVoice.volume = 0.85;
+        currentVoice.play().catch(e => console.log('Voice play failed:', e));
+    } catch(e) {
+        console.log('Voice not available:', e);
+    }
+}
+
+function stopVoice() {
+    if (currentVoice) {
+        currentVoice.pause();
+        currentVoice.currentTime = 0;
+        currentVoice = null;
+    }
+}
+
+
+// ============================================
+// SCENARIO DATA
+// ============================================
+const scenarios = [
+    {
+        title: "Reading D-Zone Pressure",
+        audioPath: 'audio/hockey-iq-diagram/',
+        narrationSteps: [
+            { text: "Opposing winger receives a pass along the boards...", delay: 0, action: 'moveOppW' },
+            { text: "Your D-man moves to pressure the puck carrier...", delay: 2200, action: 'moveDman' },
+            { text: "The opposing center is sliding into the HIGH SLOT...", delay: 4400, action: 'moveOppC' },
+            { text: "The slot is DANGEROUS — what do YOU do?", delay: 6600, action: 'showDanger' },
+        ],
+        question: "Your D-man is pressuring the boards. The opposing center is open in the slot. What's your play?",
+        options: [
+            { text: "Drop to the net front to block any shot", letter: "A" },
+            { text: "Cover the opposing center in the high slot while reading for a breakout", letter: "B" },
+            { text: "Help your D-man double-team the puck carrier on the boards", letter: "C" },
+            { text: "Stay low near the hashmarks and wait", letter: "D" },
+        ],
+        correctIndex: 1,
+        feedbackCorrect: {
+            title: "PERFECT READ!",
+            body: "<strong>Taking away the slot pass</strong> is exactly right. Your D-man has the boards handled — your job is to eliminate the most dangerous passing lane. By covering the opposing center, you deny the cross-slot pass AND you're already in position to receive the breakout pass when your D wins it back. <strong>That's two-way center play.</strong>"
+        },
+        feedbackIncorrect: {
+            title: "NOT QUITE",
+            body: "By leaving the opposing center uncovered in the slot, you've opened up the most dangerous passing lane on the ice. The slot is where goals happen. <strong>Your D-man has the boards — your job is to take away the middle.</strong> Cover that center, deny the pass, and be ready for the breakout."
+        },
+        outcomeCorrectAction: 'animateCorrectOutcome',
+        outcomeIncorrectAction: 'animateIncorrectOutcome',
+        period: "3RD PERIOD • 4:32 LEFT",
+        teamScore: 2,
+        oppScore: 2,
+    },
+    {
+        title: "Corner Battle Support",
+        audioPath: 'audio/scenario-2-corner-battle/',
+        narrationSteps: [
+            { text: "The puck is dumped deep into the corner...", delay: 0, action: null },
+            { text: "Your D-man battles for the puck behind the net...", delay: 2000, action: null },
+            { text: "An opposing winger is crashing toward the net front...", delay: 4000, action: null },
+            { text: "You're the closest forward — what's your move?", delay: 6000, action: null },
+        ],
+        question: "Your D is battling in the corner. An opponent is heading to the net front. What do you do?",
+        options: [
+            { text: "Go help your D-man win the puck in the corner", letter: "A" },
+            { text: "Cover the winger heading to the net front", letter: "B" },
+            { text: "Position yourself at the half-wall for a breakout pass", letter: "C" },
+            { text: "Skate to the front of the net to screen the goalie's view", letter: "D" },
+        ],
+        correctIndex: 1,
+        feedbackCorrect: {
+            title: "TEXTBOOK COVERAGE!",
+            body: "<strong>Taking away the net-front threat</strong> is the smart play. Your D can handle the corner — if you both go there, you leave the dangerous area in front of your goalie wide open. By boxing out the crashing winger, you protect the house and keep the play manageable."
+        },
+        feedbackIncorrect: {
+            title: "TOUGH BREAK",
+            body: "The net front is sacred ground. When an opponent is crashing to the crease and your D is tied up in the corner, <strong>you need to be the one protecting the house.</strong> Don't leave your goalie alone with an opponent parked on his doorstep."
+        },
+        period: "3RD PERIOD • 3:15 LEFT",
+        teamScore: 2,
+        oppScore: 2,
+    },
+    {
+        title: "Cycle Coverage Read",
+        audioPath: 'audio/scenario-3-cycle/',
+        narrationSteps: [
+            { text: "The opposing team is cycling the puck down low...", delay: 0, action: null },
+            { text: "Their D-man is sneaking down from the blue line...", delay: 2000, action: null },
+            { text: "Your winger is already locked onto the low forward...", delay: 4000, action: null },
+            { text: "You see the D-man cheating — what's your call?", delay: 6000, action: null },
+        ],
+        question: "The opponents are cycling. Their D-man is pinching down. Your winger has the low man. What do you do?",
+        options: [
+            { text: "Help your winger double the low forward to force a turnover", letter: "A" },
+            { text: "Pick up the pinching D-man before he gets a scoring chance", letter: "B" },
+            { text: "Cheat toward the blue line to prepare for a breakout", letter: "C" },
+            { text: "Stay stationary at the top of the circle and watch the play develop", letter: "D" },
+        ],
+        correctIndex: 1,
+        feedbackCorrect: {
+            title: "GREAT AWARENESS!",
+            body: "<strong>Picking up the pinching defenseman</strong> shows elite-level recognition. Your winger has the low threat covered — the most dangerous new threat is that defenseman sneaking in. If he receives a pass uncovered, that's a one-timer from the slot. <strong>Reading the play one step ahead is what separates good centers from great ones.</strong>"
+        },
+        feedbackIncorrect: {
+            title: "MISSED THE THREAT",
+            body: "Your winger already had the low forward covered. The real danger was the defenseman pinching down from the point. <strong>Great centers read the play BEFORE it develops</strong> — that defenseman was the next threat, and picking him up denies a high-danger scoring chance."
+        },
+        period: "3RD PERIOD • 1:47 LEFT",
+        teamScore: 2,
+        oppScore: 2,
+    }
+];
+
+
+// ============================================
+// GAME STATE
+// ============================================
+let currentScenario = 0;
+let xp = 0;
+let combo = 0;
+let timer = null;
+let timeLeft = 10;
+const TOTAL_TIME = 10;
+const CIRCUMFERENCE = 2 * Math.PI * 24; // ~150.8
+let scenarioResults = []; // 'correct', 'incorrect', or null
+
+
+// ============================================
+// INIT
+// ============================================
+function init() {
+    buildProgressDots();
+    loadScenario(currentScenario);
+}
+
+function buildProgressDots() {
+    const container = document.getElementById('progressDots');
+    container.innerHTML = '';
+    for (let i = 0; i < scenarios.length; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        if (i === currentScenario) dot.classList.add('current');
+        if (scenarioResults[i] === 'correct') dot.classList.add('correct');
+        if (scenarioResults[i] === 'incorrect') dot.classList.add('incorrect');
+        container.appendChild(dot);
+    }
+}
+
+
+// ============================================
+// LOAD SCENARIO
+// ============================================
+function loadScenario(idx) {
+    const s = scenarios[idx];
+
+    // Reset UI
+    document.getElementById('questionSection').style.display = 'none';
+    document.getElementById('feedbackPanel').classList.remove('active', 'correct', 'incorrect');
+    document.getElementById('nextBtn').classList.remove('visible');
+    document.getElementById('clockSection').classList.remove('visible');
+    document.getElementById('rinkContainer').classList.remove('shake', 'flash-green');
+
+    // Update game context
+    document.getElementById('gamePeriod').textContent = s.period;
+    document.getElementById('teamScore').textContent = s.teamScore;
+    document.getElementById('oppScore').textContent = s.oppScore;
+
+    // Update header
+    buildProgressDots();
+
+    // Reset danger/coverage zones
+    document.getElementById('dangerZone').style.opacity = '0';
+    document.getElementById('coverageZone').style.opacity = '0';
+
+    // Run narration sequence
+    runNarration(s);
+}
+
+
+// ============================================
+// NARRATION (typewriter-ish)
+// ============================================
+function runNarration(scenario) {
+    const narrationText = document.getElementById('narrationText');
+    const steps = scenario.narrationSteps;
+
+    // Play voice narration for setup (covers the whole narration sequence)
+    if (scenario.audioPath) {
+        playVoice(scenario.audioPath, 'setup');
+    }
+
+    steps.forEach((step, i) => {
+        setTimeout(() => {
+            narrationText.textContent = step.text;
+            if (i > 0) sfxWhoosh(); // skip whoosh on first step (voice is playing)
+
+            // Run scenario-specific animations
+            if (step.action === 'moveOppW') {
+                // Puck already near winger
+            } else if (step.action === 'moveDman') {
+                animatePlayer('player-teamD1', 125, 110, 1000);
+            } else if (step.action === 'moveOppC') {
+                animatePlayer('player-oppC', 185, 185, 1000);
+            } else if (step.action === 'showDanger') {
+                const dz = document.getElementById('dangerZone');
+                dz.style.transition = 'opacity 0.6s ease';
+                dz.style.opacity = '1';
+            }
+        }, step.delay);
+    });
+
+    // After narration, show question + start clock
+    const lastDelay = steps[steps.length - 1].delay;
+    setTimeout(() => {
+        // Play the "prompt" voice cue ("What should you do?")
+        if (scenario.audioPath) {
+            playVoice(scenario.audioPath, 'prompt');
+        }
+        showQuestion(scenario);
+    }, lastDelay + 1800);
+}
+
+
+// ============================================
+// PLAYER ANIMATION
+// ============================================
+function animatePlayer(id, targetX, targetY, duration) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    // Find the "main" circle — the one with the fill gradient (second circle usually)
+    const circles = el.querySelectorAll('circle');
+    const text = el.querySelector('text');
+    // Use the main positioned circle (first non-shadow circle)
+    const mainCircle = circles.length > 1 ? circles[1] : circles[0];
+    const cx = parseFloat(mainCircle.getAttribute('cx'));
+    const cy = parseFloat(mainCircle.getAttribute('cy'));
+    const dx = targetX - cx;
+    const dy = targetY - cy;
+
+    el.style.transition = `transform ${duration}ms ease-in-out`;
+    el.style.transform = `translate(${dx}px, ${dy}px)`;
+
+    setTimeout(() => {
+        el.style.transition = 'none';
+        el.style.transform = 'none';
+        // Move ALL circles and text by the delta
+        circles.forEach(c => {
+            c.setAttribute('cx', parseFloat(c.getAttribute('cx')) + dx);
+            c.setAttribute('cy', parseFloat(c.getAttribute('cy')) + dy);
+        });
+        if (text) {
+            text.setAttribute('x', parseFloat(text.getAttribute('x')) + dx);
+            text.setAttribute('y', parseFloat(text.getAttribute('y')) + dy);
+        }
+    }, duration);
+}
+
+function animatePuck(targetX, targetY, duration) {
+    const puck = document.getElementById('puck');
+    const cx = parseFloat(puck.getAttribute('cx'));
+    const cy = parseFloat(puck.getAttribute('cy'));
+
+    puck.style.transition = `transform ${duration}ms ease-in-out`;
+    puck.style.transform = `translate(${targetX - cx}px, ${targetY - cy}px)`;
+
+    setTimeout(() => {
+        puck.style.transition = 'none';
+        puck.style.transform = 'none';
+        puck.setAttribute('cx', targetX);
+        puck.setAttribute('cy', targetY);
+    }, duration);
+}
+
+
+// ============================================
+// SHOW QUESTION + START CLOCK
+// ============================================
+function showQuestion(scenario) {
+    const qSection = document.getElementById('questionSection');
+    const qText = document.getElementById('questionText');
+    const optContainer = document.getElementById('optionsContainer');
+
+    qText.textContent = scenario.question;
+    optContainer.innerHTML = '';
+
+    scenario.options.forEach((opt, i) => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerHTML = `
+            <span class="option-letter">${opt.letter})</span>
+            <span class="option-text">${opt.text}</span>
+            <span class="option-result-icon"></span>
+        `;
+        div.onclick = () => selectAnswer(i);
+        optContainer.appendChild(div);
+    });
+
+    qSection.style.display = 'block';
+    qSection.style.animation = 'slideUp 0.4s ease';
+
+    // Start clock
+    startClock();
+}
+
+
+// ============================================
+// DECISION CLOCK
+// ============================================
+function startClock() {
+    timeLeft = TOTAL_TIME;
+    const clockSection = document.getElementById('clockSection');
+    const clockValue = document.getElementById('clockValue');
+    const clockProgress = document.getElementById('clockProgress');
+    const bonusLabel = document.getElementById('bonusLabel');
+
+    clockSection.classList.add('visible');
+    clockValue.textContent = timeLeft;
+    clockProgress.style.strokeDashoffset = '0';
+    clockProgress.classList.remove('warning', 'danger');
+    bonusLabel.textContent = 'Quick answer = bonus XP';
+
+    clearInterval(timer);
+    timer = setInterval(() => {
+        timeLeft -= 0.1;
+        if (timeLeft <= 0) {
+            timeLeft = 0;
+            clearInterval(timer);
+            sfxBuzzer();
+            clockValue.textContent = '0';
+            bonusLabel.textContent = 'Time expired — no bonus';
+        }
+
+        const fraction = timeLeft / TOTAL_TIME;
+        clockProgress.style.strokeDashoffset = (1 - fraction) * CIRCUMFERENCE;
+        clockValue.textContent = Math.ceil(timeLeft);
+        clockValue.classList.toggle('danger', timeLeft <= 3);
+
+        if (timeLeft <= 3) {
+            clockProgress.classList.add('danger');
+            clockProgress.classList.remove('warning');
+            if (Math.ceil(timeLeft) !== Math.ceil(timeLeft + 0.1)) sfxTick();
+        } else if (timeLeft <= 6) {
+            clockProgress.classList.add('warning');
+            clockProgress.classList.remove('danger');
+        }
+
+        if (timeLeft <= 5 && timeLeft > 0) {
+            bonusLabel.textContent = 'Hurry — bonus fading!';
+        }
+    }, 100);
+}
+
+
+// ============================================
+// SELECT ANSWER
+// ============================================
+function selectAnswer(idx) {
+    clearInterval(timer);
+    sfxSelect();
+
+    const scenario = scenarios[currentScenario];
+    const isCorrect = idx === scenario.correctIndex;
+    const options = document.querySelectorAll('.option');
+
+    // Disable all options
+    options.forEach(o => o.classList.add('disabled'));
+
+    // Mark correct/incorrect
+    options.forEach((o, i) => {
+        if (i === scenario.correctIndex) {
+            o.classList.add('correct-reveal');
+            o.querySelector('.option-result-icon').textContent = '✓';
+        } else if (i === idx && !isCorrect) {
+            o.classList.add('user-wrong');
+            o.querySelector('.option-result-icon').textContent = '✗';
+        } else {
+            o.classList.add('incorrect-reveal');
+        }
+    });
+
+    // Calculate XP
+    let earnedXP = 0;
+    let timeBonus = 0;
+    if (isCorrect) {
+        earnedXP = 100;
+        timeBonus = Math.round(Math.max(0, timeLeft) * 10); // up to 100 bonus
+        earnedXP += timeBonus;
+        combo++;
+        if (combo >= 2) earnedXP = Math.round(earnedXP * (1 + combo * 0.1));
+    } else {
+        combo = 0;
+    }
+
+    scenarioResults[currentScenario] = isCorrect ? 'correct' : 'incorrect';
+    buildProgressDots();
+
+    // Rink effects
+    const rink = document.getElementById('rinkContainer');
+    if (isCorrect) {
+        rink.classList.add('flash-green');
+        sfxCorrect();
+        // Play voice explanation of correct answer
+        if (scenario.audioPath) {
+            setTimeout(() => playVoice(scenario.audioPath, 'correct'), 400);
+        }
+
+        // Animate correct outcome
+        animatePlayer('player-you', 190, 190, 800);
+        setTimeout(() => {
+            const cz = document.getElementById('coverageZone');
+            cz.style.transition = 'opacity 0.6s ease';
+            cz.style.opacity = '1';
+            document.getElementById('dangerZone').style.transition = 'opacity 0.4s';
+            document.getElementById('dangerZone').style.opacity = '0';
+        }, 600);
+    } else {
+        rink.classList.add('shake');
+        sfxIncorrect();
+        // Play voice explanation of why it was wrong
+        if (scenario.audioPath) {
+            setTimeout(() => playVoice(scenario.audioPath, 'incorrect'), 400);
+        }
+    }
+
+    // Show feedback
+    setTimeout(() => {
+        showFeedback(isCorrect, scenario, earnedXP, timeBonus);
+    }, 600);
+
+    // Update XP
+    if (earnedXP > 0) {
+        showFloatingXP(earnedXP);
+        animateXP(xp, xp + earnedXP);
+        xp += earnedXP;
+    }
+
+    // Update narration
+    const narrationText = document.getElementById('narrationText');
+    narrationText.textContent = isCorrect ? "Great read! That's elite-level awareness." : "The slot was left wide open. Let's learn from it.";
+
+    // Confetti for correct
+    if (isCorrect) spawnConfetti();
+
+    // Hide clock
+    document.getElementById('clockSection').classList.remove('visible');
+}
+
+
+// ============================================
+// FEEDBACK PANEL
+// ============================================
+function showFeedback(isCorrect, scenario, earnedXP, timeBonus) {
+    const panel = document.getElementById('feedbackPanel');
+    const data = isCorrect ? scenario.feedbackCorrect : scenario.feedbackIncorrect;
+
+    panel.className = 'feedback-panel active ' + (isCorrect ? 'correct' : 'incorrect');
+    document.getElementById('feedbackIcon').textContent = isCorrect ? '🛡️' : '🚨';
+    document.getElementById('feedbackTitle').textContent = data.title;
+    document.getElementById('feedbackBody').innerHTML = data.body;
+
+    // XP earned
+    const xpContainer = document.getElementById('xpEarnedContainer');
+    if (isCorrect) {
+        let html = `<div class="xp-earned">⚡ +${earnedXP} XP`;
+        if (timeBonus > 0) html += ` (${timeBonus} speed bonus!)`;
+        html += `</div>`;
+        if (combo >= 2) {
+            html += `<span class="combo-badge">🔥 ${combo}x combo</span>`;
+        }
+        xpContainer.innerHTML = html;
+    } else {
+        xpContainer.innerHTML = '';
+    }
+
+    // Show streak
+    if (combo >= 2) {
+        document.getElementById('streakDisplay').style.display = 'flex';
+        document.getElementById('streakCount').textContent = combo;
+    }
+
+    // Show next button
+    setTimeout(() => {
+        const btn = document.getElementById('nextBtn');
+        if (currentScenario < scenarios.length - 1) {
+            btn.textContent = 'NEXT SCENARIO →';
+        } else {
+            btn.textContent = 'SEE YOUR RESULTS →';
+        }
+        btn.classList.add('visible');
+    }, 800);
+}
+
+
+// ============================================
+// XP ANIMATIONS
+// ============================================
+function animateXP(from, to) {
+    const el = document.getElementById('xpDisplay');
+    const duration = 600;
+    const start = performance.now();
+
+    el.classList.add('bump');
+    setTimeout(() => el.classList.remove('bump'), 400);
+
+    function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        el.textContent = Math.round(from + (to - from) * progress);
+        if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+}
+
+function showFloatingXP(amount) {
+    const el = document.createElement('div');
+    el.className = 'float-xp';
+    el.textContent = `+${amount} XP`;
+    el.style.left = '50%';
+    el.style.top = '40%';
+    el.style.transform = 'translateX(-50%)';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1300);
+}
+
+
+// ============================================
+// CONFETTI
+// ============================================
+function spawnConfetti() {
+    const container = document.getElementById('confettiContainer');
+    const colors = ['#10B981', '#FFD700', '#3B82F6', '#F97316', '#C8102E', '#E8F4F8'];
+    for (let i = 0; i < 40; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.top = '-10px';
+        piece.style.width = (Math.random() * 8 + 5) + 'px';
+        piece.style.height = (Math.random() * 8 + 5) + 'px';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        piece.style.animation = `confettiFall ${1.5 + Math.random() * 1.5}s ease-out ${Math.random() * 0.5}s forwards`;
+        container.appendChild(piece);
+        setTimeout(() => piece.remove(), 3500);
+    }
+}
+
+
+// ============================================
+// NEXT SCENARIO
+// ============================================
+function nextScenario() {
+    stopVoice(); // Stop any playing voice narration
+    currentScenario++;
+    if (currentScenario >= scenarios.length) {
+        showResults();
+        return;
+    }
+
+    // Reset rink positions to defaults for each scenario
+    resetRinkPositions();
+    sfxWhoosh();
+    loadScenario(currentScenario);
+}
+
+function resetRinkPositions() {
+    // Reset player positions to starting spots
+    const resets = {
+        'player-oppW':   { circles: [{cx:115, cy:103},{cx:115, cy:100},{cx:115, cy:100}], text: {x:115, y:105} },
+        'player-teamD1': { circles: [{cx:145, cy:128},{cx:145, cy:128}], text: {x:145, y:133} },
+        'player-oppC':   { circles: [{cx:205, cy:198},{cx:205, cy:198}], text: {x:205, y:203} },
+        'player-you':    { circles: [{cx:225, cy:232},{cx:225, cy:232},{cx:225, cy:232}], text: {x:225, y:237} },
+        'player-teamD2': { circles: [{cx:135, cy:255},{cx:135, cy:255}], text: {x:135, y:260} },
+    };
+    for (const [id, pos] of Object.entries(resets)) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        el.style.transition = 'none';
+        el.style.transform = 'none';
+        const circles = el.querySelectorAll('circle');
+        const text = el.querySelector('text');
+        circles.forEach((c, i) => {
+            if (pos.circles[i]) {
+                c.setAttribute('cx', pos.circles[i].cx);
+                c.setAttribute('cy', pos.circles[i].cy);
+            }
+        });
+        if (text) {
+            text.setAttribute('x', pos.text.x);
+            text.setAttribute('y', pos.text.y);
+        }
+    }
+    document.getElementById('puck').setAttribute('cx', 105);
+    document.getElementById('puck').setAttribute('cy', 108);
+}
+
+
+// ============================================
+// RESULTS SCREEN
+// ============================================
+function showResults() {
+    const correct = scenarioResults.filter(r => r === 'correct').length;
+    const total = scenarios.length;
+    const pct = Math.round((correct / total) * 100);
+
+    document.querySelector('.container').innerHTML = `
+        <div style="text-align:center; padding: 40px 0;">
+            <div style="font-size:3rem; margin-bottom:16px;">${pct >= 80 ? '🏆' : pct >= 60 ? '🔥' : '📚'}</div>
+            <h2 style="font-family:var(--font-header); font-size:2.5rem; letter-spacing:3px; margin-bottom:8px;">
+                ${pct === 100 ? 'PERFECT GAME!' : pct >= 80 ? 'GREAT PERFORMANCE!' : pct >= 60 ? 'SOLID EFFORT!' : 'KEEP TRAINING!'}
+            </h2>
+            <p style="color:var(--silver); font-size:1.1rem; margin-bottom:32px;">
+                ${correct}/${total} correct • ${xp} XP earned${combo >= 2 ? ` • Best streak: ${combo}` : ''}
+            </p>
+            <div style="display:flex; justify-content:center; gap:12px; margin-bottom:32px;">
+                ${scenarioResults.map((r, i) => `
+                    <div style="
+                        width:48px; height:48px; border-radius:12px;
+                        background: ${r === 'correct' ? 'rgba(16,185,129,0.2)' : 'rgba(200,16,46,0.15)'};
+                        border: 2px solid ${r === 'correct' ? '#10B981' : '#C8102E'};
+                        display:flex; align-items:center; justify-content:center;
+                        font-size:1.2rem;
+                    ">${r === 'correct' ? '✓' : '✗'}</div>
+                `).join('')}
+            </div>
+            <div style="background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); border-radius:12px; padding:20px; max-width:300px; margin:0 auto 32px;">
+                <div style="font-family:var(--font-header); font-size:2rem; color:var(--gold); letter-spacing:2px;">⚡ ${xp} XP</div>
+                <div style="font-size:0.85rem; color:var(--silver); margin-top:4px;">Total earned this session</div>
+            </div>
+            <button onclick="location.reload()" style="
+                padding:16px 40px; background:var(--accent-red); color:white; border:none;
+                border-radius:12px; font-family:var(--font-header); font-size:1.3rem;
+                letter-spacing:3px; cursor:pointer; transition:all 0.3s;
+            ">PLAY AGAIN</button>
+            <p style="margin-top:16px; font-size:0.85rem; color:var(--silver);">
+                <a href="training.html" style="color:var(--silver); text-decoration:underline;">← Back to Module Hub</a>
+            </p>
+        </div>
+    `;
+
+    if (pct === 100) {
+        sfxGoalHorn();
+        spawnConfetti();
+        setTimeout(spawnConfetti, 500);
+        setTimeout(spawnConfetti, 1000);
+    } else if (pct >= 60) {
+        sfxCorrect();
+        spawnConfetti();
+    }
+}
+
+
+// ============================================
+// BOOT — waits for user tap to unlock audio
+// ============================================
+function startGame() {
+    // Unlock Web Audio context (browsers require user gesture)
+    try { getAudioCtx().resume(); } catch(e) {}
+
+    // Hide start gate
+    document.getElementById('startGate').classList.add('hidden');
+    setTimeout(() => document.getElementById('startGate').style.display = 'none', 500);
+
+    // Now start the first scenario
+    init();
+}
+</script>
+</body>
+</html>

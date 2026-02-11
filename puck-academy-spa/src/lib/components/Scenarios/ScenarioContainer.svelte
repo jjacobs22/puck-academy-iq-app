@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { goto } from '$app/navigation';
   import { fade, fly, scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
@@ -7,36 +7,125 @@
   import AnswerButtons from './AnswerButtons.svelte';
   import FeedbackPanel from './FeedbackPanel.svelte';
   import VoiceToggle from './VoiceToggle.svelte';
-  import { moduleScores, recordActivity } from '$lib/stores/progress';
+  import GameContext from './GameContext.svelte';
+  import DecisionClock from './DecisionClock.svelte';
+  import CelebrationOverlay from './CelebrationOverlay.svelte';
+  import StartGate from './StartGate.svelte';
+  import ModuleResults from './ModuleResults.svelte';
+  import { moduleScores, recordActivity, MODULE_CONFIG } from '$lib/stores/progress';
   import { showFeedback, feedbackData, showAnswerFeedback, hideFeedback, navigateWithTransition, toasts } from '$lib/stores/ui';
   import { audioManager, voiceEnabled } from '$lib/services/audio';
+  import { playCorrect, playIncorrect, playCombo as playComboSFX, playTimeout } from '$lib/services/soundEffects';
+  import {
+    sessionXP,
+    combo,
+    lastXPGain,
+    awardXP,
+    incrementCombo,
+    resetCombo,
+    resetSession,
+    audioUnlocked,
+    recordScenarioResult,
+    scenarioResults
+  } from '$lib/stores/gameSession';
   import type { Scenario } from '$lib/data/scenarios';
 
   export let scenario: Scenario;
 
+  // State
   let selectedAnswer: number | null = null;
   let answersDisabled = false;
+  let showStartGate = false;
+  let showCelebration = false;
+  let showResults = false;
+  let clockRunning = false;
+  let diagramAnimated = true;
+
+  // Phases: gate → study → question → feedback → results
+  let scenarioPhase: 'gate' | 'study' | 'question' | 'feedback' | 'results' = 'gate';
+
+  // Refs
+  let clockComponent: DecisionClock;
+
+  // Check if this is the first scenario in session
+  $: isFirstScenario = scenario.scenarioNum === 1;
 
   onMount(() => {
     // Preload audio for this scenario
     audioManager.preload(scenario.id);
 
-    // Auto-play setup narration after short delay
-    setTimeout(() => {
-      if ($voiceEnabled) {
-        audioManager.play(scenario.id, 'setup');
-      }
-    }, 500);
+    // Show start gate on first scenario if audio not yet unlocked
+    if (isFirstScenario && !$audioUnlocked) {
+      showStartGate = true;
+      scenarioPhase = 'gate';
+    } else {
+      enterStudyPhase();
+    }
 
     return () => {
       audioManager.stop();
     };
   });
 
+  function handleGateStart() {
+    showStartGate = false;
+    enterStudyPhase();
+  }
+
+  /** Study phase: show diagram + situation, let user absorb at their own pace */
+  function enterStudyPhase() {
+    scenarioPhase = 'study';
+    diagramAnimated = true;
+
+    // Play setup narration
+    if ($voiceEnabled) {
+      audioManager.play(scenario.id, 'setup');
+    }
+  }
+
+  /** User clicked "I'm Ready" — transition to the timed question */
+  function handleReady() {
+    scenarioPhase = 'question';
+    diagramAnimated = false; // no re-animation on diagram
+
+    // Play prompt narration
+    if ($voiceEnabled) {
+      audioManager.play(scenario.id, 'prompt');
+    }
+
+    // Start the decision clock after a brief beat
+    setTimeout(() => {
+      clockRunning = true;
+      if (clockComponent) clockComponent.start();
+    }, 400);
+  }
+
   function handleAnswer(event: CustomEvent<{ index: number }>) {
+    if (answersDisabled) return;
+
     const { index } = event.detail;
+    const elapsed = clockComponent ? clockComponent.stop() : 15;
+
+    processAnswer(index, elapsed);
+  }
+
+  function handleTimeout() {
+    // Pick a random wrong answer
+    const wrongIndices = scenario.answers
+      .map((a, i) => ({ correct: a.correct, index: i }))
+      .filter(a => !a.correct)
+      .map(a => a.index);
+
+    const randomWrong = wrongIndices[Math.floor(Math.random() * wrongIndices.length)];
+
+    playTimeout();
+    processAnswer(randomWrong, 15, true);
+  }
+
+  function processAnswer(index: number, timeSeconds: number, wasTimeout: boolean = false) {
     selectedAnswer = index;
     answersDisabled = true;
+    clockRunning = false;
 
     const answer = scenario.answers[index];
     const isCorrect = answer.correct;
@@ -47,27 +136,65 @@
     // Update streak
     const streakResult = recordActivity();
     if (streakResult.milestone) {
-      toasts.show(`🔥 ${streakResult.milestone} day streak!`, 'success');
+      toasts.show(`${streakResult.milestone} day streak!`, 'success');
     }
 
-    // Play feedback audio
+    // XP and combo
+    let xpGain = { base: 0, speed: 0, combo: 0, total: 0 };
+    if (isCorrect) {
+      incrementCombo();
+      xpGain = awardXP(timeSeconds);
+
+      // SFX
+      playCorrect();
+      if ($combo >= 2) {
+        setTimeout(() => playComboSFX($combo), 200);
+      }
+
+      // Show celebration
+      showCelebration = true;
+      setTimeout(() => {
+        showCelebration = false;
+      }, 2000);
+    } else {
+      resetCombo();
+      playIncorrect();
+    }
+
+    // Record result for module summary
+    recordScenarioResult({
+      scenarioId: scenario.id,
+      correct: isCorrect,
+      timeSeconds,
+      xpEarned: xpGain.total
+    });
+
+    // Play feedback voice
     if ($voiceEnabled) {
-      audioManager.play(scenario.id, isCorrect ? 'correct' : 'incorrect');
+      setTimeout(() => {
+        audioManager.play(scenario.id, isCorrect ? 'correct' : 'incorrect');
+      }, 400);
     }
 
-    // Show feedback panel
-    showAnswerFeedback(isCorrect, answer.feedback, index);
+    // Show feedback
+    const feedbackText = wasTimeout
+      ? `Too slow! ${answer.feedback}`
+      : answer.feedback;
+
+    scenarioPhase = 'feedback';
+    showAnswerFeedback(isCorrect, feedbackText, index);
   }
 
   function handleContinue() {
     hideFeedback();
     navigateWithTransition('forward');
 
-    // Navigate to next scenario or back to hub
     if (scenario.nextScenarioId) {
       goto(`/scenario/${scenario.nextScenarioId}`);
     } else {
-      goto('/hub');
+      // Last scenario — show results
+      scenarioPhase = 'results';
+      showResults = true;
     }
   }
 
@@ -78,43 +205,108 @@
   }
 </script>
 
-<div class="scenario-container" in:fly={{ y: 30, duration: 400, easing: quintOut }}>
-  <!-- Scenario Header -->
-  <div class="scenario-header" in:fade={{ delay: 100, duration: 300 }}>
-    <span class="scenario-badge">
-      Scenario {scenario.scenarioNum} of {scenario.totalInModule}
-    </span>
-    <h1 class="scenario-title">{scenario.title}</h1>
-  </div>
+<!-- Start Gate -->
+{#if showStartGate}
+  <StartGate on:start={handleGateStart} />
+{/if}
 
-  <!-- Rink Diagram -->
-  <div class="diagram-wrapper" in:scale={{ delay: 150, duration: 400, start: 0.95 }}>
-    <RinkDiagram diagram={scenario.diagram} />
-  </div>
+<!-- Module Results -->
+{#if showResults}
+  <ModuleResults
+    moduleId={scenario.moduleId}
+    moduleName={MODULE_CONFIG[scenario.moduleId]?.name || 'Module'}
+  />
+{/if}
 
-  <!-- Situation Text -->
-  <div class="situation-box" in:fly={{ y: 20, delay: 200, duration: 300 }}>
-    <p class="situation-text">{scenario.situation}</p>
-  </div>
+<!-- Main Scenario Flow -->
+{#if !showStartGate && !showResults}
+  <div class="scenario-container" in:fly={{ y: 30, duration: 400, easing: quintOut }}>
+    <!-- Top HUD: XP + Clock -->
+    <div class="top-hud" in:fade={{ delay: 50, duration: 300 }}>
+      <div class="xp-display">
+        <span class="xp-icon">XP</span>
+        <span class="xp-value">{$sessionXP}</span>
+        {#if $combo >= 2}
+          <span class="combo-indicator">
+            {Math.min(1 + $combo * 0.5, 3)}x
+          </span>
+        {/if}
+      </div>
 
-  <!-- Question -->
-  <div class="question-section" in:fly={{ y: 20, delay: 250, duration: 300 }}>
-    <h2 class="question-text">{scenario.question}</h2>
-  </div>
+      {#if scenarioPhase === 'question' || scenarioPhase === 'feedback'}
+        <DecisionClock
+          bind:this={clockComponent}
+          duration={15}
+          running={clockRunning}
+          on:timeout={handleTimeout}
+        />
+      {/if}
+    </div>
 
-  <!-- Answer Buttons -->
-  <div class="answers-section" in:fly={{ y: 20, delay: 300, duration: 300 }}>
-    <AnswerButtons
-      answers={scenario.answers}
-      disabled={answersDisabled}
-      {selectedAnswer}
-      on:answer={handleAnswer}
-    />
-  </div>
+    <!-- Scenario Header -->
+    <div class="scenario-header" in:fade={{ delay: 100, duration: 300 }}>
+      <span class="scenario-badge">
+        Scenario {scenario.scenarioNum} of {scenario.totalInModule}
+      </span>
+      <h1 class="scenario-title">{scenario.title}</h1>
+    </div>
 
-  <!-- Voice Toggle -->
-  <VoiceToggle />
-</div>
+    <!-- Game Context Banner -->
+    <div in:fade={{ delay: 120, duration: 300 }}>
+      <GameContext context={scenario.gameContext} />
+    </div>
+
+    <!-- Rink Diagram -->
+    <div class="diagram-wrapper" in:scale={{ delay: 150, duration: 400, start: 0.95 }}>
+      <RinkDiagram diagram={scenario.diagram} animated={diagramAnimated} />
+    </div>
+
+    <!-- Situation Text -->
+    <div class="situation-box" in:fly={{ y: 20, delay: 200, duration: 300 }}>
+      <p class="situation-text">{scenario.situation}</p>
+    </div>
+
+    <!-- === STUDY PHASE: "I'm Ready" button === -->
+    {#if scenarioPhase === 'study'}
+      <div class="study-phase" in:fly={{ y: 20, delay: 400, duration: 400 }}>
+        <p class="study-hint">Study the diagram above. When you understand the situation...</p>
+        <button class="ready-button" on:click={handleReady}>
+          I'm Ready
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    {/if}
+
+    <!-- === QUESTION PHASE: Question + Answers === -->
+    {#if scenarioPhase === 'question' || scenarioPhase === 'feedback'}
+      <div class="question-section" in:fly={{ y: 20, delay: 100, duration: 300 }}>
+        <h2 class="question-text">{scenario.question}</h2>
+      </div>
+
+      <div class="answers-section" in:fly={{ y: 20, delay: 150, duration: 300 }}>
+        <AnswerButtons
+          answers={scenario.answers}
+          disabled={answersDisabled}
+          {selectedAnswer}
+          on:answer={handleAnswer}
+        />
+      </div>
+    {/if}
+
+    <!-- Voice Toggle -->
+    <VoiceToggle />
+  </div>
+{/if}
+
+<!-- Celebration Overlay -->
+{#if showCelebration && $lastXPGain}
+  <CelebrationOverlay
+    xpGain={$lastXPGain}
+    comboCount={$combo}
+  />
+{/if}
 
 <!-- Feedback Panel (overlay) -->
 {#if $showFeedback && $feedbackData}
@@ -124,6 +316,8 @@
     onContinue={handleContinue}
     onBackToHub={handleBackToHub}
     hasNext={!!scenario.nextScenarioId}
+    xpGain={$lastXPGain}
+    comboCount={$combo}
   />
 {/if}
 
@@ -131,8 +325,51 @@
   .scenario-container {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
     padding-bottom: var(--spacing-xl);
+  }
+
+  .top-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xs) 0;
+  }
+
+  .xp-display {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .xp-icon {
+    background: linear-gradient(135deg, #FFD700, #DAA520);
+    color: #4A3000;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+  }
+
+  .xp-value {
+    font-family: var(--font-header);
+    font-size: 1.25rem;
+    color: #FFD700;
+  }
+
+  .combo-indicator {
+    background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    animation: combo-pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes combo-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
   }
 
   .scenario-header {
@@ -141,7 +378,7 @@
 
   .scenario-badge {
     display: inline-block;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--silver);
@@ -149,36 +386,82 @@
   }
 
   .scenario-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     line-height: 1.2;
   }
 
   .diagram-wrapper {
-    background: white;
+    background: rgba(255, 255, 255, 0.03);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    box-shadow: var(--shadow-md);
+    padding: var(--spacing-md);
+    border: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .situation-box {
-    background: rgba(232, 244, 248, 0.1);
-    border-left: 4px solid var(--ice-blue);
-    padding: var(--spacing-md) var(--spacing-lg);
+    background: rgba(232, 244, 248, 0.08);
+    border-left: 3px solid var(--ice-blue);
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
   }
 
   .situation-text {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.6;
+    margin: 0;
+    color: var(--ice-blue);
+  }
+
+  /* === Study Phase === */
+  .study-phase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+  }
+
+  .study-hint {
+    font-size: 0.85rem;
+    color: var(--silver);
+    text-align: center;
     margin: 0;
   }
 
+  .ready-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: var(--font-header);
+    padding: 14px 36px;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ready-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  }
+
+  .ready-button:active {
+    transform: translateY(0);
+  }
+
+  /* === Question phase === */
   .question-section {
     text-align: center;
   }
 
   .question-text {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-family: var(--font-body);
     font-weight: 600;
   }
@@ -187,5 +470,11 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .combo-indicator {
+      animation: none;
+    }
   }
 </style>
