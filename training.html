@@ -2462,6 +2462,23 @@
         </div>
     </div>
 
+    <!-- Position Picker Modal (shown once after first module if no position set) -->
+    <div class="modal-overlay" id="positionPickerModal">
+        <div class="modal-content" style="max-width: 380px;">
+            <div class="modal-icon">🏒</div>
+            <h3 class="modal-title">WHAT POSITION DO YOU PLAY?</h3>
+            <p class="modal-message" style="margin-bottom: 20px;">
+                This helps us tailor your training.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn btn-primary" style="width: 100%;" onclick="selectPosition('center')">Center</button>
+                <button class="btn btn-primary" style="width: 100%;" onclick="selectPosition('winger')">Winger</button>
+                <button class="btn btn-primary" style="width: 100%;" onclick="selectPosition('defense')">Defense</button>
+                <button class="btn" style="width: 100%; background: transparent; border: 1px solid var(--silver); color: var(--silver);" onclick="selectPosition('skip')">Skip for now</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Upgrade Modal -->
     <div id="upgradeModal" class="modal">
         <div class="modal-content upgrade-modal">
@@ -2851,17 +2868,34 @@
 
         function closeResults() {
             document.getElementById('resultsModal').classList.remove('active');
-            
-            // Check if we should show feedback prompt (only once, after first module completion)
+
+            // First: ask for position if we don't have one yet (once, after first module)
+            if (!localStorage.getItem('puckAcademy_positionAsked')) {
+                const profile = getProfile();
+                const userData = JSON.parse(localStorage.getItem('puckAcademy_userData') || '{}');
+                const hasPosition = profile?.position || userData.position;
+
+                if (!hasPosition) {
+                    localStorage.setItem('puckAcademy_positionAsked', 'true');
+                    setTimeout(() => {
+                        document.getElementById('positionPickerModal').classList.add('active');
+                    }, 300);
+                    return; // feedback prompt will show after position is picked
+                }
+            }
+
+            // Then: show feedback prompt (only once, after first module completion)
+            maybeShowFeedbackPrompt();
+        }
+
+        function maybeShowFeedbackPrompt() {
             if (!localStorage.getItem('puckAcademy_feedbackPrompted')) {
-                // Check if any module is fully completed
                 for (let moduleNum = 1; moduleNum <= 6; moduleNum++) {
                     const config = moduleConfigs[moduleNum];
                     const scoreData = getScoreData(moduleNum);
                     const completed = Object.keys(scoreData.currentRun).length;
-                    
+
                     if (completed === config.total) {
-                        // User has completed at least one module - show feedback prompt
                         setTimeout(() => {
                             openFeedbackModal();
                         }, 300);
@@ -2871,6 +2905,33 @@
                 }
             }
         }
+
+        function selectPosition(position) {
+            document.getElementById('positionPickerModal').classList.remove('active');
+
+            if (position !== 'skip') {
+                // Save to localStorage
+                const userData = JSON.parse(localStorage.getItem('puckAcademy_userData') || '{}');
+                userData.position = position;
+                localStorage.setItem('puckAcademy_userData', JSON.stringify(userData));
+
+                // Also save to profile if it exists
+                const profile = getProfile();
+                if (profile) {
+                    profile.position = position;
+                    localStorage.setItem('puckAcademy_profile', JSON.stringify(profile));
+                }
+
+                // Sync to Supabase if logged in
+                if (typeof window.syncProgressToServer === 'function') {
+                    window.syncProgressToServer();
+                }
+            }
+
+            // Now show feedback prompt if applicable
+            setTimeout(() => maybeShowFeedbackPrompt(), 300);
+        }
+        window.selectPosition = selectPosition;
 
         function submitFeedback() {
             const feedbackText = document.getElementById('feedbackText').value.trim();
