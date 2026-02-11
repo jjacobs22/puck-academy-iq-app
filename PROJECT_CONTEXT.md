@@ -733,6 +733,14 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Auth Flow & UX Improvements
+
+**Login redirect:** Logged-in users visiting index.html now redirect straight to `/training.html` (unless arriving via challenge link with `?score` or `?challenge` params).
+
+**Auth guard improvements:** Updated `js/auth-guard.js` and `training.html` auth handling.
+
+---
+
 ### February 3, 2026 - Hockey IQ Test & Service Worker Fix
 
 **Hockey IQ Test (`hockey-iq-test.html`):**
