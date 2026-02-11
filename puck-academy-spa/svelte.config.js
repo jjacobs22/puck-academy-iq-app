@@ -10,7 +10,7 @@ const config = {
       assets: 'build',
       fallback: 'index.html', // SPA fallback for client-side routing
       precompress: false,
-      strict: true
+      strict: false // Allow missing assets during prerender (favicon, etc.)
     })
   }
 };

@@ -1,7 +1,7 @@
 # Netlify configuration — SvelteKit SPA deployment
 
 [build]
-  command = "cd puck-academy-spa && cp -r ../audio static/ && npm install && npm run build"
+  command = "cd puck-academy-spa && rm -rf static/audio && cp -r ../audio static/audio && npm install && npm run build"
   publish = "puck-academy-spa/build"
 
 [functions]

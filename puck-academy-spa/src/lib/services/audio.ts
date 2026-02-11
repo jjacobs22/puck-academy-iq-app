@@ -82,14 +82,18 @@ class AudioManager {
     currentlyPlaying.set(clip);
 
     try {
-      await audio.play();
-
-      // Clear state when done
+      // Set up event handlers before playing
       audio.onended = () => {
         currentlyPlaying.set(null);
       };
+      audio.onerror = () => {
+        // Silently handle missing audio files — voice is optional
+        currentlyPlaying.set(null);
+      };
+
+      await audio.play();
     } catch (err) {
-      console.warn('Audio playback blocked:', err);
+      // Audio blocked by browser policy or file not found — not critical
       currentlyPlaying.set(null);
     }
   }
@@ -106,6 +110,8 @@ class AudioManager {
       if (!this.preloadedAudio.has(path)) {
         const audio = new Audio();
         audio.preload = 'auto';
+        // Silently handle missing audio files
+        audio.onerror = () => {};
         audio.src = path;
         this.preloadedAudio.set(path, audio);
       }
