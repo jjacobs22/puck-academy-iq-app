@@ -733,6 +733,26 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Major SPA Enhancements
+
+**New SPA components:**
+- `CelebrationOverlay.svelte` - Success animations
+- `DecisionClock.svelte` - Timed decision pressure
+- `GameContext.svelte` - Game situation display
+- `ModuleResults.svelte` - End-of-module results
+- `StartGate.svelte` - Scenario intro gate
+
+**New services & stores:**
+- `soundEffects.ts` - Audio feedback system
+- `gameSession.ts` - Session state management
+
+**Module data migrated:**
+- All 6 modules now in `src/lib/data/modules/` (module1.ts through module6.ts)
+
+**Prototype:** Added `prototype-engaged-scenario.html` for testing engaged scenario experience.
+
+---
+
 ### February 3, 2026 - Training Page Enhancements
 
 **Training page (`training.html`):** Significant updates with 152 lines of improvements to the training hub experience.
