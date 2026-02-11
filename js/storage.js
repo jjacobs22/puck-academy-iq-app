@@ -147,8 +147,14 @@ export const Storage = {
   async syncToSupabase() {
     try {
       // Dynamic import to avoid circular dependencies
-      const { syncProgressToServer } = await import('./supabase.js');
+      const { syncProgressToServer, syncStreakToServer } = await import('./supabase.js');
       await syncProgressToServer();
+
+      // Also sync streak data so server-side email functions can query it
+      const progress = this.getProgress();
+      if (progress.streak) {
+        await syncStreakToServer(progress.streak);
+      }
     } catch (e) {
       // Silently fail if not logged in or supabase not available
       console.log('Sync skipped:', e.message);

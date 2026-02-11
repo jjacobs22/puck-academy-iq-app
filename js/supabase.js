@@ -201,6 +201,26 @@ export async function syncProgressToServer() {
 }
 
 /**
+ * Sync streak data to profiles table for server-side email queries
+ * Called whenever updateStreak() runs (i.e. after every scenario completion)
+ */
+export async function syncStreakToServer(streakData) {
+    try {
+        const user = await getUser();
+        if (!user) return;
+
+        await supabase
+            .from('profiles')
+            .update({ streak: streakData })
+            .eq('id', user.id);
+
+        console.log('Streak synced to server:', streakData);
+    } catch (err) {
+        console.warn('Failed to sync streak to server:', err);
+    }
+}
+
+/**
  * Load progress from server to localStorage
  */
 export async function loadProgressFromServer() {

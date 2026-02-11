@@ -46,42 +46,13 @@ exports.handler = async (event) => {
         const yesterday = getYesterdayISO();
         console.log(`Checking for at-risk streaks (lastTrainingDate = ${yesterday})`);
 
-        // Query progress table for users with at-risk streaks
-        // Streak data is stored in the 'streak' JSON column
-        const { data: progressRecords, error: progressError } = await supabase
-            .from('progress')
-            .select('user_id, streak')
-            .gte('streak->count', 2) // streak.count >= 2
-            .eq('streak->>lastTrainingDate', yesterday); // streak.lastTrainingDate = yesterday
-
-        if (progressError) {
-            console.error('Error querying progress:', progressError);
-            return {
-                statusCode: 500,
-                body: JSON.stringify({ error: 'Failed to query progress', details: progressError })
-            };
-        }
-
-        if (!progressRecords || progressRecords.length === 0) {
-            console.log('No at-risk streaks found');
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ 
-                    success: true, 
-                    message: 'No at-risk streaks found',
-                    checked: yesterday
-                })
-            };
-        }
-
-        console.log(`Found ${progressRecords.length} users with at-risk streaks`);
-
-        // Get user profiles for email addresses
-        const userIds = progressRecords.map(p => p.user_id);
-        const { data: profiles, error: profileError } = await supabase
+        // Query profiles table for users with at-risk streaks
+        // Streak data is synced to profiles.streak JSONB column
+        const { data: atRiskUsers, error: profileError } = await supabase
             .from('profiles')
-            .select('id, email, first_name')
-            .in('id', userIds);
+            .select('id, email, name, streak')
+            .gte('streak->>count', '2') // streak.count >= 2
+            .eq('streak->>lastTrainingDate', yesterday); // streak.lastTrainingDate = yesterday
 
         if (profileError) {
             console.error('Error querying profiles:', profileError);
@@ -91,24 +62,34 @@ exports.handler = async (event) => {
             };
         }
 
-        // Create a map of user_id to profile for easy lookup
-        const profileMap = new Map(profiles.map(p => [p.id, p]));
+        if (!atRiskUsers || atRiskUsers.length === 0) {
+            console.log('No at-risk streaks found');
+            return {
+                statusCode: 200,
+                body: JSON.stringify({
+                    success: true,
+                    message: 'No at-risk streaks found',
+                    checked: yesterday
+                })
+            };
+        }
+
+        console.log(`Found ${atRiskUsers.length} users with at-risk streaks`);
 
         // Initialize Resend
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         // Send reminder emails
         const results = [];
-        for (const progress of progressRecords) {
-            const profile = profileMap.get(progress.user_id);
-            
-            if (!profile || !profile.email) {
-                console.log(`Skipping user ${progress.user_id}: no email found`);
+        for (const profile of atRiskUsers) {
+            if (!profile.email) {
+                console.log(`Skipping user ${profile.id}: no email found`);
                 continue;
             }
 
-            const streakCount = progress.streak?.count || 0;
-            const firstName = profile.first_name || 'Player';
+            const streakData = typeof profile.streak === 'string' ? JSON.parse(profile.streak) : profile.streak;
+            const streakCount = streakData?.count || 0;
+            const firstName = profile.name?.split(' ')[0] || 'Player';
 
             const emailHtml = `
                 <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
@@ -164,7 +145,7 @@ See the ice before everyone else.
 
             try {
                 const { data, error } = await resend.emails.send({
-                    from: 'Puck Academy <notifications@resend.dev>',
+                    from: 'Coach <coach@puckacademy.com>',
                     to: profile.email,
                     subject: `🔥 Your ${streakCount}-day streak is at risk!`,
                     html: emailHtml,
@@ -196,7 +177,7 @@ See the ice before everyone else.
                 success: true,
                 message: `Sent ${successCount} streak reminder emails`,
                 checked: yesterday,
-                atRiskUsers: progressRecords.length,
+                atRiskUsers: atRiskUsers.length,
                 results
             })
         };
