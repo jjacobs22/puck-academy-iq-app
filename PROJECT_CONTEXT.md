@@ -733,6 +733,20 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Audio Regeneration Script
+
+**Added `regenerate_audio.py`:** Script to regenerate all 43 scenario audio files using edge-tts.
+
+Usage:
+```bash
+pip install edge-tts
+python3 regenerate_audio.py
+```
+
+Script uses en-US-GuyNeural voice and generates setup, prompt, correct, and incorrect audio for each scenario.
+
+---
+
 ### February 3, 2026 - Audio & Config Updates
 
 **Audio service:** Updated `audio.ts` in SPA.
