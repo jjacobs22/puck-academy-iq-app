@@ -7,7 +7,11 @@
 
   onMount(async () => {
     const { data: { session }, error } = await supabase.auth.getSession();
-    const redirectTo = $page.url.searchParams.get('redirect') || '/hub';
+    const redirectTo =
+      $page.url.searchParams.get('redirect') ||
+      (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('auth_redirect') : null) ||
+      '/hub';
+    if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem('auth_redirect');
 
     if (error) {
       toasts.show('Sign in failed. Please try again.', 'error');

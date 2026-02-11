@@ -451,6 +451,8 @@ puck-academy-iq-app/
 - Live URL: `https://hockeyiq.netlify.app/`
 
 **Environment Variables (Netlify):**
+- `VITE_SUPABASE_URL` — Supabase project URL (required for SPA auth; baked in at build time)
+- `VITE_SUPABASE_ANON_KEY` — Supabase anon/public key (required for SPA auth; baked in at build time)
 - `ANTHROPIC_API_KEY` — For Coach's Office AI chat
 - `RESEND_API_KEY` — For email notifications
 
@@ -485,6 +487,7 @@ puck-academy-iq-app/
 - **User accounts (Stage 1):** Supabase auth with magic link email, progress syncs to server in real-time
 - **Streak system:** Daily training streaks with nav counter, hero card, at-risk banner, milestone celebrations (3/7/14/30/50/100 days)
 - **Coach's Office:** AI-powered advisory chat for hockey parents to discuss their kid's development, get recommendations, and gain perspective
+- **Admin dashboard (SPA):** `/admin` — SvelteKit route with scorecards, module performance, recent users, retention, trends, all-users table; magic-link sign-in with redirect back to `/admin` via sessionStorage (Supabase redirect URL is `/auth/callback` only); config check and clear error messaging if Supabase env vars are missing
 
 ### What's Partially Working ⚠️
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
@@ -734,6 +737,17 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### February 11, 2026 - Admin Auth & Supabase Config
+
+**Admin magic-link sign-in (SPA):**
+- Redirect to `/admin` after sign-in: app stores `auth_redirect = '/admin'` in sessionStorage before requesting the magic link, and uses `emailRedirectTo: origin + '/auth/callback'` (no query). Auth callback reads redirect from URL param, then sessionStorage, then defaults to `/hub`. This keeps the Supabase Redirect URL allow list to a single entry: `https://hockeyiq.netlify.app/auth/callback`.
+- **Supabase config check:** `isSupabaseConfigured` in `supabase.ts` detects placeholder env (e.g. missing `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` in Netlify). Admin page shows a clear message and skips the API call if not configured.
+- **Error reporting:** Admin sign-in now surfaces Supabase's full error message and code/status so redirect, rate-limit, and env issues can be diagnosed. Short troubleshooting hint shown on error (Netlify env, Supabase URL Configuration, Auth → Email).
+
+**Docs:** PROJECT_CONTEXT.md — Environment Variables now list `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`; Current State notes admin dashboard and auth flow.
+
+---
 
 ### February 11, 2026 - Inline Coaching & Optional "Learn the Basics"
 

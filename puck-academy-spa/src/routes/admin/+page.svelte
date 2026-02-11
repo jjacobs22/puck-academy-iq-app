@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { supabase } from '$lib/services/supabase';
+  import { supabase, isSupabaseConfigured } from '$lib/services/supabase';
 
   const MODULE_NAMES: Record<number, string> = {
     1: 'D-Zone',
@@ -274,21 +274,32 @@
       authMessageClass = 'error';
       return;
     }
+    if (!isSupabaseConfigured) {
+      authMessage =
+        'Supabase is not configured. In Netlify, set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (then redeploy).';
+      authMessageClass = 'error';
+      return;
+    }
     authMessage = '';
     try {
       const origin = typeof window !== 'undefined' ? window.location.origin : '';
+      if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('auth_redirect', '/admin');
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${origin}/auth/callback?redirect=/admin`
+          emailRedirectTo: `${origin}/auth/callback`
         }
       });
       if (error) throw error;
       authMessage = '✓ Check your email for the sign-in link!';
       authMessageClass = 'success';
-    } catch (e) {
-      console.error(e);
-      authMessage = 'Error sending link. Please try again.';
+    } catch (e: unknown) {
+      const err = e as { message?: string; status?: number; code?: string };
+      console.error('Admin magic link error:', e);
+      const detail = [err?.message, err?.code ? `(${err.code})` : err?.status ? `(status ${err.status})` : '']
+        .filter(Boolean)
+        .join(' ');
+      authMessage = detail || 'Error sending link. Please try again.';
       authMessageClass = 'error';
     }
   }
@@ -323,6 +334,9 @@
       <button on:click={sendMagicLink}>Send Sign-In Link</button>
       {#if authMessage}
         <div class="auth-message {authMessageClass}">{authMessage}</div>
+        {#if authMessageClass === 'error' && !authMessage.includes('VITE_SUPABASE')}
+          <p class="auth-hint">Check: Netlify env vars (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY), Supabase → Auth → URL Configuration (redirect URL), and Auth → Email (rate limits / SMTP).</p>
+        {/if}
       {/if}
     </div>
     <a href="/hub" class="back-link">← Back to App</a>
@@ -565,6 +579,7 @@
   .auth-message { margin-top: 12px; padding: 12px; border-radius: 8px; font-size: 0.9rem; }
   .auth-message.success { background: rgba(45, 122, 62, 0.2); color: #86efac; }
   .auth-message.error { background: rgba(200, 16, 46, 0.2); color: #f87171; }
+  .auth-hint { margin-top: 10px; font-size: 0.8rem; color: var(--silver); line-height: 1.4; }
 
   .dashboard-header {
     display: flex;

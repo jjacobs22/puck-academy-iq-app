@@ -1,8 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Environment variables would be set in .env
+// Environment variables would be set in .env (and in Netlify for production)
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
+
+/** True if real Supabase credentials are set (not placeholders). */
+export const isSupabaseConfigured =
+  supabaseUrl !== 'https://your-project.supabase.co' &&
+  !!supabaseAnonKey &&
+  supabaseAnonKey !== 'your-anon-key';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
