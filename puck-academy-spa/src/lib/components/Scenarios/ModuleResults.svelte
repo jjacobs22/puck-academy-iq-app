@@ -142,7 +142,7 @@
       <button class="btn btn-primary" on:click={handleReplay}>
         Replay Module
       </button>
-      <button class="btn btn-secondary" on:click={handleHub}>
+      <button class="btn btn-hub" on:click={handleHub}>
         Back to Hub
       </button>
     </div>
@@ -325,6 +325,21 @@
   .actions .btn {
     width: 100%;
     padding: var(--spacing-md);
+  }
+
+  .btn-hub {
+    background: transparent;
+    color: var(--dark-blue);
+    border: 2px solid var(--dark-blue);
+    font-family: var(--font-header);
+    font-size: 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-hub:hover {
+    background: rgba(10, 22, 40, 0.08);
   }
 
   @media (min-width: 480px) {
