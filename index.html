@@ -551,7 +551,15 @@
                 const headerAuth = document.getElementById('headerAuth');
 
                 if (user) {
-                    // User is logged in
+                    // Returning logged-in user with no special URL params — go straight to training
+                    const params = new URLSearchParams(window.location.search);
+                    const hasChallenge = params.get('score') !== null || params.get('challenge') !== null;
+                    if (!hasChallenge) {
+                        window.location.href = '/training.html';
+                        return;
+                    }
+
+                    // User is logged in but arrived via challenge link — show landing page
                     headerAuth.innerHTML = `
                         <div class="header-user-info">
                             <span class="header-user-email">${user.email}</span>

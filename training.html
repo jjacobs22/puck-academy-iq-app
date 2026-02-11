@@ -3987,12 +3987,13 @@
 
     <!-- Auth Module -->
     <script type="module">
-        import { 
-            getUser, 
-            signOut, 
-            syncProgressToServer, 
-            loadProgressFromServer, 
-            onAuthStateChange, 
+        import {
+            getUser,
+            getSession,
+            signOut,
+            syncProgressToServer,
+            loadProgressFromServer,
+            onAuthStateChange,
             saveScoreAttempt,
             hasActiveSubscription,
             getSubscriptionStatus,
@@ -4103,20 +4104,28 @@
         }
 
         // Gate content behind auth - require login to use the app
+        // Uses getSession() first (instant, reads localStorage) so returning users never see a login flash.
+        // Falls back to getUser() (network call) only if no local session found.
         async function checkAuthAndGate() {
-            const user = await getUser();
+            const session = await getSession();
 
-            if (!user) {
-                // User not logged in - show required auth modal
-                showAuthModal({
-                    mode: 'signup',
-                    required: true
-                });
-            } else {
-                // User is logged in - update UI normally
+            if (session) {
+                // Returning user — session restored from localStorage instantly
                 updateAuthUI();
                 // TEMPORARILY DISABLED: Paywall UI until click issue is fixed
                 // await initPaywall();
+            } else {
+                // No local session — double-check with server (handles edge cases)
+                const user = await getUser();
+                if (user) {
+                    updateAuthUI();
+                } else {
+                    // Genuinely not logged in
+                    showAuthModal({
+                        mode: 'signup',
+                        required: true
+                    });
+                }
             }
         }
 
