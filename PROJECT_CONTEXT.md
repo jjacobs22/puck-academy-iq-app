@@ -733,6 +733,14 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Netlify & SPA Component Updates
+
+**Netlify config:** Updated `netlify.toml` configuration.
+
+**SPA components:** Refined `ScenarioContainer.svelte` and `StartGate.svelte`.
+
+---
+
 ### February 3, 2026 - Major SPA Enhancements
 
 **New SPA components:**
