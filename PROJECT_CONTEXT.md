@@ -733,6 +733,12 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Module Results Component Update
+
+**SPA:** Updated `ModuleResults.svelte` component with additional functionality.
+
+---
+
 ### February 3, 2026 - Audio Regeneration Script
 
 **Added `regenerate_audio.py`:** Script to regenerate all 43 scenario audio files using edge-tts.
