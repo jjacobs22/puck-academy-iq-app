@@ -733,6 +733,12 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 3, 2026 - Training Page Enhancements
+
+**Training page (`training.html`):** Significant updates with 152 lines of improvements to the training hub experience.
+
+---
+
 ### February 3, 2026 - Storage & Streak System Improvements
 
 **Storage updates (`js/storage.js`):** Enhanced local storage handling.
