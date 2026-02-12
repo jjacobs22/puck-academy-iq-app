@@ -151,7 +151,7 @@ export const module2Scenarios: Scenario[] = [
         { type: 'you', x: 31, y: 25, note: 'You (C) \u2014 outmatched', targetX: 36, targetY: 25 },
         { type: 'opponent', x: 39, y: 25, label: 'C', note: 'Stronger \u2014 winning draws clean' },
         { type: 'teammate', x: 25, y: 18, label: 'W', note: 'Winger \u2014 ready to retrieve', targetX: 30, targetY: 20 },
-        { type: 'teammate', x: 22, y: 30, label: 'D', note: 'D-man shaded to boards' },
+        { type: 'teammate', x: 22, y: 30, label: 'D', note: 'D-man shaded to boards', targetX: 12, targetY: 35 },
       ],
       puck: { x: 35, y: 25 },
       arrows: [],
@@ -161,6 +161,7 @@ export const module2Scenarios: Scenario[] = [
     movementCues: [
       { playerIndex: 0, triggerAtSecond: 1.5 },  // "Defensive zone faceoff" → show YOU moving to tie up
       { playerIndex: 2, triggerAtSecond: 5.0 },   // Winger ready to retrieve → show W moving toward puck
+      { playerIndex: 3, triggerAtSecond: 8.5 },   // "Your D-man is shaded toward the boards"
     ],
     gameContext: { period: 2, teamScore: 1, oppScore: 2, timeLeft: '8:45' },
     audioFolder: 'module2-scenario4-tieup',
