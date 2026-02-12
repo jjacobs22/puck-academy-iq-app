@@ -787,6 +787,32 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 12, 2026 - Progress backfill and manual sync (admin usage)
+
+**Backfill local scores to `progress` so admin shows usage even when the table was missing at completion time.**
+
+- **`syncLocalScoresToServer(userId)`** (`storage.ts`): Reads all module scores from localStorage (`puckAcademy_module1_scores` … `module6`) and upserts each scenario completion into the `progress` table. Returns `{ count, error }` for feedback.
+- **Auth callback:** After magic-link sign-in, runs backfill and shows toast (“Synced N scenario(s)” or error). Session flag set only when sync succeeds so failed syncs retry on next load.
+- **Layout:** On app load when user is already signed in, runs backfill once per session (flag set only on success).
+- **Training Hub:** “Sync my progress to server” button (when signed in) for manual sync; toast shows count or error so users can fix RLS/table issues.
+- **Admin:** Yellow “no progress rows yet” banner when progress is empty and no error; red banner when progress query fails (with migration hint).
+
+---
+
+### February 12, 2026 - Admin "recent usage" fix (progress table + RLS)
+
+**Issue:** Admin dashboard not showing recent usage (scenarios completed, active today/week).
+
+**Causes:** (1) `progress` table may not exist or may lack the schema the SPA writes to (`user_id`, `module_id`, `scenario_id`, `completed`, `correct`, `completed_at` + unique on first three). (2) RLS may block admin reads or app writes.
+
+**Changes:**
+- **Migration:** `migrations/create_progress_table_and_rls.sql` — creates `progress` table if missing, enables RLS, adds policies: authenticated can SELECT all (admin), authenticated can INSERT/UPDATE own rows (app).
+- **Admin page:** Surfaces progress load errors in a red banner with the Supabase error message and a hint to run the migration in Supabase SQL Editor.
+
+**What to do:** In Supabase Dashboard → SQL Editor, run `migrations/create_progress_table_and_rls.sql`. If the table already exists with different columns, fix schema to match (or adjust the migration). Ensure usage is from **signed-in** users (scores are only sent when the user is logged in).
+
+---
+
 ### February 12, 2026 - Deploy (Netlify auto-deploy)
 
 **Live:** Push to `main` triggers build and publish to **https://hockeyiq.netlify.app/**. Deploy includes Supabase progress/scores alignment and PROJECT_CONTEXT updates.

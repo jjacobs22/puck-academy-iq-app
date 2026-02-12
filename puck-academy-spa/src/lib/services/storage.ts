@@ -112,6 +112,37 @@ export function saveScenarioScore(moduleId: number, scenarioId: number, correct:
   }
 }
 
+const MODULE_IDS = [1, 2, 3, 4, 5, 6] as const;
+
+/**
+ * Push all scenario completions from localStorage into the progress table.
+ * Returns { count, error } so callers can show feedback.
+ */
+export async function syncLocalScoresToServer(userId: string): Promise<{ count: number; error?: string }> {
+  if (!browser) return { count: 0 };
+  const promises: { scenarioId: number; moduleId: number; correct: boolean }[] = [];
+  for (const moduleId of MODULE_IDS) {
+    const scores = loadModuleScores(moduleId);
+    for (const [scenarioIdStr, correct] of Object.entries(scores.currentRun)) {
+      const scenarioId = parseInt(scenarioIdStr, 10);
+      if (Number.isNaN(scenarioId) || typeof correct !== 'boolean') continue;
+      promises.push({ moduleId, scenarioId, correct });
+    }
+  }
+  let count = 0;
+  let firstError: string | undefined;
+  for (const { moduleId, scenarioId, correct } of promises) {
+    const { error } = await saveScoreToServer(userId, moduleId, scenarioId, correct);
+    if (error) {
+      if (!firstError) firstError = error.message ?? String(error);
+      console.warn('Backfill score sync failed:', error);
+    } else {
+      count++;
+    }
+  }
+  return { count, error: firstError };
+}
+
 export function resetModuleScores(moduleId: number): void {
   if (!browser) return;
   

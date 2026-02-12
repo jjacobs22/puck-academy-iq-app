@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { supabase } from '$lib/services/supabase';
+  import { syncLocalScoresToServer } from '$lib/services/storage';
   import { toasts } from '$lib/stores/ui';
 
   onMount(async () => {
@@ -19,8 +20,12 @@
       return;
     }
 
-    if (session) {
-      toasts.show('Welcome back! Your progress is synced.', 'success');
+    if (session?.user) {
+      const { count, error } = await syncLocalScoresToServer(session.user.id);
+      if (!error && typeof sessionStorage !== 'undefined') sessionStorage.setItem('progress_backfilled', session.user.id);
+      if (error) toasts.show(`Progress sync had issues: ${error}`, 'error');
+      else if (count > 0) toasts.show(`Welcome back! Synced ${count} scenario(s).`, 'success');
+      else toasts.show('Welcome back! Your progress is synced.', 'success');
       goto(redirectTo.startsWith('/') ? redirectTo : '/' + redirectTo);
     } else {
       goto('/');

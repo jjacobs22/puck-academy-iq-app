@@ -64,9 +64,11 @@
   let activityTrend: number[] = [];
   let dayLabels: string[] = [];
   let allUsersData: { user: Profile; total: number; correct: number; accuracy: number; streakCount: number }[] = [];
+  let progressErrorMsg = '';
 
   async function loadDashboard() {
     refreshing = true;
+    progressErrorMsg = '';
     try {
       const [
         { data: profilesData, error: profilesError },
@@ -79,11 +81,16 @@
       ]);
 
       if (profilesError) throw profilesError;
-      if (progressError) throw progressError;
+      if (progressError) {
+        progressErrorMsg = progressError.message || String(progressError);
+        console.error('Progress load error:', progressError);
+        progress = [];
+      } else {
+        progress = progressData || [];
+      }
       if (coachError) console.warn('Coach conversations:', coachError.message);
 
       profiles = profilesData || [];
-      progress = progressData || [];
       coachConversations = coachData || [];
 
       computeDashboard();
@@ -350,6 +357,18 @@
       </button>
     </div>
 
+    {#if progressErrorMsg}
+      <div class="progress-error-banner">
+        <strong>Progress data error:</strong> {progressErrorMsg}
+        <br />
+        <small>Run <code>migrations/create_progress_table_and_rls.sql</code> in Supabase SQL Editor if the <code>progress</code> table is missing or RLS is blocking reads.</small>
+      </div>
+    {:else if progress.length === 0 && totalUsers > 0}
+      <div class="progress-empty-banner">
+        No scenario completions in <code>progress</code> yet. Scores are only saved when users are <strong>signed in</strong>. Sign in, complete a scenario, then click Refresh — or check the browser console for "Score sync failed" when completing a scenario.
+      </div>
+    {/if}
+
     <div class="scorecards">
       <div class="scorecard"><div class="scorecard-value highlight">{totalUsers}</div><div class="scorecard-label">Total Users</div></div>
       <div class="scorecard"><div class="scorecard-value">{activeToday}</div><div class="scorecard-label">Active Today</div></div>
@@ -599,6 +618,29 @@
   }
   .refresh-btn:hover:not(:disabled) { background: #a50d26; }
   .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .progress-error-banner {
+    background: rgba(180, 60, 60, 0.2);
+    border: 1px solid rgba(220, 80, 80, 0.5);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: #f0a0a0;
+  }
+  .progress-error-banner code { font-size: 0.85em; }
+  .progress-error-banner small { opacity: 0.9; margin-top: 6px; display: block; }
+
+  .progress-empty-banner {
+    background: rgba(160, 140, 60, 0.15);
+    border: 1px solid rgba(200, 180, 80, 0.4);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: #e0d0a0;
+  }
+  .progress-empty-banner code { font-size: 0.85em; }
 
   .scorecards {
     display: grid;

@@ -2,12 +2,25 @@
   import { goto } from '$app/navigation';
   import { fly, fade } from 'svelte/transition';
   import ModuleCard from './ModuleCard.svelte';
-  import { allModulesProgress, nextScenario, streakCount, progress } from '$lib/stores/progress';
-  import { isStreakAtRisk } from '$lib/services/storage';
-  import { navigateWithTransition } from '$lib/stores/ui';
+  import { allModulesProgress, nextScenario, streakCount } from '$lib/stores/progress';
+  import { isStreakAtRisk, syncLocalScoresToServer } from '$lib/services/storage';
+  import { navigateWithTransition, toasts } from '$lib/stores/ui';
+  import { user } from '$lib/stores/auth';
 
   let expandedModule: number | null = null;
   let hasAutoExpanded = false;
+  let syncing = false;
+
+  async function syncProgress() {
+    const u = $user;
+    if (!u?.id) return;
+    syncing = true;
+    const { count, error } = await syncLocalScoresToServer(u.id);
+    syncing = false;
+    if (error) toasts.show(`Sync failed: ${error}`, 'error');
+    else if (count > 0) toasts.show(`Synced ${count} scenario(s) to server.`, 'success');
+    else toasts.show('No local progress to sync.', 'success');
+  }
 
   // Auto-expand first incomplete module on initial load only
   $: if ($allModulesProgress && !hasAutoExpanded) {
@@ -81,6 +94,15 @@
       </div>
     {/each}
   </div>
+
+  {#if $user}
+    <div class="sync-section">
+      <button class="sync-btn" disabled={syncing} on:click={syncProgress}>
+        {syncing ? 'Syncing…' : 'Sync my progress to server'}
+      </button>
+      <p class="sync-hint">Use this if the admin dashboard doesn’t show your recent activity.</p>
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -163,5 +185,38 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+  }
+
+  .sync-section {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+  }
+
+  .sync-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--silver);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .sync-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .sync-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .sync-hint {
+    margin-top: var(--spacing-xs);
+    font-size: 0.75rem;
+    color: var(--silver);
+    opacity: 0.8;
   }
 </style>

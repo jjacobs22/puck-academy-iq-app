@@ -8,6 +8,8 @@
   import Toast from '$lib/components/Shell/Toast.svelte';
   import AuthModal from '$lib/components/Overlays/AuthModal.svelte';
   import { showAuthModal } from '$lib/stores/ui';
+  import { user } from '$lib/stores/auth';
+  import { syncLocalScoresToServer } from '$lib/services/storage';
 
   $: isAdmin = $page.url.pathname.startsWith('/admin');
 
@@ -21,6 +23,16 @@
       });
     }
   });
+
+  // Once per session: backfill localStorage scenario scores to progress table (only mark done when no error so failed syncs retry)
+  $: if (browser && $user?.id && typeof sessionStorage !== 'undefined') {
+    const key = 'progress_backfilled';
+    if (sessionStorage.getItem(key) !== $user.id) {
+      syncLocalScoresToServer($user.id)
+        .then(({ error }) => { if (!error) sessionStorage.setItem(key, $user.id); })
+        .catch(() => {});
+    }
+  }
 </script>
 
 {#if isAdmin}
