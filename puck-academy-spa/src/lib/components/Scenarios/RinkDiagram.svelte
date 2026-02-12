@@ -53,6 +53,12 @@
       minY = Math.min(minY, diagram.puck.y);
       maxY = Math.max(maxY, diagram.puck.y);
     }
+    if (diagram.ref) {
+      minX = Math.min(minX, diagram.ref.x);
+      maxX = Math.max(maxX, diagram.ref.x);
+      minY = Math.min(minY, diagram.ref.y);
+      maxY = Math.max(maxY, diagram.ref.y);
+    }
 
     const padX = 22;
     const padY = 14;
@@ -296,16 +302,6 @@
       />
     {/if}
 
-    <!-- Ref / Linesman (optional; e.g. faceoff scenarios) -->
-    {#if diagram.ref && showIce}
-      <g class="player-group ref-marker" class:anim-pop={animated}>
-        <circle cx={diagram.ref.x} cy={diagram.ref.y} r="5"
-          fill="url(#refJersey)" stroke="#C2410C" stroke-width="1" />
-        <text x={diagram.ref.x} y={diagram.ref.y + 2} font-size="3.5" fill="white"
-          text-anchor="middle" font-weight="bold">{diagram.ref.label || 'REF'}</text>
-      </g>
-    {/if}
-
     <!-- Players — circles with position labels only, no role notes -->
     {#each diagram.players as player, i}
       {#if revealedPlayers.has(i)}
@@ -334,6 +330,16 @@
         </g>
       {/if}
     {/each}
+
+    <!-- Ref / Linesman — rendered AFTER players so it's visible on top -->
+    {#if diagram.ref && showIce}
+      <g class="player-group ref-marker" class:anim-pop={animated}>
+        <circle cx={diagram.ref.x} cy={diagram.ref.y} r="5.5"
+          fill="url(#refJersey)" stroke="white" stroke-width="1.2" />
+        <text x={diagram.ref.x} y={diagram.ref.y + 1.8} font-size="3.5" fill="white"
+          text-anchor="middle" font-weight="bold">{diagram.ref.label || 'REF'}</text>
+      </g>
+    {/if}
   </svg>
 
   <!-- === PLAY BREAKDOWN panel — clean text outside the SVG === -->

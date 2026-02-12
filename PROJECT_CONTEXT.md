@@ -456,6 +456,13 @@ puck-academy-iq-app/
 - `ANTHROPIC_API_KEY` — For Coach's Office AI chat
 - `RESEND_API_KEY` — For email notifications
 
+**Setting Supabase vars in Netlify (fixes "Supabase is not configured"):**
+1. Supabase Dashboard → your project → **Project Settings** (gear) → **API** for Project URL; **API Keys** for anon public key
+2. Netlify → Site → **Environment variables** → Add `VITE_SUPABASE_URL` (Project URL) and `VITE_SUPABASE_ANON_KEY` (anon public only; not service_role)
+3. **Trigger a new deploy** so the build picks up the new values
+
+**Local dev:** Copy `puck-academy-spa/.env.example` to `puck-academy-spa/.env` and fill in the same values; `.env` is gitignored.
+
 ---
 
 ## CURRENT STATE
@@ -737,6 +744,15 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### February 11, 2026 - Supabase Env Setup Docs
+
+**SPA Supabase configuration:**
+- Added `puck-academy-spa/.env.example` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`; copy to `.env` for local dev.
+- Updated `puck-academy-spa/.gitignore` to ignore `.env`, `.env.local`, `.env.*.local`.
+- PROJECT_CONTEXT: Environment Variables section now includes step-by-step Netlify setup (API + API Keys), and a note for local dev using .env.example.
+
+---
 
 ### February 11, 2026 - Admin Auth & Supabase Config
 
