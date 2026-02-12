@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup: Inline Coaching Approach | Puck Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #0A1628;
+            --ice-blue: #E8F4F8;
+            --accent-red: #C8102E;
+            --silver: #A8B2BE;
+            --success-green: #2D7A3E;
+            --font-header: 'Bebas Neue', sans-serif;
+            --font-body: 'Work Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2940 100%);
+            color: var(--ice-blue);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ====== COMPARISON LAYOUT ====== */
+        .comparison-header {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-header h1 {
+            font-family: var(--font-header);
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .comparison-header h1 span { color: var(--accent-red); }
+
+        .comparison-header p {
+            color: var(--silver);
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .comparison-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .version-label {
+            font-family: var(--font-header);
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: -1px;
+        }
+
+        .version-label.old {
+            background: rgba(185, 28, 28, 0.3);
+            border: 1px solid rgba(185, 28, 28, 0.5);
+            color: #FCA5A5;
+        }
+
+        .version-label.new {
+            background: rgba(45, 122, 62, 0.3);
+            border: 1px solid rgba(45, 122, 62, 0.5);
+            color: #86EFAC;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 16px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+        }
+
+        /* ====== SCENARIO COMPONENTS ====== */
+        .scenario-title {
+            font-family: var(--font-header);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .rink-container {
+            background: var(--ice-blue);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--dark-blue);
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.you { background: #FFD700; border: 2px solid #B8860B; }
+        .legend-dot.team { background: #1E40AF; }
+        .legend-dot.opponent { background: var(--accent-red); }
+        .legend-dot.puck { background: #1a1a1a; }
+
+        /* Situation box */
+        .situation-box {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .situation-label {
+            color: var(--accent-red);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .situation-text {
+            color: var(--ice-blue);
+            line-height: 1.6;
+        }
+
+        .situation-text .highlight {
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        /* NEW: Coach framing cue */
+        .coach-cue {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            background: rgba(200, 16, 46, 0.12);
+            border-left: 3px solid var(--accent-red);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .coach-cue-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-red), #8B0000);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .coach-cue-text {
+            color: var(--ice-blue);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .coach-cue-text strong {
+            font-style: normal;
+            color: white;
+        }
+
+        .question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .option:hover {
+            border-color: var(--accent-red);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .option-letter {
+            font-weight: 700;
+            color: var(--accent-red);
+            min-width: 22px;
+        }
+
+        /* ====== OLD INTRO PREVIEW ====== */
+        .intro-preview {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px dashed rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .intro-preview-label {
+            font-family: var(--font-header);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: var(--silver);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .slide-preview {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .slide-preview:last-child {
+            margin-bottom: 0;
+        }
+
+        .slide-preview h4 {
+            font-family: var(--font-header);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: var(--ice-blue);
+            margin-bottom: 6px;
+        }
+
+        .slide-preview p {
+            color: var(--silver);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .slide-number {
+            display: inline-block;
+            background: var(--accent-red);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        .then-arrow {
+            text-align: center;
+            color: var(--silver);
+            font-size: 1.2rem;
+            margin: 12px 0;
+        }
+
+        /* Callout boxes */
+        .callout {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .callout.insight {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #93C5FD;
+        }
+
+        .callout.win {
+            background: rgba(45, 122, 62, 0.15);
+            border: 1px solid rgba(45, 122, 62, 0.3);
+            color: #86EFAC;
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Divider */
+        .section-break {
+            max-width: 1200px;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .section-break h2 {
+            font-family: var(--font-header);
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .section-break p {
+            color: var(--silver);
+            font-size: 0.95rem;
+        }
+
+        /* More examples */
+        .examples-grid {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .example-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .example-card h3 {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .example-card .module-tag {
+            font-size: 0.75rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .old-text, .new-text {
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .old-text {
+            background: rgba(185, 28, 28, 0.1);
+            border: 1px solid rgba(185, 28, 28, 0.2);
+            color: #FCA5A5;
+        }
+
+        .new-text {
+            background: rgba(45, 122, 62, 0.1);
+            border: 1px solid rgba(45, 122, 62, 0.2);
+            color: #86EFAC;
+        }
+
+        .label-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .label-tag.old { color: #F87171; }
+        .label-tag.new { color: #4ADE80; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="comparison-header">
+        <h1>Scenario Entry: <span>Two Approaches</span></h1>
+        <p>Left: current 3-slide Theory Intro before the scenario. Right: single Coach cue embedded in the scenario itself. Same teaching, less friction.</p>
+    </div>
+
+    <!-- SIDE-BY-SIDE: Module 1, Scenario 1 -->
+    <div class="comparison-grid">
+
+        <!-- ====== LEFT: CURRENT APPROACH ====== -->
+        <div>
+            <div class="version-label old">Current: 3-Slide Intro + Bare Scenario</div>
+            <div class="container">
+
+                <!-- Preview of the 3 intro slides -->
+                <div class="intro-preview">
+                    <div class="intro-preview-label">Theory Intro Overlay (3 slides shown first)</div>
+
+                    <div class="slide-preview">
+                        <h4><span class="slide-number">1</span> Your Job in the D-Zone</h4>
+                        <p>"As a center, you own the middle of the ice. Your D-men handle the boards — you take away the slot."</p>
+                    </div>
+                    <div class="slide-preview">
+                        <h4><span class="slide-number">2</span> Trust the Structure</h4>
+                        <p>"When your D pressures the puck, don't chase. Stay home, cover the dangerous player, and be ready to transition."</p>
+                    </div>
+                    <div class="slide-preview">
+                        <h4><span class="slide-number">3</span> Defense Creates Offense</h4>
+                        <p>"Good positioning in the D-zone sets up the breakout. You're not just defending — you're the first step in the attack."</p>
+                    </div>
+                </div>
+
+                <div class="then-arrow">↓ then the scenario ↓</div>
+
+                <h2 class="scenario-title">Scenario 1: D-Zone Coverage</h2>
+
+                <!-- Rink diagram placeholder -->
+                <div class="rink-container">
+                    <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="500" height="300" fill="#E8F4F8" rx="10"/>
+                        <!-- Goal -->
+                        <line x1="80" y1="60" x2="80" y2="240" stroke="#C8102E" stroke-width="2"/>
+                        <path d="M 80 110 Q 50 150 80 190" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="1.5"/>
+                        <rect x="55" y="130" width="25" height="40" fill="none" stroke="#333" stroke-width="2"/>
+                        <!-- Opponent Winger with puck -->
+                        <circle cx="150" cy="80" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                        <text x="150" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="11" font-family="Work Sans">W</text>
+                        <circle cx="135" cy="95" r="6" fill="#1a1a1a"/>
+                        <!-- Your D pressuring -->
+                        <circle cx="180" cy="100" r="16" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                        <text x="180" y="105" text-anchor="middle" fill="white" font-weight="bold" font-size="10" font-family="Work Sans">D</text>
+                        <!-- Opponent Center in slot -->
+                        <circle cx="250" cy="160" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                        <text x="250" y="165" text-anchor="middle" fill="white" font-weight="bold" font-size="11" font-family="Work Sans">C</text>
+                        <!-- YOU -->
+                        <circle cx="280" cy="200" r="20" fill="#FFD700" stroke="#B8860B" stroke-width="2.5"/>
+                        <text x="280" y="205" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="10" font-family="Work Sans">YOU</text>
+                        <!-- Other D -->
+                        <circle cx="160" cy="220" r="16" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                        <text x="160" y="225" text-anchor="middle" fill="white" font-weight="bold" font-size="10" font-family="Work Sans">D</text>
+                    </svg>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-dot you"></div><span>You</span></div>
+                        <div class="legend-item"><div class="legend-dot team"></div><span>Teammates</span></div>
+                        <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponents</span></div>
+                        <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
+                    </div>
+                </div>
+
+                <!-- Current bare situation text -->
+                <div class="situation-box">
+                    <p class="situation-label">Situation:</p>
+                    <p class="situation-text">
+                        Opposing winger (Red W) has the puck along the boards. Your defenseman (Blue D) is moving to pressure.
+                        The opposing center (Red C) is positioned at the high slot.
+                        <span class="highlight">What should YOU do?</span>
+                    </p>
+                </div>
+
+                <h3 class="question">As the center, what is your best defensive play?</h3>
+
+                <div class="options">
+                    <div class="option">
+                        <span class="option-letter">A)</span>
+                        <span class="option-text">Move to the front of the net to block any pass to the slot</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">B)</span>
+                        <span class="option-text">Cover the opposing center at the high slot while reading for a breakout opportunity</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">C)</span>
+                        <span class="option-text">Rush to help your defenseman pressure the puck carrier</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">D)</span>
+                        <span class="option-text">Stay low in your zone near the hashmarks</span>
+                    </div>
+                </div>
+
+                <div class="callout insight">
+                    <strong>What the player experiences:</strong>
+                    3 full-screen slides they have to click through before they touch anything. Then a bare situation description that doesn't tell them what to think about. If they skipped the intro, they have zero framing.
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== RIGHT: NEW APPROACH ====== -->
+        <div>
+            <div class="version-label new">New: Coach Cue Embedded in Scenario</div>
+            <div class="container">
+
+                <h2 class="scenario-title">Scenario 1: D-Zone Coverage</h2>
+
+                <!-- Rink diagram (same) -->
+                <div class="rink-container">
+                    <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="500" height="300" fill="#E8F4F8" rx="10"/>
+                        <line x1="80" y1="60" x2="80" y2="240" stroke="#C8102E" stroke-width="2"/>
+                        <path d="M 80 110 Q 50 150 80 190" fill="rgba(173, 216, 230, 0.5)" stroke="#C8102E" stroke-width="1.5"/>
+                        <rect x="55" y="130" width="25" height="40" fill="none" stroke="#333" stroke-width="2"/>
+                        <circle cx="150" cy="80" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                        <text x="150" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="11" font-family="Work Sans">W</text>
+                        <circle cx="135" cy="95" r="6" fill="#1a1a1a"/>
+                        <circle cx="180" cy="100" r="16" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                        <text x="180" y="105" text-anchor="middle" fill="white" font-weight="bold" font-size="10" font-family="Work Sans">D</text>
+                        <circle cx="250" cy="160" r="18" fill="#C8102E" stroke="#8B0000" stroke-width="2"/>
+                        <text x="250" y="165" text-anchor="middle" fill="white" font-weight="bold" font-size="11" font-family="Work Sans">C</text>
+                        <circle cx="280" cy="200" r="20" fill="#FFD700" stroke="#B8860B" stroke-width="2.5"/>
+                        <text x="280" y="205" text-anchor="middle" fill="#1a1a1a" font-weight="bold" font-size="10" font-family="Work Sans">YOU</text>
+                        <circle cx="160" cy="220" r="16" fill="#1E40AF" stroke="#1E3A8A" stroke-width="2"/>
+                        <text x="160" y="225" text-anchor="middle" fill="white" font-weight="bold" font-size="10" font-family="Work Sans">D</text>
+                    </svg>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-dot you"></div><span>You</span></div>
+                        <div class="legend-item"><div class="legend-dot team"></div><span>Teammates</span></div>
+                        <div class="legend-item"><div class="legend-dot opponent"></div><span>Opponents</span></div>
+                        <div class="legend-item"><div class="legend-dot puck"></div><span>Puck</span></div>
+                    </div>
+                </div>
+
+                <!-- NEW: Coach framing cue -->
+                <div class="coach-cue">
+                    <div class="coach-cue-avatar">🏒</div>
+                    <div class="coach-cue-text">
+                        <strong>Your D-men handle the boards. Your job? Take away the slot.</strong> That's the center's rule in the D-zone. Let's see if you can read this one.
+                    </div>
+                </div>
+
+                <!-- Enhanced situation text -->
+                <div class="situation-box">
+                    <p class="situation-label">Situation:</p>
+                    <p class="situation-text">
+                        The opposing winger has the puck along the boards. Your D is moving in to pressure him — that's his job.
+                        But look at the slot: their center has slid into the high slot, waiting for a pass.
+                        <span class="highlight">Where do you need to be?</span>
+                    </p>
+                </div>
+
+                <h3 class="question">As the center, what is your best defensive play?</h3>
+
+                <div class="options">
+                    <div class="option">
+                        <span class="option-letter">A)</span>
+                        <span class="option-text">Move to the front of the net to block any pass to the slot</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">B)</span>
+                        <span class="option-text">Cover the opposing center at the high slot while reading for a breakout opportunity</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">C)</span>
+                        <span class="option-text">Rush to help your defenseman pressure the puck carrier</span>
+                    </div>
+                    <div class="option">
+                        <span class="option-letter">D)</span>
+                        <span class="option-text">Stay low in your zone near the hashmarks</span>
+                    </div>
+                </div>
+
+                <div class="callout win">
+                    <strong>What the player experiences:</strong>
+                    Diagram loads, then immediately a one-line Coach cue tells them what to think about — without giving away the answer. The situation text reinforces it naturally. Zero clicks before they're engaged. The teaching is woven into the moment.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MORE EXAMPLES SECTION -->
+    <div class="section-break">
+        <h2>Coach Cues Across <span style="color: var(--accent-red);">All 6 Modules</span></h2>
+        <p>Here's what the one-liner looks like for the first scenario of each module. Old situation text vs. new.</p>
+    </div>
+
+    <div class="examples-grid">
+        <!-- Module 2: Faceoffs -->
+        <div class="example-card">
+            <h3>Scenario 2-1: Reading the Ref Position</h3>
+            <div class="module-tag">Module 2: Faceoffs</div>
+
+            <div class="coach-cue" style="margin-bottom: 16px;">
+                <div class="coach-cue-avatar">🏒</div>
+                <div class="coach-cue-text">
+                    <strong>Winning the draw starts before the puck drops.</strong> Watch the linesman's body — where they're leaning tells you where to attack.
+                </div>
+            </div>
+
+            <div class="label-tag old">Current situation text:</div>
+            <div class="old-text">
+                "Defensive zone faceoff to goalie's left. You're a left-handed shot. Linesman angled slightly toward YOUR side. Opposing center is a righty with strong backhand grip."
+            </div>
+
+            <div class="label-tag new">Proposed situation text:</div>
+            <div class="new-text">
+                "Defensive zone faceoff. You're a lefty — forehand is to your right. The linesman is angled slightly toward your side, which means he'll likely drop the puck closer to you. The opposing center is a righty who favors his backhand. How do you attack this draw?"
+            </div>
+        </div>
+
+        <!-- Module 3: Breakouts -->
+        <div class="example-card">
+            <h3>Scenario 3-1: High Route vs. Low Route</h3>
+            <div class="module-tag">Module 3: Breakouts</div>
+
+            <div class="coach-cue" style="margin-bottom: 16px;">
+                <div class="coach-cue-avatar">🏒</div>
+                <div class="coach-cue-text">
+                    <strong>A breakout isn't a race — it's about the right route.</strong> Where you receive the puck changes everything about what happens next.
+                </div>
+            </div>
+
+            <div class="label-tag old">Current situation text:</div>
+            <div class="old-text">
+                "Your D-man retrieves puck behind net. One forechecker pressuring hard. You swinging back from far side to support."
+            </div>
+
+            <div class="label-tag new">Proposed situation text:</div>
+            <div class="new-text">
+                "Your D has the puck behind the net with a forechecker closing hard. You're swinging back from the far side to give him an option. You can come high near the blue line or go low below the hash marks. Think about how you'll receive the puck — forehand or backhand? — and what happens next."
+            </div>
+        </div>
+
+        <!-- Module 4: Offensive Zone -->
+        <div class="example-card">
+            <h3>Scenario 4-1: Net Front Presence</h3>
+            <div class="module-tag">Module 4: Offensive Zone</div>
+
+            <div class="coach-cue" style="margin-bottom: 16px;">
+                <div class="coach-cue-avatar">🏒</div>
+                <div class="coach-cue-text">
+                    <strong>The net front is the hardest area on the ice — and the most rewarding.</strong> When the puck is down low, that's where centers score greasy goals.
+                </div>
+            </div>
+
+            <div class="label-tag old">Current situation text:</div>
+            <div class="old-text">
+                "Your winger has puck on half wall below circle. Your D at point. Opposing D in slot. You at high slot."
+            </div>
+
+            <div class="label-tag new">Proposed situation text:</div>
+            <div class="new-text">
+                "Your winger has the puck on the half wall below the circle. Your D is at the point. The opposing D is in front of you. You're hanging out at the high slot — safe, but not dangerous. The puck is down low. Where should you be?"
+            </div>
+        </div>
+
+        <!-- Module 5: Forechecking -->
+        <div class="example-card">
+            <h3>Scenario 5-1: F1 Angle of Approach</h3>
+            <div class="module-tag">Module 5: Forechecking</div>
+
+            <div class="coach-cue" style="margin-bottom: 16px;">
+                <div class="coach-cue-avatar">🏒</div>
+                <div class="coach-cue-text">
+                    <strong>F1 doesn't chase — you take an angle that limits where the D can go.</strong> Forechecking is about angles, not straight lines.
+                </div>
+            </div>
+
+            <div class="label-tag old">Current situation text:</div>
+            <div class="old-text">
+                "You're F1 entering zone on forecheck. D has puck behind net. Their other D on far side. F2 trailing on weak side."
+            </div>
+
+            <div class="label-tag new">Proposed situation text:</div>
+            <div class="new-text">
+                "You're first in on the forecheck. The D has the puck behind his net, and his partner is on the far side — that D-to-D pass is his best option. Your F2 is trailing on the weak side. What angle do you take to dictate where this puck goes?"
+            </div>
+        </div>
+
+        <!-- Module 6: D-Zone for Defensemen -->
+        <div class="example-card">
+            <h3>Scenario 6-1: Gap Control</h3>
+            <div class="module-tag">Module 6: D-Zone (Defensemen)</div>
+
+            <div class="coach-cue" style="margin-bottom: 16px;">
+                <div class="coach-cue-avatar">🏒</div>
+                <div class="coach-cue-text">
+                    <strong>Gap is everything.</strong> Too far and they walk around you. Too tight and they blow by. The right gap depends on speed, support, and where you are on the ice.
+                </div>
+            </div>
+
+            <div class="label-tag old">Current situation text:</div>
+            <div class="old-text">
+                "2-on-2 rush coming. Forward has puck in neutral zone with speed. Your partner covering trailer. You at own blue line."
+            </div>
+
+            <div class="label-tag new">Proposed situation text:</div>
+            <div class="new-text">
+                "A 2-on-2 rush is coming at you. The puck carrier has speed through the neutral zone and he's not slowing down. Your partner has the trailer. You're standing at your blue line — how much ice are you going to give him?"
+            </div>
+        </div>
+
+        <!-- Module 2 Faceoffs (additional example) -->
+        <div class="example-card">
+            <h3>What Happens to the 3-Slide Intros?</h3>
+            <div class="module-tag">Design Decision</div>
+
+            <div style="color: var(--silver); line-height: 1.7; font-size: 0.9rem;">
+                <p style="margin-bottom: 12px;"><strong style="color: var(--ice-blue);">Don't delete them.</strong> The content is good — it just shouldn't be a gate.</p>
+
+                <p style="margin-bottom: 12px;">Move them to an optional <strong style="color: var(--ice-blue);">"Learn the Basics"</strong> link at the module level on the training hub. Players who want the primer can tap it. Players who want to jump in can jump in.</p>
+
+                <p style="margin-bottom: 12px;">You already have "Review intro" links — this just makes that the default path instead of the forced overlay.</p>
+
+                <p><strong style="color: var(--ice-blue);">Exception:</strong> Module 2 (Faceoffs) might keep a single-slide primer about forehand/backhand since that's genuinely unfamiliar terminology for many players. One slide, not three.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

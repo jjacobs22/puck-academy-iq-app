@@ -114,7 +114,6 @@ export const module2Scenarios: Scenario[] = [
         { type: 'teammate', x: 145, y: 15, label: 'D', note: 'D at point' },
       ],
       puck: { x: 165, y: 25 },
-      ref: { x: 165, y: 19, label: 'LM' },
       arrows: [
         { from: { x: 155, y: 18 }, to: { x: 185, y: 42 }, style: 'dashed', label: 'Set play: crash net' }
       ],
@@ -155,7 +154,6 @@ export const module2Scenarios: Scenario[] = [
         { type: 'teammate', x: 22, y: 30, label: 'D', note: 'D-man shaded to boards' },
       ],
       puck: { x: 35, y: 25 },
-      ref: { x: 35, y: 18, label: 'LM' },
       arrows: [],
       annotations: []
     },
@@ -190,7 +188,6 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 39, y: 25, label: 'C', note: 'Opposing center' },
       ],
       puck: { x: 35, y: 25 },
-      ref: { x: 35, y: 18, label: 'LM' },
       arrows: [],
       annotations: [
         { x: 15, y: 35, text: 'STANCE CHECK: Hips low, weight forward' }
@@ -269,7 +266,6 @@ export const module2Scenarios: Scenario[] = [
         { type: 'opponent', x: 155, y: 35, label: 'F', note: 'Late man \u2014 dangerous' },
       ],
       puck: { x: 180, y: 50 },
-      ref: { x: 165, y: 19, label: 'LM' },
       arrows: [
         { from: { x: 165, y: 25 }, to: { x: 155, y: 32 }, style: 'dashed', label: 'Recover to high slot' }
       ],

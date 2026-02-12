@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rink Diagram — Letter Style Prototype</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0A1628;
+    color: #E2E8F0;
+    font-family: 'Work Sans', system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 16px;
+    max-width: 520px;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .card h2 {
+    text-align: center;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+  }
+  svg { width: 100%; height: auto; border-radius: 8px; }
+
+  .breakdown {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .breakdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-you { background: linear-gradient(135deg, #FFE44D, #DAA520); border: 1.5px solid #8B6914; }
+  .dot-team { background: linear-gradient(135deg, #5B9FE6, #1E40AF); border: 1.5px solid #1E3A6E; }
+  .dot-opp { background: linear-gradient(135deg, #F87171, #B91C1C); border: 1.5px solid #8B1A1A; }
+  .b-label { font-weight: 700; min-width: 32px; }
+  .b-note { color: #94a3b8; font-size: 12px; }
+
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #94a3b8;
+  }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .ldot { width: 8px; height: 8px; border-radius: 50%; }
+  .ldot.you { background: linear-gradient(135deg, #FFE44D, #DAA520); }
+  .ldot.team { background: linear-gradient(135deg, #5B9FE6, #1E40AF); }
+  .ldot.opp { background: linear-gradient(135deg, #F87171, #B91C1C); }
+  .ldot.ref { background: linear-gradient(135deg, #FB923C, #EA580C); }
+</style>
+</head>
+<body>
+
+<!-- OLD STYLE -->
+<div class="card">
+  <h2>Before — Big Circles</h2>
+  <svg viewBox="9 11 80 50" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="iceG" cx="50%" cy="50%" r="60%">
+        <stop offset="0%" stop-color="#FFFFFF"/>
+        <stop offset="50%" stop-color="#F0F8FF"/>
+        <stop offset="100%" stop-color="#D6EBF2"/>
+      </radialGradient>
+      <radialGradient id="youJ" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#FFE44D"/>
+        <stop offset="100%" stop-color="#DAA520"/>
+      </radialGradient>
+      <radialGradient id="teamJ" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#5B9FE6"/>
+        <stop offset="100%" stop-color="#1E40AF"/>
+      </radialGradient>
+      <radialGradient id="oppJ" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#F87171"/>
+        <stop offset="100%" stop-color="#B91C1C"/>
+      </radialGradient>
+      <radialGradient id="refJ" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#FB923C"/>
+        <stop offset="100%" stop-color="#EA580C"/>
+      </radialGradient>
+      <radialGradient id="puckG" cx="35%" cy="30%">
+        <stop offset="0%" stop-color="#444"/>
+        <stop offset="100%" stop-color="#0A0A0A"/>
+      </radialGradient>
+    </defs>
+
+    <!-- Boards + ice -->
+    <rect x="0" y="0" width="200" height="85" rx="18" ry="18" fill="#2C1810" stroke="#1A0E08" stroke-width="2"/>
+    <rect x="4" y="4" width="192" height="77" rx="15" ry="15" fill="url(#iceG)"/>
+
+    <!-- Lines -->
+    <line x1="100" y1="4" x2="100" y2="81" stroke="#C8102E" stroke-width="2" opacity="0.7"/>
+    <line x1="65" y1="4" x2="65" y2="81" stroke="#1E40AF" stroke-width="2.5" opacity="0.65"/>
+
+    <!-- Faceoff circle + dot -->
+    <circle cx="35" cy="25" r="10" fill="none" stroke="#C8102E" stroke-width="0.8" opacity="0.4"/>
+    <circle cx="35" cy="25" r="1.5" fill="#C8102E" opacity="0.5"/>
+
+    <!-- Goal crease -->
+    <path d="M 10 32 Q 22 42.5 10 53" fill="rgba(135,206,250,0.3)" stroke="#C8102E" stroke-width="1.2"/>
+    <line x1="10" y1="15" x2="10" y2="70" stroke="#C8102E" stroke-width="1" opacity="0.4"/>
+
+    <!-- Puck -->
+    <circle cx="35" cy="25" r="2.5" fill="url(#puckG)" stroke="#555" stroke-width="0.5"/>
+
+    <!-- OLD: Big circles -->
+    <!-- YOU -->
+    <circle cx="31" cy="25" r="6" fill="url(#youJ)" stroke="#8B6914" stroke-width="1.2"/>
+    <text x="31" y="27" font-size="4.5" fill="#4A3000" text-anchor="middle" font-weight="bold">YOU</text>
+    <!-- Opponent C -->
+    <circle cx="39" cy="25" r="5.5" fill="url(#oppJ)" stroke="#8B1A1A" stroke-width="1.2"/>
+    <text x="39" y="27" font-size="4.5" fill="white" text-anchor="middle" font-weight="bold">C</text>
+    <!-- Winger -->
+    <circle cx="25" cy="18" r="5.5" fill="url(#teamJ)" stroke="#1E3A6E" stroke-width="1.2"/>
+    <text x="25" y="20" font-size="4.5" fill="white" text-anchor="middle" font-weight="bold">W</text>
+    <!-- D-man -->
+    <circle cx="22" cy="30" r="5.5" fill="url(#teamJ)" stroke="#1E3A6E" stroke-width="1.2"/>
+    <text x="22" y="32" font-size="4.5" fill="white" text-anchor="middle" font-weight="bold">D</text>
+    <!-- Linesman -->
+    <circle cx="35" cy="18" r="5.5" fill="url(#refJ)" stroke="white" stroke-width="1.2"/>
+    <text x="35" y="19.8" font-size="3.5" fill="white" text-anchor="middle" font-weight="bold">LM</text>
+  </svg>
+
+  <div class="breakdown">
+    <div class="breakdown-item">
+      <span class="dot dot-you"></span>
+      <span class="b-label">YOU</span>
+      <span class="b-note">You (C) — outmatched</span>
+    </div>
+    <div class="breakdown-item">
+      <span class="dot dot-opp"></span>
+      <span class="b-label">C</span>
+      <span class="b-note">Stronger — winning draws clean</span>
+    </div>
+    <div class="breakdown-item">
+      <span class="dot dot-team"></span>
+      <span class="b-label">W</span>
+      <span class="b-note">Winger — ready to retrieve</span>
+    </div>
+    <div class="breakdown-item">
+      <span class="dot dot-team"></span>
+      <span class="b-label">D</span>
+      <span class="b-note">D-man shaded to boards</span>
+    </div>
+  </div>
+  <div class="legend">
+    <span class="legend-item"><span class="ldot you"></span> You</span>
+    <span class="legend-item"><span class="ldot team"></span> Team</span>
+    <span class="legend-item"><span class="ldot opp"></span> Opp</span>
+    <span class="legend-item"><span class="ldot ref"></span> Ref</span>
+  </div>
+</div>
+
+<!-- NEW STYLE -->
+<div class="card">
+  <h2>After — Small Letters</h2>
+  <svg viewBox="9 11 80 50" xmlns="http://www.w3.org/2000/svg">
+    <!-- Boards + ice (same) -->
+    <rect x="0" y="0" width="200" height="85" rx="18" ry="18" fill="#2C1810" stroke="#1A0E08" stroke-width="2"/>
+    <rect x="4" y="4" width="192" height="77" rx="15" ry="15" fill="url(#iceG)"/>
+
+    <!-- Lines -->
+    <line x1="100" y1="4" x2="100" y2="81" stroke="#C8102E" stroke-width="2" opacity="0.7"/>
+    <line x1="65" y1="4" x2="65" y2="81" stroke="#1E40AF" stroke-width="2.5" opacity="0.65"/>
+
+    <!-- Faceoff circle + dot -->
+    <circle cx="35" cy="25" r="10" fill="none" stroke="#C8102E" stroke-width="0.8" opacity="0.4"/>
+    <circle cx="35" cy="25" r="1.5" fill="#C8102E" opacity="0.5"/>
+
+    <!-- Goal crease -->
+    <path d="M 10 32 Q 22 42.5 10 53" fill="rgba(135,206,250,0.3)" stroke="#C8102E" stroke-width="1.2"/>
+    <line x1="10" y1="15" x2="10" y2="70" stroke="#C8102E" stroke-width="1" opacity="0.4"/>
+
+    <!-- Puck -->
+    <circle cx="35" cy="25" r="2.5" fill="url(#puckG)" stroke="#555" stroke-width="0.5"/>
+
+    <!-- NEW: Tiny letter markers — no background circle, just colored text with shadow -->
+    <!-- YOU -->
+    <text x="31" y="26" font-size="3" fill="#B8860B" stroke="white" stroke-width="0.5" paint-order="stroke"
+      text-anchor="middle" font-weight="bold" font-family="Arial, sans-serif">YOU</text>
+
+    <!-- Opponent C -->
+    <text x="39" y="26" font-size="3" fill="#B91C1C" stroke="white" stroke-width="0.5" paint-order="stroke"
+      text-anchor="middle" font-weight="bold" font-family="Arial, sans-serif">C</text>
+
+    <!-- Winger -->
+    <text x="25" y="19" font-size="3" fill="#1E40AF" stroke="white" stroke-width="0.5" paint-order="stroke"
+      text-anchor="middle" font-weight="bold" font-family="Arial, sans-serif">W</text>
+
+    <!-- D-man -->
+    <text x="22" y="31" font-size="3" fill="#1E40AF" stroke="white" stroke-width="0.5" paint-order="stroke"
+      text-anchor="middle" font-weight="bold" font-family="Arial, sans-serif">D</text>
+
+    <!-- Linesman removed — not relevant to this scenario's decision -->
+  </svg>
+
+  <div class="breakdown">
+    <div class="breakdown-item">
+      <span class="dot dot-you"></span>
+      <span class="b-label">YOU</span>
+      <span class="b-note">You (C) — outmatched</span>
+    </div>
+    <div class="breakdown-item">
+      <span class="dot dot-opp"></span>
+      <span class="b-label">C</span>
+      <span class="b-note">Stronger — winning draws clean</span>
+    </div>
+    <div class="breakdown-item">
+      <span class="dot dot-team"></span>
+      <span class="b-label">W</span>
+      <span class="b-note">Winger — ready to retrieve</span>
+    </div>
+    <div class="breakdown-item">
+      <span class="dot dot-team"></span>
+      <span class="b-label">D</span>
+      <span class="b-note">D-man shaded to boards</span>
+    </div>
+  </div>
+  <div class="legend">
+    <span class="legend-item"><span class="ldot you"></span> You</span>
+    <span class="legend-item"><span class="ldot team"></span> Team</span>
+    <span class="legend-item"><span class="ldot opp"></span> Opp</span>
+    <span class="legend-item"><span class="ldot ref"></span> Ref</span>
+  </div>
+</div>
+
+</body>
+</html>

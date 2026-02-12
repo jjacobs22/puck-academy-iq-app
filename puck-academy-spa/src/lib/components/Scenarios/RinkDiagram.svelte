@@ -261,7 +261,7 @@
     <!-- Tactical arrows (subtle visual lines only) -->
     {#if diagram.arrows && showArrows}
       {#each diagram.arrows as arrow, i}
-        {@const s = shortenArrow(arrow.from.x, arrow.from.y, arrow.to.x, arrow.to.y, 8)}
+        {@const s = shortenArrow(arrow.from.x, arrow.from.y, arrow.to.x, arrow.to.y, 5)}
         <line
           x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
           stroke={arrow.style === 'dashed' ? '#DC2626' : '#475569'}
@@ -279,7 +279,7 @@
     <!-- Player movement trails -->
     {#each diagram.players as player, i}
       {#if player.targetX !== undefined && player.targetY !== undefined && revealedPlayers.has(i) && !player.faded}
-        {@const s = shortenArrow(player.x, player.y, player.targetX, player.targetY, 9)}
+        {@const s = shortenArrow(player.x, player.y, player.targetX, player.targetY, 5)}
         <line
           x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
           stroke={player.type === 'opponent' ? '#DC2626' : '#2563EB'}
@@ -302,42 +302,35 @@
       />
     {/if}
 
-    <!-- Players — circles with position labels only, no role notes -->
+    <!-- Players — tiny colored letters, whiteboard style (no circles) -->
     {#each diagram.players as player, i}
       {#if revealedPlayers.has(i)}
         <g class="player-group" class:faded={player.faded} class:anim-pop={animated}>
           {#if player.type === 'you'}
-            <circle cx={player.x} cy={player.y} r="6"
-              fill="url(#youJersey)" stroke="#8B6914" stroke-width="1.2"
-              filter="url(#youGlow)" class="you-pulse" />
-            <text x={player.x} y={player.y + 2} font-size="4.5" fill="#4A3000"
-              text-anchor="middle" font-weight="bold">YOU</text>
+            <text x={player.x} y={player.y + 1} font-size="3" fill="#B8860B"
+              stroke="white" stroke-width="0.5" paint-order="stroke"
+              text-anchor="middle" font-weight="bold" font-family="Arial, sans-serif">YOU</text>
           {:else if player.type === 'teammate'}
-            <circle cx={player.x} cy={player.y} r="5.5"
-              fill="url(#teamJersey)" stroke="#1E3A6E" stroke-width="1.2" />
-            {#if player.label}
-              <text x={player.x} y={player.y + 2} font-size="4.5" fill="white"
-                text-anchor="middle" font-weight="bold">{player.label}</text>
-            {/if}
+            <text x={player.x} y={player.y + 1} font-size="3" fill="#1E40AF"
+              stroke="white" stroke-width="0.5" paint-order="stroke"
+              text-anchor="middle" font-weight="bold"
+              font-family="Arial, sans-serif">{player.label || '•'}</text>
           {:else}
-            <circle cx={player.x} cy={player.y} r="5.5"
-              fill="url(#oppJersey)" stroke="#8B1A1A" stroke-width="1.2" />
-            {#if player.label}
-              <text x={player.x} y={player.y + 2} font-size="4.5" fill="white"
-                text-anchor="middle" font-weight="bold">{player.label}</text>
-            {/if}
+            <text x={player.x} y={player.y + 1} font-size="3" fill="#B91C1C"
+              stroke="white" stroke-width="0.5" paint-order="stroke"
+              text-anchor="middle" font-weight="bold"
+              font-family="Arial, sans-serif">{player.label || '•'}</text>
           {/if}
         </g>
       {/if}
     {/each}
 
-    <!-- Ref / Linesman — rendered AFTER players so it's visible on top -->
+    <!-- Ref / Linesman (only shown when scenario data includes ref) -->
     {#if diagram.ref && showIce}
       <g class="player-group ref-marker" class:anim-pop={animated}>
-        <circle cx={diagram.ref.x} cy={diagram.ref.y} r="5.5"
-          fill="url(#refJersey)" stroke="white" stroke-width="1.2" />
-        <text x={diagram.ref.x} y={diagram.ref.y + 1.8} font-size="3.5" fill="white"
-          text-anchor="middle" font-weight="bold">{diagram.ref.label || 'REF'}</text>
+        <text x={diagram.ref.x} y={diagram.ref.y + 1} font-size="2.5" fill="#EA580C"
+          stroke="white" stroke-width="0.4" paint-order="stroke"
+          text-anchor="middle" font-weight="bold" font-family="Arial, sans-serif">{diagram.ref.label || 'REF'}</text>
       </g>
     {/if}
   </svg>

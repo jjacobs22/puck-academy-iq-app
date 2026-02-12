@@ -5,16 +5,18 @@ Generates all 43 scenarios' audio MP3 files using edge-tts (Microsoft Edge Text-
 
 Usage:
     pip install edge-tts
-    python3 regenerate_audio.py
+    python3 regenerate_audio.py          # Skip existing files
+    python3 regenerate_audio.py --force  # Regenerate all files
 """
 
 import asyncio
 import os
+import sys
 from pathlib import Path
 import edge_tts
 
-# Audio folder base path
-AUDIO_BASE_PATH = Path(__file__).parent / "audio"
+# Audio folder base path - where static audio files live for deployment
+AUDIO_BASE_PATH = Path(__file__).parent / "puck-academy-spa" / "static" / "audio"
 
 # Male voice for narration
 VOICE = "en-US-GuyNeural"
@@ -28,7 +30,7 @@ SCENARIOS = [
         "situation": "Your team is defending in your own zone. The opponent has the puck behind your net and is looking to make a play. Your defenseman is battling for position. You're the center, positioned in the low slot.",
         "question": "What should you focus on?",
         "correct_feedback": "Perfect! By staying in the slot, you're covering the most dangerous scoring area. You can read where the puck is going and react to support your D or pick up a free opponent.",
-        "incorrect_feedback": "Not quite. Chasing behind the net leaves the slot wide open. Your D-man has the puck carrier — trust them and protect the dangerous area in front."
+        "incorrect_feedback": "Chasing behind the net leaves the slot wide open. Your D-man has the puck carrier — trust them and protect the dangerous area in front."
     },
     {
         "id": "module1-scenario2",
@@ -36,7 +38,7 @@ SCENARIOS = [
         "situation": "A loose puck is in the corner of your defensive zone. An opponent is racing to get it. Your winger is closest but will arrive at the same time as the opponent.",
         "question": "What's your best positioning as the center?",
         "correct_feedback": "Smart positioning! You're close enough to support if your winger wins the battle, but also cutting off the passing lane to the slot if the opponent gets the puck.",
-        "incorrect_feedback": "Not quite. Stacking the corner leaves the front of the net unprotected. If they win the battle, there's no one home to stop the play."
+        "incorrect_feedback": "Stacking the corner leaves the front of the net unprotected. If they win the battle, there's no one home to stop the play."
     },
     {
         "id": "module1-scenario3",
@@ -44,7 +46,7 @@ SCENARIOS = [
         "situation": "The opponents are cycling the puck low in your zone. They've completed two passes around the boards. Your D-men are tracking the puck carrier.",
         "question": "What's your role in this situation?",
         "correct_feedback": "Exactly right! The cycle is designed to open up a pass to the slot. By staying disciplined in the middle, you take away their best scoring opportunity.",
-        "incorrect_feedback": "Not quite. Chasing the cycle is exhausting and ineffective. They'll just move the puck before you arrive. Let your D handle the boards."
+        "incorrect_feedback": "Chasing the cycle is exhausting and ineffective. They'll just move the puck before you arrive. Let your D handle the boards."
     },
     {
         "id": "module1-scenario4",
@@ -52,7 +54,7 @@ SCENARIOS = [
         "situation": "Your D has recovered the puck behind the net. One forechecker is pressuring, another is high. Your winger is on the boards providing a safe option. The D is looking to start the breakout.",
         "question": "What's the best way to support the breakout as the center?",
         "correct_feedback": "That's how you support a breakout. Swing through the middle, give your D a short, safe option. You absorb the pressure, buy time, then move it up ice.",
-        "incorrect_feedback": "Not quite. Your D is under pressure — he needs help, not a long pass option. Swing low through the middle, give him an easy out."
+        "incorrect_feedback": "Your D is under pressure — he needs help, not a long pass option. Swing low through the middle, give him an easy out."
     },
     {
         "id": "module1-scenario5",
@@ -60,7 +62,7 @@ SCENARIOS = [
         "situation": "The opposing center has the puck in the neutral zone and is driving toward your blue line. Your D is backing up to defend. You're backchecking from the high slot area.",
         "question": "What's your best backchecking play?",
         "correct_feedback": "Perfect angle. You took away the middle, forced him wide, and closed the gap without overcommitting. That's textbook backchecking.",
-        "incorrect_feedback": "Not quite. Charging straight at him is a gamble. If he makes one move, you're out of the play and it's a 2-on-1."
+        "incorrect_feedback": "Charging straight at him is a gamble. If he makes one move, you're out of the play and it's a 2-on-1."
     },
     {
         "id": "module1-scenario6",
@@ -68,7 +70,7 @@ SCENARIOS = [
         "situation": "Your team just turned the puck over at the offensive blue line. Your left winger got caught deep — it's a 3-on-2 against your team. You're the center tracking back.",
         "question": "What's your priority on this 3-on-2 rush?",
         "correct_feedback": "Exactly right. On a 3-on-2, the slot is the danger zone. Your two D-men can handle the wide players. Your job is to eliminate the middle option.",
-        "incorrect_feedback": "Not quite. Sprint to cover the left side where your winger should be — you've left the middle wide open. On a 3-on-2, the slot is the most dangerous area."
+        "incorrect_feedback": "Now you've left the middle wide open. On a 3-on-2, the slot is the most dangerous area."
     },
     {
         "id": "module1-scenario7",
@@ -76,305 +78,305 @@ SCENARIOS = [
         "situation": "Your D partner got sucked down behind the net chasing the puck carrier. The opponent quickly moved it up to the point. You're the center and you're the only one in position to react.",
         "question": "Your D is out of position. What's your responsibility?",
         "correct_feedback": "When your D is out of position, you become the safety valve. By sitting in the high slot, you take away the most dangerous pass.",
-        "incorrect_feedback": "Not quite. If you charge the point, you're leaving the high slot wide open. The point man can easily pass to the slot for a one-timer."
+        "incorrect_feedback": "If you charge the point, you're leaving the high slot wide open. The point man can easily pass to the slot for a one-timer."
     },
     # Module 2: Faceoffs (7 scenarios)
     {
         "id": "module2-scenario1",
         "folder": "module2-scenario1-ref-position",
-        "situation": "Defensive zone faceoff at the left dot. You're the left winger. Your center is about to take the draw. The opposing right winger is aggressive and likes to crash the net hard after every draw.",
-        "question": "Where should you position yourself on this defensive zone faceoff?",
-        "correct_feedback": "In a D-zone faceoff, your primary job as a winger is coverage. Shadow the opposing forward on your side. If the draw is lost, he doesn't get a free run at your net. Coverage first, breakout second.",
-        "incorrect_feedback": "Not quite. If you abandon your man early, you're giving the opposing winger a free lane to the net. Coverage comes before offensive opportunities in the D-zone."
+        "situation": "Defensive zone faceoff to the goalie's left. You're a left-handed shot (your forehand is to your right as you face the opponent). Notice how the linesman (LM) is positioned — their body is angled slightly toward YOUR side. When a linesman leans this way, they tend to drop the puck more toward that side, giving you a cleaner angle to attack with your forehand. The opposing center is a righty, set up low with a strong backhand grip.",
+        "question": "How should you approach this faceoff?",
+        "correct_feedback": "When the ref is on your forehand side, going forehand gives you a cleaner line to the puck. Fighting your natural preference based on the situation is what separates good faceoff guys from great ones. You read the ref, adjusted your approach, and put yourself in the best position to win.",
+        "incorrect_feedback": "The ref position matters more than you think. When the ref is on your forehand side, that's your advantage — going forehand gives you a cleaner line to the puck. Don't fight your natural preference for no reason, but when the situation favors a different approach, adapt. That's smart hockey."
     },
     {
         "id": "module2-scenario2",
         "folder": "module2-scenario2-advantage",
-        "situation": "Offensive zone faceoff at the right dot. Your left D has a bomb from the point and is set up for a one-timer. If your center wins the draw back cleanly, the scoring chance is there immediately.",
-        "question": "Where should you position yourself to maximize scoring chances?",
-        "correct_feedback": "Perfect. You're right where the puck is going. Receive the draw, quick relay to the point for the one-timer. You're also close to the net for a rebound.",
-        "incorrect_feedback": "Not quite. Good instinct, but you're too far from the puck. If your center wins it, you need to be in the relay chain. Get to the net AFTER the shot."
+        "situation": "Neutral zone faceoff. You're a left-shot center. The opposing center is also left-shot. The linesman's body angle is leaning toward you, giving your opponent a cleaner line to the puck on his forehand.",
+        "question": "Who has the advantage here?",
+        "correct_feedback": "Same-handed matchups come down to linesman position. If the linesman is on your backhand, you're fighting uphill. Recognize this early and adjust your approach — go for a tie-up, cheat your positioning, or try a quick forehand counter. Knowing you're at a disadvantage is the first step to overcoming it.",
+        "incorrect_feedback": "When both centers are the same handedness, it's all about linesman position. The linesman is on your backhand side, which means his forehand has a cleaner angle. That's his advantage. Knowing this before the puck drops lets you adjust — tie-up, counter move, or positioning change. Awareness is everything."
     },
     {
         "id": "module2-scenario3",
         "folder": "module2-scenario3-cheat-feet",
-        "situation": "Neutral zone faceoff. You're the center about to take the draw. You notice the opposing winger on your left is positioned very high — almost at the hash marks instead of staying low near the dot.",
-        "question": "What does this opponent positioning tell you?",
-        "correct_feedback": "Excellent read. A high winger in the neutral zone means they want speed in space for a counterattack. Stay aware of passing lanes and be ready to backcheck hard if the draw goes against you.",
-        "incorrect_feedback": "Not quite. Dump-and-chase doesn't need that high positioning. A high winger indicates they want vertical speed, not horizontal pursuit."
+        "situation": "Offensive zone faceoff, tied game, 2 minutes left. Your team runs a set play where the winger crashes the net on the draw. The opposing center looks relaxed and is setting up late.",
+        "question": "What's your best approach?",
+        "correct_feedback": "In high-leverage situations where you have a set play, cheating your feet (without getting kicked out) gives you a split-second advantage. If the opposing center is relaxed, make him pay for it. Push the limits until the ref corrects you. That's competing. That's playing to win.",
+        "incorrect_feedback": "You have a set play, the game's on the line, and the other guy isn't focused. This is when you push the limits. Cheat your feet forward — just enough to get a quicker jump. If the ref sees it, he'll tell you. But if you play it safe when you have an advantage, you're leaving points on the ice."
     },
     {
         "id": "module2-scenario4",
         "folder": "module2-scenario4-tieup",
-        "situation": "Your center just lost the D-zone faceoff cleanly. The puck squirted toward the boards. The opposing winger on your side is advancing on it. You're the right winger with a chance to affect the outcome before they establish possession.",
-        "question": "What's your immediate priority?",
-        "correct_feedback": "After a faceoff loss, your job is damage control. Immediate pressure disrupts their transition and buys time for your team to organize. Speed and physicality matter here.",
-        "incorrect_feedback": "Not quite. Pressure the opposing winger hard — disrupt before they get set up."
+        "situation": "Defensive zone faceoff. The opposing center is significantly stronger than you and has been winning draws clean all game. Your D-man is shaded toward the boards.",
+        "question": "How do you handle this matchup?",
+        "correct_feedback": "When you're outmatched physically, winning the faceoff doesn't mean winning the puck clean. Tying up the opposing center and letting your support retrieve is a legitimate win. Know your role and set up your teammates. That's not giving up — that's playing smart.",
+        "incorrect_feedback": "He's been beating you clean all game — doing the same thing harder won't change that. When you're outmatched, change the approach. Tie him up, neutralize his strength, and let your winger retrieve. Getting your team the puck is what matters, not how you do it."
     },
     {
         "id": "module2-scenario5",
         "folder": "module2-scenario5-leverage",
-        "situation": "Offensive zone faceoff. Your center just won the draw cleanly back to the left D at the point. The defense is already pushing up. You're the left winger — time to execute.",
-        "question": "What's your best next move?",
-        "correct_feedback": "After winning a faceoff cleanly, transition immediately to offense. The defense is scrambling — you cutting to the net puts instant pressure and creates a high-danger chance.",
-        "incorrect_feedback": "Not quite. Stay at the faceoff dot and call for the puck."
+        "situation": "You're about to take a critical defensive zone draw. You notice you're standing fairly upright with your weight on your heels.",
+        "question": "What adjustment gives you the best chance?",
+        "correct_feedback": "Leverage comes from your lower body. Straight legs = no power. Getting low through hips and knees, with weight forward on the balls of your feet, lets you explode into the draw. It's not about being big — it's about being loaded and ready. You'll feel the difference immediately.",
+        "incorrect_feedback": "Faceoff power comes from your legs, not your arms or grip. Standing upright with weight on your heels means you're pushing with just your upper body. Get low — bend at the hips and knees, shift your weight to the balls of your feet. Now you can explode into the draw. That's leverage."
     },
     {
         "id": "module2-scenario6",
         "folder": "module2-scenario6-forehand-backhand",
-        "situation": "You're a defenseman. 30 seconds left, up 2-1, D-zone faceoff. The opposing team pulled their goalie earlier. This draw could decide the game. Your forwards are asking where they should set up.",
-        "question": "What's the best positioning strategy for this critical defensive faceoff?",
-        "correct_feedback": "Textbook late-game defense. Low positioning means you're between the puck and your net. If they win the draw, you're already in shape. Conservative hockey is exactly what you need with seconds left.",
-        "incorrect_feedback": "Not quite. Too risky with 30 seconds left. Aggressive positioning leaves your D outnumbered if the draw goes the wrong way."
+        "situation": "Neutral zone faceoff. You're a right-shot center. The opposing center is a left-shot who has beaten you backhand twice already. The linesman is on your forehand side.",
+        "question": "How do you adjust?",
+        "correct_feedback": "If the same move isn't working AND you have a positional advantage (ref on your forehand), adapt. Going forehand when he expects backhand, especially with the angle in your favor, changes the matchup entirely. He's prepared for what you've been doing — give him something different.",
+        "incorrect_feedback": "He's beaten you twice with the same approach — doing it harder won't change the outcome. But look at the linesman position: you have the angle on your forehand. Switch your approach. He expects backhand, you go forehand, and now he's the one adjusting. That's how you win the mental game."
     },
     {
         "id": "module2-scenario7",
         "folder": "module2-scenario7-post-draw",
-        "situation": "You're the center on a 5-on-4 power play. Offensive zone faceoff at the left dot. Your team runs an umbrella formation — D-men at the points, forwards attacking the net. The PK is trying to disrupt your setup.",
-        "question": "How should your team execute this power play faceoff?",
-        "correct_feedback": "Perfect PP strategy. The umbrella needs all three elements: center wins the draw, forwards create immediate danger at the net, and D-men have shooting lanes from the point.",
-        "incorrect_feedback": "Not quite. Spread out to control the perimeter and keep forwards back for support."
+        "situation": "You lose the offensive zone faceoff. The puck goes back to the opposing D-man. Your wingers are already in motion expecting a won draw.",
+        "question": "What's your immediate responsibility?",
+        "correct_feedback": "The draw is over. Your job now is defensive structure. Get to the high slot, identify the most dangerous threat (usually the late forward), and take away the middle. Don't compound a lost draw with a bad recovery. Smart centers know the faceoff is just one play — what you do next matters just as much.",
+        "incorrect_feedback": "You lost the draw — the play has changed. Chasing the D-man won't get it back, and your wingers are out of position. Your job now is to prevent the counter-attack. Get to the high slot, find the late man, and take away the middle of the ice. That's how you limit damage from a lost draw."
     },
     # Module 3: Breakouts (7 scenarios)
     {
         "id": "module3-scenario1",
         "folder": "module3-scenario1-high-low-route",
-        "situation": "Your D retrieves the puck behind the goal line. A single forechecker is bearing down. You're the right winger up near the neutral zone. Your D needs an outlet.",
-        "question": "What do you do to create a breakout passing lane?",
-        "correct_feedback": "Immediately move to the wall and get low. By attacking the boards, you force the forechecker to commit one way and give your D a short, safe pass option.",
-        "incorrect_feedback": "Not quite. Stay in the middle of the ice for a center option."
+        "situation": "Your D-man retrieves the puck behind the net. One forechecker is pressuring hard. You're swinging back from the far side to support. What route should you take?",
+        "question": "Which route gives you the best breakout option?",
+        "correct_feedback": "Coming underneath the puck (low route) gives you the puck on your forehand with vision up ice, time to make a decision, and space to cut laterally. A high route often means receiving on your backhand with pressure already on you. The extra two seconds to get low is worth it.",
+        "incorrect_feedback": "Think about how you receive it. Coming low — below the hash marks — changes everything. You get the puck on your forehand, you can see up ice immediately, and you have time to make the next play. High routes mean receiving on your backhand with pressure closing. Go low, come underneath, and you'll have options."
     },
     {
         "id": "module3-scenario2",
         "folder": "module3-scenario2-reading-pressure",
-        "situation": "Your D has the puck behind the goal line but the forechecker is cutting off the strong-side wall outlet. Your D partner is on the other side of the net. You're the left winger on the weak side.",
-        "question": "What's the right play here?",
-        "correct_feedback": "The reverse is textbook when one wall is cut off. Puck moves behind the net to the other D, who has a fresh view and finds you on the open side. Patient, safe, effective.",
-        "incorrect_feedback": "Not quite. Force a pass directly through the forechecker."
+        "situation": "Your D-man has the puck behind the net. Two forecheckers are coming hard — one to the puck, one cutting off the strong side. The weak side is open. Where should you position yourself?",
+        "question": "What's your best support position?",
+        "correct_feedback": "When heavy pressure is coming, the breakout needs to go quick and often weak side. Get yourself into the outlet position where the pressure isn't. Don't wait for the puck to come to where you want to be — go to where you can actually receive it. That's reading the play.",
+        "incorrect_feedback": "Two guys are collapsing on the strong side — that option is gone. When pressure dictates the play, you need to adjust. Flash to the weak side, get low, give your D a quick outlet where the pressure isn't. Don't fight the forecheck — go where they're not."
     },
     {
         "id": "module3-scenario3",
         "folder": "module3-scenario3-forehand-receive",
-        "situation": "Two forecheckers are aggressively attacking your D behind the net. Both wingers are being covered on the boards. You're the center sitting near the top of the circles.",
-        "question": "What should you do?",
-        "correct_feedback": "When wingers are covered and forecheckers are committing hard, you fill the middle as an escape route. This breaks the forecheck and lets your team exit cleanly.",
-        "incorrect_feedback": "Not quite. Attack one of the forecheckers to create a passing lane."
+        "situation": "You're a left-shot center swinging through the middle of the ice for a breakout pass. You have a choice: continue your current path (receive on backhand) or adjust your route to receive on forehand.",
+        "question": "How should you adjust your route?",
+        "correct_feedback": "A small adjustment to receive on your forehand changes everything: better puck control, immediate vision up ice, ability to make plays in stride. The extra two seconds to adjust your route is worth it. Receiving on your backhand means you're fighting the puck before you can do anything with it.",
+        "incorrect_feedback": "Think about what happens after. Receiving on your backhand sounds fine until you get the puck. Now you're spinning, you can't see up ice, and the forechecker is closing. Arc your route wider — a small adjustment puts the puck on your forehand with vision. You can make plays immediately. That's the difference."
     },
     {
         "id": "module3-scenario4",
-        "folder": "module3-scenario4-cut-laterally",
-        "situation": "Your D is retrieving the puck behind the net. A forechecker is moving in. You're the right winger — your positioning on the boards will determine if the D can make a clean outlet pass.",
-        "question": "Where should you position on the wall?",
-        "correct_feedback": "By staying low and tight to the boards, you're a quick escape valve. The D can make a short, accurate pass even under pressure. You control the play from there.",
-        "incorrect_feedback": "Not quite. High on the boards near center ice for a longer pass."
+        "folder": "module3-scenario4-cut-lateral",
+        "situation": "You receive the breakout pass below the hash marks. A forechecker is coming straight at you. Your winger is open on the boards but there's also a soft area in the middle of the ice.",
+        "question": "What's your best play with the puck?",
+        "correct_feedback": "When you're low and under control, cutting laterally into soft ice buys time, opens up the whole rink, and often pulls the forechecker out of position. This is where having good routes pays off — you have options. Now you can hit the winger with a better pass, or carry it if the lane opens.",
+        "incorrect_feedback": "Use the time you have. You received the puck low with control — don't panic and get rid of it. The forechecker is coming straight at you, but that means cutting laterally makes him miss. Find the soft ice, create time, and now you're making plays with vision instead of just reacting. That's the difference."
     },
     {
         "id": "module3-scenario5",
         "folder": "module3-scenario5-support-stretch",
-        "situation": "Your D reads the forecheck and decides to wheel the puck up ice himself. He's skating hard from behind the net along the boards. You're the right winger and need to fill a support lane.",
-        "question": "Where do you skate to support the D on the wheel play?",
-        "correct_feedback": "When the D wheels it, you fill middle. Stay engaged with his pace and be ready for a quick pass or to create a 2-on-1. That's the trailer's job on a wheel play.",
-        "incorrect_feedback": "Not quite. Chase behind the D on the same side."
+        "situation": "Your team is breaking out. The D-man makes a good first pass to the winger on the wall. You're the center trailing the play. What's your responsibility here?",
+        "question": "What should you do now?",
+        "correct_feedback": "The first pass is made, but the play isn't safe yet. Stay in a close support position so if the winger gets pressured, you're the outlet. Once the puck crosses the red line cleanly, then you can push to create offense. Don't abandon the breakout before it's complete.",
+        "incorrect_feedback": "Don't leave too early. The first pass is just the first pass — the breakout isn't done yet. Look at the forechecker closing on your winger. If you're stretching to the neutral zone and he gets pressured, who does he pass to? Stay close as support until the puck is safely through the zone. Then you can push."
     },
     {
         "id": "module3-scenario6",
         "folder": "module3-scenario6-forecheck-pattern",
-        "situation": "Your D just got the puck behind the goal line. Both forecheckers are closing in hard from each side. Your winger is low on the wall and your center is in the middle — both within passing range.",
-        "question": "What should the D prioritize?",
-        "correct_feedback": "Under heavy pressure, don't be fancy. Get the puck to the winger with a safe, short pass. Escape possession cleanly, then build the breakout from there.",
-        "incorrect_feedback": "Not quite. Thread a stretch pass to the center to skip the forecheckers."
+        "situation": "The other team is running a 1-2-2 forecheck. One forward pressures the puck softly, two more clog the neutral zone. Your D-man has time.",
+        "question": "How should your team attack this?",
+        "correct_feedback": "With only one forechecker pressuring and time available, D-to-D or using the middle opens up the ice. The 1-2-2 gives up the blue line — make them pay by possessing through it, not dumping into their structure. They want you to rim it or dump it. Skate through their trap instead.",
+        "incorrect_feedback": "Read what they're giving up. The 1-2-2 clogs the neutral zone but only sends one guy. That means your D has time, and D-to-D or skating it up creates advantages they can't recover from. Dumping or rimming plays right into what they want. When they give you time, use it to beat them with possession."
     },
     {
         "id": "module3-scenario7",
         "folder": "module3-scenario7-broken-play",
-        "situation": "Your D has the puck behind the goal line with time. The forechecker backed off and is playing a soft gap. Your center is at center ice with speed, and the opposing forward is way behind him. The stretch pass is there.",
-        "question": "How should you capitalize on this time and space?",
-        "correct_feedback": "Perfect read. When the forechecker backs off, the stretch pass is your most dangerous option. Your center gets the puck with momentum and space — that's an offensive advantage.",
-        "incorrect_feedback": "Not quite. Play it safe with a short pass to the winger."
+        "situation": "The breakout pass goes off your stick and the puck is loose in the neutral zone. A forechecker is closer to the puck than you are.",
+        "question": "What do you do now?",
+        "correct_feedback": "When a breakout fails, you're now in a defensive situation. Don't chase a puck you can't get to. Your job is to recognize the play is broken and get inside position to defend. Inside-out, protect the house. The turnover happened — now limit the damage by picking up the dangerous man.",
+        "incorrect_feedback": "He's closer — you're not winning that race. When the breakout fails, everything changes. You're now defending. Get inside, find the most dangerous threat, and take him away. Chasing a loose puck you can't get just leaves your team exposed. Transition mentally, then transition physically."
     },
     # Module 4: Offensive Zone IQ (7 scenarios)
     {
         "id": "module4-scenario1",
-        "folder": "module4-scenario1-net-front",
-        "situation": "Your D has the puck at the point and is about to shoot. You're planted about 15 feet in front of the goalie. A defenseman is trying to clear you out. The shot is coming.",
-        "question": "What's your primary job on this net-front play?",
-        "correct_feedback": "You want to be a threat, not an obstacle. Plant yourself in the hard areas — shoulders square to the point, one foot in the crease. You need to see the puck coming so you can tip it, and your body naturally screens.",
-        "incorrect_feedback": "Not quite. Stand directly between the shooter and goalie to guarantee a screen."
+        "folder": "module4-net-front",
+        "situation": "Your winger has the puck on the half wall below the circle. Your D-man is at the point. The opposing D is in the slot area. You're currently positioned at the high slot. Where should you go?",
+        "question": "What's your best move to create a scoring chance?",
+        "correct_feedback": "When the puck is below the goal line or on the half wall, the net front is where you need to be. You take away the goalie's eyes, you're first to rebounds, and you create tip opportunities. The high slot can wait — get to the hard area when the puck is down low.",
+        "incorrect_feedback": "Get to the hard area. When the puck is down low, the net front becomes the most dangerous place on the ice. Staying high doesn't put pressure on the D or the goalie. Drive the net — screen, tip, rebound. That's how centers score greasy goals."
     },
     {
         "id": "module4-scenario2",
-        "folder": "module4-scenario2-cycle-support",
-        "situation": "You're below the goal line on the boards with the puck. A defender is closing fast. Your linemate has inside position at the hash marks, and there's a winger high in the slot. You feel the pressure coming.",
-        "question": "When is the RIGHT time to cycle the puck around the boards?",
-        "correct_feedback": "Cycling only works if you have a target. Your linemate needs inside leverage, the defender needs to be overextended, and you need a passing lane. Cycling with purpose is puck control.",
-        "incorrect_feedback": "Not quite. Any time you're under pressure below the goal line."
+        "folder": "module4-cycle-support",
+        "situation": "Your winger is cycling behind the net with the puck. Your other winger is at the far post. D-man is at the point. The opposing D is tracking the cycle. Where should you position yourself?",
+        "question": "What's the best spot for you as the cycle develops?",
+        "correct_feedback": "The 'bumper' or high slot position is gold during a cycle. You're open for one-timers, you can distribute to the point, and you keep the D honest in the middle. Too many players crowd the net or go low — hold your water in the slot.",
+        "incorrect_feedback": "Find the soft ice. During a cycle, the bumper position (high slot between the circles) is where you belong. You've got net front covered by your other winger — they need someone in the middle. That's you."
     },
     {
         "id": "module4-scenario3",
-        "folder": "module4-scenario3-soft-ice",
-        "situation": "You're in the left circle with the puck, 30 feet from goal. Decent angle. But a trailer is moving into the slot with a better scoring chance — there's a defender between you and him though. One second to decide.",
-        "question": "What drives your shoot-or-pass decision?",
-        "correct_feedback": "Shot selection is about expected goal value. If your pass gets through and he's one-timing from the slot, that's higher probability. But if the defender is in the lane, YOU take the play. Read what's open.",
-        "incorrect_feedback": "Not quite. Always shoot from the circle — that's your job."
+        "folder": "module4-soft-ice",
+        "situation": "Your D has the puck at the point. There's traffic in the middle of the ice — you're currently sandwiched between two defenders. The far side high slot is open. What should you do?",
+        "question": "How do you get yourself open for a scoring chance?",
+        "correct_feedback": "When you're covered, don't stand still — find the soft ice. Sliding to the open space gives your D-man a shooting lane and puts you in one-timer position. Fighting through traffic just makes their job easier. Move to where the defense isn't.",
+        "incorrect_feedback": "Find the open ice. You're in traffic — nobody can get you the puck there. The far side high slot is wide open. Slide over there and suddenly you're a threat for a one-timer. Great offensive players don't stand in crowds. They find soft ice."
     },
     {
         "id": "module4-scenario4",
-        "folder": "module4-scenario4-backdoor",
-        "situation": "Your team has possession at the point. A shot is coming and you're positioned 12 feet in front of the goalie. You want to make his job harder — but the refs are watching for interference.",
-        "question": "How do you screen effectively without getting called?",
-        "correct_feedback": "A legal screen is presence without interference. Occupy space, be a big body, let the goalie see your number on your back — but don't hook, lean, or tie up his arms. The ref will let it go if you're playing the puck.",
-        "incorrect_feedback": "Not quite. Lean on the goalie's pads to feel where he's moving."
+        "folder": "module4-backdoor",
+        "situation": "Your winger has the puck on the strong side half wall. Both opposing D have cheated toward the puck. The far post/backdoor is wide open. You're currently in the middle of the slot. What's your move?",
+        "question": "How do you capitalize on the defensive overcommit?",
+        "correct_feedback": "Great anticipation. When the D overcommits to the puck side, the backdoor opens up. That's an easy goal if you time it right — sneak to the far post and you'll get a tap-in. This is about reading the defense, not just the puck.",
+        "incorrect_feedback": "Read the defense. Both D cheated to the strong side — the backdoor is wide open. Don't go where the defense already is. Sneak to the far post and your winger can slide it across for an easy finish."
     },
     {
         "id": "module4-scenario5",
-        "folder": "module4-scenario5-screen-tip",
-        "situation": "You're the winger on the weak side. Your center is driving hard toward the net, pulling the defenseman with him. The puck carrier on the perimeter is looking around. That leaves you wide open on the back door.",
-        "question": "What tells you the back-door pass is coming to you?",
-        "correct_feedback": "Back-door isn't a set play — it's reading movement. If the center's drive pulls the defender and the puck carrier can see you're open, that's your cue. Don't cheat early — read and react.",
-        "incorrect_feedback": "Not quite. The defenseman loses sight of you."
+        "folder": "module4-screen-tip",
+        "situation": "Your D is winding up for a point shot. Your winger is fighting at the net front. There's a clear shooting lane. You're positioned below the shot line. What should you do?",
+        "question": "How do you maximize the scoring chance on this point shot?",
+        "correct_feedback": "That's high-IQ offense. A tip changes everything. The goalie is set for a shot from the point — a deflection changes the angle and speed completely. Get in the lane, stick on the ice, and redirect it. Your winger's already screening. You tip.",
+        "incorrect_feedback": "Your winger already has the screen covered. What the goalie can't handle is a tip that changes the angle. Get into the shooting lane with your stick on the ice. A good tip is almost impossible to save."
     },
     {
         "id": "module4-scenario6",
-        "folder": "module4-scenario6-high-slot",
-        "situation": "You're at the point with the puck. Opposing D-men are converging to block. A forward is screening in front of the net, another is crashing for rebounds. You need to get this shot through.",
-        "question": "What's your best tactic to get the puck to the net?",
-        "correct_feedback": "Low shots through traffic beat defenders more than high ones. Your screener can deflect it, the goalie can't see it, and if it gets through there's a rebound. Let it rip low and hard.",
-        "incorrect_feedback": "Not quite. Shoot high to beat the defenders."
+        "folder": "module4-high-slot",
+        "situation": "Your winger is down low and spots you open in the high slot. He's about to pass it to you. The defense has collapsed low. You'll have time and space. What's your play when you receive the puck?",
+        "question": "You receive the pass in the high slot with time. What do you do?",
+        "correct_feedback": "Shooters shoot. When you have time in the slot, the answer is almost always shoot. High slot shots with traffic in front are how you score. The defense collapsed low — they gave you that lane. Don't give it back by over-passing.",
+        "incorrect_feedback": "Take the shot. You've got time and a lane in the high slot — that's a prime scoring area. Over-passing from here is a common mistake. The defense gave you space. Use it. Put it on net."
     },
     {
         "id": "module4-scenario7",
-        "folder": "module4-scenario7-ozone-turnover",
-        "situation": "Your team dumps the puck in deep during an offensive push. It's a race for the loose puck behind the net. The opposing D is closer but has his back turned. You're coming from a different angle.",
-        "question": "What's your best move to win this puck battle?",
-        "correct_feedback": "You don't need to reach the puck first — you need to own the space. Get your body in his path, make him change direction, then attack the puck. Positioning and angling beats raw speed.",
-        "incorrect_feedback": "Not quite. Go for the puck directly — fastest player wins."
+        "folder": "module4-ozone-turnover",
+        "situation": "Your team just turned the puck over in the offensive zone. The opposing D has it behind their net and their forward is already breaking out. Your D got caught up ice. What's your immediate responsibility?",
+        "question": "The puck is turned over. What do you do first?",
+        "correct_feedback": "Two-way hockey. When the puck turns over, your first job is to get back through the middle. The center takes the most dangerous ice. Your D got caught — you need to be the first man back. Backcheck hard through the middle, then pick up responsibility. That's how you prevent odd-man rushes.",
+        "incorrect_feedback": "Get back first. On turnovers, the center's first job is to sprint back through the middle. Forechecking after a turnover usually just takes you out of the play. Get back, protect the slot, then sort out assignments."
     },
     # Module 5: Forechecking (8 scenarios)
     {
         "id": "module5-scenario1",
-        "folder": "module5-scenario1-f1-angle",
-        "situation": "The opposing D just picked up the puck in their zone. Your first forechecker (F1) is already pressuring high. You're coming in as the second wave. You need to pick a lane and execute.",
-        "question": "As the second forward in a 1-2-2, what's your primary responsibility?",
-        "correct_feedback": "In a 1-2-2, you're NOT chasing F1. You pick your lane — usually the far D — and own that space. You take away the escape pass. Simple structure, huge difference in execution.",
-        "incorrect_feedback": "Not quite. Follow F1 and double-team the puck carrier."
+        "folder": "module5-f1-angle",
+        "situation": "You're F1 entering the zone on the forecheck. The D has the puck behind their net. Their other D is on the far side. F2 is trailing you on the weak side. What angle do you take?",
+        "question": "How do you approach the puck carrier?",
+        "correct_feedback": "Take away their best option — the D-to-D pass. By arcing toward his strong side, you force him to go the other way where F2 is waiting. That's how you dictate the play instead of just chasing.",
+        "incorrect_feedback": "Don't just skate at the puck — skate to take away options. If you arc toward his strong side, you take away the D-to-D pass and force him toward F2. Forechecking is about angles, not straight lines."
     },
     {
         "id": "module5-scenario2",
-        "folder": "module5-scenario2-f1-f2-read",
-        "situation": "Puck is loose in the opposing zone after a dump-in. You sense the opposing team is tired and disorganized — slow line change, sloppy passes. Two of your forwards are already in deep.",
-        "question": "When should you commit to a 2-1-2 (two forecheckers) instead of a standard 1-2-2?",
-        "correct_feedback": "A 2-1-2 is higher risk — you're gambling on creating a turnover before they regroup. Use it when you have evidence: they're gassed, they're sloppy. Read the room, then attack.",
-        "incorrect_feedback": "Not quite. Every time the puck is loose in their zone."
+        "folder": "module5-f1-f2-read",
+        "situation": "Your winger entered the zone first and is forechecking hard on the D. You're the second forward in. The D still has the puck but F1 is closing fast. What's your role?",
+        "question": "As the second forward in, what's your job?",
+        "correct_feedback": "F2 supports the forecheck by taking away outlets. Your job isn't to join the puck battle — it's to cut off passing lanes. F1 pressures, you take the high lane. If they're forced into a bad play, you're there to intercept.",
+        "incorrect_feedback": "When someone else is F1, you're F2 — your job is different. Take the high lane, cut off the D-to-D or the outlet pass. If you double team, the whole weak side opens up. F2 supports by taking away options, not chasing the puck."
     },
     {
         "id": "module5-scenario3",
-        "folder": "module5-scenario3-pressure-contain",
-        "situation": "An opposing D is exiting their zone with the puck, heading toward center ice. You're the closest forechecker. He can cut to the middle or go wide. You have one job: make his decision for him.",
-        "question": "How do you angle the puck carrier as the first forechecker?",
-        "correct_feedback": "The middle of the ice is the most dangerous — speed, passing lanes, attack angles. You angle him to the board where ice is tight and support can converge. You're herding him into traffic.",
-        "incorrect_feedback": "Not quite. Skate directly at him to force an immediate decision."
+        "folder": "module5-pressure-contain",
+        "situation": "You're F1 and got deep fast, but your teammates are still coming through the neutral zone. The D has the puck and is looking to move it. No F2 support yet. Do you attack or contain?",
+        "question": "What's the right play without support?",
+        "correct_feedback": "Without support, you contain — not attack. Take away time and space while your teammates catch up. If you commit and miss, they're gone the other way 3-on-2. Contain, angle, and wait for F2. Then you can attack together.",
+        "incorrect_feedback": "Don't overcommit. When you don't have support, contain is the play. Attacking 1-on-1 without backup is how you give up odd-man rushes. Buy time, and once F2 is in position, then you can pressure."
     },
     {
         "id": "module5-scenario4",
-        "folder": "module5-scenario4-angling",
-        "situation": "Your forechecker (F1) just engaged the puck carrier on the boards in the opposing zone. The puck is still being battled for. You're F2 — do you go high to cut off the breakout, or stay low to help?",
-        "question": "How do you read where to position as the second forechecker?",
-        "correct_feedback": "F1 is steering the play one direction — watch where he's pushing pressure. If F1 sends it toward the boards, you go high on that side to cut the exit. If F1 keeps it low, you support the battle. Follow the structure.",
-        "incorrect_feedback": "Not quite. Always go high to cut off the outlet pass."
+        "folder": "module5-angling",
+        "situation": "The opposing D is trying to skate the puck through the neutral zone. F2 is positioned along the boards. You're tracking the puck carrier. How do you steer him?",
+        "question": "What's the best angle to take on the puck carrier?",
+        "correct_feedback": "Angling is about steering them where you want — not just chasing. By coming from outside to inside, you force him to the boards where F2 is waiting. Now it's 2-on-1 instead of a foot race.",
+        "incorrect_feedback": "Don't just skate at him — steer him. Arc from outside to inside so you take away the middle and force him to the boards. F2 is waiting there. Angling makes forechecking a team play, not a solo mission."
     },
     {
         "id": "module5-scenario5",
-        "folder": "module5-scenario5-read-breakout",
-        "situation": "Two of your forwards are deep in the offensive zone forechecking hard. The opposing team just cleared the puck to their point. Your forecheckers won't get there in time. Where are you?",
-        "question": "What's the role of the third man high in a forecheck?",
-        "correct_feedback": "The third man high is your insurance policy and breakout disruptor. You're high enough to read the play, close enough to pressure an exit. If they clear it cleanly, you're already positioned for transition.",
-        "incorrect_feedback": "Not quite. Rush back to help defensively."
+        "folder": "module5-read-breakout",
+        "situation": "F1 is pressuring the D who has the puck behind the net. The D's head is up and he's looking to hit their forward on the weak side wall. You see the pass coming. What do you do?",
+        "question": "You've read the breakout pass. How do you respond?",
+        "correct_feedback": "When you read the pass, jump the lane. Either you intercept it or you're first on the receiver. That's how you turn their breakout into a turnover. Trust your read — if you see it, attack it.",
+        "incorrect_feedback": "You saw the pass coming — that's the read. Now act on it. Cheat toward that lane — if you intercept, you're in alone. If you don't, you're still first to the receiver. Great forecheckers anticipate."
     },
     {
         "id": "module5-scenario6",
-        "folder": "module5-scenario6-loose-puck",
-        "situation": "Your team is heading into the offensive zone but the D is set up tight at the blue line. You decide to dump it in. The key: WHERE you dump it determines whether your forecheck can recover it.",
-        "question": "What's the critical factor in a successful dump-and-chase?",
-        "correct_feedback": "Dump location creates chase advantage. Dump it behind the net on the strong side and now THEY have to make a cross-ice play — that's when you intercept. You're dumping to create geometry, not just throwing it away.",
-        "incorrect_feedback": "Not quite. Dump it in as hard as possible so they can't clear it."
+        "folder": "module5-loose-puck",
+        "situation": "A pass got broken up and there's a loose puck along the boards. Both you and the opposing D are racing for it — it's a true 50/50. F2 is behind you as support. How do you approach this battle?",
+        "question": "What's the best way to win this 50/50 puck battle?",
+        "correct_feedback": "Puck battles are won with body position, not just sticks. Get inside, seal him off with your body, then collect the puck. Skating in to scoop it usually means you get hit and lose it. Body first, puck second.",
+        "incorrect_feedback": "50/50 battles are about positioning. Get your body between him and the puck first. Seal him off, then work the puck. If you try to scoop it without establishing position, he'll just take your body and the puck."
     },
     {
         "id": "module5-scenario7",
-        "folder": "module5-scenario7-turnover-transition",
-        "situation": "You're forechecking hard in the opposing zone. The puck battle is going and then — turnover! The puck is suddenly loose, your linemate scoops it. Now it's YOUR possession in THEIR zone. The switch happens in half a second.",
-        "question": "When you gain possession during a forecheck, what's your immediate read?",
-        "correct_feedback": "A turnover during a forecheck is a gift. Their defense is scattered, their forwards are out of position. You don't play conservatively — you attack. One touch, eyes up, shoot or pass to the soft spot.",
-        "incorrect_feedback": "Not quite. Continue pressuring defensively — don't change mindset."
+        "folder": "module5-turnover-transition",
+        "situation": "Your forecheck just won the puck! F2 stripped the D and fed it to you in the slot area. The opposing D are scrambling and their goalie just got a new angle on you. What do you do with the puck?",
+        "question": "The forecheck created a turnover. What's the play?",
+        "correct_feedback": "When the forecheck creates a turnover, ATTACK. The D are scrambling, the goalie's not set — this is exactly when you shoot. Waiting lets them recover. Quick shot, get it to the net, good things happen in chaos.",
+        "incorrect_feedback": "Don't let them reset. Turnovers are dangerous because of the chaos — don't give them time to recover. Quick shot when the goalie and D are scrambling. Over-passing lets them get back in position."
     },
     {
         "id": "module5-scenario8",
-        "folder": "module5-scenario8-f2-gassed",
-        "situation": "You're running a standard 1-2-2 forecheck, but the opponent is handling your pressure easily. Calm D-men, clean breakouts. Your guys are chasing ghosts and burning energy.",
-        "question": "How do you adjust forecheck pressure to stay effective?",
-        "correct_feedback": "Forecheck isn't an on-off switch — it's a throttle. When they're playing with poise, don't waste energy chasing. When they start looking sloppy — THAT'S when you lean on them. It's chess, not anger.",
-        "incorrect_feedback": "Not quite. Keep the same pressure all game — intensity is consistency."
+        "folder": "module5-f2-gassed",
+        "situation": "Your team just dumped the puck in and you're the first forward (F1) arriving on the forecheck. You glance back and see your F2 is clearly gassed — they're coasting and way behind the play. Your F3 is covering high. Their D has the puck behind the net and is looking to make a play. Your F2 is gassed and late. How do you approach this forecheck?",
+        "question": "F2 is late. How do you forecheck?",
+        "correct_feedback": "This is the smart play when you're short support. Take a good angle, eliminate the strong-side option, and funnel the puck somewhere predictable. You're not trying to win the puck — you're trying to slow them down until F2 recovers or F3 can help. Make them earn their breakout instead of giving them a free odd-man rush.",
+        "incorrect_feedback": "I love the compete, but you're gambling. If you go all-in and the D makes one good pass, you're completely out of the play and your tired F2 can't bail you out. You've just turned a manageable situation into a 2-on-1 the other way. Controlled pressure is the play here."
     },
     # Module 6: D-Zone for Defensemen (7 scenarios)
     {
         "id": "module6-scenario1",
-        "folder": "module6-scenario1-gap-control",
-        "situation": "An opposing forward is carrying the puck up ice with speed. You're the last D back. He's on his strong side with the puck on his forehand. You need to decide how much space to surrender.",
-        "question": "What determines the right gap on a 1-on-1 rush?",
-        "correct_feedback": "A forward on his strong side is in his wheelhouse — tighter gap. On his weak side, he has to work harder for that shot, so you can play deeper. You're reading his advantage, not just his speed.",
-        "incorrect_feedback": "Not quite. Always give space until he hits the slot."
+        "folder": "module6-gap-control",
+        "situation": "2-on-2 rush coming at you. The forward has the puck in the neutral zone with speed. Your partner is covering the trailer. You're currently at your own blue line. What do you do with your gap?",
+        "question": "How do you manage your gap on this rush?",
+        "correct_feedback": "Close gap in the NZ, then match speed backward. You want to take away his time and space without overcommitting. Skating up to close gap, then pivoting and skating backward with him keeps you in control.",
+        "incorrect_feedback": "Waiting at the blue line gives him too much ice. The right play is to skate forward and close that gap around the red line, then match his speed skating backward. You dictate the terms, not him."
     },
     {
         "id": "module6-scenario2",
-        "folder": "module6-scenario2-puck-retrieval",
-        "situation": "Your team has the puck cycling in the offensive zone. You're at the point watching the play develop. There's a loose puck along the boards — you could jump down and keep possession. But the opposing center is lurking, looking for a transition.",
-        "question": "What's the key indicator that you should NOT pinch?",
-        "correct_feedback": "A pinch only works if you KNOW you're covered. If you can't account for their fast guys or your partner is out of position, stay home. A turnover against a pinching D is an odd-man rush the other way.",
-        "incorrect_feedback": "Not quite. If the opposing center is anywhere near your zone."
+        "folder": "module6-puck-retrieval",
+        "situation": "They dumped it into your corner. You're going back to retrieve it but F1 is forechecking hard on your tail. Your winger is on the wall as an outlet, D partner at the far post. What's your play?",
+        "question": "You get to the puck first with pressure coming. What do you do?",
+        "correct_feedback": "Shoulder check, then quick up the wall. Your winger is the outlet — use him. Don't give the forechecker time to pin you. Check your shoulder so you know what's coming, then get it up quick and clean.",
+        "incorrect_feedback": "With pressure on your back, you need to get it out fast. Your winger is open on the wall. Going behind the net gives the forechecker time to close and set up their forecheck. Quick up to your winger."
     },
     {
         "id": "module6-scenario3",
-        "folder": "module6-scenario3-d-to-d",
-        "situation": "Scramble in front of your net. Two opposing forwards are in tight — one has planted himself in the crease. Your goalie is fighting for sight lines. The puck is loose in the high slot.",
-        "question": "What's your responsibility when an opponent is camped in your crease?",
-        "correct_feedback": "You own that space. A player set up in your paint is scoring on any puck that gets through. Be physical, be direct, move him. Your goalie needs a clean office.",
-        "incorrect_feedback": "Not quite. Let the goalie handle it — it's his territory."
+        "folder": "module6-d-to-d",
+        "situation": "You have the puck behind your net. F1 is coming but not on you yet. Your D partner is open on the far post, but F2 is sitting in the high slot watching that passing lane. Do you go D-to-D?",
+        "question": "Your partner looks open. What's the read?",
+        "correct_feedback": "F2 is sitting in that D-to-D lane — that pass gets picked off. Just because your partner looks open doesn't mean the pass is there. Go up the wall to the winger instead. Live to fight another day.",
+        "incorrect_feedback": "Your partner might look open, but F2 is reading that pass. A picked-off D-to-D in your own zone is a Grade A chance against. Don't force it — go up the wall to the winger. Safe and effective."
     },
     {
         "id": "module6-scenario4",
-        "folder": "module6-scenario4-net-front-battle",
-        "situation": "Your team is under pressure in the D-zone. You have the puck. Your partner is on the other side, open. But there's a forward between you who could intercept a cross-ice pass. A winger is also available up the wall.",
-        "question": "What's the higher-percentage outlet?",
-        "correct_feedback": "It's situational. D-to-D in open ice is great. D-to-D through a forward is a turnover in the slot. Going up the wall cleanly works. Scanning in real time — that's a veteran read.",
-        "incorrect_feedback": "Not quite. Always go D-to-D across the ice for security."
+        "folder": "module6-net-front-battle",
+        "situation": "They're cycling in your zone. Their D has the puck at the point and is looking to shoot. Their forward is parked at your net front, trying to screen and get position for tips/rebounds. How do you handle him?",
+        "question": "Shot is coming from the point. What's your priority?",
+        "correct_feedback": "Inside position is everything. Get your body between him and the net, stick on his stick so he can't tip it. Your goalie needs to see the shot — that's his job. Your job is making sure their guy can't touch it.",
+        "incorrect_feedback": "Net front battles are won with position. Get inside — body between him and the net, stick on his stick. Don't try to block the shot yourself. Own that crease with your positioning."
     },
     {
         "id": "module6-scenario5",
-        "folder": "module6-scenario5-when-to-pinch",
-        "situation": "The opposing team is working the puck on the perimeter in your zone. They're looking for a pass through the middle to the slot. You can see the lane opening. Your partner is already engaged. You need to collapse without leaving the weak side exposed.",
-        "question": "How do you block a passing lane without getting outmaneuvered?",
-        "correct_feedback": "You're reading the passer's INTENT. Watch his eyes, his shoulders — when you see the commitment, THEN you collapse. Move too early and he has an outlet. It's a timing game.",
-        "incorrect_feedback": "Not quite. Skate directly into the lane and plant yourself."
+        "folder": "module6-when-to-pinch",
+        "situation": "You're at the point in the O-zone. A pass just bounced off the boards and there's a loose puck. Their winger is going for it, but you're closer. Your center is reading the play and can cover if needed. Do you pinch?",
+        "question": "50/50 puck on the wall — pinch or stay home?",
+        "correct_feedback": "This is when you pinch — you have a good angle, you're closer, and your center is reading the play. If you win it, you keep possession. If you lose it, your center covers. That's smart, supported aggression.",
+        "incorrect_feedback": "This is a good time to pinch. You have support from your center, you're closer to the puck, and the risk is low. Staying home when you have support is leaving offense on the table. Pinch with purpose when you have a safety net."
     },
     {
         "id": "module6-scenario6",
-        "folder": "module6-scenario6-first-pass",
-        "situation": "The opposing team is transitioning through the neutral zone with possession. You're a D with the option to step up and pressure the puck carrier before he gains your zone, or hang back and let your forwards pressure him first.",
-        "question": "When should you step up and attack in the neutral zone?",
-        "correct_feedback": "Stepping up is aggressive, and aggression fails without the read. If you step and miss, he has a free lane into your zone. Step when you see slow hands, a committed direction, or a bad pass. Controlled aggression.",
-        "incorrect_feedback": "Not quite. Always step up to keep them out of your zone."
+        "folder": "module6-first-pass",
+        "situation": "Heavy forecheck. F1 is on you, F2 is taking away the pass to your partner. You have the puck but no time and no clean pass up the middle. What's your play?",
+        "question": "Under pressure with no clean pass. What do you do?",
+        "correct_feedback": "When there's no play, get it out. A hard rim around the boards gets it to your winger and gets you out of trouble. No turnovers in your own zone. Rim it hard and clean — let them chase it.",
+        "incorrect_feedback": "Don't force it. Under pressure with no play? Get it out. Trying to make something happen is how turnovers in your own zone happen. Rim it hard around the boards to the far side. Live to fight another day."
     },
     {
         "id": "module6-scenario7",
-        "folder": "module6-scenario7-zone-coverage",
-        "situation": "A winger just beat you along the boards. He's got speed and possession heading toward your goal line. Your first instinct is panic — but you've got inside positioning and he hasn't shot yet.",
-        "question": "What's your recovery play after getting beaten to the outside?",
-        "correct_feedback": "When you're beat, recovery is about geometry, not chasing. Sprint to get between him and the scoring areas. He's got the perimeter but you own the inside. He'll have to make a difficult pass or take a low-percentage shot.",
-        "incorrect_feedback": "Not quite. Chase him from behind for a poke check."
-    }
+        "folder": "module6-zone-coverage",
+        "situation": "They're cycling down low. Your partner has the strong side. You're the weak side D. There's a forward in the high slot and one lurking on your side. What's your coverage responsibility?",
+        "question": "As the weak side D, what's your primary responsibility?",
+        "correct_feedback": "Weak side D owns the front of the net and the weak side. Don't chase the puck — your partner has that. You're responsible for anyone crashing the net or sneaking in from your side. Stay home, stay patient, be the wall.",
+        "incorrect_feedback": "The weak side D doesn't chase. Your job is protecting the net front and your side of the ice. If you leave, you open up the backdoor and slot. Let your partner handle the puck battle — you handle anyone who comes near the net."
+    },
 ]
 
 
-async def generate_audio_for_scenario(scenario):
+async def generate_audio_for_scenario(scenario, force=False):
     """Generate audio files for a single scenario."""
     scenario_id = scenario["id"]
     folder = scenario["folder"]
@@ -396,8 +398,8 @@ async def generate_audio_for_scenario(scenario):
     for filename, text in clips.items():
         filepath = scenario_path / filename
 
-        # Skip if already exists
-        if filepath.exists():
+        # Skip if already exists (unless --force)
+        if filepath.exists() and not force:
             print(f"  ✓ {filename} (already exists)")
             continue
 
@@ -414,19 +416,26 @@ async def generate_audio_for_scenario(scenario):
 
 async def main():
     """Generate all audio files."""
+    # Check for --force flag
+    force = "--force" in sys.argv
+
     print("=" * 70)
     print("Puck Academy Hockey IQ - Audio Regeneration")
     print("=" * 70)
     print(f"Voice: {VOICE}")
     print(f"Audio base path: {AUDIO_BASE_PATH}")
     print(f"Total scenarios: {len(SCENARIOS)}")
+    if force:
+        print("Mode: FORCE REGENERATE (all files will be overwritten)")
+    else:
+        print("Mode: SKIP EXISTING (use --force to regenerate all)")
     print("=" * 70)
     print()
 
     # Process each scenario
     for i, scenario in enumerate(SCENARIOS, 1):
         print(f"[{i}/{len(SCENARIOS)}] ", end="")
-        await generate_audio_for_scenario(scenario)
+        await generate_audio_for_scenario(scenario, force=force)
         print()
 
     print("=" * 70)
