@@ -9,30 +9,31 @@ export const module6Scenarios: Scenario[] = [
     scenarioNum: 1,
     totalInModule: 7,
     title: 'Gap Control on the Rush',
-    coachCue: "Gap isn't one size. On his strong side he's dangerous — play tighter. On his weak side he has to work for the shot — you can give a little more space.",
+    coachCue: "Close gap in the neutral zone, then match speed backward. You want to take away his time and space without overcommitting. Skating up to close gap, then pivoting keeps you in control.",
     introSlides: [
-      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
-      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
-      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+      { title: 'Defense Starts With Position', body: '"As a D-man, you\'re the last line before the goalie. Your job isn\'t to make highlight hits — it\'s to take away time and space, make the right first play, and keep the puck out of the net."' },
+      { title: 'Gap Is Everything', body: '"Too much gap? They walk around you. Too tight? They blow by you. The right gap depends on speed, support, and where you are on the ice."' },
+      { title: 'First Play, Best Play', body: '"When you get the puck, you need to know your options before it arrives. Quick, smart decisions start the breakout — hesitation leads to turnovers."' }
     ],
-    situation: 'An opposing forward is carrying the puck up ice with speed. You\'re the last D back. He\'s on his strong side with the puck on his forehand. You need to decide how much space to surrender.',
-    question: 'What determines the right gap on a 1-on-1 rush?',
+    situation: '2-on-2 rush coming at you. The forward has the puck in the neutral zone with speed. Your partner is covering the trailer. You\'re currently at your own blue line. What do you do with your gap?',
+    question: 'How do you manage your gap on this rush?',
     answers: [
-      { text: 'Tighter gap when he\'s on his strong side; more space if he\'s on his weak side and has to work harder', correct: true, feedback: 'A forward on his strong side is in his wheelhouse — tighter gap. On his weak side, he has to work harder for that shot, so you can play deeper. You\'re reading his advantage, not just his speed.' },
-      { text: 'Always give space until he hits the slot', correct: false, feedback: 'If you give a skilled forward that much free ice, he\'ll walk in and pick his spot. Adjust your gap to his handedness and angle.' },
-      { text: 'Back up to the goal line', correct: false, feedback: 'Way too much ice surrendered. He\'ll have time and space to pick you apart. Play the gap based on the matchup.' },
-      { text: 'Skate at him immediately to force a decision', correct: false, feedback: 'If he makes one move, you\'re beaten clean. Controlled gap based on reading his hands and angle is smarter.' }
+      { text: 'Skate forward to close gap at the red line, then match his speed backward', correct: true, feedback: 'Close gap in the NZ, then match speed backward. You want to take away his time and space without overcommitting. Skating up to close gap, then pivoting and skating backward with him keeps you in control.' },
+      { text: 'Stay at the blue line and wait for him to come to you', correct: false, feedback: 'Waiting at the blue line gives him too much ice. The right play is to skate forward and close that gap around the red line, then match his speed skating backward. You dictate the terms, not him.' },
+      { text: 'Challenge him at the red line and go for the hit', correct: false, feedback: 'Going for a hit is gambling. If he makes one move you\'re out of the play and it\'s a breakaway. Close the gap, then match speed — stay in control.' },
+      { text: 'Back up quickly to protect the slot', correct: false, feedback: 'Backing up gives him all the ice in the world. Close the gap first, then retreat with him. You need to take away his time and space, not surrender it.' }
     ],
     diagram: {
       zone: 'neutral',
       players: [
-        { type: 'you', x: 70, y: 42, note: 'You (D) — last man back' },
-        { type: 'opponent', x: 110, y: 30, label: 'F', note: 'Driving strong side', targetX: 50, targetY: 35 },
-        { type: 'teammate', x: 85, y: 60, label: 'D', note: 'Partner — far side' },
+        { type: 'you', x: 55, y: 42, note: 'You (D) — at blue line', targetX: 80, targetY: 42 },
+        { type: 'opponent', x: 110, y: 30, label: 'F', note: 'Driving with speed', targetX: 50, targetY: 35 },
+        { type: 'teammate', x: 60, y: 55, label: 'D', note: 'Partner — covering trailer' },
         { type: 'opponent', x: 120, y: 55, label: 'W', note: 'Trailing support' }
       ],
       puck: { x: 112, y: 30 },
       arrows: [
+        { from: { x: 55, y: 42 }, to: { x: 80, y: 42 }, style: 'solid', label: 'Close gap' },
         { from: { x: 110, y: 30 }, to: { x: 50, y: 35 }, style: 'solid', label: 'Rush' }
       ],
       annotations: []
@@ -46,39 +47,38 @@ export const module6Scenarios: Scenario[] = [
     moduleId: 6,
     scenarioNum: 2,
     totalInModule: 7,
-    title: 'Pinching vs Staying Home',
-    coachCue: "Before you pinch, ask: where's my partner? Where are their fast guys? If you can't answer both, stay home. A bad pinch is an odd-man rush the other way.",
+    title: 'Puck Retrieval Under Pressure',
+    coachCue: "Shoulder check, then quick up the wall. Your winger is the outlet — use him. Don\'t give the forechecker time to pin you. Check your shoulder so you know what\'s coming, then get it up quick and clean.",
     introSlides: [
-      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
-      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
-      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+      { title: 'Defense Starts With Position', body: '"As a D-man, you\'re the last line before the goalie. Your job isn\'t to make highlight hits — it\'s to take away time and space, make the right first play, and keep the puck out of the net."' },
+      { title: 'Gap Is Everything', body: '"Too much gap? They walk around you. Too tight? They blow by you. The right gap depends on speed, support, and where you are on the ice."' },
+      { title: 'First Play, Best Play', body: '"When you get the puck, you need to know your options before it arrives. Quick, smart decisions start the breakout — hesitation leads to turnovers."' }
     ],
-    situation: 'Your team has the puck cycling in the offensive zone. You\'re at the point watching the play develop. There\'s a loose puck along the boards — you could jump down and keep possession. But the opposing center is lurking, looking for a transition.',
-    question: 'What\'s the key indicator that you should NOT pinch?',
+    situation: 'They dumped it into your corner. You\'re going back to retrieve it but F1 is forechecking hard on your tail. Your winger is on the wall as an outlet, D partner at the far post. What\'s your play?',
+    question: 'You get to the puck first with pressure coming. What do you do?',
     answers: [
-      { text: 'You can\'t see where their transition threats are, OR your partner isn\'t positioned to cover', correct: true, feedback: 'A pinch only works if you KNOW you\'re covered. If you can\'t account for their fast guys or your partner is out of position, stay home. A turnover against a pinching D is an odd-man rush the other way.' },
-      { text: 'If the opposing center is anywhere near your zone', correct: false, feedback: 'Their center being in the area isn\'t automatically a no-pinch. It depends on where he is relative to your partner. Read the full picture.' },
-      { text: 'If the puck is more than 40 feet from their goal', correct: false, feedback: 'Distance from the goal doesn\'t determine pinch safety. It\'s about coverage and transition risk.' },
-      { text: 'If your forwards are all below the goal line', correct: false, feedback: 'Forward positioning below the goal line actually makes it SAFER to pinch — they can recover if you turn it over. The question is about your partner and their threats.' }
+      { text: 'Shoulder check, then quick up the boards to your winger', correct: true, feedback: 'Shoulder check, then quick up the wall. Your winger is the outlet — use him. Don\'t give the forechecker time to pin you. Check your shoulder so you know what\'s coming, then get it up quick and clean.' },
+      { text: 'Stop and reverse it behind the net to your partner', correct: false, feedback: 'With pressure on your back, you need to get it out fast. Your winger is open on the wall. Going behind the net gives the forechecker time to close and set up their forecheck. Quick up to your winger.' },
+      { text: 'Carry it behind the net to buy time', correct: false, feedback: 'Carrying it behind the net with F1 on your tail is risky. You could get pinned. Your winger is the clean outlet — shoulder check and get it up the wall.' },
+      { text: 'Rim it hard around the boards', correct: false, feedback: 'Rimming it is a 50/50 play at best. Your winger is open on the wall — that\'s a clean, controlled breakout. Use your outlet.' }
     ],
     diagram: {
-      zone: 'offensive',
+      zone: 'defensive',
       players: [
-        { type: 'you', x: 140, y: 30, note: 'You (D) — considering pinch' },
-        { type: 'teammate', x: 148, y: 55, label: 'D', note: 'Partner' },
-        { type: 'teammate', x: 180, y: 65, label: 'F', note: 'Cycling' },
-        { type: 'opponent', x: 160, y: 42, label: 'C', note: 'Transition threat' },
-        { type: 'opponent', x: 155, y: 22, label: 'W', note: 'Position unclear' }
+        { type: 'you', x: 8, y: 65, note: 'You (D) — retrieving', targetX: 8, targetY: 65 },
+        { type: 'opponent', x: 22, y: 60, label: 'F', note: 'F1 — forechecking hard', targetX: 10, targetY: 65 },
+        { type: 'teammate', x: 30, y: 72, label: 'W', note: 'Winger — wall outlet' },
+        { type: 'teammate', x: 15, y: 25, label: 'D', note: 'Partner — far post' }
       ],
-      puck: { x: 185, y: 55 },
+      puck: { x: 8, y: 65 },
       arrows: [
-        { from: { x: 140, y: 30 }, to: { x: 175, y: 50 }, style: 'dashed', label: 'Pinch?' },
-        { from: { x: 160, y: 42 }, to: { x: 100, y: 42 }, style: 'dashed', label: 'Counter if turnover' }
+        { from: { x: 8, y: 65 }, to: { x: 30, y: 72 }, style: 'solid', label: 'Quick up wall' },
+        { from: { x: 22, y: 60 }, to: { x: 10, y: 65 }, style: 'solid', label: 'F1 pressure' }
       ],
       annotations: []
     },
-    gameContext: { period: 1, teamScore: 1, oppScore: 0, timeLeft: '7:30' },
-    audioFolder: 'module6-pinch-decision',
+    gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '12:30' },
+    audioFolder: 'module6-puck-retrieval',
     nextScenarioId: 'module6-scenario3'
   },
   {
@@ -86,37 +86,39 @@ export const module6Scenarios: Scenario[] = [
     moduleId: 6,
     scenarioNum: 3,
     totalInModule: 7,
-    title: 'Clearing the Crease',
-    coachCue: "Your crease, your responsibility. A guy camped in the paint is a tip, screen, and rebound threat. Move him. Your goalie needs a clean office.",
+    title: 'D-to-D Decision',
+    coachCue: "Just because your partner looks open doesn\'t mean the pass is there. F2 sitting in that lane means the D-to-D gets picked off. Read the whole ice — go up the wall instead.",
     introSlides: [
-      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
-      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
-      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+      { title: 'Defense Starts With Position', body: '"As a D-man, you\'re the last line before the goalie. Your job isn\'t to make highlight hits — it\'s to take away time and space, make the right first play, and keep the puck out of the net."' },
+      { title: 'Gap Is Everything', body: '"Too much gap? They walk around you. Too tight? They blow by you. The right gap depends on speed, support, and where you are on the ice."' },
+      { title: 'First Play, Best Play', body: '"When you get the puck, you need to know your options before it arrives. Quick, smart decisions start the breakout — hesitation leads to turnovers."' }
     ],
-    situation: 'Scramble in front of your net. Two opposing forwards are in tight — one has planted himself in the crease. Your goalie is fighting for sight lines. The puck is loose in the high slot.',
-    question: 'What\'s your responsibility when an opponent is camped in your crease?',
+    situation: 'You have the puck behind your net. F1 is coming but not on you yet. Your D partner is open on the far post, but F2 is sitting in the high slot watching that passing lane. Do you go D-to-D?',
+    question: 'Your partner looks open. What\'s the read?',
     answers: [
-      { text: 'Physically move him out — your crease, your responsibility', correct: true, feedback: 'You own that space. A player set up in your paint is scoring on any puck that gets through. Be physical, be direct, move him. Your goalie needs a clean office.' },
-      { text: 'Let the goalie handle it — it\'s his territory', correct: false, feedback: 'Your goalie shouldn\'t have to fight a forward AND make saves. That\'s YOUR job. Clear the body, let the goalie see the puck.' },
-      { text: 'Only clear him if he has the puck', correct: false, feedback: 'A player without the puck in your crease is just as dangerous — he\'s a tip, screen, and rebound threat. Get him out regardless.' },
-      { text: 'Focus on the loose puck instead', correct: false, feedback: 'If you leave a guy camped in the crease while chasing the puck, any shot is a high-danger chance. Clear the body first.' }
+      { text: 'Don\'t force the D-to-D — F2 is in the lane, go up the wall to the winger instead', correct: true, feedback: 'F2 is sitting in that D-to-D lane — that pass gets picked off. Just because your partner looks open doesn\'t mean the pass is there. Go up the wall to the winger instead. Live to fight another day.' },
+      { text: 'Move it D-to-D — he\'s open and it changes the point of attack', correct: false, feedback: 'Your partner might look open, but F2 is reading that pass. A picked-off D-to-D in your own zone is a Grade A chance against. Don\'t force it — go up the wall to the winger. Safe and effective.' },
+      { text: 'Carry it yourself out the strong side', correct: false, feedback: 'Carrying it with F1 coming is risky. You have a clean outlet up the wall to your winger. Use it.' },
+      { text: 'Wait behind the net for a better option to develop', correct: false, feedback: 'Waiting gives F1 time to close on you. You already have a good option — the winger on the wall. Make the play.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'you', x: 18, y: 48, note: 'You (D) — clear the crease' },
-        { type: 'opponent', x: 15, y: 40, label: 'F', note: 'Camped in crease' },
-        { type: 'opponent', x: 28, y: 52, label: 'F', note: 'In close' },
-        { type: 'teammate', x: 30, y: 35, label: 'D', note: 'Partner' }
+        { type: 'you', x: 12, y: 42, note: 'You (D) — behind net' },
+        { type: 'teammate', x: 12, y: 22, label: 'D', note: 'Partner — far post' },
+        { type: 'opponent', x: 25, y: 48, label: 'F', note: 'F1 — coming' },
+        { type: 'opponent', x: 28, y: 35, label: 'F', note: 'F2 — sitting in lane' },
+        { type: 'teammate', x: 30, y: 68, label: 'W', note: 'Winger on wall' }
       ],
-      puck: { x: 35, y: 42 },
+      puck: { x: 12, y: 42 },
       arrows: [
-        { from: { x: 35, y: 42 }, to: { x: 12, y: 42 }, style: 'dashed', label: 'Shot threat' }
+        { from: { x: 12, y: 42 }, to: { x: 12, y: 22 }, style: 'dashed', label: 'D-to-D? NO — F2 in lane' },
+        { from: { x: 12, y: 42 }, to: { x: 30, y: 68 }, style: 'solid', label: 'Up the wall' }
       ],
       annotations: []
     },
-    gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '4:15' },
-    audioFolder: 'module6-clear-crease',
+    gameContext: { period: 2, teamScore: 0, oppScore: 1, timeLeft: '8:15' },
+    audioFolder: 'module6-d-to-d',
     nextScenarioId: 'module6-scenario4'
   },
   {
@@ -124,39 +126,38 @@ export const module6Scenarios: Scenario[] = [
     moduleId: 6,
     scenarioNum: 4,
     totalInModule: 7,
-    title: 'D-to-D Under Pressure',
-    coachCue: "D-to-D is great when the lane is clean. If there's a forward in the lane, that's a turnover in the slot. Read the traffic — sometimes the wall is the safe play.",
+    title: 'Net Front Battle',
+    coachCue: "Inside position is everything. Get your body between him and the net, stick on his stick so he can\'t tip it. Your goalie needs to see the shot — your job is making sure their guy can\'t touch it.",
     introSlides: [
-      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
-      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
-      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+      { title: 'Defense Starts With Position', body: '"As a D-man, you\'re the last line before the goalie. Your job isn\'t to make highlight hits — it\'s to take away time and space, make the right first play, and keep the puck out of the net."' },
+      { title: 'Gap Is Everything', body: '"Too much gap? They walk around you. Too tight? They blow by you. The right gap depends on speed, support, and where you are on the ice."' },
+      { title: 'First Play, Best Play', body: '"When you get the puck, you need to know your options before it arrives. Quick, smart decisions start the breakout — hesitation leads to turnovers."' }
     ],
-    situation: 'Your team is under pressure in the D-zone. You have the puck. Your partner is on the other side, open. But there\'s a forward between you who could intercept a cross-ice pass. A winger is also available up the wall.',
-    question: 'What\'s the higher-percentage outlet?',
+    situation: 'They\'re cycling in your zone. Their D has the puck at the point and is looking to shoot. Their forward is parked at your net front, trying to screen and get position for tips/rebounds. How do you handle him?',
+    question: 'Shot is coming from the point. What\'s your priority?',
     answers: [
-      { text: 'Read the positioning: if the lane to your partner is clean, D-to-D; if traffic is thick, go up the wall', correct: true, feedback: 'It\'s situational. D-to-D in open ice is great. D-to-D through a forward is a turnover in the slot. Going up the wall cleanly works. Scanning in real time — that\'s a veteran read.' },
-      { text: 'Always go D-to-D across the ice for security', correct: false, feedback: 'D-to-D through traffic is one of the most dangerous turnovers in hockey — it happens right in the slot. Read the lane first.' },
-      { text: 'Always push it up the wall', correct: false, feedback: 'The wall isn\'t always open either. Sometimes D-to-D is the better play. Read both options and pick the safest one.' },
-      { text: 'Pass to the goalie and reset', correct: false, feedback: 'That\'s a last resort, not a first option. You have outlets available — make a read and execute.' }
+      { text: 'Get inside position and box him out — stick on his stick, body between him and the net', correct: true, feedback: 'Inside position is everything. Get your body between him and the net, stick on his stick so he can\'t tip it. Your goalie needs to see the shot — that\'s his job. Your job is making sure their guy can\'t touch it.' },
+      { text: 'Block the shot — get in front of it', correct: false, feedback: 'Net front battles are won with position. Get inside — body between him and the net, stick on his stick. Don\'t try to block the shot yourself. Own that crease with your positioning.' },
+      { text: 'Push him hard into the goalie to disrupt everyone', correct: false, feedback: 'Pushing him into the goalie is goaltender interference on YOU. Get inside position — body between him and net, stick on his stick. Control the net front cleanly.' },
+      { text: 'Let the goalie see the shot and focus on clearing the rebound', correct: false, feedback: 'Your goalie seeing the shot means nothing if their guy is free to tip it. Get inside position, stick on his stick, and take away the deflection. That\'s the highest-danger play.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'you', x: 30, y: 55, note: 'You (D) — under pressure' },
-        { type: 'teammate', x: 30, y: 25, label: 'D', note: 'Partner — open' },
-        { type: 'opponent', x: 32, y: 42, label: 'F', note: 'In the lane' },
-        { type: 'teammate', x: 55, y: 68, label: 'W', note: 'Wall outlet' },
-        { type: 'opponent', x: 38, y: 55, label: 'F', note: 'Pressuring you', targetX: 30, targetY: 55 }
+        { type: 'you', x: 15, y: 42, note: 'You (D) — own the crease' },
+        { type: 'opponent', x: 18, y: 38, label: 'F', note: 'Camped at net front' },
+        { type: 'opponent', x: 40, y: 42, label: 'D', note: 'Point — about to shoot' },
+        { type: 'teammate', x: 30, y: 55, label: 'D', note: 'Partner' },
+        { type: 'teammate', x: 35, y: 30, label: 'F', note: 'Covering high' }
       ],
-      puck: { x: 30, y: 55 },
+      puck: { x: 40, y: 42 },
       arrows: [
-        { from: { x: 30, y: 55 }, to: { x: 30, y: 25 }, style: 'dashed', label: 'D-to-D?' },
-        { from: { x: 30, y: 55 }, to: { x: 55, y: 68 }, style: 'dashed', label: 'Up wall?' }
+        { from: { x: 40, y: 42 }, to: { x: 10, y: 42 }, style: 'dashed', label: 'Shot coming' }
       ],
       annotations: []
     },
-    gameContext: { period: 2, teamScore: 0, oppScore: 1, timeLeft: '12:40' },
-    audioFolder: 'module6-d-to-d',
+    gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '4:15' },
+    audioFolder: 'module6-net-front-battle',
     nextScenarioId: 'module6-scenario5'
   },
   {
@@ -164,38 +165,38 @@ export const module6Scenarios: Scenario[] = [
     moduleId: 6,
     scenarioNum: 5,
     totalInModule: 7,
-    title: 'Blocking Passing Lanes',
-    coachCue: "They're working the perimeter to open the slot. You see the lane opening. Collapse to take it away — but don't leave the weak side exposed. One step at a time.",
+    title: 'When to Pinch',
+    coachCue: "This is when you pinch — you have a good angle, you\'re closer, and your center is reading the play. If you win it, you keep possession. If you lose it, your center covers. Smart, supported aggression.",
     introSlides: [
-      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
-      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
-      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+      { title: 'Defense Starts With Position', body: '"As a D-man, you\'re the last line before the goalie. Your job isn\'t to make highlight hits — it\'s to take away time and space, make the right first play, and keep the puck out of the net."' },
+      { title: 'Gap Is Everything', body: '"Too much gap? They walk around you. Too tight? They blow by you. The right gap depends on speed, support, and where you are on the ice."' },
+      { title: 'First Play, Best Play', body: '"When you get the puck, you need to know your options before it arrives. Quick, smart decisions start the breakout — hesitation leads to turnovers."' }
     ],
-    situation: 'The opposing team is working the puck on the perimeter in your zone. They\'re looking for a pass through the middle to the slot. You can see the lane opening. Your partner is already engaged. You need to collapse without leaving the weak side exposed.',
-    question: 'How do you block a passing lane without getting outmaneuvered?',
+    situation: 'You\'re at the point in the O-zone. A pass just bounced off the boards and there\'s a loose puck. Their winger is going for it, but you\'re closer. Your center is reading the play and can cover if needed. Do you pinch?',
+    question: '50/50 puck on the wall — pinch or stay home?',
     answers: [
-      { text: 'Play the passer\'s eyes and body — collapse only when you see the pass being committed', correct: true, feedback: 'You\'re reading the passer\'s INTENT. Watch his eyes, his shoulders — when you see the commitment, THEN you collapse. Move too early and he has an outlet. It\'s a timing game.' },
-      { text: 'Skate directly into the lane and plant yourself', correct: false, feedback: 'If you commit to the lane early, the passer sees you and finds another option. Stay dynamic, read intent, then react.' },
-      { text: 'Stay in your position and let the goalie read the pass', correct: false, feedback: 'You can prevent the pass from happening at all. Don\'t make your goalie do extra work — take away the option.' },
-      { text: 'Chase the intended receiver instead', correct: false, feedback: 'Chasing the receiver means you\'re reacting to THEIR play. Blocking the lane means you\'re dictating what they can\'t do.' }
+      { text: 'Pinch — you\'re closer, your center has your back if you miss', correct: true, feedback: 'This is when you pinch — you have a good angle, you\'re closer, and your center is reading the play. If you win it, you keep possession. If you lose it, your center covers. That\'s smart, supported aggression.' },
+      { text: 'Stay at the point — too risky, let the forwards battle for it', correct: false, feedback: 'This is a good time to pinch. You have support from your center, you\'re closer to the puck, and the risk is low. Staying home when you have support is leaving offense on the table. Pinch with purpose when you have a safety net.' },
+      { text: 'Wait and see who gets there first', correct: false, feedback: 'Hesitation loses 50/50 pucks. You\'re closer AND you have coverage. Go get it.' },
+      { text: 'Skate back to the blue line to prevent a breakaway', correct: false, feedback: 'Way too cautious for this situation. Your center is covering. You\'re closer to the puck. Pinch and keep possession alive.' }
     ],
     diagram: {
-      zone: 'defensive',
+      zone: 'offensive',
       players: [
-        { type: 'you', x: 35, y: 42, note: 'You (D) — reading passer' },
-        { type: 'opponent', x: 45, y: 60, label: 'F', note: 'Puck carrier — looking middle' },
-        { type: 'opponent', x: 25, y: 38, label: 'F', note: 'Slot target' },
-        { type: 'teammate', x: 30, y: 58, label: 'D', note: 'Partner — engaged' },
-        { type: 'opponent', x: 50, y: 22, label: 'W', note: 'Weak side' }
+        { type: 'you', x: 140, y: 25, note: 'You (D) — at point, closer' },
+        { type: 'opponent', x: 160, y: 18, label: 'W', note: 'Going for loose puck' },
+        { type: 'teammate', x: 155, y: 42, label: 'C', note: 'Center — reading, can cover' },
+        { type: 'teammate', x: 148, y: 55, label: 'D', note: 'Partner' },
+        { type: 'teammate', x: 180, y: 60, label: 'W', note: 'Cycling low' }
       ],
-      puck: { x: 45, y: 60 },
+      puck: { x: 155, y: 15 },
       arrows: [
-        { from: { x: 45, y: 60 }, to: { x: 25, y: 38 }, style: 'dashed', label: 'Pass to slot threat' }
+        { from: { x: 140, y: 25 }, to: { x: 155, y: 15 }, style: 'solid', label: 'Pinch — you\'re closer' }
       ],
       annotations: []
     },
-    gameContext: { period: 3, teamScore: 3, oppScore: 2, timeLeft: '6:00' },
-    audioFolder: 'module6-blocking-lanes',
+    gameContext: { period: 1, teamScore: 1, oppScore: 0, timeLeft: '7:30' },
+    audioFolder: 'module6-when-to-pinch',
     nextScenarioId: 'module6-scenario6'
   },
   {
@@ -203,39 +204,38 @@ export const module6Scenarios: Scenario[] = [
     moduleId: 6,
     scenarioNum: 6,
     totalInModule: 7,
-    title: 'Stepping Up in the Neutral Zone',
-    coachCue: "You can step up and pressure before he gains the zone — or hang back and let your forwards pressure first. The read: do you have support? Is the timing right?",
+    title: 'First Pass Under Pressure',
+    coachCue: "When there\'s no play, get it out. A hard rim around the boards gets it to your winger and gets you out of trouble. No turnovers in your own zone. Rim it hard and clean — let them chase it.",
     introSlides: [
-      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
-      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
-      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+      { title: 'Defense Starts With Position', body: '"As a D-man, you\'re the last line before the goalie. Your job isn\'t to make highlight hits — it\'s to take away time and space, make the right first play, and keep the puck out of the net."' },
+      { title: 'Gap Is Everything', body: '"Too much gap? They walk around you. Too tight? They blow by you. The right gap depends on speed, support, and where you are on the ice."' },
+      { title: 'First Play, Best Play', body: '"When you get the puck, you need to know your options before it arrives. Quick, smart decisions start the breakout — hesitation leads to turnovers."' }
     ],
-    situation: 'The opposing team is transitioning through the neutral zone with possession. You\'re a D with the option to step up and pressure the puck carrier before he gains your zone, or hang back and let your forwards pressure him first.',
-    question: 'When should you step up and attack in the neutral zone?',
+    situation: 'Heavy forecheck. F1 is on you, F2 is taking away the pass to your partner. You have the puck but no time and no clean pass up the middle. What\'s your play?',
+    question: 'Under pressure with no clean pass. What do you do?',
     answers: [
-      { text: 'Only when you have a high degree of certainty you\'ll separate him from the puck', correct: true, feedback: 'Stepping up is aggressive, and aggression fails without the read. If you step and miss, he has a free lane into your zone. Step when you see slow hands, a committed direction, or a bad pass. Controlled aggression.' },
-      { text: 'Always step up to keep them out of your zone', correct: false, feedback: 'If you step up on every entry and miss once, you\'re giving up odd-man rushes. Be selective.' },
-      { text: 'Never step up — let the forwards handle it', correct: false, feedback: 'Sometimes the D stepping up is the most disruptive play available. Don\'t be passive — be smart about when you attack.' },
-      { text: 'Step up on skilled players to disrupt them early', correct: false, feedback: 'Skilled players are actually the HARDEST to step up on — they make you pay for mistakes. Step up based on your READ, not their reputation.' }
+      { text: 'Rim it hard around the boards to the far winger', correct: true, feedback: 'When there\'s no play, get it out. A hard rim around the boards gets it to your winger and gets you out of trouble. No turnovers in your own zone. Rim it hard and clean — let them chase it.' },
+      { text: 'Try to beat F1 with a move and create space', correct: false, feedback: 'Don\'t force it. Under pressure with no play? Get it out. Trying to make something happen is how turnovers in your own zone happen. Rim it hard around the boards to the far side. Live to fight another day.' },
+      { text: 'Force the pass through to your partner anyway', correct: false, feedback: 'F2 is sitting in that lane — forcing it through is a turnover in the slot. That\'s the most dangerous play in hockey. Rim it out.' },
+      { text: 'Go back to the goalie and reset', correct: false, feedback: 'That\'s a last resort, not a first option. You have an outlet — rim it hard around the boards to your far winger. Clean and effective.' }
     ],
     diagram: {
-      zone: 'neutral',
+      zone: 'defensive',
       players: [
-        { type: 'you', x: 80, y: 42, note: 'You (D) — deciding' },
-        { type: 'opponent', x: 108, y: 42, label: 'F', note: 'Puck carrier — entering NZ', targetX: 70, targetY: 42 },
-        { type: 'teammate', x: 72, y: 55, label: 'D', note: 'Partner' },
-        { type: 'teammate', x: 95, y: 30, label: 'F', note: 'Backcheck' },
-        { type: 'opponent', x: 115, y: 25, label: 'W', note: 'Support' },
-        { type: 'opponent', x: 115, y: 60, label: 'W', note: 'Support' }
+        { type: 'you', x: 15, y: 58, note: 'You (D) — under pressure' },
+        { type: 'opponent', x: 22, y: 55, label: 'F', note: 'F1 — on you' },
+        { type: 'opponent', x: 25, y: 35, label: 'F', note: 'F2 — blocking D-to-D' },
+        { type: 'teammate', x: 15, y: 25, label: 'D', note: 'Partner — cut off' },
+        { type: 'teammate', x: 55, y: 18, label: 'W', note: 'Far winger' }
       ],
-      puck: { x: 108, y: 42 },
+      puck: { x: 15, y: 58 },
       arrows: [
-        { from: { x: 108, y: 42 }, to: { x: 70, y: 42 }, style: 'solid', label: 'Entry attempt' }
+        { from: { x: 15, y: 58 }, to: { x: 5, y: 68 }, style: 'solid', label: 'Rim hard around boards' }
       ],
       annotations: []
     },
-    gameContext: { period: 2, teamScore: 2, oppScore: 1, timeLeft: '10:15' },
-    audioFolder: 'module6-stepping-up',
+    gameContext: { period: 2, teamScore: 0, oppScore: 1, timeLeft: '12:40' },
+    audioFolder: 'module6-first-pass',
     nextScenarioId: 'module6-scenario7'
   },
   {
@@ -243,38 +243,38 @@ export const module6Scenarios: Scenario[] = [
     moduleId: 6,
     scenarioNum: 7,
     totalInModule: 7,
-    title: 'Recovery After Being Beaten Wide',
-    coachCue: "He beat you wide — panic is the worst move. You still have inside position. Don't chase his back; stay between him and the net and close the gap.",
+    title: 'Zone Coverage — Weak Side D',
+    coachCue: "Weak side D owns the front of the net and the weak side. Don\'t chase the puck — your partner has that. Stay home, stay patient, be the wall.",
     introSlides: [
-      { title: 'D-Zone for Defensemen', body: '"As a D, you own the gap, the crease, and the lanes. Forwards support — you control the middle and the net front."' },
-      { title: 'Gap and Angles', body: '"Rush defense: read his hands and angle. Strong side, tight. Weak side, more room. Don\'t charge — contain."' },
-      { title: 'Pinch and Recovery', body: '"When to pinch? When you know you\'re covered. When to stay? When their transition threats are loose or your partner isn\'t home."' }
+      { title: 'Defense Starts With Position', body: '"As a D-man, you\'re the last line before the goalie. Your job isn\'t to make highlight hits — it\'s to take away time and space, make the right first play, and keep the puck out of the net."' },
+      { title: 'Gap Is Everything', body: '"Too much gap? They walk around you. Too tight? They blow by you. The right gap depends on speed, support, and where you are on the ice."' },
+      { title: 'First Play, Best Play', body: '"When you get the puck, you need to know your options before it arrives. Quick, smart decisions start the breakout — hesitation leads to turnovers."' }
     ],
-    situation: 'A winger just beat you along the boards. He\'s got speed and possession heading toward your goal line. Your first instinct is panic — but you\'ve got inside positioning and he hasn\'t shot yet.',
-    question: 'What\'s your recovery play after getting beaten to the outside?',
+    situation: 'They\'re cycling down low. Your partner has the strong side. You\'re the weak side D. There\'s a forward in the high slot and one lurking on your side. What\'s your coverage responsibility?',
+    question: 'As the weak side D, what\'s your primary responsibility?',
     answers: [
-      { text: 'Sprint to get inside position between him and the net — cut off the interior lane', correct: true, feedback: 'When you\'re beat, recovery is about geometry, not chasing. Sprint to get between him and the scoring areas. He\'s got the perimeter but you own the inside. He\'ll have to make a difficult pass or take a low-percentage shot.' },
-      { text: 'Chase him from behind for a poke check', correct: false, feedback: 'Chasing from behind rarely works against a fast winger. You\'re always a step late. Get inside and take away the dangerous areas instead.' },
-      { text: 'Back up toward the goal line to take away a wraparound', correct: false, feedback: 'The wraparound isn\'t the immediate threat — the cut to the net is. Get inside first, then worry about where he goes.' },
-      { text: 'Call for help from your partner', correct: false, feedback: 'Your partner should already be reading the play. Focus on what YOU can do — recover your inside positioning.' }
+      { text: 'Stay in your zone — front of the net, eyes on the weak side forward and slot', correct: true, feedback: 'Weak side D owns the front of the net and the weak side. Don\'t chase the puck — your partner has that. You\'re responsible for anyone crashing the net or sneaking in from your side. Stay home, stay patient, be the wall.' },
+      { text: 'Go help your partner with the puck carrier', correct: false, feedback: 'The weak side D doesn\'t chase. Your job is protecting the net front and your side of the ice. If you leave, you open up the backdoor and slot. Let your partner handle the puck battle — you handle anyone who comes near the net.' },
+      { text: 'Go out and challenge the high slot forward', correct: false, feedback: 'Challenging the slot forward takes you away from the net front. If the puck comes across while you\'re out of position, it\'s an easy goal. Stay home and own your zone.' },
+      { text: 'Pinch to the corner to create a 2-on-1 on the puck', correct: false, feedback: 'Pinching from the weak side leaves the entire net front and backdoor open. That\'s the most dangerous ice on the rink. Stay home.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'you', x: 45, y: 18, note: 'You (D) — beaten wide', targetX: 20, targetY: 30 },
-        { type: 'opponent', x: 35, y: 12, label: 'W', note: 'Beat you with speed', targetX: 10, targetY: 20 },
-        { type: 'teammate', x: 35, y: 55, label: 'D', note: 'Partner' },
-        { type: 'teammate', x: 50, y: 42, label: 'F', note: 'Backchecking' }
+        { type: 'you', x: 18, y: 35, note: 'You (D) — weak side' },
+        { type: 'teammate', x: 25, y: 60, label: 'D', note: 'Partner — strong side' },
+        { type: 'opponent', x: 30, y: 65, label: 'F', note: 'Cycling down low' },
+        { type: 'opponent', x: 35, y: 42, label: 'F', note: 'High slot' },
+        { type: 'opponent', x: 22, y: 25, label: 'F', note: 'Lurking your side' }
       ],
-      puck: { x: 35, y: 12 },
+      puck: { x: 30, y: 65 },
       arrows: [
-        { from: { x: 35, y: 12 }, to: { x: 10, y: 20 }, style: 'solid', label: 'Winger driving' },
-        { from: { x: 45, y: 18 }, to: { x: 20, y: 30 }, style: 'dashed', label: 'Recovery — get inside' }
+        { from: { x: 30, y: 65 }, to: { x: 22, y: 25 }, style: 'dashed', label: 'Cross-ice threat' }
       ],
       annotations: []
     },
-    gameContext: { period: 3, teamScore: 2, oppScore: 3, timeLeft: '1:45' },
-    audioFolder: 'module6-recovery',
+    gameContext: { period: 3, teamScore: 3, oppScore: 2, timeLeft: '1:45' },
+    audioFolder: 'module6-zone-coverage',
     nextScenarioId: null
   }
 ];

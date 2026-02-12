@@ -1,6 +1,8 @@
 import type { Scenario } from '../scenarios';
 
 // Module 2: Faceoffs — 7 scenarios
+// RESTORED from original HTML scenarios. These teach faceoff TECHNIQUE for centers:
+// reading the ref, leverage, forehand/backhand decisions, competitive edges, adaptation.
 // Faceoff dots: D-zone (35,25)/(35,60), O-zone (165,25)/(165,60), NZ (80,25)/(80,60)/(120,25)/(120,60), Center (100,42.5)
 export const module2Scenarios: Scenario[] = [
   {
@@ -8,42 +10,40 @@ export const module2Scenarios: Scenario[] = [
     moduleId: 2,
     scenarioNum: 1,
     totalInModule: 7,
-    title: 'D-Zone Faceoff Positioning',
-    coachCue: "On a D-zone draw, your first job is coverage. Know who you're responsible for — and if they like to crash the net, be tight.",
+    title: 'Reading the Ref Position',
+    coachCue: "Before every draw, look at the linesman. The way they lean tells you where the puck is going. Use that to decide forehand or backhand.",
     introSlides: [
-      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
-      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
-      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+      { title: 'Faceoffs Are Chess, Not Checkers', body: '"Winning the draw is about preparation, reads, and leverage \u2014 not just quick hands."' },
+      { title: 'Read Before You React', body: '"Watch the linesman\'s body position. If they\'re leaning toward your side, they\'ll likely drop the puck closer to you \u2014 so attack with your forehand. Your forehand = the side where your stick blade naturally faces when you hold it."' },
+      { title: 'Win the Possession, Not Just the Draw', body: '"A \u201Cwon\u201D faceoff that goes to the other team isn\'t a win. Know where you\'re putting it."' }
     ],
-    situation: 'Defensive zone faceoff at the left dot. You\'re the left winger. Your center is about to take the draw. The opposing right winger is aggressive and likes to crash the net hard after every draw.',
-    question: 'Where should you position yourself on this defensive zone faceoff?',
+    situation: 'Defensive zone faceoff to the goalie\'s left. You\'re a left-handed shot (your forehand is to your right as you face the opponent). Notice how the linesman (LM) is positioned \u2014 their body is angled slightly toward YOUR side. When a linesman leans this way, they tend to drop the puck more toward that side, giving you a cleaner angle to attack with your forehand. The opposing center is a righty, set up low with a strong backhand grip.',
+    question: 'How should you approach this faceoff?',
     answers: [
-      { text: 'Stay tight on the opposing winger to prevent him from crashing the net', correct: true, feedback: 'In a D-zone faceoff, your primary job as a winger is coverage. Shadow the opposing forward on your side. If the draw is lost, he doesn\'t get a free run at your net. Coverage first, breakout second.' },
-      { text: 'Move to the hash marks to be ready for a quick breakout', correct: false, feedback: 'If you abandon your man early, you\'re giving the opposing winger a free lane to the net. Coverage comes before offensive opportunities in the D-zone.' },
-      { text: 'Back up to the goal line to protect the crease', correct: false, feedback: 'Too deep. Your D-men handle crease protection. You\'re responsible for checking the opposing forward before he gets to the danger areas.' },
-      { text: 'Position yourself near the blue line to intercept a clearing pass', correct: false, feedback: 'Way too far from your assignment. If they win the draw back, you\'re out of the play. Stay close to your man.' }
+      { text: 'Go backhand \u2014 it\'s your stronger move', correct: false, feedback: 'The ref position matters more than you think. When the ref is on your forehand side, that\'s your advantage \u2014 going forehand gives you a cleaner line to the puck. Don\'t fight your natural preference for no reason, but when the situation favors a different approach, adapt. That\'s smart hockey.' },
+      { text: 'Tie up the opposing center and let your winger retrieve', correct: false, feedback: 'The ref position matters more than you think. When the ref is on your forehand side, that\'s your advantage \u2014 going forehand gives you a cleaner line to the puck. Don\'t fight your natural preference for no reason, but when the situation favors a different approach, adapt. That\'s smart hockey.' },
+      { text: 'Go forehand \u2014 the ref position gives you the angle advantage', correct: true, feedback: 'When the ref is on your forehand side, going forehand gives you a cleaner line to the puck. Fighting your natural preference based on the situation is what separates good faceoff guys from great ones. You read the ref, adjusted your approach, and put yourself in the best position to win.' },
+      { text: 'Cheat forward to win it clean to the corner', correct: false, feedback: 'The ref position matters more than you think. When the ref is on your forehand side, that\'s your advantage \u2014 going forehand gives you a cleaner line to the puck. Don\'t fight your natural preference for no reason, but when the situation favors a different approach, adapt. That\'s smart hockey.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'you', x: 42, y: 15, note: 'You (LW)' },
-        { type: 'teammate', x: 35, y: 25, label: 'C', note: 'Taking the draw' },
-        { type: 'teammate', x: 42, y: 35, label: 'RW', note: 'Right winger' },
-        { type: 'teammate', x: 22, y: 15, label: 'D', note: 'Left D' },
-        { type: 'teammate', x: 22, y: 35, label: 'D', note: 'Right D' },
-        { type: 'opponent', x: 48, y: 15, label: 'RW', note: 'Aggressive — crashes net' },
-        { type: 'opponent', x: 35, y: 25, label: 'C', note: 'Opposing center' },
-        { type: 'opponent', x: 48, y: 35, label: 'LW', note: 'Left forward' }
+        { type: 'you', x: 30, y: 25, note: 'You (C) \u2014 left shot' },
+        { type: 'opponent', x: 40, y: 25, label: 'C', note: 'Opposing center \u2014 right shot' },
+        { type: 'teammate', x: 25, y: 15, label: 'W', note: 'Winger support' },
+        { type: 'teammate', x: 25, y: 38, label: 'D', note: 'D-man' },
       ],
       puck: { x: 35, y: 25 },
-      ref: { x: 35, y: 20, label: 'REF' },
+      ref: { x: 32, y: 17, label: 'LM' },
       arrows: [
-        { from: { x: 48, y: 15 }, to: { x: 18, y: 38 }, style: 'dashed', label: 'Net crash threat' }
+        { from: { x: 32, y: 19 }, to: { x: 28, y: 23 }, style: 'dashed', label: 'LM leaning your way' }
       ],
-      annotations: []
+      annotations: [
+        { x: 44, y: 18, text: 'YOUR FOREHAND SIDE \u2192' }
+      ]
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '15:30' },
-    audioFolder: 'module2-faceoff-dzone',
+    audioFolder: 'module2-scenario1-ref-position',
     nextScenarioId: 'module2-scenario2'
   },
   {
@@ -51,42 +51,38 @@ export const module2Scenarios: Scenario[] = [
     moduleId: 2,
     scenarioNum: 2,
     totalInModule: 7,
-    title: 'O-Zone Faceoff — One-Timer Setup',
-    coachCue: "When your D has a one-timer from the point, you're the relay. Be where the puck is going — receive the draw, get it to the point, then get to the net.",
+    title: 'Recognizing Who Has the Advantage',
+    coachCue: "Same-handed matchups come down to one thing: linesman position. If the ref is on your backhand, you\'re fighting uphill. Know it before the puck drops.",
     introSlides: [
-      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
-      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
-      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+      { title: 'Faceoffs Are Chess, Not Checkers', body: '"Winning the draw is about preparation, reads, and leverage \u2014 not just quick hands."' },
+      { title: 'Read Before You React', body: '"Watch the linesman\'s body position. If they\'re leaning toward your side, they\'ll likely drop the puck closer to you \u2014 so attack with your forehand."' },
+      { title: 'Win the Possession, Not Just the Draw', body: '"A \u201Cwon\u201D faceoff that goes to the other team isn\'t a win. Know where you\'re putting it."' }
     ],
-    situation: 'Offensive zone faceoff at the right dot. Your left D has a bomb from the point and is set up for a one-timer. If your center wins the draw back cleanly, the scoring chance is there immediately.',
-    question: 'Where should you position yourself to maximize scoring chances?',
+    situation: 'Neutral zone faceoff. You\'re a left-shot center. The opposing center is also left-shot. The linesman\'s body angle is leaning toward you, giving your opponent a cleaner line to the puck on his forehand.',
+    question: 'Who has the advantage here?',
     answers: [
-      { text: 'Stay at the faceoff dot ready to receive a quick pass and relay to the point', correct: true, feedback: 'Perfect. You\'re right where the puck is going. Receive the draw, quick relay to the point for the one-timer. You\'re also close to the net for a rebound.' },
-      { text: 'Move immediately to the net front to screen the goalie', correct: false, feedback: 'Good instinct, but you\'re too far from the puck. If your center wins it, you need to be in the relay chain. Get to the net AFTER the shot.' },
-      { text: 'Skate toward the goal line to tie up the defenseman', correct: false, feedback: 'You\'re abandoning the scoring area. The goal line is too far from where chances develop on an O-zone draw.' },
-      { text: 'Back off to avoid being offside if the puck goes back', correct: false, feedback: 'You\'re already legally deep in the zone. Backing off wastes your positioning advantage. Stay aggressive.' }
+      { text: 'You do \u2014 home team always has advantage', correct: false, feedback: 'When both centers are the same handedness, it\'s all about linesman position. The linesman is on your backhand side, which means his forehand has a cleaner angle. That\'s his advantage. Knowing this before the puck drops lets you adjust \u2014 tie-up, counter move, or positioning change. Awareness is everything.' },
+      { text: 'The other center \u2014 linesman position favors his forehand', correct: true, feedback: 'Same-handed matchups come down to linesman position. If the linesman is on your backhand, you\'re fighting uphill. Recognize this early and adjust your approach \u2014 go for a tie-up, cheat your positioning, or try a quick forehand counter. Knowing you\'re at a disadvantage is the first step to overcoming it.' },
+      { text: 'It\'s even \u2014 both left-shots cancel out', correct: false, feedback: 'When both centers are the same handedness, it\'s all about linesman position. The linesman is on your backhand side, which means his forehand has a cleaner angle. That\'s his advantage. Knowing this before the puck drops lets you adjust \u2014 tie-up, counter move, or positioning change. Awareness is everything.' },
+      { text: 'You do \u2014 you can read his stick better', correct: false, feedback: 'When both centers are the same handedness, it\'s all about linesman position. The linesman is on your backhand side, which means his forehand has a cleaner angle. That\'s his advantage. Knowing this before the puck drops lets you adjust \u2014 tie-up, counter move, or positioning change. Awareness is everything.' }
     ],
     diagram: {
-      zone: 'offensive',
+      zone: 'neutral',
       players: [
-        { type: 'you', x: 158, y: 60, note: 'You (RW) — at dot' },
-        { type: 'teammate', x: 165, y: 60, label: 'C', note: 'Taking the draw' },
-        { type: 'teammate', x: 158, y: 42, label: 'LW', note: 'Left winger' },
-        { type: 'teammate', x: 140, y: 20, label: 'D', note: 'One-timer ready!' },
-        { type: 'teammate', x: 140, y: 65, label: 'D', note: 'Right point' },
-        { type: 'opponent', x: 165, y: 60, label: 'C', note: 'Opposing center' },
-        { type: 'opponent', x: 172, y: 42, label: 'LW', note: 'Cheating boards' }
+        { type: 'you', x: 96, y: 42, note: 'You (C) \u2014 left shot' },
+        { type: 'opponent', x: 104, y: 42, label: 'C', note: 'Opposing center \u2014 also left shot' },
       ],
-      puck: { x: 165, y: 60 },
-      ref: { x: 165, y: 55, label: 'REF' },
+      puck: { x: 100, y: 42.5 },
+      ref: { x: 97, y: 35, label: 'LM' },
       arrows: [
-        { from: { x: 165, y: 60 }, to: { x: 158, y: 60 }, style: 'dashed', label: 'Draw back' },
-        { from: { x: 158, y: 60 }, to: { x: 140, y: 20 }, style: 'dashed', label: 'Relay to point' }
+        { from: { x: 97, y: 37 }, to: { x: 94, y: 40 }, style: 'dashed', label: 'LM leaning your way' }
       ],
-      annotations: []
+      annotations: [
+        { x: 85, y: 52, text: 'Both centers LEFT shot' }
+      ]
     },
-    gameContext: { period: 2, teamScore: 0, oppScore: 0, timeLeft: '8:45' },
-    audioFolder: 'module2-faceoff-ozone',
+    gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '12:00' },
+    audioFolder: 'module2-scenario2-advantage',
     nextScenarioId: 'module2-scenario3'
   },
   {
@@ -94,42 +90,40 @@ export const module2Scenarios: Scenario[] = [
     moduleId: 2,
     scenarioNum: 3,
     totalInModule: 7,
-    title: 'Neutral Zone Faceoff Read',
-    coachCue: "Read the other team's setup before the puck drops. A winger playing high isn't there for the draw — they're there for transition. Be ready.",
+    title: 'When to Cheat Your Feet',
+    coachCue: "Tied game, two minutes left, your team has a set play. The other center is relaxed. This is when you push the limits.",
     introSlides: [
-      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
-      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
-      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+      { title: 'Faceoffs Are Chess, Not Checkers', body: '"Winning the draw is about preparation, reads, and leverage \u2014 not just quick hands."' },
+      { title: 'Read Before You React', body: '"Watch the linesman\'s body position. If they\'re leaning toward your side, they\'ll likely drop the puck closer to you \u2014 so attack with your forehand."' },
+      { title: 'Win the Possession, Not Just the Draw', body: '"A \u201Cwon\u201D faceoff that goes to the other team isn\'t a win. Know where you\'re putting it."' }
     ],
-    situation: 'Neutral zone faceoff. You\'re the center about to take the draw. You notice the opposing winger on your left is positioned very high — almost at the hash marks instead of staying low near the dot.',
-    question: 'What does this opponent positioning tell you?',
+    situation: 'Offensive zone faceoff, tied game, 2 minutes left. Your team runs a set play where the winger crashes the net on the draw. The opposing center looks relaxed and is setting up late.',
+    question: 'What\'s your best approach?',
     answers: [
-      { text: 'They\'re setting up for a quick transition break if they win the draw', correct: true, feedback: 'Excellent read. A high winger in the neutral zone means they want speed in space for a counterattack. Stay aware of passing lanes and be ready to backcheck hard if the draw goes against you.' },
-      { text: 'They\'re setting up a dump-and-chase', correct: false, feedback: 'Dump-and-chase doesn\'t need that high positioning. A high winger indicates they want vertical speed, not horizontal pursuit.' },
-      { text: 'They\'re trying to shade the draw to one side', correct: false, feedback: 'Draw technique is about the center\'s hand placement, not winger positioning. This is about what happens AFTER the draw.' },
-      { text: 'They want to crowd you and win the puck battle', correct: false, feedback: 'If that were the intent, the winger would be low near the dot. High positioning abandons the immediate battle — they\'re thinking transition.' }
+      { text: 'Stay square and go for a clean win \u2014 no risks', correct: false, feedback: 'You have a set play, the game\'s on the line, and the other guy isn\'t focused. This is when you push the limits. Cheat your feet forward \u2014 just enough to get a quicker jump. If the ref sees it, he\'ll tell you. But if you play it safe when you have an advantage, you\'re leaving points on the ice.' },
+      { text: 'Tell the ref the other center isn\'t ready', correct: false, feedback: 'You have a set play, the game\'s on the line, and the other guy isn\'t focused. This is when you push the limits. Cheat your feet forward \u2014 just enough to get a quicker jump. If the ref sees it, he\'ll tell you. But if you play it safe when you have an advantage, you\'re leaving points on the ice.' },
+      { text: 'Change your grip to throw off the opponent', correct: false, feedback: 'You have a set play, the game\'s on the line, and the other guy isn\'t focused. This is when you push the limits. Cheat your feet forward \u2014 just enough to get a quicker jump. If the ref sees it, he\'ll tell you. But if you play it safe when you have an advantage, you\'re leaving points on the ice.' },
+      { text: 'Cheat your feet forward slightly to get a quicker jump on the puck', correct: true, feedback: 'In high-leverage situations where you have a set play, cheating your feet (without getting kicked out) gives you a split-second advantage. If the opposing center is relaxed, make him pay for it. Push the limits until the ref corrects you. That\'s competing. That\'s playing to win.' }
     ],
     diagram: {
-      zone: 'neutral',
+      zone: 'offensive',
       players: [
-        { type: 'you', x: 120, y: 25, note: 'You (C) — at dot' },
-        { type: 'teammate', x: 112, y: 15, label: 'LW', note: 'Left winger' },
-        { type: 'teammate', x: 112, y: 35, label: 'RW', note: 'Right winger' },
-        { type: 'teammate', x: 75, y: 20, label: 'D', note: 'Left D' },
-        { type: 'teammate', x: 75, y: 50, label: 'D', note: 'Right D' },
-        { type: 'opponent', x: 120, y: 25, label: 'C', note: 'Opposing center' },
-        { type: 'opponent', x: 135, y: 12, label: 'LW', note: 'HIGH — transition threat' },
-        { type: 'opponent', x: 128, y: 38, label: 'RW', note: 'Right forward' }
+        { type: 'you', x: 162, y: 25, note: 'You (C) \u2014 at dot' },
+        { type: 'opponent', x: 168, y: 25, label: 'C', note: 'Relaxed, setting up late' },
+        { type: 'teammate', x: 155, y: 18, label: 'W', note: 'Set play: crash net' },
+        { type: 'teammate', x: 145, y: 15, label: 'D', note: 'D at point' },
       ],
-      puck: { x: 120, y: 25 },
-      ref: { x: 120, y: 20, label: 'REF' },
+      puck: { x: 165, y: 25 },
+      ref: { x: 165, y: 19, label: 'LM' },
       arrows: [
-        { from: { x: 135, y: 12 }, to: { x: 80, y: 12 }, style: 'dashed', label: 'Transition threat' }
+        { from: { x: 155, y: 18 }, to: { x: 185, y: 42 }, style: 'dashed', label: 'Set play: crash net' }
       ],
-      annotations: []
+      annotations: [
+        { x: 150, y: 68, text: '2:00 LEFT \u2014 TIED GAME' }
+      ]
     },
-    gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '12:15' },
-    audioFolder: 'module2-faceoff-neutral',
+    gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '2:00' },
+    audioFolder: 'module2-scenario3-cheat-feet',
     nextScenarioId: 'module2-scenario4'
   },
   {
@@ -137,42 +131,36 @@ export const module2Scenarios: Scenario[] = [
     moduleId: 2,
     scenarioNum: 4,
     totalInModule: 7,
-    title: 'Faceoff Loss Recovery',
-    coachCue: "You lost the draw — now it's damage control. The puck is loose and their winger is going for it. Your job: pressure before they get set.",
+    title: 'The Tie-Up Decision',
+    coachCue: "He\'s been beating you clean all game. Doing the same thing harder won\'t change that. When you\'re outmatched, change the approach.",
     introSlides: [
-      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
-      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
-      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+      { title: 'Faceoffs Are Chess, Not Checkers', body: '"Winning the draw is about preparation, reads, and leverage \u2014 not just quick hands."' },
+      { title: 'Read Before You React', body: '"Watch the linesman\'s body position. If they\'re leaning toward your side, they\'ll likely drop the puck closer to you \u2014 so attack with your forehand."' },
+      { title: 'Win the Possession, Not Just the Draw', body: '"A \u201Cwon\u201D faceoff that goes to the other team isn\'t a win. Know where you\'re putting it."' }
     ],
-    situation: 'Your center just lost the D-zone faceoff cleanly. The puck squirted toward the boards. The opposing winger on your side is advancing on it. You\'re the right winger with a chance to affect the outcome before they establish possession.',
-    question: 'What\'s your immediate priority?',
+    situation: 'Defensive zone faceoff. The opposing center is significantly stronger than you and has been winning draws clean all game. Your D-man is shaded toward the boards.',
+    question: 'How do you handle this matchup?',
     answers: [
-      { text: 'Pressure the opposing winger hard — disrupt before they get set up', correct: true, feedback: 'After a faceoff loss, your job is damage control. Immediate pressure disrupts their transition and buys time for your team to organize. Speed and physicality matter here.' },
-      { text: 'Skate back to the net to set up for a likely shot', correct: false, feedback: 'You\'re giving up the chance to influence the play when it matters most. The puck is still loose — contest it.' },
-      { text: 'Fall back to the blue line to prevent an odd-man rush', correct: false, feedback: 'A lost draw doesn\'t automatically lead to a rush if you play the puck aggressively. Contest the immediate possession.' },
-      { text: 'Switch to pick up the opposing center who won the draw', correct: false, feedback: 'You\'re chasing ghosts. Focus on the winger with the loose puck right in front of you. Handle your own responsibility first.' }
+      { text: 'Go for a tie-up and let your winger retrieve', correct: true, feedback: 'When you\'re outmatched physically, winning the faceoff doesn\'t mean winning the puck clean. Tying up the opposing center and letting your support retrieve is a legitimate win. Know your role and set up your teammates. That\'s not giving up \u2014 that\'s playing smart.' },
+      { text: 'Try harder to win it clean \u2014 adjust your grip', correct: false, feedback: 'He\'s been beating you clean all game \u2014 doing the same thing harder won\'t change that. When you\'re outmatched, change the approach. Tie him up, neutralize his strength, and let your winger retrieve. Getting your team the puck is what matters, not how you do it.' },
+      { text: 'Cheat back to recover a lost draw faster', correct: false, feedback: 'He\'s been beating you clean all game \u2014 doing the same thing harder won\'t change that. When you\'re outmatched, change the approach. Tie him up, neutralize his strength, and let your winger retrieve. Getting your team the puck is what matters, not how you do it.' },
+      { text: 'Call for a different centerman to take the draw', correct: false, feedback: 'He\'s been beating you clean all game \u2014 doing the same thing harder won\'t change that. When you\'re outmatched, change the approach. Tie him up, neutralize his strength, and let your winger retrieve. Getting your team the puck is what matters, not how you do it.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'you', x: 42, y: 35, note: 'You (RW)' },
-        { type: 'teammate', x: 35, y: 25, label: 'C', note: 'Lost the draw' },
-        { type: 'teammate', x: 42, y: 15, label: 'LW', note: 'Left winger' },
-        { type: 'teammate', x: 22, y: 15, label: 'D', note: 'Left D' },
-        { type: 'teammate', x: 22, y: 35, label: 'D', note: 'Right D' },
-        { type: 'opponent', x: 40, y: 42, label: 'LW', note: 'Advancing on puck', targetX: 32, targetY: 38 },
-        { type: 'opponent', x: 30, y: 25, label: 'C', note: 'Won the draw' }
+        { type: 'you', x: 31, y: 25, note: 'You (C) \u2014 outmatched' },
+        { type: 'opponent', x: 39, y: 25, label: 'C', note: 'Stronger \u2014 winning draws clean' },
+        { type: 'teammate', x: 25, y: 18, label: 'W', note: 'Winger \u2014 ready to retrieve' },
+        { type: 'teammate', x: 22, y: 30, label: 'D', note: 'D-man shaded to boards' },
       ],
-      puck: { x: 32, y: 38 },
-      ref: { x: 35, y: 20, label: 'REF' },
-      arrows: [
-        { from: { x: 40, y: 42 }, to: { x: 32, y: 38 }, style: 'solid', label: 'Opponent advancing' },
-        { from: { x: 42, y: 35 }, to: { x: 34, y: 38 }, style: 'dashed', label: 'Your pressure' }
-      ],
+      puck: { x: 35, y: 25 },
+      ref: { x: 35, y: 18, label: 'LM' },
+      arrows: [],
       annotations: []
     },
-    gameContext: { period: 2, teamScore: 2, oppScore: 1, timeLeft: '5:20' },
-    audioFolder: 'module2-faceoff-loss',
+    gameContext: { period: 2, teamScore: 1, oppScore: 2, timeLeft: '8:45' },
+    audioFolder: 'module2-scenario4-tieup',
     nextScenarioId: 'module2-scenario5'
   },
   {
@@ -180,42 +168,36 @@ export const module2Scenarios: Scenario[] = [
     moduleId: 2,
     scenarioNum: 5,
     totalInModule: 7,
-    title: 'Faceoff Win Execution',
-    coachCue: "You won the draw and the puck is at the point. Don't stand still — the D are scrambling. Attack the net and create a scoring chance.",
+    title: 'Leverage and Body Position',
+    coachCue: "Faceoff power comes from your legs, not your arms. If you\'re standing upright with weight on your heels, you\'ve already lost.",
     introSlides: [
-      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
-      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
-      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+      { title: 'Faceoffs Are Chess, Not Checkers', body: '"Winning the draw is about preparation, reads, and leverage \u2014 not just quick hands."' },
+      { title: 'Read Before You React', body: '"Watch the linesman\'s body position. If they\'re leaning toward your side, they\'ll likely drop the puck closer to you \u2014 so attack with your forehand."' },
+      { title: 'Win the Possession, Not Just the Draw', body: '"A \u201Cwon\u201D faceoff that goes to the other team isn\'t a win. Know where you\'re putting it."' }
     ],
-    situation: 'Offensive zone faceoff. Your center just won the draw cleanly back to the left D at the point. The defense is already pushing up. You\'re the left winger — time to execute.',
-    question: 'What\'s your best next move?',
+    situation: 'You\'re about to take a critical defensive zone draw. You notice you\'re standing fairly upright with your weight on your heels.',
+    question: 'What adjustment gives you the best chance?',
     answers: [
-      { text: 'Cut hard to the net-front to receive a pass and create a scoring chance', correct: true, feedback: 'After winning a faceoff cleanly, transition immediately to offense. The defense is scrambling — you cutting to the net puts instant pressure and creates a high-danger chance.' },
-      { text: 'Stay at the faceoff dot and call for the puck', correct: false, feedback: 'Your current position isn\'t dangerous enough. Attack the net, get into prime scoring real estate, then shoot. Movement before shooting.' },
-      { text: 'Go to the boards to maintain possession and cycle', correct: false, feedback: 'Too conservative. After a clean draw win, you want vertical aggression, not sideways movement. This is your scoring window.' },
-      { text: 'Hold your position for a pass from the point', correct: false, feedback: 'The faceoff dot area isn\'t ideal for shooting. Move into a more dangerous area first. Attack the net.' }
+      { text: 'Grip higher on your stick for more reach', correct: false, feedback: 'Faceoff power comes from your legs, not your arms or grip. Standing upright with weight on your heels means you\'re pushing with just your upper body. Get low \u2014 bend at the hips and knees, shift your weight to the balls of your feet. Now you can explode into the draw. That\'s leverage.' },
+      { text: 'Widen your stance as much as possible', correct: false, feedback: 'Faceoff power comes from your legs, not your arms or grip. Standing upright with weight on your heels means you\'re pushing with just your upper body. Get low \u2014 bend at the hips and knees, shift your weight to the balls of your feet. Now you can explode into the draw. That\'s leverage.' },
+      { text: 'Get lower through hips and knees, weight forward on balls of feet', correct: true, feedback: 'Leverage comes from your lower body. Straight legs = no power. Getting low through hips and knees, with weight forward on the balls of your feet, lets you explode into the draw. It\'s not about being big \u2014 it\'s about being loaded and ready. You\'ll feel the difference immediately.' },
+      { text: 'Focus only on watching the ref\'s hand', correct: false, feedback: 'Faceoff power comes from your legs, not your arms or grip. Standing upright with weight on your heels means you\'re pushing with just your upper body. Get low \u2014 bend at the hips and knees, shift your weight to the balls of your feet. Now you can explode into the draw. That\'s leverage.' }
     ],
     diagram: {
-      zone: 'offensive',
+      zone: 'defensive',
       players: [
-        { type: 'you', x: 158, y: 25, note: 'You (LW)', targetX: 178, targetY: 42 },
-        { type: 'teammate', x: 165, y: 25, label: 'C', note: 'Won the draw' },
-        { type: 'teammate', x: 158, y: 42, label: 'RW', note: 'Right winger' },
-        { type: 'teammate', x: 140, y: 18, label: 'D', note: 'Has puck at point' },
-        { type: 'teammate', x: 140, y: 55, label: 'D', note: 'Right point' },
-        { type: 'opponent', x: 172, y: 35, label: 'D', note: 'Scrambling' },
-        { type: 'opponent', x: 172, y: 55, label: 'D', note: 'Scrambling' }
+        { type: 'you', x: 31, y: 25, note: 'You (C) \u2014 check your stance' },
+        { type: 'opponent', x: 39, y: 25, label: 'C', note: 'Opposing center' },
       ],
-      puck: { x: 140, y: 18 },
-      ref: { x: 165, y: 20, label: 'REF' },
-      arrows: [
-        { from: { x: 158, y: 25 }, to: { x: 178, y: 42 }, style: 'solid', label: 'Attack net' },
-        { from: { x: 140, y: 18 }, to: { x: 178, y: 42 }, style: 'dashed', label: 'Pass to net' }
-      ],
-      annotations: []
+      puck: { x: 35, y: 25 },
+      ref: { x: 35, y: 18, label: 'LM' },
+      arrows: [],
+      annotations: [
+        { x: 15, y: 35, text: 'STANCE CHECK: Hips low, weight forward' }
+      ]
     },
-    gameContext: { period: 2, teamScore: 1, oppScore: 0, timeLeft: '10:05' },
-    audioFolder: 'module2-faceoff-win',
+    gameContext: { period: 3, teamScore: 2, oppScore: 3, timeLeft: '4:30' },
+    audioFolder: 'module2-scenario5-leverage',
     nextScenarioId: 'module2-scenario6'
   },
   {
@@ -223,40 +205,38 @@ export const module2Scenarios: Scenario[] = [
     moduleId: 2,
     scenarioNum: 6,
     totalInModule: 7,
-    title: 'Late-Game Faceoff — Protecting the Lead',
-    coachCue: "Thirty seconds left, up one. This isn't the time for risk. Keep everyone low, between the puck and the net. Win the draw, then clear or eat clock.",
+    title: 'Forehand vs. Backhand Read',
+    coachCue: "He\'s beaten you twice with the same approach. Doing it harder won\'t change the outcome. But look at the linesman \u2014 you have the angle on your forehand. Give him something different.",
     introSlides: [
-      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
-      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
-      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+      { title: 'Faceoffs Are Chess, Not Checkers', body: '"Winning the draw is about preparation, reads, and leverage \u2014 not just quick hands."' },
+      { title: 'Read Before You React', body: '"Watch the linesman\'s body position. If they\'re leaning toward your side, they\'ll likely drop the puck closer to you \u2014 so attack with your forehand."' },
+      { title: 'Win the Possession, Not Just the Draw', body: '"A \u201Cwon\u201D faceoff that goes to the other team isn\'t a win. Know where you\'re putting it."' }
     ],
-    situation: 'You\'re a defenseman. 30 seconds left, up 2-1, D-zone faceoff. The opposing team pulled their goalie earlier. This draw could decide the game. Your forwards are asking where they should set up.',
-    question: 'What\'s the best positioning strategy for this critical defensive faceoff?',
+    situation: 'Neutral zone faceoff. You\'re a right-shot center. The opposing center is a left-shot who has beaten you backhand twice already. The linesman is on your forehand side.',
+    question: 'How do you adjust?',
     answers: [
-      { text: 'Keep everyone low, focus on containment, be ready to clear hard', correct: true, feedback: 'Textbook late-game defense. Low positioning means you\'re between the puck and your net. If they win the draw, you\'re already in shape. Conservative hockey is exactly what you need with seconds left.' },
-      { text: 'Push forwards high to disrupt the opponent\'s setup', correct: false, feedback: 'Too risky with 30 seconds left. Aggressive positioning leaves your D outnumbered if the draw goes the wrong way.' },
-      { text: 'Have wingers cheat for a quick transition if you win the draw', correct: false, feedback: 'With 30 seconds left, the priority isn\'t scoring — it\'s possession and time. Win the draw, consume seconds, run the clock.' },
-      { text: 'Stack everyone in the slot to block everything', correct: false, feedback: 'You\'re creating a traffic jam. You can\'t clear pucks or defend the perimeter. Proper spacing and structure beats bodies in a pile.' }
+      { text: 'Go backhand harder \u2014 overpower him this time', correct: false, feedback: 'He\'s beaten you twice with the same approach \u2014 doing it harder won\'t change the outcome. But look at the linesman position: you have the angle on your forehand. Switch your approach. He expects backhand, you go forehand, and now he\'s the one adjusting. That\'s how you win the mental game.' },
+      { text: 'Switch to forehand \u2014 you have the angle and he won\'t expect it', correct: true, feedback: 'If the same move isn\'t working AND you have a positional advantage (ref on your forehand), adapt. Going forehand when he expects backhand, especially with the angle in your favor, changes the matchup entirely. He\'s prepared for what you\'ve been doing \u2014 give him something different.' },
+      { text: 'Go for a quick stick lift before the drop', correct: false, feedback: 'He\'s beaten you twice with the same approach \u2014 doing it harder won\'t change the outcome. But look at the linesman position: you have the angle on your forehand. Switch your approach. He expects backhand, you go forehand, and now he\'s the one adjusting. That\'s how you win the mental game.' },
+      { text: 'Just tie him up \u2014 stop trying to win clean', correct: false, feedback: 'He\'s beaten you twice with the same approach \u2014 doing it harder won\'t change the outcome. But look at the linesman position: you have the angle on your forehand. Switch your approach. He expects backhand, you go forehand, and now he\'s the one adjusting. That\'s how you win the mental game.' }
     ],
     diagram: {
-      zone: 'defensive',
+      zone: 'neutral',
       players: [
-        { type: 'you', x: 22, y: 42, label: 'D', note: 'You — protecting net' },
-        { type: 'teammate', x: 22, y: 20, label: 'D', note: 'Partner' },
-        { type: 'teammate', x: 35, y: 25, label: 'C', note: 'Taking the draw' },
-        { type: 'teammate', x: 38, y: 15, label: 'LW', note: 'Low positioning' },
-        { type: 'teammate', x: 38, y: 55, label: 'RW', note: 'Low positioning' },
-        { type: 'opponent', x: 35, y: 25, label: 'C', note: 'Opposing center' },
-        { type: 'opponent', x: 48, y: 15, label: 'LW', note: 'Left forward' },
-        { type: 'opponent', x: 48, y: 55, label: 'RW', note: 'Right forward' }
+        { type: 'you', x: 96, y: 25, note: 'You (C) \u2014 right shot' },
+        { type: 'opponent', x: 104, y: 25, label: 'C', note: 'Left shot \u2014 beat you twice' },
       ],
-      puck: { x: 35, y: 25 },
-      ref: { x: 35, y: 20, label: 'REF' },
-      arrows: [],
-      annotations: []
+      puck: { x: 100, y: 25 },
+      ref: { x: 97, y: 18, label: 'LM' },
+      arrows: [
+        { from: { x: 97, y: 20 }, to: { x: 93, y: 23 }, style: 'dashed', label: 'LM on your forehand' }
+      ],
+      annotations: [
+        { x: 108, y: 18, text: 'Lost backhand: \u2717 \u2717' }
+      ]
     },
-    gameContext: { period: 3, teamScore: 2, oppScore: 1, timeLeft: '0:30' },
-    audioFolder: 'module2-faceoff-lategame',
+    gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '10:15' },
+    audioFolder: 'module2-scenario6-forehand-backhand',
     nextScenarioId: 'module2-scenario7'
   },
   {
@@ -264,44 +244,39 @@ export const module2Scenarios: Scenario[] = [
     moduleId: 2,
     scenarioNum: 7,
     totalInModule: 7,
-    title: 'Power Play Faceoff — Umbrella Setup',
-    coachCue: "On the PP you have the extra man — use it. Win the draw, get the puck to the point, and have your forwards attack the net for tips and rebounds.",
+    title: 'Post-Draw Responsibility',
+    coachCue: "The draw is over. You lost it. Your job now isn\'t to chase the puck \u2014 it\'s to prevent the counter. Get to the high slot, find the late man.",
     introSlides: [
-      { title: 'Faceoffs Are Possession Battles', body: '"Every draw is a 50/50. Your positioning before the puck drops determines what happens after — whether you win or lose the draw."' },
-      { title: 'Zone and Role Decide Setup', body: '"D-zone: coverage first. O-zone: attack the net or relay. Neutral: read the other team\'s setup. Same faceoff, different rules."' },
-      { title: 'Win or Lose, Your Next Move Matters', body: '"After the puck drops, your first step wins or loses the next battle. Be ready to pressure, support, or recover."' }
+      { title: 'Faceoffs Are Chess, Not Checkers', body: '"Winning the draw is about preparation, reads, and leverage \u2014 not just quick hands."' },
+      { title: 'Read Before You React', body: '"Watch the linesman\'s body position. If they\'re leaning toward your side, they\'ll likely drop the puck closer to you \u2014 so attack with your forehand."' },
+      { title: 'Win the Possession, Not Just the Draw', body: '"A \u201Cwon\u201D faceoff that goes to the other team isn\'t a win. Know where you\'re putting it."' }
     ],
-    situation: 'You\'re the center on a 5-on-4 power play. Offensive zone faceoff at the left dot. Your team runs an umbrella formation — D-men at the points, forwards attacking the net. The PK is trying to disrupt your setup.',
-    question: 'How should your team execute this power play faceoff?',
+    situation: 'You lose the offensive zone faceoff. The puck goes back to the opposing D-man. Your wingers are already in motion expecting a won draw.',
+    question: 'What\'s your immediate responsibility?',
     answers: [
-      { text: 'Win the draw, get puck to the point, forwards attack the net for tips and rebounds', correct: true, feedback: 'Perfect PP strategy. The umbrella needs all three elements: center wins the draw, forwards create immediate danger at the net, and D-men have shooting lanes from the point.' },
-      { text: 'Spread out to control the perimeter and keep forwards back for support', correct: false, feedback: 'That\'s backwards. On a PP you want aggressive, high-risk positioning because you have the extra man. Attack mode, not contain mode.' },
-      { text: 'Focus on cycling the puck to maintain possession', correct: false, feedback: 'Cycling is for sustained pressure later. Right after a faceoff, the umbrella is designed for quick shots. First shift is aggressive.' },
-      { text: 'Have your center go for possession rather than winning the draw outright', correct: false, feedback: 'On a PP, winning the draw is huge. A clean win sets up the umbrella perfectly. Be aggressive — the extra skater means you don\'t have to settle.' }
+      { text: 'Chase the puck to the D-man', correct: false, feedback: 'You lost the draw \u2014 the play has changed. Chasing the D-man won\'t get it back, and your wingers are out of position. Your job now is to prevent the counter-attack. Get to the high slot, find the late man, and take away the middle of the ice. That\'s how you limit damage from a lost draw.' },
+      { text: 'Call for a line change since the play is broken', correct: false, feedback: 'You lost the draw \u2014 the play has changed. Chasing the D-man won\'t get it back, and your wingers are out of position. Your job now is to prevent the counter-attack. Get to the high slot, find the late man, and take away the middle of the ice. That\'s how you limit damage from a lost draw.' },
+      { text: 'Crash the net anyway \u2014 maybe there\'s a rebound', correct: false, feedback: 'You lost the draw \u2014 the play has changed. Chasing the D-man won\'t get it back, and your wingers are out of position. Your job now is to prevent the counter-attack. Get to the high slot, find the late man, and take away the middle of the ice. That\'s how you limit damage from a lost draw.' },
+      { text: 'Recover to the high slot and pick up the late man', correct: true, feedback: 'The draw is over. Your job now is defensive structure. Get to the high slot, identify the most dangerous threat (usually the late forward), and take away the middle. Don\'t compound a lost draw with a bad recovery. Smart centers know the faceoff is just one play \u2014 what you do next matters just as much.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 165, y: 25, note: 'You (C) — at dot' },
-        { type: 'teammate', x: 178, y: 35, label: 'LW', note: 'Net-front threat' },
-        { type: 'teammate', x: 175, y: 55, label: 'RW', note: 'Net-front threat' },
-        { type: 'teammate', x: 142, y: 18, label: 'D', note: 'Left point — one-timer' },
-        { type: 'teammate', x: 142, y: 55, label: 'D', note: 'Right point' },
-        { type: 'opponent', x: 165, y: 25, label: 'C', note: 'PK center' },
-        { type: 'opponent', x: 155, y: 35, label: 'F', note: 'PK forward' },
-        { type: 'opponent', x: 155, y: 50, label: 'F', note: 'PK forward' },
-        { type: 'opponent', x: 175, y: 42, label: 'D', note: 'PK defenseman' }
+        { type: 'you', x: 165, y: 25, note: 'You (C) \u2014 just lost draw' },
+        { type: 'teammate', x: 172, y: 18, label: 'W', note: 'Winger in motion' },
+        { type: 'teammate', x: 172, y: 35, label: 'W', note: 'Winger in motion' },
+        { type: 'opponent', x: 180, y: 50, label: 'D', note: 'Has puck \u2014 looking to break out' },
+        { type: 'opponent', x: 155, y: 35, label: 'F', note: 'Late man \u2014 dangerous' },
       ],
-      puck: { x: 165, y: 25 },
-      ref: { x: 165, y: 20, label: 'REF' },
+      puck: { x: 180, y: 50 },
+      ref: { x: 165, y: 19, label: 'LM' },
       arrows: [
-        { from: { x: 165, y: 25 }, to: { x: 142, y: 18 }, style: 'dashed', label: 'Draw to point' },
-        { from: { x: 142, y: 18 }, to: { x: 178, y: 42 }, style: 'dashed', label: 'Shot on net' }
+        { from: { x: 165, y: 25 }, to: { x: 155, y: 32 }, style: 'dashed', label: 'Recover to high slot' }
       ],
       annotations: []
     },
-    gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '14:30' },
-    audioFolder: 'module2-faceoff-pp',
+    gameContext: { period: 2, teamScore: 0, oppScore: 0, timeLeft: '6:30' },
+    audioFolder: 'module2-scenario7-post-draw',
     nextScenarioId: null
   }
 ];

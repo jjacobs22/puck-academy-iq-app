@@ -1,45 +1,45 @@
 import type { Scenario } from '../scenarios';
 
 // Module 3: Breakouts — 7 scenarios
+// RESTORED from original HTML scenarios. These teach specific breakout READS for centers:
+// route choice (high vs low), receiving on forehand, cutting laterally, reading pressure,
+// support vs stretch timing, recognizing forecheck patterns, broken play recovery.
 export const module3Scenarios: Scenario[] = [
   {
     id: 'module3-scenario1',
     moduleId: 3,
     scenarioNum: 1,
     totalInModule: 7,
-    title: 'Standard Breakout — Getting Open on the Wall',
-    coachCue: "Your D is under pressure. As a winger, your lane is the wall. Get low, be a target, and give him a short safe pass — that's how breakouts start.",
+    title: 'High Route vs. Low Route',
+    coachCue: "How you swing back for the puck changes everything. Come low \u2014 underneath the puck, below the hash marks \u2014 and you get it on your forehand with vision up ice.",
     introSlides: [
-      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
-      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
-      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
+      { title: 'Speed Kills \u2014 But Patience Scores', body: '"A breakout isn\'t a race. It\'s about finding the right route and reading the pressure."' },
+      { title: 'Routes Have Names for a Reason', body: '"High, low, wheel, reverse \u2014 know your options so you can make the right call under pressure."' },
+      { title: 'Support Your D', body: '"Give your defenseman options. If you\'re not open, you\'re not helping."' }
     ],
-    situation: 'Your D retrieves the puck behind the goal line. A single forechecker is bearing down. You\'re the right winger up near the neutral zone. Your D needs an outlet.',
-    question: 'What do you do to create a breakout passing lane?',
+    situation: 'Your D-man retrieves the puck behind the net. One forechecker is pressuring hard. You\'re swinging back from the far side to support. What route should you take?',
+    question: 'Which route gives you the best breakout option?',
     answers: [
-      { text: 'Attack the boards hard and get low on the wall to give the D a safe outlet', correct: true, feedback: 'Immediately move to the wall and get low. By attacking the boards, you force the forechecker to commit one way and give your D a short, safe pass option.' },
-      { text: 'Stay in the middle of the ice for a center option', correct: false, feedback: 'That\'s the center\'s job. As a winger, your lane is the wall. Get there and be a target your D can hit under pressure.' },
-      { text: 'Back up toward your own blue line to give the D more space', correct: false, feedback: 'Retreating limits your breakout options and gives the forechecker time to close. Attack forward to be part of the solution.' },
-      { text: 'Screen the forechecker so the D has time to look up', correct: false, feedback: 'Screening isn\'t your job here. Your job is to be an outlet. Move to the wall and become a target for the pass.' }
+      { text: 'Swing high near the blue line to stretch the ice', correct: false, feedback: 'Think about how you receive it. Coming low \u2014 below the hash marks \u2014 changes everything. You get the puck on your forehand, you can see up ice immediately, and you have time to make the next play. High routes mean receiving on your backhand with pressure closing. Go low, come underneath, and you\'ll have options.' },
+      { text: 'Come low, underneath the puck, below the hash marks', correct: true, feedback: 'Coming underneath the puck (low route) gives you the puck on your forehand with vision up ice, time to make a decision, and space to cut laterally. A high route often means receiving on your backhand with pressure already on you. The extra two seconds to get low is worth it.' },
+      { text: 'Stop at the net front and call for it', correct: false, feedback: 'Think about how you receive it. Coming low \u2014 below the hash marks \u2014 changes everything. You get the puck on your forehand, you can see up ice immediately, and you have time to make the next play. High routes mean receiving on your backhand with pressure closing. Go low, come underneath, and you\'ll have options.' },
+      { text: 'Skate directly at the D-man to give a short option', correct: false, feedback: 'Think about how you receive it. Coming low \u2014 below the hash marks \u2014 changes everything. You get the puck on your forehand, you can see up ice immediately, and you have time to make the next play. High routes mean receiving on your backhand with pressure closing. Go low, come underneath, and you\'ll have options.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'teammate', x: 7, y: 42, label: 'D', note: 'Retrieving puck' },
-        { type: 'you', x: 55, y: 70, note: 'You (RW)', targetX: 30, targetY: 72 },
-        { type: 'opponent', x: 30, y: 45, label: 'F', note: 'Forechecker', targetX: 12, targetY: 42 },
-        { type: 'teammate', x: 50, y: 42, label: 'C', note: 'Center support' },
-        { type: 'teammate', x: 55, y: 15, label: 'LW', note: 'Left winger' }
+        { type: 'teammate', x: 7, y: 42, label: 'D', note: 'Has puck behind net' },
+        { type: 'you', x: 50, y: 20, note: 'You (C) \u2014 swinging back', targetX: 25, targetY: 60 },
+        { type: 'opponent', x: 25, y: 38, label: 'F', note: 'Forechecker pressuring' },
       ],
       puck: { x: 6, y: 42 },
       arrows: [
-        { from: { x: 55, y: 70 }, to: { x: 30, y: 72 }, style: 'solid', label: 'Get low on wall' },
-        { from: { x: 30, y: 45 }, to: { x: 12, y: 42 }, style: 'solid', label: 'Forecheck' }
+        { from: { x: 50, y: 20 }, to: { x: 25, y: 60 }, style: 'dashed', label: 'Low route \u2014 forehand receive' }
       ],
       annotations: []
     },
-    gameContext: { period: 3, teamScore: 1, oppScore: 2, timeLeft: '14:22' },
-    audioFolder: 'module3-standard-breakout',
+    gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '16:30' },
+    audioFolder: 'module3-scenario1-high-low-route',
     nextScenarioId: 'module3-scenario2'
   },
   {
@@ -47,40 +47,34 @@ export const module3Scenarios: Scenario[] = [
     moduleId: 3,
     scenarioNum: 2,
     totalInModule: 7,
-    title: 'Reverse Breakout',
-    coachCue: "When one wall is cut off, don't force it. Puck goes behind the net to the other D — they'll find you on the open side. Patient beats risky.",
-    introSlides: [
-      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
-      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
-      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
-    ],
-    situation: 'Your D has the puck behind the goal line but the forechecker is cutting off the strong-side wall outlet. Your D partner is on the other side of the net. You\'re the left winger on the weak side.',
-    question: 'What\'s the right play here?',
+    title: 'Reading Pressure \u2014 When to Go Quick',
+    coachCue: "Two guys collapsing on the strong side \u2014 that option is gone. Don\'t fight the forecheck. Go where they\'re not.",
+    situation: 'Your D-man has the puck behind the net. Two forecheckers are coming hard \u2014 one to the puck, one cutting off the strong side. The weak side is open. Where should you position yourself?',
+    question: 'What\'s your best support position?',
     answers: [
-      { text: 'D skates behind the net to the partner, who swings it to you on the weak side', correct: true, feedback: 'The reverse is textbook when one wall is cut off. Puck moves behind the net to the other D, who has a fresh view and finds you on the open side. Patient, safe, effective.' },
-      { text: 'Force a pass directly through the forechecker', correct: false, feedback: 'High risk. The forechecker is already in the lane. Trust the reverse to move the puck safely around the pressure.' },
-      { text: 'Both D retreat to the blue line and reset', correct: false, feedback: 'Unnecessary retreat. You have a partner on the other side — use the reverse. Don\'t waste the positional advantage.' },
-      { text: 'Center drops back behind the goal line to help', correct: false, feedback: 'That adds to the congestion behind the net. The D needs ice away from the goal line, not more bodies.' }
+      { text: 'Stay strong side and call louder for the puck', correct: false, feedback: 'Two guys are collapsing on the strong side \u2014 that option is gone. When pressure dictates the play, you need to adjust. Flash to the weak side, get low, give your D a quick outlet where the pressure isn\'t. Don\'t fight the forecheck \u2014 go where they\'re not.' },
+      { text: 'Go to the net front as a screen', correct: false, feedback: 'Two guys are collapsing on the strong side \u2014 that option is gone. When pressure dictates the play, you need to adjust. Flash to the weak side, get low, give your D a quick outlet where the pressure isn\'t. Don\'t fight the forecheck \u2014 go where they\'re not.' },
+      { text: 'Flash to the weak side low \u2014 give a quick outlet', correct: true, feedback: 'When heavy pressure is coming, the breakout needs to go quick and often weak side. Get yourself into the outlet position where the pressure isn\'t. Don\'t wait for the puck to come to where you want to be \u2014 go to where you can actually receive it. That\'s reading the play.' },
+      { text: 'Head up ice and stretch \u2014 they\'ll figure it out', correct: false, feedback: 'Two guys are collapsing on the strong side \u2014 that option is gone. When pressure dictates the play, you need to adjust. Flash to the weak side, get low, give your D a quick outlet where the pressure isn\'t. Don\'t fight the forecheck \u2014 go where they\'re not.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'teammate', x: 7, y: 48, label: 'D', note: 'Has puck — initiating reverse', targetX: 7, targetY: 38 },
-        { type: 'teammate', x: 7, y: 35, label: 'D', note: 'Partner — receiving', targetX: 20, targetY: 15 },
-        { type: 'you', x: 45, y: 15, note: 'You (LW) — open weak side', targetX: 30, targetY: 15 },
-        { type: 'opponent', x: 25, y: 60, label: 'F', note: 'Cutting off strong side' },
-        { type: 'teammate', x: 50, y: 42, label: 'C', note: 'Center' },
-        { type: 'teammate', x: 45, y: 65, label: 'RW', note: 'Blocked by forecheck' }
+        { type: 'teammate', x: 7, y: 42, label: 'D', note: 'Has puck \u2014 under pressure' },
+        { type: 'you', x: 40, y: 55, note: 'You (C)', targetX: 25, targetY: 20 },
+        { type: 'opponent', x: 20, y: 50, label: 'F', note: 'F1 \u2014 to puck' },
+        { type: 'opponent', x: 25, y: 60, label: 'F', note: 'F2 \u2014 cutting off strong side' },
       ],
-      puck: { x: 6, y: 48 },
+      puck: { x: 6, y: 42 },
       arrows: [
-        { from: { x: 7, y: 48 }, to: { x: 7, y: 38 }, style: 'dashed', label: 'Behind net' },
-        { from: { x: 7, y: 35 }, to: { x: 30, y: 15 }, style: 'dashed', label: 'Swing to open side' }
+        { from: { x: 40, y: 55 }, to: { x: 25, y: 20 }, style: 'dashed', label: 'Flash to weak side' }
       ],
-      annotations: []
+      annotations: [
+        { x: 30, y: 68, text: 'STRONG SIDE BLOCKED' }
+      ]
     },
-    gameContext: { period: 2, teamScore: 2, oppScore: 2, timeLeft: '9:15' },
-    audioFolder: 'module3-reverse',
+    gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '11:00' },
+    audioFolder: 'module3-scenario2-reading-pressure',
     nextScenarioId: 'module3-scenario3'
   },
   {
@@ -88,41 +82,31 @@ export const module3Scenarios: Scenario[] = [
     moduleId: 3,
     scenarioNum: 3,
     totalInModule: 7,
-    title: 'Center Support on a Hard Forecheck',
-    coachCue: "When both wingers are covered, the middle is the escape valve. Fill it. Your D needs one safe option to break the forecheck.",
-    introSlides: [
-      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
-      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
-      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
-    ],
-    situation: 'Two forecheckers are aggressively attacking your D behind the net. Both wingers are being covered on the boards. You\'re the center sitting near the top of the circles.',
-    question: 'What should you do?',
+    title: 'Receiving on Forehand vs. Backhand',
+    coachCue: "A small adjustment to your route changes everything. Receive on your forehand and you have immediate vision up ice. Receive on your backhand and you\'re fighting the puck.",
+    situation: 'You\'re a left-shot center swinging through the middle of the ice for a breakout pass. You have a choice: continue your current path (receive on backhand) or adjust your route to receive on forehand.',
+    question: 'How should you adjust your route?',
     answers: [
-      { text: 'Skate to the middle to provide a safe release valve for the D', correct: true, feedback: 'When wingers are covered and forecheckers are committing hard, you fill the middle as an escape route. This breaks the forecheck and lets your team exit cleanly.' },
-      { text: 'Attack one of the forecheckers to create a passing lane', correct: false, feedback: 'You can\'t create space by hitting a forechecker behind your own net. Your job is to be open and available in the middle.' },
-      { text: 'Stay at the blue line and prepare to transition forward', correct: false, feedback: 'Too passive. With two forecheckers active, the D needs an immediate outlet. Move in to support.' },
-      { text: 'Circle behind the goal line to help the D escape', correct: false, feedback: 'That adds to the congestion. The D needs ice AWAY from the goal line. A middle outlet is cleaner.' }
+      { text: 'Keep your route \u2014 backhand is fine, don\'t overthink it', correct: false, feedback: 'Think about what happens after. Receiving on your backhand sounds fine until you get the puck. Now you\'re spinning, you can\'t see up ice, and the forechecker is closing. Arc your route wider \u2014 a small adjustment puts the puck on your forehand with vision. You can make plays immediately. That\'s the difference.' },
+      { text: 'Stop and wait for the puck to come to you', correct: false, feedback: 'Think about what happens after. Receiving on your backhand sounds fine until you get the puck. Now you\'re spinning, you can\'t see up ice, and the forechecker is closing. Arc your route wider \u2014 a small adjustment puts the puck on your forehand with vision. You can make plays immediately. That\'s the difference.' },
+      { text: 'Go faster on the same route \u2014 speed solves everything', correct: false, feedback: 'Think about what happens after. Receiving on your backhand sounds fine until you get the puck. Now you\'re spinning, you can\'t see up ice, and the forechecker is closing. Arc your route wider \u2014 a small adjustment puts the puck on your forehand with vision. You can make plays immediately. That\'s the difference.' },
+      { text: 'Arc your route wider to receive on forehand with vision', correct: true, feedback: 'A small adjustment to receive on your forehand changes everything: better puck control, immediate vision up ice, ability to make plays in stride. The extra two seconds to adjust your route is worth it. Receiving on your backhand means you\'re fighting the puck before you can do anything with it.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'teammate', x: 6, y: 42, label: 'D', note: 'Under pressure' },
-        { type: 'you', x: 55, y: 42, note: 'You (C)', targetX: 35, targetY: 42 },
-        { type: 'opponent', x: 18, y: 36, label: 'F', note: 'Hard forecheck', targetX: 8, targetY: 40 },
-        { type: 'opponent', x: 20, y: 50, label: 'F', note: 'Hard forecheck', targetX: 8, targetY: 45 },
-        { type: 'teammate', x: 35, y: 70, label: 'RW', faded: true, note: 'Covered' },
-        { type: 'teammate', x: 35, y: 15, label: 'LW', faded: true, note: 'Covered' }
+        { type: 'teammate', x: 10, y: 42, label: 'D', note: 'Making breakout pass' },
+        { type: 'you', x: 45, y: 25, note: 'You (C) \u2014 left shot', targetX: 35, targetY: 55 },
       ],
-      puck: { x: 5, y: 42 },
+      puck: { x: 10, y: 42 },
       arrows: [
-        { from: { x: 55, y: 42 }, to: { x: 35, y: 42 }, style: 'solid', label: 'Support middle' },
-        { from: { x: 18, y: 36 }, to: { x: 8, y: 40 }, style: 'solid' },
-        { from: { x: 20, y: 50 }, to: { x: 8, y: 45 }, style: 'solid' }
+        { from: { x: 10, y: 42 }, to: { x: 35, y: 50 }, style: 'dashed', label: 'Pass' },
+        { from: { x: 45, y: 25 }, to: { x: 35, y: 55 }, style: 'solid', label: 'Wider arc = forehand receive' }
       ],
       annotations: []
     },
-    gameContext: { period: 2, teamScore: 3, oppScore: 1, timeLeft: '7:40' },
-    audioFolder: 'module3-center-support',
+    gameContext: { period: 1, teamScore: 0, oppScore: 1, timeLeft: '8:45' },
+    audioFolder: 'module3-scenario3-forehand-receive',
     nextScenarioId: 'module3-scenario4'
   },
   {
@@ -130,38 +114,34 @@ export const module3Scenarios: Scenario[] = [
     moduleId: 3,
     scenarioNum: 4,
     totalInModule: 7,
-    title: 'Winger Board Positioning',
-    coachCue: "Get low on the boards — hash-mark area. A short pass is a pass your D can make under pressure. High is too far; low is the outlet.",
-    introSlides: [
-      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
-      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
-      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
-    ],
-    situation: 'Your D is retrieving the puck behind the net. A forechecker is moving in. You\'re the right winger — your positioning on the boards will determine if the D can make a clean outlet pass.',
-    question: 'Where should you position on the wall?',
+    title: 'When to Cut Laterally',
+    coachCue: "You received the puck low with control. Don\'t panic. The forechecker is coming straight at you \u2014 a lateral cut makes him miss and opens the whole rink.",
+    situation: 'You receive the breakout pass below the hash marks. A forechecker is coming straight at you. Your winger is open on the boards but there\'s also a soft area in the middle of the ice.',
+    question: 'What\'s your best play with the puck?',
     answers: [
-      { text: 'Low on the boards near the hash marks — short, safe pass for the D', correct: true, feedback: 'By staying low and tight to the boards, you\'re a quick escape valve. The D can make a short, accurate pass even under pressure. You control the play from there.' },
-      { text: 'High on the boards near center ice for a longer pass', correct: false, feedback: 'Too high. That pass is harder to complete under forecheck pressure. Get low first, gain possession, then move it up.' },
-      { text: 'Neutral ice behind the forechecker to avoid contact', correct: false, feedback: 'You\'re not helping your D escape. The forechecker is between you and the puck. Stay on the boards and be an outlet.' },
-      { text: 'At the faceoff circle to provide a middle option', correct: false, feedback: 'That\'s not your job as a winger. The center handles middle support. You own the boards — get there.' }
+      { text: 'Dump it off to the winger immediately \u2014 he\'s open', correct: false, feedback: 'Use the time you have. You received the puck low with control \u2014 don\'t panic and get rid of it. The forechecker is coming straight at you, but that means cutting laterally makes him miss. Find the soft ice, create time, and now you\'re making plays with vision instead of just reacting. That\'s the difference.' },
+      { text: 'Absorb the check and try to protect the puck', correct: false, feedback: 'Use the time you have. You received the puck low with control \u2014 don\'t panic and get rid of it. The forechecker is coming straight at you, but that means cutting laterally makes him miss. Find the soft ice, create time, and now you\'re making plays with vision instead of just reacting. That\'s the difference.' },
+      { text: 'Cut laterally into the soft area, creating time and a better passing lane', correct: true, feedback: 'When you\'re low and under control, cutting laterally into soft ice buys time, opens up the whole rink, and often pulls the forechecker out of position. This is where having good routes pays off \u2014 you have options. Now you can hit the winger with a better pass, or carry it if the lane opens.' },
+      { text: 'Reverse it back to the D-man', correct: false, feedback: 'Use the time you have. You received the puck low with control \u2014 don\'t panic and get rid of it. The forechecker is coming straight at you, but that means cutting laterally makes him miss. Find the soft ice, create time, and now you\'re making plays with vision instead of just reacting. That\'s the difference.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'teammate', x: 7, y: 42, label: 'D', note: 'Retrieving puck' },
-        { type: 'you', x: 42, y: 68, note: 'You (RW)', targetX: 28, targetY: 72 },
-        { type: 'opponent', x: 30, y: 48, label: 'F', note: 'Forechecker' },
-        { type: 'teammate', x: 55, y: 42, label: 'C', note: 'Center' },
-        { type: 'teammate', x: 42, y: 15, label: 'LW', note: 'Left winger' }
+        { type: 'you', x: 35, y: 55, note: 'You (C) \u2014 has puck', targetX: 45, targetY: 35 },
+        { type: 'opponent', x: 48, y: 48, label: 'F', note: 'Forechecker \u2014 closing straight' },
+        { type: 'teammate', x: 35, y: 15, label: 'W', note: 'Winger open on boards' },
+        { type: 'teammate', x: 18, y: 55, label: 'D', note: 'D trailing' },
       ],
-      puck: { x: 6, y: 42 },
+      puck: { x: 35, y: 55 },
       arrows: [
-        { from: { x: 42, y: 68 }, to: { x: 28, y: 72 }, style: 'solid', label: 'Get low on wall' }
+        { from: { x: 35, y: 55 }, to: { x: 45, y: 35 }, style: 'dashed', label: 'Cut into soft ice' }
       ],
-      annotations: []
+      annotations: [
+        { x: 48, y: 32, text: 'SOFT ICE' }
+      ]
     },
-    gameContext: { period: 1, teamScore: 1, oppScore: 1, timeLeft: '6:30' },
-    audioFolder: 'module3-winger-boards',
+    gameContext: { period: 2, teamScore: 0, oppScore: 0, timeLeft: '14:20' },
+    audioFolder: 'module3-scenario4-cut-lateral',
     nextScenarioId: 'module3-scenario5'
   },
   {
@@ -169,39 +149,33 @@ export const module3Scenarios: Scenario[] = [
     moduleId: 3,
     scenarioNum: 5,
     totalInModule: 7,
-    title: 'Wheel Play — Fill the Lane',
-    coachCue: "When the D wheels it up the boards, don't chase behind him. Fill the middle lane — stay with his pace and be the pass option that turns this into a rush.",
-    introSlides: [
-      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
-      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
-      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
-    ],
-    situation: 'Your D reads the forecheck and decides to wheel the puck up ice himself. He\'s skating hard from behind the net along the boards. You\'re the right winger and need to fill a support lane.',
-    question: 'Where do you skate to support the D on the wheel play?',
+    title: 'Support vs. Stretch',
+    coachCue: "The first pass is made, but the breakout isn\'t done yet. Don\'t abandon your D before the puck is safely through the zone. Stay close as support.",
+    situation: 'Your team is breaking out. The D-man makes a good first pass to the winger on the wall. You\'re the center trailing the play. What\'s your responsibility here?',
+    question: 'What should you do now?',
     answers: [
-      { text: 'Fill the middle lane and stay even or slightly ahead to be a quick pass option', correct: true, feedback: 'When the D wheels it, you fill middle. Stay engaged with his pace and be ready for a quick pass or to create a 2-on-1. That\'s the trailer\'s job on a wheel play.' },
-      { text: 'Chase behind the D on the same side', correct: false, feedback: 'He\'s already committed to skating it. Fill the middle where he can see you and use you to create transition offense.' },
-      { text: 'Stay back at the blue line and wait', correct: false, feedback: 'Too cautious. The D is wheeling with confidence. Support his aggressive action by filling the middle and being dangerous.' },
-      { text: 'Go to the opposite wall for a safety outlet', correct: false, feedback: 'Overcomplicating it. The D is moving with speed. Your job is to fill middle, stay with him, and turn this into a rush.' }
+      { text: 'Stay as a close support option in case the winger gets pressured', correct: true, feedback: 'The first pass is made, but the play isn\'t safe yet. Stay in a close support position so if the winger gets pressured, you\'re the outlet. Once the puck crosses the red line cleanly, then you can push to create offense. Don\'t abandon the breakout before it\'s complete.' },
+      { text: 'Get up ice fast \u2014 be the stretch option in the neutral zone', correct: false, feedback: 'Don\'t leave too early. The first pass is just the first pass \u2014 the breakout isn\'t done yet. Look at the forechecker closing on your winger. If you\'re stretching to the neutral zone and he gets pressured, who does he pass to? Stay close as support until the puck is safely through the zone. Then you can push.' },
+      { text: 'Follow the puck \u2014 go to the wall with the winger', correct: false, feedback: 'Don\'t leave too early. The first pass is just the first pass \u2014 the breakout isn\'t done yet. Look at the forechecker closing on your winger. If you\'re stretching to the neutral zone and he gets pressured, who does he pass to? Stay close as support until the puck is safely through the zone. Then you can push.' },
+      { text: 'Stop at the defensive blue line and wait', correct: false, feedback: 'Don\'t leave too early. The first pass is just the first pass \u2014 the breakout isn\'t done yet. Look at the forechecker closing on your winger. If you\'re stretching to the neutral zone and he gets pressured, who does he pass to? Stay close as support until the puck is safely through the zone. Then you can push.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'teammate', x: 25, y: 65, label: 'D', note: 'Wheeling it up', targetX: 65, targetY: 65 },
-        { type: 'you', x: 45, y: 30, note: 'You (RW)', targetX: 60, targetY: 42 },
-        { type: 'opponent', x: 40, y: 55, label: 'F', note: 'Trailing forecheck' },
-        { type: 'teammate', x: 60, y: 42, label: 'C', note: 'Center transitioning' },
-        { type: 'teammate', x: 45, y: 15, label: 'LW', note: 'Left winger' }
+        { type: 'teammate', x: 15, y: 55, label: 'D', note: 'Made first pass' },
+        { type: 'teammate', x: 35, y: 15, label: 'W', note: 'Winger \u2014 has puck on wall' },
+        { type: 'you', x: 40, y: 42, note: 'You (C) \u2014 trailing', targetX: 35, targetY: 30 },
+        { type: 'opponent', x: 45, y: 20, label: 'F', note: 'Forechecker approaching winger' },
       ],
-      puck: { x: 25, y: 65 },
+      puck: { x: 35, y: 15 },
       arrows: [
-        { from: { x: 25, y: 65 }, to: { x: 65, y: 65 }, style: 'solid', label: 'D wheel' },
-        { from: { x: 45, y: 30 }, to: { x: 60, y: 42 }, style: 'solid', label: 'Fill middle' }
+        { from: { x: 15, y: 55 }, to: { x: 35, y: 15 }, style: 'dashed', label: '1st pass \u2713' },
+        { from: { x: 40, y: 42 }, to: { x: 35, y: 30 }, style: 'solid', label: 'Stay close as support' }
       ],
       annotations: []
     },
-    gameContext: { period: 2, teamScore: 2, oppScore: 0, timeLeft: '13:10' },
-    audioFolder: 'module3-wheel-play',
+    gameContext: { period: 1, teamScore: 1, oppScore: 0, timeLeft: '5:00' },
+    audioFolder: 'module3-scenario5-support-stretch',
     nextScenarioId: 'module3-scenario6'
   },
   {
@@ -209,40 +183,36 @@ export const module3Scenarios: Scenario[] = [
     moduleId: 3,
     scenarioNum: 6,
     totalInModule: 7,
-    title: 'Breakout Under Heavy Pressure',
-    coachCue: "Two forecheckers closing — no time for a stretch pass. Get the puck to the winger on the wall with a short, safe pass. Escape first, then build.",
-    introSlides: [
-      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
-      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
-      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
-    ],
-    situation: 'Your D just got the puck behind the goal line. Both forecheckers are closing in hard from each side. Your winger is low on the wall and your center is in the middle — both within passing range.',
-    question: 'What should the D prioritize?',
+    title: 'Recognizing the Forecheck Pattern',
+    coachCue: "They\'re running a 1-2-2. Only one guy pressuring, but the neutral zone is clogged. They want you to dump it. Don\'t. Possess through it.",
+    situation: 'The other team is running a 1-2-2 forecheck. One forward pressures the puck softly, two more clog the neutral zone. Your D-man has time.',
+    question: 'How should your team attack this?',
     answers: [
-      { text: 'Quick, short pass to the winger on the wall — possession is the priority', correct: true, feedback: 'Under heavy pressure, don\'t be fancy. Get the puck to the winger with a safe, short pass. Escape possession cleanly, then build the breakout from there.' },
-      { text: 'Thread a stretch pass to the center to skip the forecheckers', correct: false, feedback: 'Too risky. With two forecheckers closing, a stretch pass gets picked off. Take the sure thing — short pass to the wall.' },
-      { text: 'Wheel it up himself on the boards', correct: false, feedback: 'With two forecheckers closing, you don\'t have separation to wheel safely. Quick outlet pass is smarter.' },
-      { text: 'Retreat deeper behind the goal line and wait them out', correct: false, feedback: 'That just prolongs the pressure. You have open outlets — make the quick pass and escape.' }
+      { text: 'Go D-to-D and skate it out \u2014 they only have one guy coming', correct: true, feedback: 'With only one forechecker pressuring and time available, D-to-D or using the middle opens up the ice. The 1-2-2 gives up the blue line \u2014 make them pay by possessing through it, not dumping into their structure. They want you to rim it or dump it. Skate through their trap instead.' },
+      { text: 'Quick up to the center in the middle', correct: false, feedback: 'Read what they\'re giving up. The 1-2-2 clogs the neutral zone but only sends one guy. That means your D has time, and D-to-D or skating it up creates advantages they can\'t recover from. Dumping or rimming plays right into what they want. When they give you time, use it to beat them with possession.' },
+      { text: 'Rim it around the boards and race to it', correct: false, feedback: 'Read what they\'re giving up. The 1-2-2 clogs the neutral zone but only sends one guy. That means your D has time, and D-to-D or skating it up creates advantages they can\'t recover from. Dumping or rimming plays right into what they want. When they give you time, use it to beat them with possession.' },
+      { text: 'Dump it out and change lines', correct: false, feedback: 'Read what they\'re giving up. The 1-2-2 clogs the neutral zone but only sends one guy. That means your D has time, and D-to-D or skating it up creates advantages they can\'t recover from. Dumping or rimming plays right into what they want. When they give you time, use it to beat them with possession.' }
     ],
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'teammate', x: 6, y: 42, label: 'D', note: 'Under heavy pressure' },
-        { type: 'opponent', x: 18, y: 35, label: 'F', note: 'Hard forecheck', targetX: 8, targetY: 40 },
-        { type: 'opponent', x: 18, y: 52, label: 'F', note: 'Hard forecheck', targetX: 8, targetY: 45 },
-        { type: 'you', x: 30, y: 68, label: 'RW', note: 'You — wall outlet' },
-        { type: 'teammate', x: 40, y: 42, label: 'C', note: 'Middle option' }
+        { type: 'teammate', x: 15, y: 55, label: 'D', note: 'Has puck \u2014 has time' },
+        { type: 'teammate', x: 15, y: 30, label: 'D', note: 'D partner' },
+        { type: 'you', x: 40, y: 42, note: 'You (C)' },
+        { type: 'opponent', x: 35, y: 42, label: 'F', note: 'F1 \u2014 soft pressure' },
+        { type: 'opponent', x: 78, y: 25, label: 'F', note: 'Clogging NZ' },
+        { type: 'opponent', x: 78, y: 60, label: 'F', note: 'Clogging NZ' },
       ],
-      puck: { x: 5, y: 42 },
+      puck: { x: 15, y: 55 },
       arrows: [
-        { from: { x: 6, y: 42 }, to: { x: 30, y: 68 }, style: 'dashed', label: 'Quick outlet' },
-        { from: { x: 18, y: 35 }, to: { x: 8, y: 40 }, style: 'solid' },
-        { from: { x: 18, y: 52 }, to: { x: 8, y: 45 }, style: 'solid' }
+        { from: { x: 15, y: 55 }, to: { x: 15, y: 30 }, style: 'dashed', label: 'D-to-D' }
       ],
-      annotations: []
+      annotations: [
+        { x: 72, y: 42, text: '1-2-2 TRAP' }
+      ]
     },
-    gameContext: { period: 3, teamScore: 1, oppScore: 1, timeLeft: '11:55' },
-    audioFolder: 'module3-heavy-pressure',
+    gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '9:30' },
+    audioFolder: 'module3-scenario6-forecheck-pattern',
     nextScenarioId: 'module3-scenario7'
   },
   {
@@ -250,39 +220,34 @@ export const module3Scenarios: Scenario[] = [
     moduleId: 3,
     scenarioNum: 7,
     totalInModule: 7,
-    title: 'Stretch Pass Recognition',
-    coachCue: "Forechecker backed off? You have time. Your center has speed and their forward is beat. The stretch pass is the dangerous play — use it.",
-    introSlides: [
-      { title: 'Breakouts Start With Support', body: '"Your D can\'t exit the zone alone. Wingers own the boards, the center fills the middle. Someone has to be open."' },
-      { title: 'Wall and Middle Options', body: '"When one side is cut off, the reverse or the middle opens up. Read the forecheck — don\'t force the same pass every time."' },
-      { title: 'Read the Forecheck', body: '"Soft forecheck? Stretch pass might be there. Hard forecheck? Short, safe outlets. Your read decides the play."' }
-    ],
-    situation: 'Your D has the puck behind the goal line with time. The forechecker backed off and is playing a soft gap. Your center is at center ice with speed, and the opposing forward is way behind him. The stretch pass is there.',
-    question: 'How should you capitalize on this time and space?',
+    title: 'The Broken Play Recovery',
+    coachCue: "The breakout pass went off your stick. The puck is loose and the forechecker is closer to it than you. The play has changed \u2014 you\'re defending now.",
+    situation: 'The breakout pass goes off your stick and the puck is loose in the neutral zone. A forechecker is closer to the puck than you are.',
+    question: 'What do you do now?',
     answers: [
-      { text: 'Recognize the soft forecheck and fire the stretch pass to the center', correct: true, feedback: 'Perfect read. When the forechecker backs off, the stretch pass is your most dangerous option. Your center gets the puck with momentum and space — that\'s an offensive advantage.' },
-      { text: 'Play it safe with a short pass to the winger', correct: false, feedback: 'Not always the right move. When you have TIME and SPACE, the stretch pass is more dangerous. Read the forecheck intensity.' },
-      { text: 'Wheel it up yourself to maintain possession', correct: false, feedback: 'You have a more dangerous option. A stretch pass that puts your center 1-on-1 with a defender is better than carrying it yourself.' },
-      { text: 'Wait for the forechecker to commit before deciding', correct: false, feedback: 'The forechecker backing off means you HAVE time NOW. Use it immediately. Waiting gives them a second chance to attack.' }
+      { text: 'Race for the puck \u2014 you can get there first', correct: false, feedback: 'He\'s closer \u2014 you\'re not winning that race. When the breakout fails, everything changes. You\'re now defending. Get inside, find the most dangerous threat, and take him away. Chasing a loose puck you can\'t get just leaves your team exposed. Transition mentally, then transition physically.' },
+      { text: 'Transition to defense \u2014 get inside position and pick up the most dangerous man', correct: true, feedback: 'When a breakout fails, you\'re now in a defensive situation. Don\'t chase a puck you can\'t get to. Your job is to recognize the play is broken and get inside position to defend. Inside-out, protect the house. The turnover happened \u2014 now limit the damage by picking up the dangerous man.' },
+      { text: 'Call for offside to stop play', correct: false, feedback: 'He\'s closer \u2014 you\'re not winning that race. When the breakout fails, everything changes. You\'re now defending. Get inside, find the most dangerous threat, and take him away. Chasing a loose puck you can\'t get just leaves your team exposed. Transition mentally, then transition physically.' },
+      { text: 'Finish your route and hope a winger gets it', correct: false, feedback: 'He\'s closer \u2014 you\'re not winning that race. When the breakout fails, everything changes. You\'re now defending. Get inside, find the most dangerous threat, and take him away. Chasing a loose puck you can\'t get just leaves your team exposed. Transition mentally, then transition physically.' }
     ],
     diagram: {
-      zone: 'defensive',
+      zone: 'neutral',
       players: [
-        { type: 'teammate', x: 7, y: 42, label: 'D', note: 'Has puck with time' },
-        { type: 'opponent', x: 38, y: 42, label: 'F', note: 'Soft gap — backed off' },
-        { type: 'you', x: 100, y: 42, note: 'You (C) — stretch target', targetX: 135, targetY: 42 },
-        { type: 'opponent', x: 120, y: 42, label: 'D', note: 'Deep — beaten by speed' },
-        { type: 'teammate', x: 30, y: 68, label: 'RW', note: 'Secondary option' }
+        { type: 'you', x: 80, y: 42, note: 'You (C) \u2014 turnover', targetX: 60, targetY: 42 },
+        { type: 'opponent', x: 88, y: 35, label: 'F', note: 'Closer to puck' },
+        { type: 'opponent', x: 75, y: 25, label: 'F', note: 'Dangerous \u2014 late man' },
+        { type: 'teammate', x: 55, y: 55, label: 'D', note: 'D recovering' },
       ],
-      puck: { x: 6, y: 42 },
+      puck: { x: 85, y: 38 },
       arrows: [
-        { from: { x: 7, y: 42 }, to: { x: 100, y: 42 }, style: 'dashed', label: 'Stretch pass' },
-        { from: { x: 100, y: 42 }, to: { x: 135, y: 42 }, style: 'solid', label: 'Exit with speed' }
+        { from: { x: 80, y: 42 }, to: { x: 60, y: 42 }, style: 'dashed', label: 'Get inside \u2014 pick up threat' }
       ],
-      annotations: []
+      annotations: [
+        { x: 82, y: 48, text: 'LOOSE PUCK' }
+      ]
     },
-    gameContext: { period: 3, teamScore: 1, oppScore: 2, timeLeft: '4:20' },
-    audioFolder: 'module3-stretch-pass',
+    gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '3:15' },
+    audioFolder: 'module3-scenario7-broken-play',
     nextScenarioId: null
   }
 ];

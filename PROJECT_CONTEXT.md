@@ -745,6 +745,15 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 11, 2026 - Scenario Content Restored (Modules 2–6)
+
+**SPA scenario data aligned with original HTML scenarios:**
+- **Module 2 (Faceoffs):** Content restored to teach faceoff technique (ref position, forehand/backhand, leverage, tie-up, etc.). Scenario 1 back to "Reading the Ref Position" with LM/forehand angle; diagrams and intro slides match legacy module2-scenario1-ref-position.html.
+- **Modules 3–6:** Scenario titles, coach cues, intro slides, situations, questions, answers, and diagrams updated to match original HTML content (breakouts, offensive zone, forechecking, D-men).
+- Ensures SPA experience matches the curriculum and feedback from the original scenario set.
+
+---
+
 ### February 11, 2026 - Supabase Security Advisories Fix
 
 **Dashboard “25 issues” (Security):** Addressed via SQL migration.

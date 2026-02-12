@@ -8,33 +8,33 @@ export const module4Scenarios: Scenario[] = [
     moduleId: 4,
     scenarioNum: 1,
     totalInModule: 7,
-    title: 'Net-Front Positioning',
-    coachCue: "Net front isn't just screening — it's being a threat. See the puck so you can tip it. One foot in the hard area, shoulders to the point.",
+    title: 'Net Front Presence',
+    coachCue: "When the puck is down low, the net front is where you need to be. You take away the goalie\'s eyes, you\'re first to rebounds, and you create tip opportunities. Get to the hard area.",
     introSlides: [
-      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
-      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
-      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+      { title: 'Offense Is About Options', body: '"In the O-zone, your job isn\'t just to score — it\'s to create problems for the defense. Be in a spot where they have to make a choice."' },
+      { title: 'Hard Areas vs. Soft Areas', body: '"The net front and slot are \'hard areas\' — high traffic, high reward. The perimeter is \'soft\' — safe but less dangerous. Know when to be where."' },
+      { title: 'Think One Pass Ahead', body: '"Great offensive players don\'t just react — they anticipate. Where\'s the puck going next? Be there before the defense figures it out."' }
     ],
-    situation: 'Your D has the puck at the point and is about to shoot. You\'re planted about 15 feet in front of the goalie. A defenseman is trying to clear you out. The shot is coming.',
-    question: 'What\'s your primary job on this net-front play?',
+    situation: 'Your winger has the puck on the half wall below the circle. Your D-man is at the point. The opposing D is in the slot area. You\'re currently positioned at the high slot. Where should you go?',
+    question: 'What\'s your best move to create a scoring chance?',
     answers: [
-      { text: 'Position in the crease area, angled to see the puck for tips and deflections', correct: true, feedback: 'You want to be a threat, not an obstacle. Plant yourself in the hard areas — shoulders square to the point, one foot in the crease. You need to see the puck coming so you can tip it, and your body naturally screens.' },
-      { text: 'Stand directly between the shooter and goalie to guarantee a screen', correct: false, feedback: 'A blind screen means you can\'t tip the puck. You need to see it coming. Position where you can both screen AND deflect.' },
-      { text: 'Back up toward the goal line to give the shooter a clear lane', correct: false, feedback: 'You\'re too deep and you\'re no longer a scoring threat. Stay in the hard area where you can tip, screen, and crash for rebounds.' },
-      { text: 'Move to the side of the net for rebounds only', correct: false, feedback: 'You\'re abandoning the highest-danger area. Net-front presence creates tips, screens, AND rebounds. Don\'t pick one — be all three.' }
+      { text: 'Drive to the net front to screen the goalie and create a tip/rebound opportunity', correct: true, feedback: 'When the puck is below the goal line or on the half wall, the net front is where you need to be. You take away the goalie\'s eyes, you\'re first to rebounds, and you create tip opportunities. The high slot can wait — get to the hard area when the puck is down low.' },
+      { text: 'Stay high in the slot for a one-timer if the puck comes to the point', correct: false, feedback: 'Get to the hard area. When the puck is down low, the net front becomes the most dangerous place on the ice. Staying high doesn\'t put pressure on the D or the goalie. Drive the net — screen, tip, rebound. That\'s how centers score greasy goals.' },
+      { text: 'Drop back to support the D-man at the point', correct: false, feedback: 'The D-man at the point has the puck — he doesn\'t need support. The net front does. Drive the net and be a threat where it counts.' },
+      { text: 'Skate toward your winger to give a short passing option', correct: false, feedback: 'Crowding the puck carrier doesn\'t help. Spread the ice by going to the net front where you\'re a screen, tip, and rebound threat all at once.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 178, y: 42, note: 'You — net front' },
-        { type: 'teammate', x: 140, y: 42, label: 'D', note: 'Shooting from point' },
-        { type: 'teammate', x: 160, y: 65, label: 'LW', note: 'Low support' },
-        { type: 'opponent', x: 175, y: 50, label: 'D', note: 'Trying to clear you' },
-        { type: 'opponent', x: 155, y: 35, label: 'D', note: 'Blocking lane' }
+        { type: 'teammate', x: 185, y: 62, label: 'W', note: 'Puck on half wall' },
+        { type: 'teammate', x: 140, y: 42, label: 'D', note: 'At the point' },
+        { type: 'you', x: 160, y: 42, note: 'You — high slot', targetX: 178, targetY: 42 },
+        { type: 'opponent', x: 168, y: 40, label: 'D', note: 'In slot area' },
+        { type: 'opponent', x: 180, y: 55, label: 'D', note: 'On winger' }
       ],
-      puck: { x: 140, y: 42 },
+      puck: { x: 185, y: 62 },
       arrows: [
-        { from: { x: 140, y: 42 }, to: { x: 188, y: 42 }, style: 'dashed', label: 'Shot' }
+        { from: { x: 160, y: 42 }, to: { x: 178, y: 42 }, style: 'solid', label: 'Drive the net' }
       ],
       annotations: []
     },
@@ -47,39 +47,39 @@ export const module4Scenarios: Scenario[] = [
     moduleId: 4,
     scenarioNum: 2,
     totalInModule: 7,
-    title: 'Cycling the Puck Low',
-    coachCue: "Cycling isn't just moving the puck — it's moving it to someone who can use it. If your linemate has inside position, that's when the cycle pays off.",
+    title: 'Cycle Support — The Bumper Position',
+    coachCue: "During a cycle, the \'bumper\' or high slot position is gold. You\'re open for one-timers, you can distribute to the point, and you keep the D honest in the middle. Hold your water in the slot.",
     introSlides: [
-      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
-      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
-      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+      { title: 'Offense Is About Options', body: '"In the O-zone, your job isn\'t just to score — it\'s to create problems for the defense. Be in a spot where they have to make a choice."' },
+      { title: 'Hard Areas vs. Soft Areas', body: '"The net front and slot are \'hard areas\' — high traffic, high reward. The perimeter is \'soft\' — safe but less dangerous. Know when to be where."' },
+      { title: 'Think One Pass Ahead', body: '"Great offensive players don\'t just react — they anticipate. Where\'s the puck going next? Be there before the defense figures it out."' }
     ],
-    situation: 'You\'re below the goal line on the boards with the puck. A defender is closing fast. Your linemate has inside position at the hash marks, and there\'s a winger high in the slot. You feel the pressure coming.',
-    question: 'When is the RIGHT time to cycle the puck around the boards?',
+    situation: 'Your winger is cycling behind the net with the puck. Your other winger is at the far post. D-man is at the point. The opposing D is tracking the cycle. Where should you position yourself?',
+    question: 'What\'s the best spot for you as the cycle develops?',
     answers: [
-      { text: 'When your linemate has inside position on his defender and can attack the pass', correct: true, feedback: 'Cycling only works if you have a target. Your linemate needs inside leverage, the defender needs to be overextended, and you need a passing lane. Cycling with purpose is puck control.' },
-      { text: 'Any time you\'re under pressure below the goal line', correct: false, feedback: 'Don\'t just move the puck for the sake of movement. Cycling into traffic is a turnover. Make sure someone can USE the pass.' },
-      { text: 'Every time you get the puck below the goal line', correct: false, feedback: 'That becomes predictable. Sometimes holding it, sometimes going behind the net, sometimes cycling — read the play.' },
-      { text: 'When the goalie is deep in the net', correct: false, feedback: 'Goalie positioning doesn\'t determine your cycle decision. Your teammates\' positioning does.' }
+      { text: 'Hold the "bumper" position in the high slot — between the circles', correct: true, feedback: 'The \'bumper\' or high slot position is gold during a cycle. You\'re open for one-timers, you can distribute to the point, and you keep the D honest in the middle. Too many players crowd the net or go low — hold your water in the slot.' },
+      { text: 'Go to the net front to look for a pass from behind the net', correct: false, feedback: 'Find the soft ice. During a cycle, the bumper position (high slot between the circles) is where you belong. You\'ve got net front covered by your other winger — they need someone in the middle. That\'s you.' },
+      { text: 'Skate down to help with the cycle behind the goal line', correct: false, feedback: 'Crowding the cycle doesn\'t help. You\'re needed in the slot where you can shoot, pass, or redistribute. Stay in the soft ice.' },
+      { text: 'Move to the half wall to create a quick up option', correct: false, feedback: 'The half wall is perimeter — low danger. The slot is the highest-value real estate on the ice during a cycle. Stay there.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 192, y: 65, note: 'You — below goal line' },
-        { type: 'teammate', x: 170, y: 42, label: 'C', note: 'Inside position at hash' },
-        { type: 'teammate', x: 155, y: 30, label: 'RW', note: 'High in slot' },
-        { type: 'opponent', x: 185, y: 60, label: 'D', note: 'Closing on you', targetX: 192, targetY: 65 },
-        { type: 'opponent', x: 172, y: 50, label: 'D', note: 'Covering hash' }
+        { type: 'teammate', x: 193, y: 48, label: 'W', note: 'Cycling behind net' },
+        { type: 'teammate', x: 185, y: 30, label: 'W', note: 'Far post' },
+        { type: 'teammate', x: 140, y: 42, label: 'D', note: 'At the point' },
+        { type: 'you', x: 162, y: 42, note: 'You — bumper position' },
+        { type: 'opponent', x: 175, y: 50, label: 'D', note: 'Tracking cycle' },
+        { type: 'opponent', x: 170, y: 35, label: 'D', note: 'In lane' }
       ],
-      puck: { x: 193, y: 65 },
+      puck: { x: 193, y: 48 },
       arrows: [
-        { from: { x: 192, y: 65 }, to: { x: 170, y: 42 }, style: 'dashed', label: 'Cycle pass' },
-        { from: { x: 185, y: 60 }, to: { x: 192, y: 65 }, style: 'solid' }
+        { from: { x: 193, y: 48 }, to: { x: 162, y: 42 }, style: 'dashed', label: 'Pass to bumper' }
       ],
       annotations: []
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '8:15' },
-    audioFolder: 'module4-cycling',
+    audioFolder: 'module4-cycle-support',
     nextScenarioId: 'module4-scenario3'
   },
   {
@@ -87,39 +87,39 @@ export const module4Scenarios: Scenario[] = [
     moduleId: 4,
     scenarioNum: 3,
     totalInModule: 7,
-    title: 'Shot Selection',
-    coachCue: "It's not always shoot. If the pass to the slot is there and the trailer has a better angle, that's the higher-percentage play. Read what's open.",
+    title: 'Finding Soft Ice',
+    coachCue: "When you\'re covered, don\'t stand still — find the soft ice. Slide to the open space and suddenly you\'re a threat for a one-timer. Great offensive players don\'t stand in crowds.",
     introSlides: [
-      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
-      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
-      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+      { title: 'Offense Is About Options', body: '"In the O-zone, your job isn\'t just to score — it\'s to create problems for the defense. Be in a spot where they have to make a choice."' },
+      { title: 'Hard Areas vs. Soft Areas', body: '"The net front and slot are \'hard areas\' — high traffic, high reward. The perimeter is \'soft\' — safe but less dangerous. Know when to be where."' },
+      { title: 'Think One Pass Ahead', body: '"Great offensive players don\'t just react — they anticipate. Where\'s the puck going next? Be there before the defense figures it out."' }
     ],
-    situation: 'You\'re in the left circle with the puck, 30 feet from goal. Decent angle. But a trailer is moving into the slot with a better scoring chance — there\'s a defender between you and him though. One second to decide.',
-    question: 'What drives your shoot-or-pass decision?',
+    situation: 'Your D has the puck at the point. There\'s traffic in the middle of the ice — you\'re currently sandwiched between two defenders. The far side high slot is open. What should you do?',
+    question: 'How do you get yourself open for a scoring chance?',
     answers: [
-      { text: 'The quality of your pass and whether the trailer\'s scoring window is open', correct: true, feedback: 'Shot selection is about expected goal value. If your pass gets through and he\'s one-timing from the slot, that\'s higher probability. But if the defender is in the lane, YOU take the play. Read what\'s open.' },
-      { text: 'Always shoot from the circle — that\'s your job', correct: false, feedback: 'Shots from the circle are fine, but a clean slot one-timer is worth more. Don\'t shoot out of ego — shoot when it\'s the best option.' },
-      { text: 'Whether you\'re a left-shot or right-shot', correct: false, feedback: 'Your handedness matters for execution, but the decision is about what creates the best scoring chance right NOW.' },
-      { text: 'The goalie\'s positioning', correct: false, feedback: 'Goalie positioning is a factor, but the bigger question is: can you make a higher-quality play by passing? Read the full picture.' }
+      { text: 'Slide to the open space on the far side for a one-timer opportunity', correct: true, feedback: 'When you\'re covered, don\'t stand still — find the soft ice. Sliding to the open space gives your D-man a shooting lane and puts you in one-timer position. Fighting through traffic just makes their job easier. Move to where the defense isn\'t.' },
+      { text: 'Fight through the traffic to get to the net front', correct: false, feedback: 'Find the open ice. You\'re in traffic — nobody can get you the puck there. The far side high slot is wide open. Slide over there and suddenly you\'re a threat for a one-timer. Great offensive players don\'t stand in crowds. They find soft ice.' },
+      { text: 'Stay where you are and call for the puck', correct: false, feedback: 'You\'re sandwiched between two defenders — no one can get the puck to you. Move to open ice where you\'re actually a threat.' },
+      { text: 'Drop back to give the D another passing option at the point', correct: false, feedback: 'Dropping back takes you away from scoring areas. The open slot on the far side is a much more dangerous spot. Go there.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 155, y: 25, note: 'You — left circle' },
-        { type: 'teammate', x: 160, y: 42, label: 'C', note: 'Trailer entering slot', targetX: 170, targetY: 40 },
-        { type: 'opponent', x: 158, y: 35, label: 'D', note: 'Between you and trailer' },
-        { type: 'opponent', x: 165, y: 55, label: 'D', note: 'Far side' },
-        { type: 'teammate', x: 145, y: 60, label: 'RW', note: 'Weak side' }
+        { type: 'teammate', x: 140, y: 42, label: 'D', note: 'Puck at point' },
+        { type: 'you', x: 165, y: 42, note: 'You — in traffic', targetX: 165, targetY: 25 },
+        { type: 'opponent', x: 162, y: 38, label: 'D', note: 'Covering you' },
+        { type: 'opponent', x: 168, y: 48, label: 'D', note: 'Also covering you' },
+        { type: 'teammate', x: 180, y: 60, label: 'W', note: 'Low support' }
       ],
-      puck: { x: 155, y: 25 },
+      puck: { x: 140, y: 42 },
       arrows: [
-        { from: { x: 155, y: 25 }, to: { x: 188, y: 42 }, style: 'dashed', label: 'Shoot?' },
-        { from: { x: 155, y: 25 }, to: { x: 170, y: 40 }, style: 'dashed', label: 'Pass?' }
+        { from: { x: 165, y: 42 }, to: { x: 165, y: 25 }, style: 'solid', label: 'Slide to soft ice' },
+        { from: { x: 140, y: 42 }, to: { x: 165, y: 25 }, style: 'dashed', label: 'One-timer lane' }
       ],
       annotations: []
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '3:45' },
-    audioFolder: 'module4-shot-selection',
+    audioFolder: 'module4-soft-ice',
     nextScenarioId: 'module4-scenario4'
   },
   {
@@ -127,38 +127,39 @@ export const module4Scenarios: Scenario[] = [
     moduleId: 4,
     scenarioNum: 4,
     totalInModule: 7,
-    title: 'Screening the Goalie',
-    coachCue: "Make the goalie's job harder — but stay legal. You're a screen and a tip threat. Stay in the hard area without crossing the line.",
+    title: 'Backdoor Read',
+    coachCue: "When the D overcommits to the puck side, the backdoor opens up. That\'s an easy goal if you time it right — sneak to the far post. Read the defense, not just the puck.",
     introSlides: [
-      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
-      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
-      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+      { title: 'Offense Is About Options', body: '"In the O-zone, your job isn\'t just to score — it\'s to create problems for the defense. Be in a spot where they have to make a choice."' },
+      { title: 'Hard Areas vs. Soft Areas', body: '"The net front and slot are \'hard areas\' — high traffic, high reward. The perimeter is \'soft\' — safe but less dangerous. Know when to be where."' },
+      { title: 'Think One Pass Ahead', body: '"Great offensive players don\'t just react — they anticipate. Where\'s the puck going next? Be there before the defense figures it out."' }
     ],
-    situation: 'Your team has possession at the point. A shot is coming and you\'re positioned 12 feet in front of the goalie. You want to make his job harder — but the refs are watching for interference.',
-    question: 'How do you screen effectively without getting called?',
+    situation: 'Your winger has the puck on the strong side half wall. Both opposing D have cheated toward the puck. The far post/backdoor is wide open. You\'re currently in the middle of the slot. What\'s your move?',
+    question: 'How do you capitalize on the defensive overcommit?',
     answers: [
-      { text: 'Keep your stick down, body between the puck lane and goalie, but don\'t initiate contact', correct: true, feedback: 'A legal screen is presence without interference. Occupy space, be a big body, let the goalie see your number on your back — but don\'t hook, lean, or tie up his arms. The ref will let it go if you\'re playing the puck.' },
-      { text: 'Lean on the goalie\'s pads to feel where he\'s moving', correct: false, feedback: 'That\'s goaltender interference. You can\'t initiate contact with the goalie in the crease. Screen with your body position, not your hands.' },
-      { text: 'Move into the crease before the shot and stand your ground', correct: false, feedback: 'Being in the crease before the puck arrives is asking for a penalty. Establish position just outside and let the play come to you.' },
-      { text: 'Screen from the side of the net where the ref can\'t see', correct: false, feedback: 'The ref can see everything. And screening from the side is useless anyway — you need to be between the shooter and the goalie.' }
+      { text: 'Sneak to the far post for a backdoor tap-in', correct: true, feedback: 'Great anticipation. When the D overcommits to the puck side, the backdoor opens up. That\'s an easy goal if you time it right — sneak to the far post and you\'ll get a tap-in. This is about reading the defense, not just the puck.' },
+      { text: 'Move to the near side for a quick pass and shot', correct: false, feedback: 'Read the defense. Both D cheated to the strong side — the backdoor is wide open. Don\'t go where the defense already is. Sneak to the far post and your winger can slide it across for an easy finish.' },
+      { text: 'Stay in the slot and wait for a centering pass', correct: false, feedback: 'The slot has coverage drifting back. The far post is wide open RIGHT NOW. Don\'t wait — read the overcommit and go backdoor.' },
+      { text: 'Go to the point to give your winger an outlet', correct: false, feedback: 'You have a scoring opportunity. The backdoor is wide open because the D overcommitted. Going to the point is the safe play, not the smart play.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 178, y: 42, note: 'You — screening' },
-        { type: 'teammate', x: 140, y: 25, label: 'D', note: 'About to shoot' },
-        { type: 'opponent', x: 175, y: 50, label: 'D', note: 'Trying to clear you' },
-        { type: 'opponent', x: 155, y: 38, label: 'D', note: 'Blocking lane' },
-        { type: 'teammate', x: 165, y: 60, label: 'LW', note: 'Low support' }
+        { type: 'teammate', x: 175, y: 60, label: 'W', note: 'Puck on strong side' },
+        { type: 'you', x: 168, y: 42, note: 'You — reading defense', targetX: 182, targetY: 28 },
+        { type: 'opponent', x: 172, y: 52, label: 'D', note: 'Cheated to puck' },
+        { type: 'opponent', x: 170, y: 48, label: 'D', note: 'Also cheated strong side' },
+        { type: 'teammate', x: 140, y: 42, label: 'D', note: 'At point' }
       ],
-      puck: { x: 140, y: 25 },
+      puck: { x: 175, y: 60 },
       arrows: [
-        { from: { x: 140, y: 25 }, to: { x: 188, y: 42 }, style: 'dashed', label: 'Incoming shot' }
+        { from: { x: 168, y: 42 }, to: { x: 182, y: 28 }, style: 'solid', label: 'Sneak backdoor' },
+        { from: { x: 175, y: 60 }, to: { x: 182, y: 28 }, style: 'dashed', label: 'Cross-ice pass' }
       ],
       annotations: []
     },
     gameContext: { period: 2, teamScore: 0, oppScore: 1, timeLeft: '14:20' },
-    audioFolder: 'module4-screening',
+    audioFolder: 'module4-backdoor',
     nextScenarioId: 'module4-scenario5'
   },
   {
@@ -166,39 +167,39 @@ export const module4Scenarios: Scenario[] = [
     moduleId: 4,
     scenarioNum: 5,
     totalInModule: 7,
-    title: 'Back-Door Play Recognition',
-    coachCue: "When your center drives the net and pulls the D with him, the back door opens. Be ready — the puck carrier is looking for you.",
+    title: 'Screen vs. Deflection',
+    coachCue: "A tip changes everything. The goalie is set for a shot from the point — a deflection changes the angle and speed completely. Get in the lane, stick on the ice, and redirect it.",
     introSlides: [
-      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
-      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
-      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+      { title: 'Offense Is About Options', body: '"In the O-zone, your job isn\'t just to score — it\'s to create problems for the defense. Be in a spot where they have to make a choice."' },
+      { title: 'Hard Areas vs. Soft Areas', body: '"The net front and slot are \'hard areas\' — high traffic, high reward. The perimeter is \'soft\' — safe but less dangerous. Know when to be where."' },
+      { title: 'Think One Pass Ahead', body: '"Great offensive players don\'t just react — they anticipate. Where\'s the puck going next? Be there before the defense figures it out."' }
     ],
-    situation: 'You\'re the winger on the weak side. Your center is driving hard toward the net, pulling the defenseman with him. The puck carrier on the perimeter is looking around. That leaves you wide open on the back door.',
-    question: 'What tells you the back-door pass is coming to you?',
+    situation: 'Your D is winding up for a point shot. Your winger is fighting at the net front. There\'s a clear shooting lane. You\'re positioned below the shot line. What should you do?',
+    question: 'How do you maximize the scoring chance on this point shot?',
     answers: [
-      { text: 'You\'re in a scoring area, the defender has committed to the center, and the puck carrier is looking your way', correct: true, feedback: 'Back-door isn\'t a set play — it\'s reading movement. If the center\'s drive pulls the defender and the puck carrier can see you\'re open, that\'s your cue. Don\'t cheat early — read and react.' },
-      { text: 'The defenseman loses sight of you', correct: false, feedback: 'That\'s part of it, but the trigger is the PUCK CARRIER. He needs to see you and have a passing lane. Watch the puck, not just your defender.' },
-      { text: 'Your center makes eye contact before the drive', correct: false, feedback: 'Pre-arranged signals aren\'t how real-time hockey works. Read the play as it develops. Your center is creating space — you exploit it.' },
-      { text: 'There\'s space behind the defenseman', correct: false, feedback: 'Space alone isn\'t enough. You need the puck carrier to recognize the opportunity AND have a clear lane. All three elements matter.' }
+      { text: 'Move into the shooting lane with stick on the ice for a tip', correct: true, feedback: 'That\'s high-IQ offense. A tip changes everything. The goalie is set for a shot from the point — a deflection changes the angle and speed completely. Get in the lane, stick on the ice, and redirect it. Your winger\'s already screening. You tip.' },
+      { text: 'Get directly in front of the goalie to screen him', correct: false, feedback: 'Your winger already has the screen covered. What the goalie can\'t handle is a tip that changes the angle. Get into the shooting lane with your stick on the ice. A good tip is almost impossible to save.' },
+      { text: 'Stay low for a rebound off the far pad', correct: false, feedback: 'Rebounds are plan B. Plan A is tipping the shot and changing the angle entirely. Get into the lane with your stick down.' },
+      { text: 'Clear out to give the shooter a better lane', correct: false, feedback: 'The lane is already clear enough. Your job is to be IN the lane to redirect the shot, not out of it. A deflection is the highest-danger play here.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 170, y: 22, note: 'You — back door, OPEN' },
-        { type: 'teammate', x: 165, y: 42, label: 'C', note: 'Driving to net', targetX: 182, targetY: 42 },
-        { type: 'teammate', x: 145, y: 58, label: 'RW', note: 'Puck carrier — looking' },
-        { type: 'opponent', x: 170, y: 35, label: 'D', note: 'Following center', targetX: 180, targetY: 42 },
-        { type: 'opponent', x: 165, y: 58, label: 'D', note: 'On puck carrier' }
+        { type: 'teammate', x: 140, y: 42, label: 'D', note: 'Winding up for shot' },
+        { type: 'teammate', x: 180, y: 45, label: 'W', note: 'Screening at net' },
+        { type: 'you', x: 165, y: 48, note: 'You — below shot line', targetX: 165, targetY: 42 },
+        { type: 'opponent', x: 170, y: 35, label: 'D', note: 'In front' },
+        { type: 'opponent', x: 175, y: 55, label: 'D', note: 'Net front battle' }
       ],
-      puck: { x: 145, y: 58 },
+      puck: { x: 140, y: 42 },
       arrows: [
-        { from: { x: 165, y: 42 }, to: { x: 182, y: 42 }, style: 'solid', label: 'Center drive' },
-        { from: { x: 145, y: 58 }, to: { x: 170, y: 22 }, style: 'dashed', label: 'Back-door pass' }
+        { from: { x: 140, y: 42 }, to: { x: 190, y: 42 }, style: 'dashed', label: 'Shot from point' },
+        { from: { x: 165, y: 48 }, to: { x: 165, y: 42 }, style: 'solid', label: 'Get in lane for tip' }
       ],
       annotations: []
     },
     gameContext: { period: 3, teamScore: 1, oppScore: 1, timeLeft: '6:10' },
-    audioFolder: 'module4-back-door',
+    audioFolder: 'module4-screen-tip',
     nextScenarioId: 'module4-scenario6'
   },
   {
@@ -206,38 +207,39 @@ export const module4Scenarios: Scenario[] = [
     moduleId: 4,
     scenarioNum: 6,
     totalInModule: 7,
-    title: 'Getting Point Shots Through',
-    coachCue: "Your forwards are in front — screen and tip. Your job at the point is to get the shot through. Find the lane, don't force it through traffic.",
+    title: 'High Slot Threat',
+    coachCue: "When you have time in the slot, the answer is almost always shoot. High slot shots with traffic in front are how you score. The defense gave you that lane — don\'t give it back by over-passing.",
     introSlides: [
-      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
-      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
-      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+      { title: 'Offense Is About Options', body: '"In the O-zone, your job isn\'t just to score — it\'s to create problems for the defense. Be in a spot where they have to make a choice."' },
+      { title: 'Hard Areas vs. Soft Areas', body: '"The net front and slot are \'hard areas\' — high traffic, high reward. The perimeter is \'soft\' — safe but less dangerous. Know when to be where."' },
+      { title: 'Think One Pass Ahead', body: '"Great offensive players don\'t just react — they anticipate. Where\'s the puck going next? Be there before the defense figures it out."' }
     ],
-    situation: 'You\'re at the point with the puck. Opposing D-men are converging to block. A forward is screening in front of the net, another is crashing for rebounds. You need to get this shot through.',
-    question: 'What\'s your best tactic to get the puck to the net?',
+    situation: 'Your winger is down low and spots you open in the high slot. He\'s about to pass it to you. The defense has collapsed low. You\'ll have time and space. What\'s your play when you receive the puck?',
+    question: 'You receive the pass in the high slot with time. What do you do?',
     answers: [
-      { text: 'Shoot low through traffic — use the screen and let the deflectors work', correct: true, feedback: 'Low shots through traffic beat defenders more than high ones. Your screener can deflect it, the goalie can\'t see it, and if it gets through there\'s a rebound. Let it rip low and hard.' },
-      { text: 'Shoot high to beat the defenders', correct: false, feedback: 'High shots over traffic are hard to control and rarely create secondary chances. Low and hard gives you tips, screens, AND rebounds.' },
-      { text: 'Wait for a clear shooting lane', correct: false, feedback: 'Waiting for daylight means you\'re not getting shots through under pressure. That\'s not how you create chances. Fire it low through the mess.' },
-      { text: 'Pass back out and reset the play', correct: false, feedback: 'You have a screen, a crash guy, and a shooting lane through traffic. This IS the play. Don\'t pass up the opportunity.' }
+      { text: 'Shoot immediately — you have a clear lane to the net', correct: true, feedback: 'Shooters shoot. When you have time in the slot, the answer is almost always shoot. High slot shots with traffic in front are how you score. The defense collapsed low — they gave you that lane. Don\'t give it back by over-passing.' },
+      { text: 'Look to pass to your D-man at the point for a one-timer', correct: false, feedback: 'Take the shot. You\'ve got time and a lane in the high slot — that\'s a prime scoring area. Over-passing from here is a common mistake. The defense gave you space. Use it. Put it on net.' },
+      { text: 'Carry it toward the net for a better angle', correct: false, feedback: 'Walking in closes lanes as defenders recover. You have a lane NOW from the slot. Shoot it before the window closes.' },
+      { text: 'Pass back down low to keep the cycle going', correct: false, feedback: 'You have a shooting lane in the highest-danger area on the ice and you\'re passing it BACK? Shoot. Good things happen from slot shots.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 140, y: 25, note: 'You (D) — at point' },
-        { type: 'teammate', x: 178, y: 42, label: 'C', note: 'Screening' },
-        { type: 'teammate', x: 168, y: 55, label: 'LW', note: 'Crashing for rebound' },
-        { type: 'opponent', x: 155, y: 30, label: 'D', note: 'Converging to block' },
-        { type: 'opponent', x: 158, y: 42, label: 'D', note: 'Blocking lane' }
+        { type: 'teammate', x: 190, y: 60, label: 'W', note: 'Down low — passing' },
+        { type: 'you', x: 160, y: 42, note: 'You — high slot, open!' },
+        { type: 'teammate', x: 140, y: 30, label: 'D', note: 'At point' },
+        { type: 'opponent', x: 175, y: 55, label: 'D', note: 'Collapsed low' },
+        { type: 'opponent', x: 178, y: 38, label: 'D', note: 'Collapsed low' }
       ],
-      puck: { x: 140, y: 25 },
+      puck: { x: 190, y: 60 },
       arrows: [
-        { from: { x: 140, y: 25 }, to: { x: 188, y: 42 }, style: 'dashed', label: 'Low and hard' }
+        { from: { x: 190, y: 60 }, to: { x: 160, y: 42 }, style: 'dashed', label: 'Pass to slot' },
+        { from: { x: 160, y: 42 }, to: { x: 190, y: 42 }, style: 'solid', label: 'SHOOT' }
       ],
       annotations: []
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '4:50' },
-    audioFolder: 'module4-point-shots',
+    audioFolder: 'module4-high-slot',
     nextScenarioId: 'module4-scenario7'
   },
   {
@@ -245,38 +247,38 @@ export const module4Scenarios: Scenario[] = [
     moduleId: 4,
     scenarioNum: 7,
     totalInModule: 7,
-    title: 'Winning the Dump-In Battle',
-    coachCue: "Dump-in races are about angles and urgency. If you have the better angle on the puck, win it. First touch often decides the shift.",
+    title: 'O-Zone Turnover Recovery',
+    coachCue: "When the puck turns over in the O-zone, your first job is to sprint back through the middle. The center takes the most dangerous ice. Get back, protect the slot, then sort out assignments.",
     introSlides: [
-      { title: 'Offensive Zone IQ', body: '"In the O-zone, every decision is about creating or finishing chances. Net front, cycle, shot selection — it all connects."' },
-      { title: 'Net Front Is a Skill', body: '"Screening without seeing the puck is half the job. You want to tip, deflect, and crash rebounds. Position where you can do both."' },
-      { title: 'Read Before You React', body: '"When to shoot, when to pass, when to cycle — the defense tells you. Read the lanes and the goalie, then execute."' }
+      { title: 'Offense Is About Options', body: '"In the O-zone, your job isn\'t just to score — it\'s to create problems for the defense. Be in a spot where they have to make a choice."' },
+      { title: 'Hard Areas vs. Soft Areas', body: '"The net front and slot are \'hard areas\' — high traffic, high reward. The perimeter is \'soft\' — safe but less dangerous. Know when to be where."' },
+      { title: 'Think One Pass Ahead', body: '"Great offensive players don\'t just react — they anticipate. Where\'s the puck going next? Be there before the defense figures it out."' }
     ],
-    situation: 'Your team dumps the puck in deep during an offensive push. It\'s a race for the loose puck behind the net. The opposing D is closer but has his back turned. You\'re coming from a different angle.',
-    question: 'What\'s your best move to win this puck battle?',
+    situation: 'Your team just turned the puck over in the offensive zone. The opposing D has it behind their net and their forward is already breaking out. Your D got caught up ice. What\'s your immediate responsibility?',
+    question: 'The puck is turned over. What do you do first?',
     answers: [
-      { text: 'Angle your body to cut him off before he reaches the puck — own the space', correct: true, feedback: 'You don\'t need to reach the puck first — you need to own the space. Get your body in his path, make him change direction, then attack the puck. Positioning and angling beats raw speed.' },
-      { text: 'Go for the puck directly — fastest player wins', correct: false, feedback: 'He\'s closer. You won\'t win a foot race. But you CAN win the positioning battle. Use your angle to cut him off.' },
-      { text: 'Wait for him to touch it first, then make the play', correct: false, feedback: 'You\'re giving up initiative. By the time he has possession, you\'re chasing. Get your body involved early.' },
-      { text: 'Chase him into the corner and battle after he gets it', correct: false, feedback: 'Now you\'re on defense. The whole point of a dump-in is to recover the puck. Use your angle to prevent him from establishing control.' }
+      { text: 'Sprint back through the middle to cover the most dangerous ice', correct: true, feedback: 'Two-way hockey. When the puck turns over, your first job is to get back through the middle. The center takes the most dangerous ice. Your D got caught up — you need to be the first man back. Backcheck hard through the middle, then pick up responsibility. That\'s how you prevent odd-man rushes.' },
+      { text: 'Forecheck hard to try to force another turnover', correct: false, feedback: 'Get back first. On turnovers, the center\'s first job is to sprint back through the middle. Forechecking after a turnover usually just takes you out of the play. Get back, protect the slot, then sort out assignments.' },
+      { text: 'Pick up the closest opponent and stay with him', correct: false, feedback: 'Don\'t pick up a man yet — get to the middle first. If you chase a man along the boards while the slot is open, you\'re leaving the most dangerous ice unprotected.' },
+      { text: 'Go to the boards to cut off the breakout pass', correct: false, feedback: 'The middle is more dangerous than the boards. Get back through the center lane, protect the slot, then worry about the breakout. Your D is caught — you\'re the safety net.' }
     ],
     diagram: {
       zone: 'offensive',
       players: [
-        { type: 'you', x: 175, y: 68, note: 'You — angling in', targetX: 192, targetY: 60 },
-        { type: 'opponent', x: 182, y: 48, label: 'D', note: 'Back turned — closer', targetX: 193, targetY: 58 },
-        { type: 'teammate', x: 165, y: 55, label: 'C', note: 'Support' },
-        { type: 'opponent', x: 175, y: 30, label: 'D', note: 'Far side' }
+        { type: 'opponent', x: 193, y: 42, label: 'D', note: 'Has puck — breaking out' },
+        { type: 'opponent', x: 165, y: 30, label: 'F', note: 'Already breaking out' },
+        { type: 'you', x: 170, y: 55, note: 'You — turnover! Get back', targetX: 100, targetY: 42 },
+        { type: 'teammate', x: 155, y: 25, label: 'D', note: 'Caught up ice' },
+        { type: 'teammate', x: 160, y: 65, label: 'W', note: 'Also transitioning' }
       ],
-      puck: { x: 193, y: 58 },
+      puck: { x: 193, y: 42 },
       arrows: [
-        { from: { x: 175, y: 68 }, to: { x: 192, y: 60 }, style: 'solid', label: 'Cut off angle' },
-        { from: { x: 182, y: 48 }, to: { x: 193, y: 58 }, style: 'solid' }
+        { from: { x: 170, y: 55 }, to: { x: 100, y: 42 }, style: 'solid', label: 'Sprint through middle' }
       ],
       annotations: []
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 3, timeLeft: '2:15' },
-    audioFolder: 'module4-puck-retrieval',
+    audioFolder: 'module4-ozone-turnover',
     nextScenarioId: null
   }
 ];
