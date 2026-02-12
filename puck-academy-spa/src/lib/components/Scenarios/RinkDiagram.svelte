@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
+  import type { CorrectPlay, CorrectPlayStep } from '$lib/data/scenarios';
 
   export let diagram: {
     viewBox?: string;
@@ -59,6 +60,131 @@
     if (!externalMovementControl) return true; // legacy: show all trails when player is revealed
     return revealedMovements.has(index);
   }
+
+  // ── Correct play animation ──────────────────────────────────
+  let correctPlayActive = false;
+  let animatingPlayers: Set<number> = new Set(); // which players are being animated (dims their static label)
+
+  // Trail state: one entry per animating player
+  let trails: Array<{
+    playerIndex: number;
+    pathD: string;
+    totalLength: number;
+    progress: number;
+    color: string;
+  }> = [];
+
+  // Current animated positions for moving player labels
+  let animPositions: Map<number, { x: number; y: number }> = new Map();
+
+  // Puck animation
+  let puckAnim: { pathD: string; totalLength: number; progress: number; x: number; y: number } | null = null;
+
+  // Temp SVG for path sampling (cleaned up on destroy)
+  let samplerSvg: SVGSVGElement | null = null;
+  let runningAnimations = 0;
+
+  function getPathSampler(d: string): SVGPathElement {
+    const ns = 'http://www.w3.org/2000/svg';
+    if (!samplerSvg) {
+      samplerSvg = document.createElementNS(ns, 'svg');
+      samplerSvg.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden');
+      document.body.appendChild(samplerSvg);
+    }
+    const pathEl = document.createElementNS(ns, 'path');
+    pathEl.setAttribute('d', d);
+    samplerSvg.appendChild(pathEl);
+    return pathEl;
+  }
+
+  function playerColor(type: string): string {
+    if (type === 'you') return '#FFD700';
+    if (type === 'teammate') return '#60A5FA';
+    return '#F87171';
+  }
+
+  /** Public: kick off the correct-play animation */
+  export function playCorrectAnimation(correctPlay: CorrectPlay): void {
+    correctPlayActive = true;
+
+    for (const step of correctPlay.steps) {
+      setTimeout(() => animatePlayerStep(step), step.delayMs);
+    }
+
+    if (correctPlay.puckPath && correctPlay.puckDurationMs) {
+      setTimeout(() => animatePuckStep(correctPlay.puckPath!, correctPlay.puckDurationMs!), correctPlay.puckDelayMs || 0);
+    }
+  }
+
+  function animatePlayerStep(step: CorrectPlayStep): void {
+    const pathEl = getPathSampler(step.path);
+    const totalLen = pathEl.getTotalLength();
+    const player = diagram.players[step.playerIndex];
+    const color = playerColor(player.type);
+
+    animatingPlayers.add(step.playerIndex);
+    animatingPlayers = animatingPlayers;
+
+    const trailEntry = { playerIndex: step.playerIndex, pathD: step.path, totalLength: totalLen, progress: 0, color };
+    trails = [...trails, trailEntry];
+    const trailIdx = trails.length - 1;
+
+    runningAnimations++;
+    const startTime = performance.now();
+
+    function tick(now: number) {
+      const t = Math.min((now - startTime) / step.durationMs, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+
+      const pt = pathEl.getPointAtLength(eased * totalLen);
+      animPositions.set(step.playerIndex, { x: pt.x, y: pt.y });
+      animPositions = animPositions;
+
+      trails[trailIdx] = { ...trails[trailIdx], progress: eased };
+      trails = trails;
+
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        runningAnimations--;
+        if (samplerSvg && pathEl.parentNode === samplerSvg) samplerSvg.removeChild(pathEl);
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function animatePuckStep(pathD: string, durationMs: number): void {
+    const pathEl = getPathSampler(pathD);
+    const totalLen = pathEl.getTotalLength();
+    const startPt = pathEl.getPointAtLength(0);
+    puckAnim = { pathD, totalLength: totalLen, progress: 0, x: startPt.x, y: startPt.y };
+
+    runningAnimations++;
+    const startTime = performance.now();
+
+    function tick(now: number) {
+      const t = Math.min((now - startTime) / durationMs, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const pt = pathEl.getPointAtLength(eased * totalLen);
+
+      puckAnim = { ...puckAnim!, progress: eased, x: pt.x, y: pt.y };
+
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        runningAnimations--;
+        if (samplerSvg && pathEl.parentNode === samplerSvg) samplerSvg.removeChild(pathEl);
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  onDestroy(() => {
+    if (samplerSvg && samplerSvg.parentNode) {
+      samplerSvg.parentNode.removeChild(samplerSvg);
+      samplerSvg = null;
+    }
+  });
 
   // --- Auto-zoom: compute viewBox from active player positions ---
   function computeViewBox(): string {
@@ -334,7 +460,8 @@
     <!-- Players — tiny colored letters, whiteboard style (no circles) -->
     {#each diagram.players as player, i}
       {#if revealedPlayers.has(i)}
-        <g class="player-group" class:faded={player.faded} class:anim-pop={animated}>
+        <g class="player-group" class:faded={player.faded} class:anim-pop={animated}
+           class:ghost-player={animatingPlayers.has(i)}>
           {#if player.type === 'you'}
             <text x={player.x} y={player.y + 1} font-size="3" fill="#B8860B"
               stroke="white" stroke-width="0.5" paint-order="stroke"
@@ -353,6 +480,65 @@
         </g>
       {/if}
     {/each}
+
+    <!-- === Correct play animation overlay === -->
+    {#if correctPlayActive}
+      <!-- Trail paths — colored route lines that draw progressively -->
+      {#each trails as trail}
+        <path
+          d={trail.pathD}
+          fill="none"
+          stroke={trail.color}
+          stroke-width="1.4"
+          stroke-linecap="round"
+          opacity="0.75"
+          stroke-dasharray={trail.totalLength}
+          stroke-dashoffset={trail.totalLength * (1 - trail.progress)}
+        />
+      {/each}
+
+      <!-- Puck trail (subtle dashed line) -->
+      {#if puckAnim}
+        <path
+          d={puckAnim.pathD}
+          fill="none"
+          stroke="#888"
+          stroke-width="0.6"
+          stroke-dasharray={puckAnim.totalLength}
+          stroke-dashoffset={puckAnim.totalLength * (1 - puckAnim.progress)}
+          opacity="0.4"
+        />
+        <!-- Animated puck -->
+        <circle
+          cx={puckAnim.x} cy={puckAnim.y}
+          r="2.5" fill="url(#puckGrad)"
+          stroke="#555" stroke-width="0.5"
+          class="puck"
+        />
+      {/if}
+
+      <!-- Animated player labels (moving along the trail) -->
+      {#each [...animPositions.entries()] as [playerIdx, pos]}
+        {@const player = diagram.players[playerIdx]}
+        <g class="player-group">
+          {#if player.type === 'you'}
+            <text x={pos.x} y={pos.y + 1} font-size="3" fill="#B8860B"
+              stroke="white" stroke-width="0.5" paint-order="stroke"
+              text-anchor="middle" font-weight="bold" font-family="Arial, sans-serif">YOU</text>
+          {:else if player.type === 'teammate'}
+            <text x={pos.x} y={pos.y + 1} font-size="3" fill="#1E40AF"
+              stroke="white" stroke-width="0.5" paint-order="stroke"
+              text-anchor="middle" font-weight="bold"
+              font-family="Arial, sans-serif">{player.label || '•'}</text>
+          {:else}
+            <text x={pos.x} y={pos.y + 1} font-size="3" fill="#B91C1C"
+              stroke="white" stroke-width="0.5" paint-order="stroke"
+              text-anchor="middle" font-weight="bold"
+              font-family="Arial, sans-serif">{player.label || '•'}</text>
+          {/if}
+        </g>
+      {/each}
+    {/if}
 
     <!-- Ref / Linesman (only shown when scenario data includes ref) -->
     {#if diagram.ref && showIce}
@@ -436,6 +622,7 @@
 
   .player-group { transition: opacity 0.3s ease; }
   .player-group.faded { opacity: 0.35; }
+  .player-group.ghost-player { opacity: 0.2; }
 
   .you-pulse { animation: pulse-ring 2s ease-in-out infinite; }
   @keyframes pulse-ring {

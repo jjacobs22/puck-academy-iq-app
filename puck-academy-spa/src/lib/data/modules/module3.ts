@@ -40,7 +40,22 @@ export const module3Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '16:30' },
     audioFolder: 'module3-scenario1-high-low-route',
-    nextScenarioId: 'module3-scenario2'
+    nextScenarioId: 'module3-scenario2',
+    // Correct play: center swings low underneath the puck for forehand receive
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,  // You (C) — swing low underneath
+          path: 'M 50 20 C 55 38, 38 58, 25 60',
+          durationMs: 2000,
+          delayMs: 400
+        }
+      ],
+      // Puck travels from D behind net to your new low position
+      puckPath: 'M 6 42 Q 15 55, 25 60',
+      puckDelayMs: 2400,
+      puckDurationMs: 600
+    }
   },
   {
     id: 'module3-scenario2',

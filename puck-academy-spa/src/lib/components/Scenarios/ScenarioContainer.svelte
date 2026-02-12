@@ -228,6 +228,13 @@
 
     scenarioPhase = 'feedback';
     showAnswerFeedback(isCorrect, feedbackText, index);
+
+    // Trigger correct-play animation on the diagram (always show the right play)
+    if (scenario.correctPlay && rinkDiagram) {
+      setTimeout(() => {
+        rinkDiagram.playCorrectAnimation(scenario.correctPlay!);
+      }, 600);
+    }
   }
 
   function handleContinue() {

@@ -787,6 +787,17 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 12, 2026 - Correct-play diagram animation
+
+**SPA:** After answering a scenario, the diagram can play an animation showing the correct play (player movement path and optional puck path).
+
+- **Scenario data:** New optional `correctPlay` on scenarios with `CorrectPlayStep[]` (playerIndex, SVG path, durationMs, delayMs) and optional `puckPath`, `puckDelayMs`, `puckDurationMs`. Types in `scenarios.ts`.
+- **RinkDiagram.svelte:** Correct-play animation: path sampling, animated player trails and moving labels, optional puck animation; `playCorrectAnimation(correctPlay)`; cleanup on destroy.
+- **ScenarioContainer.svelte:** On feedback phase, if scenario has `correctPlay`, calls `rinkDiagram.playCorrectAnimation` after 600 ms.
+- **Module 3 scenario 1 (high-low-route):** First scenario using `correctPlay` — center swings low underneath for forehand receive; puck path from D to low position.
+
+---
+
 ### February 12, 2026 - Progress backfill and manual sync (admin usage)
 
 **Backfill local scores to `progress` so admin shows usage even when the table was missing at completion time.**

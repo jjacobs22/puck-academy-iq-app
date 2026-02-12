@@ -62,6 +62,22 @@ export interface MovementCue {
   triggerAtSecond: number;  // seconds into setup audio when this movement should appear
 }
 
+/** One step of the correct-play animation (one player moving along a path) */
+export interface CorrectPlayStep {
+  playerIndex: number;   // which player in diagram.players[]
+  path: string;          // SVG path string (M/C/Q) describing the movement curve
+  durationMs: number;    // how long this player's movement takes
+  delayMs: number;       // delay before starting (for sequencing multiple players)
+}
+
+/** Correct-play animation shown on the diagram during the feedback phase */
+export interface CorrectPlay {
+  steps: CorrectPlayStep[];
+  puckPath?: string;         // optional SVG path for puck movement
+  puckDelayMs?: number;      // delay before puck starts moving
+  puckDurationMs?: number;   // duration of puck movement
+}
+
 export interface Scenario {
   id: string;
   moduleId: number;
@@ -81,6 +97,8 @@ export interface Scenario {
   introSlides?: IntroSlide[];
   /** Optional timing cues to sync player movement arrows with setup audio narration */
   movementCues?: MovementCue[];
+  /** Optional animation of the correct play, shown on the diagram during feedback */
+  correctPlay?: CorrectPlay;
 }
 
 // ── RINK COORDINATE REFERENCE (viewBox 0 0 200 85) ──
