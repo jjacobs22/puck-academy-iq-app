@@ -745,6 +745,18 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 11, 2026 - Supabase Security Advisories Fix
+
+**Dashboard “25 issues” (Security):** Addressed via SQL migration.
+
+- **`migrations/fix_supabase_security_feb2026.sql`** — Run in Supabase SQL Editor to:
+  - **coach_conversations:** Enable RLS and add policies so authenticated users can read all (admin) and insert their own rows (Coach’s Office). Resolves “table is public but RLS has not been…” and “RLS policies but RLS is not…”.
+  - **handle_new_user:** Set `search_path = public` on the function to fix “role mutable search_path”.
+  - **email_signups:** “Allow anonymous inserts” is intentional for Hockey IQ Test; no change in migration (optional app-side rate limit).
+- **Performance (20 issues):** Many are RLS policy suggestions (e.g. “Users can…” on profiles/progress). Slow queries listed (e.g. `pg_timezone_names`) are often Supabase/internal; no app code change required unless you add indexes for your own queries.
+
+---
+
 ### February 11, 2026 - Supabase Env Setup Docs
 
 **SPA Supabase configuration:**
