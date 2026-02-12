@@ -798,6 +798,12 @@ puck-academy-iq-app/
 
 ---
 
+### February 12, 2026 - Deploy and PROJECT_CONTEXT update
+
+**Deploy:** Push to `main` triggers Netlify build and publish to **https://hockeyiq.netlify.app/**. This changelog entry added to PROJECT_CONTEXT.md.
+
+---
+
 ### February 12, 2026 - Progress backfill and manual sync (admin usage)
 
 **Backfill local scores to `progress` so admin shows usage even when the table was missing at completion time.**

@@ -1,7 +1,10 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import { hockeyIQRating, currentTier } from '$lib/stores/gameSession';
+  import RinkDiagram from './RinkDiagram.svelte';
+  import type { Diagram, CorrectPlay } from '$lib/data/scenarios';
 
   export let correct: boolean;
   export let explanation: string;
@@ -10,6 +13,21 @@
   export let hasNext: boolean;
   export let xpGain: { base: number; speed: number; combo: number; total: number } | null = null;
   export let comboCount: number = 0;
+
+  /** Optional: pass diagram + correctPlay to show animated correct play inline */
+  export let diagram: Diagram | undefined = undefined;
+  export let correctPlay: CorrectPlay | undefined = undefined;
+
+  let feedbackRinkDiagram: RinkDiagram;
+
+  onMount(() => {
+    if (diagram && correctPlay && feedbackRinkDiagram) {
+      // Small delay so the panel finishes its fly-in transition first
+      setTimeout(() => {
+        feedbackRinkDiagram.playCorrectAnimation(correctPlay!);
+      }, 500);
+    }
+  });
 </script>
 
 <div class="feedback-overlay" transition:fade={{ duration: 200 }}>
@@ -61,6 +79,21 @@
       <span class="coach-sign">— Coach</span>
     </div>
 
+    <!-- Correct Play Animation (inline mini diagram) -->
+    {#if diagram && correctPlay}
+      <div class="correct-play-section">
+        <div class="correct-play-label">Watch the play</div>
+        <div class="correct-play-diagram">
+          <RinkDiagram
+            bind:this={feedbackRinkDiagram}
+            {diagram}
+            animated={false}
+            externalMovementControl={false}
+          />
+        </div>
+      </div>
+    {/if}
+
     <!-- Mini Hockey IQ indicator -->
     <div class="iq-mini">
       <span class="iq-mini-label">Hockey IQ</span>
@@ -100,6 +133,7 @@
     justify-content: center;
     z-index: 500;
     padding: var(--spacing-md);
+    overflow-y: auto;
   }
 
   .feedback-panel {
@@ -107,6 +141,8 @@
     color: var(--dark-blue);
     width: 100%;
     max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     padding: var(--spacing-xl);
     padding-bottom: calc(var(--spacing-xl) + var(--footer-height));
@@ -195,6 +231,27 @@
     margin-bottom: var(--spacing-md);
   }
 
+  /* Correct Play Animation (inline mini diagram) */
+  .correct-play-section {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .correct-play-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--silver, #94a3b8);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .correct-play-diagram {
+    background: #0f1a2e;
+    border-radius: var(--radius-md);
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
   .explanation p {
     margin: 0 0 var(--spacing-xs) 0;
     line-height: 1.6;
@@ -265,6 +322,7 @@
     .feedback-panel {
       border-radius: var(--radius-lg);
       padding-bottom: var(--spacing-xl);
+      max-height: 85vh;
     }
 
     .actions {

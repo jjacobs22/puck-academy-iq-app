@@ -229,12 +229,7 @@
     scenarioPhase = 'feedback';
     showAnswerFeedback(isCorrect, feedbackText, index);
 
-    // Trigger correct-play animation on the diagram (always show the right play)
-    if (scenario.correctPlay && rinkDiagram) {
-      setTimeout(() => {
-        rinkDiagram.playCorrectAnimation(scenario.correctPlay!);
-      }, 600);
-    }
+    // Correct-play animation is now shown inside FeedbackPanel (embedded mini diagram)
   }
 
   function handleContinue() {
@@ -404,6 +399,8 @@
     hasNext={!!scenario.nextScenarioId}
     xpGain={$lastXPGain}
     comboCount={$combo}
+    diagram={scenario.correctPlay ? scenario.diagram : undefined}
+    correctPlay={scenario.correctPlay}
   />
 {/if}
 
