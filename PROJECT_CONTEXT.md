@@ -789,7 +789,13 @@ puck-academy-iq-app/
 
 ### February 12, 2026 - Deploy (Netlify auto-deploy)
 
-**Live:** Latest changes (audio-synced diagram movements, PROJECT_CONTEXT updates) are on `main` and deploy automatically via GitHub → Netlify. No manual deploy step; push to `main` triggers build and publish to **https://hockeyiq.netlify.app/**.
+**Live:** Push to `main` triggers build and publish to **https://hockeyiq.netlify.app/**. Deploy includes Module 2 diagram position fix and PROJECT_CONTEXT updates.
+
+---
+
+### February 12, 2026 - Module 2 diagram position fix
+
+**SPA:** Adjusted faceoff diagram positions in Module 2 (forehand/backhand scenario) so the dot and ref/player positions align correctly on the rink (`module2.ts`).
 
 ---
 

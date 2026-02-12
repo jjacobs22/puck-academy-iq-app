@@ -226,16 +226,16 @@ export const module2Scenarios: Scenario[] = [
     diagram: {
       zone: 'neutral',
       players: [
-        { type: 'you', x: 96, y: 25, note: 'You (C) \u2014 right shot' },
-        { type: 'opponent', x: 104, y: 25, label: 'C', note: 'Left shot \u2014 beat you twice' },
+        { type: 'you', x: 76, y: 25, note: 'You (C) \u2014 right shot' },
+        { type: 'opponent', x: 84, y: 25, label: 'C', note: 'Left shot \u2014 beat you twice' },
       ],
-      puck: { x: 100, y: 25 },
-      ref: { x: 97, y: 18, label: 'LM' },
+      puck: { x: 80, y: 25 },
+      ref: { x: 77, y: 18, label: 'LM' },
       arrows: [
-        { from: { x: 97, y: 20 }, to: { x: 93, y: 23 }, style: 'dashed', label: 'LM on your forehand' }
+        { from: { x: 77, y: 20 }, to: { x: 73, y: 23 }, style: 'dashed', label: 'LM on your forehand' }
       ],
       annotations: [
-        { x: 108, y: 18, text: 'Lost backhand: \u2717 \u2717' }
+        { x: 88, y: 18, text: 'Lost backhand: \u2717 \u2717' }
       ]
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '10:15' },
