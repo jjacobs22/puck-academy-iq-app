@@ -40,6 +40,16 @@ export const module4Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '9:30' },
     audioFolder: 'module4-net-front',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 160 42 Q 170 42, 178 42',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module4-scenario2'
   },
   {
@@ -80,6 +90,12 @@ export const module4Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '8:15' },
     audioFolder: 'module4-cycle-support',
+    correctPlay: {
+      steps: [],
+      puckPath: 'M 193 48 Q 180 45, 162 42',
+      puckDelayMs: 400,
+      puckDurationMs: 800
+    },
     nextScenarioId: 'module4-scenario3'
   },
   {
@@ -120,6 +136,19 @@ export const module4Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '3:45' },
     audioFolder: 'module4-soft-ice',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 165 42 Q 165 33, 165 25',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ],
+      puckPath: 'M 140 42 Q 152 33, 165 25',
+      puckDelayMs: 1600,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module4-scenario4'
   },
   {
@@ -160,6 +189,19 @@ export const module4Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 0, oppScore: 1, timeLeft: '14:20' },
     audioFolder: 'module4-backdoor',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 168 42 C 172 38, 178 32, 182 28',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ],
+      puckPath: 'M 175 60 Q 180 44, 182 28',
+      puckDelayMs: 1800,
+      puckDurationMs: 500
+    },
     nextScenarioId: 'module4-scenario5'
   },
   {
@@ -200,6 +242,19 @@ export const module4Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 1, oppScore: 1, timeLeft: '6:10' },
     audioFolder: 'module4-screen-tip',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 165 48 Q 165 45, 165 42',
+          durationMs: 800,
+          delayMs: 400
+        }
+      ],
+      puckPath: 'M 140 42 L 190 42',
+      puckDelayMs: 1200,
+      puckDurationMs: 400
+    },
     nextScenarioId: 'module4-scenario6'
   },
   {
@@ -240,6 +295,12 @@ export const module4Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '4:50' },
     audioFolder: 'module4-high-slot',
+    correctPlay: {
+      steps: [],
+      puckPath: 'M 190 60 Q 175 50, 160 42',
+      puckDelayMs: 400,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module4-scenario7'
   },
   {
@@ -279,6 +340,16 @@ export const module4Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 3, timeLeft: '2:15' },
     audioFolder: 'module4-ozone-turnover',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 170 55 C 155 50, 130 45, 100 42',
+          durationMs: 2500,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: null
   }
 ];

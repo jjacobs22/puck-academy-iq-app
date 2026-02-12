@@ -44,6 +44,12 @@ export const module2Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '15:30' },
     audioFolder: 'module2-scenario1-ref-position',
+    correctPlay: {
+      steps: [],
+      puckPath: 'M 35 25 Q 30 30, 25 38',
+      puckDelayMs: 400,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module2-scenario2'
   },
   {
@@ -123,6 +129,19 @@ export const module2Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '2:00' },
     audioFolder: 'module2-scenario3-cheat-feet',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 155 18 C 165 22, 178 30, 185 42',
+          durationMs: 1800,
+          delayMs: 600
+        }
+      ],
+      puckPath: 'M 165 25 Q 175 32, 185 42',
+      puckDelayMs: 400,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module2-scenario4'
   },
   {
@@ -165,6 +184,25 @@ export const module2Scenarios: Scenario[] = [
     ],
     gameContext: { period: 2, teamScore: 1, oppScore: 2, timeLeft: '8:45' },
     audioFolder: 'module2-scenario4-tieup',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 31 25 L 34 25',
+          durationMs: 800,
+          delayMs: 400
+        },
+        {
+          playerIndex: 2,
+          path: 'M 25 18 Q 28 20, 32 22',
+          durationMs: 1000,
+          delayMs: 800
+        }
+      ],
+      puckPath: 'M 35 25 Q 33 22, 32 22',
+      puckDelayMs: 1200,
+      puckDurationMs: 500
+    },
     nextScenarioId: 'module2-scenario5'
   },
   {
@@ -240,6 +278,12 @@ export const module2Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '10:15' },
     audioFolder: 'module2-scenario6-forehand-backhand',
+    correctPlay: {
+      steps: [],
+      puckPath: 'M 80 25 Q 78 28, 76 30',
+      puckDelayMs: 400,
+      puckDurationMs: 500
+    },
     nextScenarioId: 'module2-scenario7'
   },
   {
@@ -279,6 +323,16 @@ export const module2Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 0, oppScore: 0, timeLeft: '6:30' },
     audioFolder: 'module2-scenario7-post-draw',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 165 25 Q 160 28, 155 32',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: null
   }
 ];

@@ -90,6 +90,19 @@ export const module3Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '11:00' },
     audioFolder: 'module3-scenario2-reading-pressure',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 40 55 C 35 45, 28 30, 25 20',
+          durationMs: 2000,
+          delayMs: 400
+        }
+      ],
+      puckPath: 'M 6 42 Q 15 30, 25 20',
+      puckDelayMs: 2400,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module3-scenario3'
   },
   {
@@ -122,6 +135,19 @@ export const module3Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 1, timeLeft: '8:45' },
     audioFolder: 'module3-scenario3-forehand-receive',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 45 25 C 50 35, 42 48, 35 55',
+          durationMs: 2000,
+          delayMs: 400
+        }
+      ],
+      puckPath: 'M 10 42 Q 20 48, 35 55',
+      puckDelayMs: 2000,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module3-scenario4'
   },
   {
@@ -157,6 +183,19 @@ export const module3Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 0, oppScore: 0, timeLeft: '14:20' },
     audioFolder: 'module3-scenario4-cut-lateral',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 35 55 C 38 48, 42 40, 45 35',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ],
+      puckPath: 'M 35 55 C 38 48, 42 40, 45 35',
+      puckDelayMs: 400,
+      puckDurationMs: 1500
+    },
     nextScenarioId: 'module3-scenario5'
   },
   {
@@ -191,6 +230,16 @@ export const module3Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 1, oppScore: 0, timeLeft: '5:00' },
     audioFolder: 'module3-scenario5-support-stretch',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 40 42 Q 38 36, 35 30',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module3-scenario6'
   },
   {
@@ -228,6 +277,19 @@ export const module3Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '9:30' },
     audioFolder: 'module3-scenario6-forecheck-pattern',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 15 30 C 25 22, 35 18, 50 15',
+          durationMs: 2000,
+          delayMs: 1000
+        }
+      ],
+      puckPath: 'M 15 55 Q 15 42, 15 30',
+      puckDelayMs: 400,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module3-scenario7'
   },
   {
@@ -263,6 +325,16 @@ export const module3Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '3:15' },
     audioFolder: 'module3-scenario7-broken-play',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 80 42 Q 70 42, 60 42',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: null
   }
 ];

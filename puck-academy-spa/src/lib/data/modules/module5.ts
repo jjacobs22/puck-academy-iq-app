@@ -41,6 +41,16 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '16:45' },
     audioFolder: 'module5-f1-angle',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 165 50 C 170 45, 178 38, 185 35',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module5-scenario2'
   },
   {
@@ -81,6 +91,16 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '14:20' },
     audioFolder: 'module5-f1-f2-read',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 165 42 Q 170 37, 175 32',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module5-scenario3'
   },
   {
@@ -120,6 +140,16 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 0, timeLeft: '11:30' },
     audioFolder: 'module5-pressure-contain',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 170 48 Q 174 46, 178 45',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module5-scenario4'
   },
   {
@@ -159,6 +189,16 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '10:20' },
     audioFolder: 'module5-angling',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 130 50 C 135 48, 140 45, 145 42',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module5-scenario5'
   },
   {
@@ -199,6 +239,16 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '7:55' },
     audioFolder: 'module5-read-breakout',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 2,
+          path: 'M 165 32 Q 160 27, 155 22',
+          durationMs: 1000,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module5-scenario6'
   },
   {
@@ -238,6 +288,16 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 0, oppScore: 0, timeLeft: '15:40' },
     audioFolder: 'module5-loose-puck',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 170 65 Q 176 66, 182 68',
+          durationMs: 1000,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module5-scenario7'
   },
   {
@@ -277,6 +337,12 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 1, oppScore: 2, timeLeft: '8:25' },
     audioFolder: 'module5-turnover-transition',
+    correctPlay: {
+      steps: [],
+      puckPath: 'M 165 42 L 190 42',
+      puckDelayMs: 400,
+      puckDurationMs: 400
+    },
     nextScenarioId: 'module5-scenario8'
   },
   {
@@ -316,6 +382,16 @@ export const module5Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '3:30' },
     audioFolder: 'module5-f2-gassed',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 1,
+          path: 'M 170 48 Q 176 46, 182 45',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: null
   }
 ];

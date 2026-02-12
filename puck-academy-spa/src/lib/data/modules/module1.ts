@@ -37,6 +37,16 @@ export const module1Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '18:42' },
     audioFolder: 'hockey-iq-diagram',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 35 42 Q 36 37, 37 33',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module1-scenario2'
   },
   {
@@ -76,6 +86,16 @@ export const module1Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 0, timeLeft: '15:17' },
     audioFolder: 'scenario-2-corner-battle',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 28 48 Q 22 52, 18 58',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module1-scenario3'
   },
   {
@@ -116,6 +136,16 @@ export const module1Scenarios: Scenario[] = [
     },
     gameContext: { period: 1, teamScore: 0, oppScore: 1, timeLeft: '11:05' },
     audioFolder: 'scenario-3-cycle',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 35 42 Q 35 38, 36 34',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module1-scenario4'
   },
   {
@@ -157,6 +187,19 @@ export const module1Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '16:33' },
     audioFolder: 'scenario-4-breakout',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 45 42 C 42 52, 30 50, 22 42',
+          durationMs: 2000,
+          delayMs: 400
+        }
+      ],
+      puckPath: 'M 6 42 Q 14 42, 22 42',
+      puckDelayMs: 2400,
+      puckDurationMs: 600
+    },
     nextScenarioId: 'module1-scenario5'
   },
   {
@@ -195,6 +238,16 @@ export const module1Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 1, timeLeft: '12:08' },
     audioFolder: 'scenario-5-gap',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 110 32 C 106 34, 100 37, 95 40',
+          durationMs: 1500,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module1-scenario6'
   },
   {
@@ -238,6 +291,16 @@ export const module1Scenarios: Scenario[] = [
     },
     gameContext: { period: 2, teamScore: 1, oppScore: 2, timeLeft: '5:44' },
     audioFolder: 'scenario-6-winger-caught',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 75 42 Q 65 42, 55 42',
+          durationMs: 1800,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: 'module1-scenario7'
   },
   {
@@ -280,6 +343,16 @@ export const module1Scenarios: Scenario[] = [
     },
     gameContext: { period: 3, teamScore: 2, oppScore: 2, timeLeft: '8:15' },
     audioFolder: 'scenario-7-d-partner-bites',
+    correctPlay: {
+      steps: [
+        {
+          playerIndex: 0,
+          path: 'M 50 32 Q 47 34, 44 36',
+          durationMs: 1200,
+          delayMs: 400
+        }
+      ]
+    },
     nextScenarioId: null
   }
 ];
