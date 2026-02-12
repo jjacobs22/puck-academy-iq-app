@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md
 
-**Last Updated:** February 11, 2026  
+**Last Updated:** February 12, 2026
 **Project:** Puck Academy Hockey IQ Training App  
 **Author:** Jason Jacobs
 
@@ -271,9 +271,13 @@ Social platforms (iMessage, Twitter, Facebook) fetch OG tags from the static pag
 
 | Layer | Technology | Notes |
 |-------|------------|-------|
-| Frontend (live) | SvelteKit SPA (`puck-academy-spa/`) | Primary deployment; Netlify publishes `puck-academy-spa/build` |
-| Frontend (legacy) | HTML, CSS, JavaScript (vanilla) | Root HTML files; admin, share, coach, etc. |
-| Hosting | Netlify | Auto-deploy from GitHub, free tier sufficient |
+| Frontend (live) | SvelteKit SPA (`puck-academy-spa/`) | Svelte 4 + SvelteKit 2, adapter-static, Vite 5; Netlify publishes `puck-academy-spa/build` |
+| Frontend (legacy) | HTML, CSS, JavaScript (vanilla) | Root HTML files still served for some pages (onboarding, hockey-iq-test, share) |
+| Backend (auth/data) | Supabase | Postgres DB, magic link auth, RLS policies, real-time sync |
+| Backend (functions) | Netlify Functions | Stripe payments, Resend emails, Anthropic Coach API, scheduled jobs |
+| Audio | edge-tts (Python) | en-US-GuyNeural voice; `regenerate_audio.py` generates MP3s; copied to static at build |
+| Hosting | Netlify | Auto-deploy from GitHub; build copies `audio/` to SPA static |
+| Payments | Stripe (built, not live) | Checkout sessions, billing portal, webhook handler |
 | Version Control | GitHub | Repository: `jjacobs22/puck-academy-iq-app` |
 | Form Handling | Netlify Forms | Captures onboarding emails (form name: `player-signup`) |
 | Feedback Collection | Google Forms | External form linked from app |
@@ -283,102 +287,125 @@ Social platforms (iMessage, Twitter, Facebook) fetch OG tags from the static pag
 
 ```
 puck-academy-iq-app/
-├── index.html                    # Landing page with challenge banner
-├── onboarding.html               # 5-step onboarding flow
-├── training.html                 # Module hub with all 6 modules, scoring, results modal
 │
-├── # Shared Assets (Refactored Jan 26, 2026)
-├── styles/
-│   └── main.css                  # Shared CSS (variables, reset, buttons, modals, etc.)
-├── js/
-│   ├── storage.js                # LocalStorage utilities
-│   ├── analytics.js              # GA4 event tracking
-│   ├── scenario.js               # Scenario class (for future use)
-│   ├── data-loader.js            # JSON data loading (for future use)
-│   └── scenario-renderer.js      # Dynamic scenario rendering (for future use)
+├── # ─── SvelteKit SPA (primary deployment) ───
+├── puck-academy-spa/
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── +layout.svelte / +layout.ts   # Root layout
+│   │   │   ├── +page.svelte                   # Landing page
+│   │   │   ├── hub/+page.svelte               # Module hub
+│   │   │   ├── scenario/[id]/+page.svelte     # Dynamic scenario player
+│   │   │   ├── admin/+layout.svelte, +page.svelte  # Admin dashboard
+│   │   │   └── auth/callback/+page.svelte     # Magic link callback
+│   │   │
+│   │   ├── lib/
+│   │   │   ├── data/
+│   │   │   │   ├── scenarios.ts               # Type definitions (Scenario, Answer, Diagram, etc.)
+│   │   │   │   └── modules/                   # Scenario content
+│   │   │   │       ├── module1.ts             # D-Zone (7 scenarios)
+│   │   │   │       ├── module2.ts             # Faceoffs (7 scenarios)
+│   │   │   │       ├── module3.ts             # Breakouts (7 scenarios)
+│   │   │   │       ├── module4.ts             # Offensive Zone (7 scenarios)
+│   │   │   │       ├── module5.ts             # Forechecking (8 scenarios)
+│   │   │   │       └── module6.ts             # D-Zone Defensemen (7 scenarios)
+│   │   │   │
+│   │   │   ├── components/
+│   │   │   │   ├── Hub/                       # ModuleCard, ModuleHub
+│   │   │   │   ├── Scenarios/                 # ScenarioContainer, RinkDiagram,
+│   │   │   │   │                              # AnswerButtons, FeedbackPanel,
+│   │   │   │   │                              # GameContext, CelebrationOverlay,
+│   │   │   │   │                              # DecisionClock, IntroSlidesModal,
+│   │   │   │   │                              # ModuleResults, StartGate, VoiceToggle
+│   │   │   │   ├── Shell/                     # Header, Footer, Toast
+│   │   │   │   └── Overlays/                  # AuthModal
+│   │   │   │
+│   │   │   ├── services/
+│   │   │   │   ├── supabase.ts                # Auth (magic link), profile/score ops
+│   │   │   │   ├── audio.ts                   # AudioManager with preloading (43 scenarios)
+│   │   │   │   ├── soundEffects.ts            # UI feedback sounds
+│   │   │   │   ├── analytics.ts               # GA4 event tracking
+│   │   │   │   └── storage.ts                 # LocalStorage utilities
+│   │   │   │
+│   │   │   └── stores/
+│   │   │       ├── auth.ts                    # User & session state
+│   │   │       ├── gameSession.ts             # XP system (speed bonus, combo multiplier)
+│   │   │       ├── progress.ts                # Module progress tracking
+│   │   │       └── ui.ts                      # Navigation transitions & toast
+│   │   │
+│   │   ├── app.html, app.css                  # HTML shell & design system variables
+│   │   └── .env.example                       # VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+│   │
+│   ├── svelte.config.js                       # adapter-static, SPA fallback
+│   └── package.json                           # SvelteKit, Svelte 4, Supabase, Vite 5
 │
-├── # Module 1: Defensive Zone (7 scenarios)
-├── hockey-iq-diagram.html        # Scenario 1-1: D-zone pressure read
-├── scenario-2-corner-battle.html # Scenario 1-2: Corner battle
-├── scenario-3-cycle.html         # Scenario 1-3: Cycle coverage
-├── scenario-4-breakout.html      # Scenario 1-4: Breakout positioning
-├── scenario-5-gap.html           # Scenario 1-5: Gap control
-├── scenario-6-winger-caught.html # Scenario 1-6: Winger caught up ice (3-on-2)
-├── scenario-7-d-partner-bites.html # Scenario 1-7: D partner out of position
+├── # ─── Audio (narration for all 43 scenarios) ───
+├── audio/
+│   ├── hockey-iq-diagram/                     # Module 1, Scenario 1
+│   ├── scenario-2-corner-battle/              # Module 1, Scenario 2
+│   ├── ...                                    # 43 folders total, each with:
+│   └── module6-scenario7-zone-coverage/       #   setup.mp3, prompt.mp3, correct.mp3, incorrect.mp3
+├── regenerate_audio.py                        # edge-tts script (en-US-GuyNeural) to regenerate all audio
 │
-├── # Module 2: Faceoffs (7 scenarios)
-├── module2-scenario1-ref-position.html
-├── module2-scenario2-advantage.html
-├── module2-scenario3-cheat-feet.html
-├── module2-scenario4-tieup.html
-├── module2-scenario5-leverage.html
-├── module2-scenario6-forehand-backhand.html
-├── module2-scenario7-post-draw.html
-│
-├── # Module 3: Breakouts (7 scenarios)
-├── module3-scenario1-high-low-route.html
-├── module3-scenario2-reading-pressure.html
-├── module3-scenario3-forehand-receive.html
-├── module3-scenario4-cut-laterally.html
-├── module3-scenario5-support-stretch.html
-├── module3-scenario6-forecheck-pattern.html
-├── module3-scenario7-broken-play.html
-│
-├── # Module 4: Offensive Zone (7 scenarios)
-├── module4-scenario1-net-front.html
-├── module4-scenario2-cycle-support.html
-├── module4-scenario3-soft-ice.html
-├── module4-scenario4-backdoor.html
-├── module4-scenario5-screen-tip.html
-├── module4-scenario6-high-slot.html
-├── module4-scenario7-ozone-turnover.html
-│
-├── # Module 5: Forechecking (8 scenarios)
-├── module5-scenario1-f1-angle.html
-├── module5-scenario2-f1-f2-read.html
-├── module5-scenario3-pressure-contain.html
-├── module5-scenario4-angling.html
-├── module5-scenario5-read-breakout.html
-├── module5-scenario6-loose-puck.html
-├── module5-scenario7-turnover-transition.html
-├── module5-scenario8-f2-gassed.html  # F2 is gassed, solo forecheck
-│
-├── # Module 6: D-Zone for Defensemen (7 scenarios)
-├── module6-scenario1-gap-control.html
-├── module6-scenario2-puck-retrieval.html
-├── module6-scenario3-d-to-d.html
-├── module6-scenario4-net-front-battle.html
-├── module6-scenario5-when-to-pinch.html
-├── module6-scenario6-first-pass.html
-├── module6-scenario7-zone-coverage.html
-│
-├── # Personalized Training
-├── tylers-coaching-notes.html    # Tyler's personalized training doc (printable)
-│
-├── # Static Share Pages (for social previews)
-├── share/
-│   ├── 0.html through 7.html     # Pre-baked OG tags, redirect to /?score=X
-│
-├── # Coach's Office (AI Advisory Chat)
-├── coach.html                    # Coach's Office chat interface
-│
-├── # Netlify Functions
+├── # ─── Netlify Functions ───
 ├── netlify/
 │   └── functions/
-│       ├── coach.js              # Anthropic API serverless function
-│       └── package.json          # Function dependencies
+│       ├── coach.js                           # Anthropic API (Coach's Office — currently hidden)
+│       ├── create-checkout.js                 # Stripe checkout session
+│       ├── create-portal-session.js           # Stripe billing portal
+│       ├── stripe-webhook.js                  # Stripe subscription events
+│       ├── new-user-notification.js           # Admin email on signup
+│       ├── streak-reminder.js                 # Scheduled: 10am ET daily
+│       ├── day2-nudge.js                      # Scheduled: 6pm ET daily
+│       ├── winback.js                         # Scheduled: 1pm ET daily
+│       └── package.json                       # @supabase/supabase-js, resend, stripe
 │
-├── # Documentation & Config
-├── PROJECT_CONTEXT.md            # This file - project documentation
-├── REFACTOR_PLAN.md              # Technical debt cleanup plan
-├── QUICK_START_GUIDE.md          # Step-by-step refactoring guide
-├── og-image.html                 # Template reference for OG image design
-├── coach-prototype.html          # Conversational coach prototype (experimental)
-├── package.json                  # Root package.json for Netlify builds
-├── netlify.toml                  # Netlify configuration (functions directory)
-└── assets/
-    └── images/
-        └── rink-full.png         # Hockey rink diagram asset
+├── # ─── Database Migrations ───
+├── migrations/
+│   ├── create_email_signups.sql               # Hockey IQ Test email capture table
+│   └── fix_supabase_security_feb2026.sql      # RLS on coach_conversations, search_path fix
+├── supabase-migration-payments.sql            # Payment/subscription schema (pending)
+│
+├── # ─── Legacy HTML (still served for some pages) ───
+├── index.html                                 # Landing page (challenge banner, login redirect)
+├── onboarding.html                            # 5-step onboarding flow
+├── training.html                              # Module hub (legacy, with Continue button)
+├── hockey-iq-diagram.html                     # Scenario 1-1 (legacy)
+├── scenario-2-corner-battle.html … scenario-7-d-partner-bites.html  # Module 1 (legacy)
+├── module2-scenario1-ref-position.html … module6-scenario7-zone-coverage.html  # Modules 2–6 (legacy)
+├── hockey-iq-test.html                        # Standalone 10-question funnel quiz
+├── assessment.html                            # Assessment page
+├── glossary.html                              # Hockey glossary
+│
+├── # ─── Static Share Pages ───
+├── share/
+│   └── 0.html through 7.html                 # Pre-baked OG tags, redirect to /?score=X
+│
+├── # ─── Prototypes & Experiments ───
+├── coach.html                                 # Coach's Office chat (hidden, not linked)
+├── coach-prototype.html                       # Conversational coach prototype
+├── prototype-animated-scenario.html           # Animated scenario playback experiment
+├── prototype-engaged-scenario.html            # Engaged scenario experience experiment
+├── mockup-inline-coaching.html                # Inline coaching comparison mockup
+│
+├── # ─── Shared Assets (legacy) ───
+├── styles/main.css                            # Shared CSS
+├── js/                                        # storage.js, analytics.js, auth-guard.js, etc.
+├── icons/, assets/images/                     # App icons, rink diagram
+├── og-image.png, og-hockey-iq-test.png        # Social preview images
+│
+├── # ─── Documentation & Config ───
+├── PROJECT_CONTEXT.md                         # This file
+├── PAYMENT_SPEC.md                            # Stripe subscription spec
+├── POLISH_CHECKLIST.md                        # UX polish audit
+├── UX_AUDIT.md                                # Training hub declutter audit
+├── REENGAGEMENT_EMAILS_SPEC.md                # Email automation spec
+├── VIDEO_ASSESSMENT_SPEC.md / VIDEO_ANALYSIS_PROMPT.md  # Video review specs (on hold)
+├── REFACTOR_PLAN.md / QUICK_START_GUIDE.md    # Legacy refactoring docs
+├── PARKING_LOT.md                             # Deferred ideas
+├── netlify.toml                               # Build config, redirects, function schedules
+├── manifest.json                              # PWA manifest
+└── sw.js                                      # Service worker (network-first)
 ```
 
 ### Data Model
@@ -430,25 +457,29 @@ puck-academy-iq-app/
 
 | Service | Purpose | Integration Point |
 |---------|---------|-------------------|
-| Supabase | User accounts & data sync | Magic link auth, progress/scores stored in Postgres |
-| Resend | Transactional email | New user signup notifications, future: weekly progress emails |
-| Anthropic API | AI chat | Coach's Office feature (`netlify/functions/coach.js`) |
+| Supabase | User accounts & data sync | Magic link auth, progress/scores in Postgres, RLS policies |
+| Stripe | Payments (built, not live) | `create-checkout.js`, `create-portal-session.js`, `stripe-webhook.js` |
+| Resend | Transactional & engagement email | Signup notification, streak reminders, day 2 nudge, win-back |
+| Anthropic API | AI chat | Coach's Office (`netlify/functions/coach.js`) — currently hidden |
+| edge-tts | Audio narration | `regenerate_audio.py` generates MP3s; copied to SPA static at build |
 | Static Share Pages | Social OG previews | `/share/*.html` pages with pre-baked OG meta tags |
-| Google Forms | Beta feedback | External link from scenario completion and results modal |
+| Google Forms | Beta feedback | External link from results modal |
 | Google Fonts | Typography | Bebas Neue (headers), Work Sans (body) |
+| Google Analytics 4 | Usage tracking | Custom events: scenario_answer, module_complete, share_score |
 | Web Share API | Native sharing | Share button in results modal |
 
 ### Environment & Deployment
 
 **Development:**
-- Clone repo locally
-- Edit in Cursor
-- Test by opening HTML files in browser
+- Clone repo, `cd puck-academy-spa && npm install && npm run dev`
+- Copy `.env.example` → `.env` with Supabase URL + anon key
+- Legacy HTML files can be opened directly in browser
 
 **Deployment:**
 - Push to `main` branch on GitHub
-- Netlify auto-deploys within ~30 seconds
+- Netlify auto-deploys: builds SPA (`puck-academy-spa/build`), copies `audio/` to static
 - Live URL: `https://hockeyiq.netlify.app/`
+- Redirects: `/admin` → `admin.html`, `/hub` → `hub.html`, `/*` → `index.html` (SPA fallback)
 
 **Environment Variables (Netlify):**
 - `VITE_SUPABASE_URL` — Supabase project URL (required for SPA auth; baked in at build time)
@@ -493,27 +524,30 @@ puck-academy-iq-app/
 - **GitHub → Netlify pipeline:** Auto-deploy on push
 - **User accounts (Stage 1):** Supabase auth with magic link email, progress syncs to server in real-time
 - **Streak system:** Daily training streaks with nav counter, hero card, at-risk banner, milestone celebrations (3/7/14/30/50/100 days)
-- **Coach's Office:** AI-powered advisory chat for hockey parents to discuss their kid's development, get recommendations, and gain perspective
-- **Admin dashboard (SPA):** `/admin` — SvelteKit route with scorecards, module performance, recent users, retention, trends, all-users table; magic-link sign-in with redirect back to `/admin` via sessionStorage (Supabase redirect URL is `/auth/callback` only); config check and clear error messaging if Supabase env vars are missing
+- **Coach's Office:** AI-powered advisory chat for hockey parents (currently hidden to save function credits; files kept, can re-enable by adding links back)
+- **Admin dashboard (SPA):** `/admin` — SvelteKit route with scorecards, module performance, recent users, retention, trends, all-users table; magic-link sign-in with redirect back to `/admin` via sessionStorage; config check and clear error messaging if Supabase env vars are missing
+- **Audio narration:** All 43 scenarios have TTS audio (setup, prompt, correct, incorrect) via edge-tts; VoiceToggle component in SPA
+- **Stripe payment functions:** Checkout, billing portal, and webhook handlers built (`netlify/functions/`); not yet wired to UI
+- **Hockey IQ Test:** Standalone 10-question funnel quiz at `hockey-iq-test.html` with email capture and OG social images
+- **Re-engagement emails:** 3 scheduled Netlify functions — streak-at-risk (10am ET), day 2 nudge (6pm ET), win-back (1pm ET)
+- **XP & combo system:** GameSession store with speed bonus (+25 under 4s, +10 under 7s) and combo multiplier (up to 3x)
+- **Supabase security:** RLS on coach_conversations, immutable search_path on handle_new_user, env setup documentation
 
 ### What's Partially Working ⚠️
 - **Scenario navigation:** Users can complete scenarios but returning to hub sometimes needs refresh
 - **Non-center users:** Defense/Goalie disabled with "Coming Soon"; Wingers can use forward content with note about Faceoffs module
+- **SPA ↔ Legacy parity:** SPA is primary deployment but some pages (onboarding, hockey-iq-test, training hub) still served from legacy HTML
 
 ### What's Not Started 🔲
-- ~~Module 2: Faceoffs~~ ✅ **DONE** (7 scenarios)
-- ~~Module 3: Breakouts~~ ✅ **DONE** (7 scenarios)
-- ~~Module 4: Offensive Zone~~ ✅ **DONE** (7 scenarios)
-- ~~Module 5: Forechecking~~ ✅ **DONE** (7 scenarios)
-- ~~Module 6: D-Zone (Defensemen)~~ ✅ **DONE** (7 scenarios)
 - Goalie-specific modules
+- Winger-specific content (defense Module 6 done, but no winger track)
 - Google OAuth for sign-in (magic link works, Google requires setup)
 - Branded auth emails (custom SMTP + email templates in Supabase)
-- Assessment/testing functionality
-- ~~Streak/gamification features~~ ✅ **DONE** (daily streaks, milestones)
+- Pre/post assessment with percentile rankings
 - Coach/parent dashboards
-- Payment/subscription system (spec complete, Stage 2 pending)
+- Payment/subscription UI (Stripe backend ready, activation + pricing page pending)
 - **Animated correct answer playback** (beta feedback Feb 2026) — show the correct play animated after answering, like a mini replay
+- Video-based scenarios (5–10 second real game clips at decision points)
 
 ### Known Bugs 🐛
 1. ~~**Share text not appearing:** When sharing via Messages, only the URL is shared without the accompanying text message~~ **FIXED** - Combined text+URL into single share parameter; iOS now shows context text with link preview
@@ -590,34 +624,42 @@ puck-academy-iq-app/
 
 ## ROADMAP & PRIORITIES
 
-### Current Sprint/Focus (January 2026)
+### Completed (January–February 2026)
 1. ✅ **Scoring system:** Track correct/incorrect, show results modal
-2. ✅ **Share functionality:** Share score via native share or clipboard
-3. ✅ **Fix share bug:** Updated share params + added OG meta tags for rich previews
-4. ✅ **Dynamic OG images:** Netlify Edge Functions generate score-based preview images
-5. **Beta launch:** Send app to 10-15 beta testers via onboarding link
-6. **Feedback collection:** Monitor Netlify Forms and Google Forms responses
+2. ✅ **Share functionality:** Share score via native share or clipboard with static OG pages
+3. ✅ **All 43 scenarios across 6 modules:** Centers (Modules 1–5) + Defensemen (Module 6)
+4. ✅ **SvelteKit SPA:** Full rewrite with components, stores, services, Supabase auth
+5. ✅ **Inline coaching:** Coach cues + optional "Learn the Basics" theory modals
+6. ✅ **Audio narration:** 43 scenarios × 4 clips (setup, prompt, correct, incorrect) via edge-tts
+7. ✅ **Streak system:** Daily streaks with milestones, nav counter, at-risk banner
+8. ✅ **Re-engagement emails:** Streak-at-risk (10am ET), Day 2 nudge (6pm ET), Win-back (1pm ET)
+9. ✅ **Admin dashboard:** `/admin` with user scorecards, module performance, retention metrics
+10. ✅ **Security hardening:** RLS on coach_conversations, immutable search_path, env setup docs
+11. ✅ **Hockey IQ Test:** Standalone 10-question quiz for top-of-funnel acquisition
+12. ✅ **Stripe payment functions:** create-checkout, create-portal-session, stripe-webhook
 
-### Next Up (February 2026)
-- Analyze beta feedback and identify top 3 improvements
-- Add additional scenarios based on feedback
-- ~~Build Module 2: Faceoffs~~ ✅ **DONE**
-- ~~Build Module 3: Breakouts~~ ✅ **DONE**
-- Build Module 4: Offensive Zone
-- Implement basic streak tracking
+### Current Focus (February 2026)
+- **Beta feedback analysis:** Incorporate learnings from initial user cohort (Reddit, podcast audience)
+- **Content polish:** Ensure SPA scenario data matches original HTML curriculum exactly
+- **Animated correct answer playback:** Show the correct play animated after answering (user feedback request)
+- **Defense-specific content expansion:** Address feedback that content is "more geared towards forwards"
 
-### Backlog (Q1-Q2 2026)
-- Module 3: Breakouts
-- Module 4: Offensive Zone
-- Pre/post assessment functionality
+### Backlog (Q1–Q2 2026)
+- Goalie-specific modules
+- Google OAuth sign-in (magic link works, Google requires setup)
+- Branded auth emails (custom SMTP + email templates in Supabase)
+- Pre/post assessment with percentile rankings
 - Parent notification emails (weekly progress)
-- Improved mobile experience
+- Coach/team dashboard with aggregate data
+- Payment/subscription go-live (Stripe functions built, activation pending)
+- Native iOS/Android or PWA enhancements
+- Video-based scenarios (5–10 second real game clips at decision points)
 - Explore partnership with Hunter Bishop for curriculum validation
 
 ### Blockers
-- **Content creation:** Need to source/create more scenario content (currently have 5)
 - **Expert validation:** Haven't yet validated curriculum with elite development coach
-- **Video assets:** If moving beyond SVG diagrams, need video production capabilities
+- **Video assets:** If moving beyond SVG diagrams, need video production/licensing
+- **Beer league audience:** Emerging demand for adult content; need to decide if/how to address
 
 ---
 
@@ -744,6 +786,27 @@ puck-academy-iq-app/
 ---
 
 ## CHANGELOG
+
+### February 12, 2026 - PROJECT_CONTEXT.md Refresh
+
+**Comprehensive update to project documentation:**
+- **File structure:** Replaced flat HTML-only listing with full SPA structure (routes, components, services, stores), audio infrastructure, Netlify functions (including Stripe payment handlers), and migrations.
+- **Third-party integrations:** Added Stripe, edge-tts, GA4; updated Resend (now covers 3 scheduled email types), noted Coach's Office is hidden.
+- **What's Working:** Added audio narration, Stripe functions, Hockey IQ Test, re-engagement emails, XP/combo system, Supabase security hardening.
+- **What's Not Started:** Cleaned up completed items, added winger-specific content and video-based scenarios.
+- **Roadmap:** Replaced stale Jan 2026 sprint with completed items list; updated current focus (Feb 2026) and backlog (Q1–Q2 2026) with actual priorities.
+- **Environment & deployment:** Updated dev instructions for SPA workflow (`npm run dev`), documented Netlify build step (copies audio/ to static), added redirect rules.
+
+---
+
+### February 11, 2026 - Audio Regeneration (Force)
+
+**All scenario audio regenerated and pushed:**
+- Ran `python3 regenerate_audio.py --force` to regenerate every scenario’s audio (setup, prompt, correct, incorrect) using edge-tts and voice **en-US-GuyNeural**.
+- **43 scenarios** × 4 files each (setup.mp3, prompt.mp3, correct.mp3, incorrect.mp3).
+- Regenerated audio files committed and pushed to `origin/main`.
+
+---
 
 ### February 11, 2026 - Scenario Content Restored (Modules 2–6)
 
