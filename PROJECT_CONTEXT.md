@@ -787,6 +787,18 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 12, 2026 - Audio-Synced Diagram Movements
+
+**SPA:** Diagram movement arrows can now be driven by setup audio timing so cues appear in sync with narration.
+
+- **Audio service (`audio.ts`):** Added `onTimeUpdate(callback)`, `clearTimeCallbacks()`, and `getDuration()` so the UI can react to playback position; time callbacks fire during play for sync.
+- **Scenario data:** New optional `movementCues` on scenarios — each cue has `playerIndex` and `triggerAtSecond` to show that player’s movement trail at a given time in the setup audio.
+- **RinkDiagram.svelte:** New `externalMovementControl` mode with `revealMovement(i)`, `revealAllMovements()`, `resetMovements()`; movement trails (including “you” in gold) only show when revealed in this mode.
+- **Module 2 scenario 4 (tie-up):** First scenario using `movementCues` — you and winger have target positions and cues at 1.5s and 5.0s in setup audio.
+- **ScenarioContainer.svelte:** Subscribes to audio time updates and calls `revealMovement` when a scenario’s `movementCues` hit their trigger times.
+
+---
+
 ### February 12, 2026 - PROJECT_CONTEXT.md Refresh
 
 **Comprehensive update to project documentation:**

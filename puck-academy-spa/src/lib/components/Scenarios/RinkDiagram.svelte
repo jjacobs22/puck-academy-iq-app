@@ -32,6 +32,34 @@
   /** When true, elements appear with staggered animation */
   export let animated = true;
 
+  /** When true, movement trails are controlled externally via revealMovement() */
+  export let externalMovementControl = false;
+
+  // --- Public API: reveal a specific player's movement trail ---
+  let revealedMovements: Set<number> = new Set();
+
+  export function revealMovement(playerIndex: number): void {
+    revealedMovements.add(playerIndex);
+    revealedMovements = revealedMovements; // trigger reactivity
+  }
+
+  export function revealAllMovements(): void {
+    diagram.players.forEach((_, i) => {
+      revealedMovements.add(i);
+    });
+    revealedMovements = revealedMovements;
+  }
+
+  export function resetMovements(): void {
+    revealedMovements = new Set();
+  }
+
+  // Derived: should a player's movement trail be visible?
+  function isMovementVisible(index: number): boolean {
+    if (!externalMovementControl) return true; // legacy: show all trails when player is revealed
+    return revealedMovements.has(index);
+  }
+
   // --- Auto-zoom: compute viewBox from active player positions ---
   function computeViewBox(): string {
     if (diagram.viewBox) return diagram.viewBox;
@@ -276,18 +304,19 @@
       {/each}
     {/if}
 
-    <!-- Player movement trails -->
+    <!-- Player movement trails (controlled externally when externalMovementControl is true) -->
     {#each diagram.players as player, i}
-      {#if player.targetX !== undefined && player.targetY !== undefined && revealedPlayers.has(i) && !player.faded}
+      {#if player.targetX !== undefined && player.targetY !== undefined && revealedPlayers.has(i) && !player.faded && isMovementVisible(i)}
         {@const s = shortenArrow(player.x, player.y, player.targetX, player.targetY, 5)}
         <line
           x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
-          stroke={player.type === 'opponent' ? '#DC2626' : '#2563EB'}
-          stroke-width="0.6"
+          stroke={player.type === 'opponent' ? '#DC2626' : player.type === 'you' ? '#B8860B' : '#2563EB'}
+          stroke-width="0.8"
           stroke-dasharray="2,1.5"
-          opacity="0.3"
-          marker-end={player.type === 'opponent' ? 'url(#arrowRed)' : 'url(#arrowBlue)'}
+          opacity="0.5"
+          marker-end={player.type === 'opponent' ? 'url(#arrowRed)' : player.type === 'you' ? 'url(#arrowDark)' : 'url(#arrowBlue)'}
           class="movement-trail"
+          class:anim-draw={animated}
         />
       {/if}
     {/each}

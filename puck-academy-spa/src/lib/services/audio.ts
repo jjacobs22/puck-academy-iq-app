@@ -2,6 +2,7 @@
 import { writable } from 'svelte/store';
 
 export type AudioClip = 'setup' | 'prompt' | 'correct' | 'incorrect';
+export type AudioTimeCallback = (currentTime: number) => void;
 
 // Reactive state for audio
 export const voiceEnabled = writable(true);
@@ -57,6 +58,8 @@ const audioFolderMap: Record<string, string> = {
 class AudioManager {
   private audio: HTMLAudioElement | null = null;
   private preloadedAudio: Map<string, HTMLAudioElement> = new Map();
+  private timeCallbacks: AudioTimeCallback[] = [];
+  private pollInterval: number | null = null;
 
   constructor() {
     // Initialize on first interaction (browser autoplay policy)
@@ -84,18 +87,52 @@ class AudioManager {
     try {
       // Set up event handlers before playing
       audio.onended = () => {
+        this.stopTimeTracking();
         currentlyPlaying.set(null);
       };
       audio.onerror = () => {
         // Silently handle missing audio files — voice is optional
+        this.stopTimeTracking();
         currentlyPlaying.set(null);
       };
 
       await audio.play();
+
+      // Start time tracking if callbacks are registered
+      if (this.timeCallbacks.length > 0) {
+        this.startTimeTracking();
+      }
     } catch (err) {
       // Audio blocked by browser policy or file not found — not critical
+      this.stopTimeTracking();
       currentlyPlaying.set(null);
     }
+  }
+
+  /**
+   * Register a callback that fires with currentTime during playback (~20x/sec)
+   */
+  onTimeUpdate(callback: AudioTimeCallback): void {
+    this.timeCallbacks.push(callback);
+    // If audio is already playing, start tracking now
+    if (this.audio && !this.audio.paused && !this.pollInterval) {
+      this.startTimeTracking();
+    }
+  }
+
+  /**
+   * Remove all time-update callbacks
+   */
+  clearTimeCallbacks(): void {
+    this.timeCallbacks = [];
+    this.stopTimeTracking();
+  }
+
+  /**
+   * Get the duration of the currently loaded audio (0 if not loaded)
+   */
+  getDuration(): number {
+    return this.audio?.duration || 0;
   }
 
   /**
@@ -122,6 +159,7 @@ class AudioManager {
    * Stop currently playing audio
    */
   stop(): void {
+    this.stopTimeTracking();
     if (this.audio) {
       this.audio.pause();
       this.audio.currentTime = 0;
@@ -137,6 +175,7 @@ class AudioManager {
     if (this.audio) {
       this.audio.pause();
     }
+    this.stopTimeTracking();
   }
 
   /**
@@ -145,6 +184,9 @@ class AudioManager {
   resume(): void {
     if (this.audio) {
       this.audio.play().catch(() => {});
+      if (this.timeCallbacks.length > 0) {
+        this.startTimeTracking();
+      }
     }
   }
 
@@ -153,6 +195,29 @@ class AudioManager {
    */
   clearPreloaded(): void {
     this.preloadedAudio.clear();
+  }
+
+  // --- Private: time-tracking via polling ---
+
+  private startTimeTracking(): void {
+    if (this.pollInterval) return; // already tracking
+    this.pollInterval = window.setInterval(() => {
+      if (!this.audio || this.audio.paused) {
+        this.stopTimeTracking();
+        return;
+      }
+      const t = this.audio.currentTime;
+      for (const cb of this.timeCallbacks) {
+        cb(t);
+      }
+    }, 50); // 50ms = ~20 updates/sec
+  }
+
+  private stopTimeTracking(): void {
+    if (this.pollInterval) {
+      clearInterval(this.pollInterval);
+      this.pollInterval = null;
+    }
   }
 }
 

@@ -56,6 +56,12 @@ export interface IntroSlide {
   body: string;
 }
 
+/** Timing cue for syncing a player's movement arrow with setup audio */
+export interface MovementCue {
+  playerIndex: number;      // index in diagram.players[]
+  triggerAtSecond: number;  // seconds into setup audio when this movement should appear
+}
+
 export interface Scenario {
   id: string;
   moduleId: number;
@@ -73,6 +79,8 @@ export interface Scenario {
   coachCue?: string;
   /** Optional 3-slide theory intro; linked as "Learn the Basics" instead of blocking */
   introSlides?: IntroSlide[];
+  /** Optional timing cues to sync player movement arrows with setup audio narration */
+  movementCues?: MovementCue[];
 }
 
 // ── RINK COORDINATE REFERENCE (viewBox 0 0 200 85) ──

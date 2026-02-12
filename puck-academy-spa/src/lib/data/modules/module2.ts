@@ -148,15 +148,20 @@ export const module2Scenarios: Scenario[] = [
     diagram: {
       zone: 'defensive',
       players: [
-        { type: 'you', x: 31, y: 25, note: 'You (C) \u2014 outmatched' },
+        { type: 'you', x: 31, y: 25, note: 'You (C) \u2014 outmatched', targetX: 36, targetY: 25 },
         { type: 'opponent', x: 39, y: 25, label: 'C', note: 'Stronger \u2014 winning draws clean' },
-        { type: 'teammate', x: 25, y: 18, label: 'W', note: 'Winger \u2014 ready to retrieve' },
+        { type: 'teammate', x: 25, y: 18, label: 'W', note: 'Winger \u2014 ready to retrieve', targetX: 30, targetY: 20 },
         { type: 'teammate', x: 22, y: 30, label: 'D', note: 'D-man shaded to boards' },
       ],
       puck: { x: 35, y: 25 },
       arrows: [],
       annotations: []
     },
+    // Movement cues: sync diagram arrows with setup audio narration
+    movementCues: [
+      { playerIndex: 0, triggerAtSecond: 1.5 },  // "Defensive zone faceoff" → show YOU moving to tie up
+      { playerIndex: 2, triggerAtSecond: 5.0 },   // Winger ready to retrieve → show W moving toward puck
+    ],
     gameContext: { period: 2, teamScore: 1, oppScore: 2, timeLeft: '8:45' },
     audioFolder: 'module2-scenario4-tieup',
     nextScenarioId: 'module2-scenario5'

@@ -48,6 +48,12 @@
 
   // Refs
   let clockComponent: DecisionClock;
+  let rinkDiagram: RinkDiagram;
+
+  // Audio-synced movement state
+  let hasMovementCues = false;
+  let revealedCues: Set<number> = new Set();
+  $: hasMovementCues = !!(scenario.movementCues && scenario.movementCues.length > 0);
 
   // Check if this is the first scenario in session
   $: isFirstScenario = scenario.scenarioNum === 1;
@@ -65,6 +71,7 @@
     }
 
     return () => {
+      audioManager.clearTimeCallbacks();
       audioManager.stop();
     };
   });
@@ -78,10 +85,40 @@
   function enterStudyPhase() {
     scenarioPhase = 'study';
     diagramAnimated = true;
+    revealedCues = new Set();
+
+    // Clean up any previous time callbacks
+    audioManager.clearTimeCallbacks();
 
     // Play setup narration
     if ($voiceEnabled) {
       audioManager.play(scenario.id, 'setup');
+
+      // Register movement cue callbacks if scenario has them
+      if (hasMovementCues && scenario.movementCues) {
+        const cues = scenario.movementCues;
+        audioManager.onTimeUpdate((currentTime: number) => {
+          for (const cue of cues) {
+            if (currentTime >= cue.triggerAtSecond && !revealedCues.has(cue.playerIndex)) {
+              revealedCues.add(cue.playerIndex);
+              revealedCues = revealedCues;
+              if (rinkDiagram) {
+                rinkDiagram.revealMovement(cue.playerIndex);
+              }
+            }
+          }
+        });
+      }
+    } else if (hasMovementCues) {
+      // Audio off: reveal movements with staggered CSS timing as fallback
+      const cues = scenario.movementCues!;
+      cues.forEach((cue, i) => {
+        setTimeout(() => {
+          if (rinkDiagram) {
+            rinkDiagram.revealMovement(cue.playerIndex);
+          }
+        }, 800 + i * 600); // 0.8s base + 0.6s between each
+      });
     }
   }
 
@@ -89,6 +126,12 @@
   function handleReady() {
     scenarioPhase = 'question';
     diagramAnimated = false; // no re-animation on diagram
+
+    // Stop movement tracking and reveal all remaining movements
+    audioManager.clearTimeCallbacks();
+    if (rinkDiagram && hasMovementCues) {
+      rinkDiagram.revealAllMovements();
+    }
 
     // Play prompt narration
     if ($voiceEnabled) {
@@ -264,7 +307,12 @@
 
     <!-- Rink Diagram -->
     <div class="diagram-wrapper" in:scale={{ delay: 150, duration: 400, start: 0.95 }}>
-      <RinkDiagram diagram={scenario.diagram} animated={diagramAnimated} />
+      <RinkDiagram
+        bind:this={rinkDiagram}
+        diagram={scenario.diagram}
+        animated={diagramAnimated}
+        externalMovementControl={hasMovementCues}
+      />
     </div>
 
     <!-- Inline coach cue (replaces blocking 3-slide intro) -->
