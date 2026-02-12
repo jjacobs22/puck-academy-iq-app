@@ -787,6 +787,12 @@ puck-academy-iq-app/
 
 ## CHANGELOG
 
+### February 12, 2026 - Deploy (Netlify auto-deploy)
+
+**Live:** Latest changes (audio-synced diagram movements, PROJECT_CONTEXT updates) are on `main` and deploy automatically via GitHub → Netlify. No manual deploy step; push to `main` triggers build and publish to **https://hockeyiq.netlify.app/**.
+
+---
+
 ### February 12, 2026 - Audio-Synced Diagram Movements
 
 **SPA:** Diagram movement arrows can now be driven by setup audio timing so cues appear in sync with narration.
