@@ -48,25 +48,33 @@ export async function upsertProfile(userId: string, profile: {
   return { data, error };
 }
 
-// Score operations
+// Score operations — writes to `progress` table (same table the admin dashboard reads)
 export async function saveScoreToServer(userId: string, moduleId: number, scenarioId: number, correct: boolean) {
   const { data, error } = await supabase
-    .from('scenario_results')
-    .insert({
+    .from('progress')
+    .upsert({
       user_id: userId,
       module_id: moduleId,
       scenario_id: scenarioId,
+      completed: true,
       correct,
-      timestamp: new Date().toISOString()
+      completed_at: new Date().toISOString()
+    }, {
+      onConflict: 'user_id,module_id,scenario_id'
     });
   return { data, error };
 }
 
-// Progress operations
-export async function syncProgressToServer(userId: string, progress: object) {
+// Progress operations — sync streak & profile fields that exist on `profiles` table
+export async function syncProgressToServer(userId: string, progress: { position?: string; level?: string; streak?: object }) {
+  const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (progress.position) updates.position = progress.position;
+  if (progress.level) updates.age_level = progress.level;
+  if (progress.streak) updates.streak = progress.streak;
+
   const { data, error } = await supabase
     .from('profiles')
-    .update({ progress })
+    .update(updates)
     .eq('id', userId);
   return { data, error };
 }
@@ -74,7 +82,7 @@ export async function syncProgressToServer(userId: string, progress: object) {
 export async function loadProgressFromServer(userId: string) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('progress')
+    .select('position, age_level, streak')
     .eq('id', userId)
     .single();
   return { data, error };

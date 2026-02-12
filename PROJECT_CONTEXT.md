@@ -789,7 +789,17 @@ puck-academy-iq-app/
 
 ### February 12, 2026 - Deploy (Netlify auto-deploy)
 
-**Live:** Push to `main` triggers build and publish to **https://hockeyiq.netlify.app/**. Deploy includes Module 2 diagram position fix and PROJECT_CONTEXT updates.
+**Live:** Push to `main` triggers build and publish to **https://hockeyiq.netlify.app/**. Deploy includes Supabase progress/scores alignment and PROJECT_CONTEXT updates.
+
+---
+
+### February 12, 2026 - Supabase progress and scores alignment
+
+**SPA (`supabase.ts`):** Aligned score and progress writes with actual Supabase schema.
+
+- **Scores:** `saveScoreToServer` now writes to `progress` (not `scenario_results`), using upsert on `user_id, module_id, scenario_id` with `completed`, `correct`, `completed_at` — same table the admin dashboard reads.
+- **Progress sync:** `syncProgressToServer` updates `profiles` with specific columns (`position`, `age_level`, `streak`, `updated_at`) instead of a generic `progress` blob.
+- **Progress load:** `loadProgressFromServer` selects `position`, `age_level`, `streak` from `profiles` instead of `progress`.
 
 ---
 
