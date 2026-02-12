@@ -798,9 +798,9 @@ puck-academy-iq-app/
 
 ---
 
-### February 12, 2026 - Deploy and PROJECT_CONTEXT update
+### February 12, 2026 - Deploy and PROJECT_CONTEXT update (2)
 
-**Deploy:** Push to `main` triggers Netlify build and publish to **https://hockeyiq.netlify.app/**. This changelog entry added to PROJECT_CONTEXT.md.
+**Deploy:** Push to `main` triggers Netlify build and publish to **https://hockeyiq.netlify.app/**. SPA: FeedbackPanel updates. PROJECT_CONTEXT.md changelog updated.
 
 ---
 

@@ -252,6 +252,11 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
+  /* Override the 40vh max-height from RinkDiagram so nothing gets cropped */
+  .correct-play-diagram :global(.rink-svg) {
+    max-height: none;
+  }
+
   .explanation p {
     margin: 0 0 var(--spacing-xs) 0;
     line-height: 1.6;
