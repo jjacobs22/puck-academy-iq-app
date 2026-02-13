@@ -265,10 +265,24 @@
   }
 
   async function checkAuth() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      await loadDashboard();
-    } else {
+    try {
+      // Race against a timeout — if auth takes longer than 10s, give up and show login
+      const authResult = await Promise.race([
+        supabase.auth.getUser(),
+        new Promise<{ data: { user: null }; error: Error }>((resolve) =>
+          setTimeout(() => resolve({ data: { user: null }, error: new Error('Auth timeout') }), 10000)
+        )
+      ]);
+      const { data: { user }, error } = authResult;
+      if (error) console.warn('Auth check:', error.message);
+      if (user) {
+        await loadDashboard();
+      } else {
+        loading = false;
+        authRequired = true;
+      }
+    } catch (e) {
+      console.error('Auth check failed:', e);
       loading = false;
       authRequired = true;
     }
